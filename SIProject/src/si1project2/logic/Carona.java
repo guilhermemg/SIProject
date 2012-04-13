@@ -202,6 +202,10 @@ public class Carona {
 	public String toString() {
 		return this.origem + " para " + this.destino + ", no dia " + this.data + ", as " + hora;
 	}
+	
+	public String toString2() {
+		return "origem=" + getOrigem() + " destino=" + getDestino() + " data=" +getData() + " hora=" + getHora() + " vagas=" + getVagas();
+	}
 
 	public Object getAtributo(String nomeAtributo) throws Exception {
 		if(nomeAtributo == null || nomeAtributo.equals(""))

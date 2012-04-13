@@ -14,6 +14,8 @@ public class Usuario {
 	private String senha;
 	private String nome;
 	private String endereco;
+	
+	private Perfil perfil;
 
 	private Map<String, Carona> mapIdCaronasOferecidas = new TreeMap<String, Carona>();
 	private List<String> listaIdsCaronasPegas = new LinkedList<String>();
@@ -24,15 +26,18 @@ public class Usuario {
 		setNome(nome);
 		setEndereco(endereco);
 		setEmail(email);
+		
 		setIdUsuario(this.hashCode() + "");
+		
+		criaPerfil(nome, endereco, email);
 	}
 	
-	public Usuario(String login2, String senha2, String nome2, String endereco2) throws Exception {
-		setLogin(login2);
-		setSenha(senha2);
-		setNome(nome2);
-		setEndereco(endereco2);
-		setIdUsuario(this.hashCode() + "");
+	private void criaPerfil(String nome2, String endereco2, String email2) {
+		setPerfil(new Perfil(nome2, endereco2, email2));
+	}
+
+	private void setPerfil(Perfil perfil2) {
+		this.perfil = perfil2;
 	}
 
 	private void setIdUsuario(String string) {
@@ -94,7 +99,7 @@ public class Usuario {
 		this.endereco = endereco;
 	}
 
-	public String getAtributo(String nomeAtributo) throws Exception {
+	public Object getAtributo(String nomeAtributo) throws Exception {
 		if(nomeAtributo == null || nomeAtributo.equals(""))
 			throw new Exception("Atributo inválido");
 		
@@ -108,6 +113,8 @@ public class Usuario {
 			return this.getSenha();
 		else if(nomeAtributo.equals("endereco"))
 			return this.getEndereco();
+		else if(nomeAtributo.equals("perfil"))
+			return this.getPerfil();
 		else
 			throw new Exception("Atributo inexistente");
 	}
@@ -116,9 +123,8 @@ public class Usuario {
 			String data, String hora, String vagas) throws Exception {
 		
 		Carona carona = new Carona(idUsuario, origem, destino, data, hora, vagas);
-		//System.out.println("Carona cadastrada id: " + carona.getIdCarona() + " origem: " + origem + " destino: " + destino);
 		mapIdCaronasOferecidas.put(carona.getIdCarona(), carona);
-		
+		//getPerfil().setHistoricoDeCaronas(getPerfil().getHistoricoDeCaronas() + carona.toString2());
 		return carona.getIdCarona();
 	}
 
@@ -314,6 +320,7 @@ public class Usuario {
 		throw new Exception("Solicitação inexistente");
 	}
 
+	// pure fabrication
 	@Override
 	public String toString() {
 		return "Usuario [idUsuario=" + idUsuario + ", nome=" + nome + "]";
@@ -341,5 +348,10 @@ public class Usuario {
 	public void removerSolicitacao(String idCarona, String idSolicitacao) {
 		Carona c = mapIdCaronasOferecidas.get(idCarona); // O(logn)
 		c.removeSolicitacao(idSolicitacao);
+	}
+
+	public Perfil getPerfil() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
