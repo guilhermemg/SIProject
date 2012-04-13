@@ -458,4 +458,143 @@ public class SistemaCaronas {
 		Usuario donoDaCarona = mapIdUsuario.get(mapIdSessao.get(idSessao).getIdUser()); // O(2*logn)
 		donoDaCarona.removerSolicitacao(idCarona, idSolicitacao);
 	}
+	
+	/**
+	 * Pega usuario associado a sessao indicada
+	 * por idSessao e pega o perfil dele.
+	 * 
+	 * @param idSessao
+	 * @param login
+	 * @return idPerfil
+	 */
+	public String visualizarPerfil(String idSessao, String login) {
+		//TODO
+		return null;
+	}
+	
+	/**
+	 * Pesquisa usuario com login e
+	 * retorna um atributo do perfil dele.
+	 * 
+	 * @param login
+	 * @param nomeAtributo
+	 * @return
+	 */
+	public Object getAtributoPerfil(String login, String nomeAtributo) {
+		//TODO
+		return null;
+	}
+	
+	/**
+	 * Seta o valor do review de vaga
+	 * em carona, diz se o solicitante
+	 * faltou ou nao.
+	 * 
+	 * @param idSessao
+	 * @param idCarona
+	 * @param loginCaroneiro
+	 * @param review
+	 */
+	public void reviewVagaEmCarona(String idSessao, String idCarona, String loginCaroneiro, String review) {
+		//TODO
+	}
+	
+	/**
+	 * Seta o valor do review da carona,
+	 * diz se a carona foi boa ou nao. Pesquisa
+	 * usuario (caroneiro) com idSessao, pesquisa
+	 * entre as caronas pegas por ele, idCarona e
+	 * seta o review.
+	 * 
+	 * @param idSessao
+	 * @param idCarona
+	 * @param review
+	 */
+	public void reviewCarona(String idSessao, String idCarona, String review) {
+		//TODO
+	}
+	
+	/**
+	 * Cadastra no usuario identificado por idSessao,
+	 * a carona com os atributos origem, destino, cidade,
+	 * data, hora e vagas.
+	 * 
+	 * @param idSessao
+	 * @param origem
+	 * @param destino
+	 * @param cidade
+	 */
+	public void cadastrarCaronaMunicipal(String idSessao, String origem, String destino, 
+			String cidade, String data, String hora, Object vagas) {
+		//TODO
+	}
+	
+	/**
+	 * Pesquisa entre as caronas oferecidas
+	 * 
+	 * @param idSessao
+	 * @param cidade
+	 * @param origem
+	 * @param destino
+	 * @return
+	 */
+	public List<String> localizarCaronaMunicipal(String idSessao, String cidade, String origem, String destino) {
+		//TODO
+		return null;
+	}
+	
+	/**
+	 * Cadastra interesse em determinada carona,
+	 * mas nao envia solicitacao de participacao.
+	 * As caronas selecionadas como atendentes ao interesse
+	 * do usuario registrador vai aparecer nas mensagens do perfil
+	 * dele.
+	 * 
+	 * obs.: Para os horários o sistema poderá deixar o usuário livre, ou seja,
+	 *  ele poderá não colocar horaInicio(pegará todos a partir das 0h do dia
+	 *  especificado. ou horaFim(pegará todos até às 11:59 do dia especificado)
+	 *  que a consulta será realizada. 
+	 * 
+	 * obs.: 
+	 *  data="" retornará todas as caronas que tem marcadas da data atual em diante.
+	 * 
+	 * @param idSessao
+	 * @param origem
+	 * @param destino
+	 * @param horaInicio
+	 * @param horaFim
+	 * @return idInteresse
+	 */
+	public String cadastrarInteresse(String idSessao, String origem, String destino,
+			String horaInicio, String horaFim) {
+		//TODO
+		return null;
+	}
+	
+	/**
+	 * Resume as mensagens sobre as caronas
+	 * sobre as quais o usuario demonstra interesse.
+	 * 
+	 * @param idSessao
+	 * @return mensagens
+	 */
+	public String verificarMensagensPerfil(String idSessao) {
+		//TODO
+		return null;
+	}
+	
+	/**
+	 * Envia email criado automaticamente
+	 * pelo sistema, a partir de um conjunto
+	 * predefinido de mensagens.
+	 * 
+	 * @param idSessao
+	 * @param destino
+	 * @param message
+	 * @return boolean indicando se email foi enviado com sucesso
+	 */
+	public boolean enviarEmail(String idSessao, String destino, String message) {
+		//TODO
+		return false;
+	}
 }
