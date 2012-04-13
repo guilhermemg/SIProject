@@ -248,13 +248,14 @@ public class Carona {
 	 * @return id da solicitacao
 	 * @throws Exception 
 	 */
-	public String addSolicitacao(String origem, String destino, String idDonoDaCarona2,
-			String idDonoDaSolicitacao, String pontos) throws Exception {
-		if(pontos == null)
+	public String addSolicitacao(String origem, String destino, 
+			String idDonoDaCarona2,	String idDonoDaSolicitacao,
+			String ponto) throws Exception {
+		if(ponto == null)
 			throw new Exception("Ponto Inválido");
-		if(pontos.equals("") || pontos.equals(pontoEncontro))
+		if(ponto.equals("") || ponto.equals(pontoEncontro))
 			throw new Exception("Ponto Inválido");
-		Solicitacao s = new Solicitacao(origem, destino, idDonoDaCarona2, idDonoDaSolicitacao, pontos);
+		Solicitacao s = new Solicitacao(origem, destino, idDonoDaCarona2, idDonoDaSolicitacao, ponto);
 		mapIdSolicitacao.put(s.getIdSolicitacao(), s);
 		return s.getIdSolicitacao();
 	}
@@ -276,15 +277,15 @@ public class Carona {
 		}
 	}
 
-	public void setSolicitacaoPontoEncontro(String idSugestao, String pontos) throws Exception {
-		if(pontos == null)
+	public void setSolicitacaoPontoEncontro(String idSugestao, String ponto) throws Exception {
+		if(ponto == null)
 			throw new Exception("Ponto Inválido");
-		if(pontos.equals(""))
+		if(ponto.equals(""))
 			throw new Exception("Ponto Inválido");
 		
 		for(Solicitacao s : mapIdSolicitacao.values()) {
 			if(s.getIdSolicitacao().equals(idSugestao)) {
-				s.setPontoEncontroCaronaSolicitacao(pontos);
+				s.setPontoEncontroCaronaSolicitacao(ponto);
 				break;
 			}
 		}

@@ -10,7 +10,8 @@ public class Solicitacao {
 	
 	private String idSolicitacao;
 	
-	public Solicitacao(String origem, String destino, String idDonoDaCarona, String idDonoDaSolicitacao, String ponto) {
+	public Solicitacao(String origem, String destino, String idDonoDaCarona, 
+			String idDonoDaSolicitacao, String ponto) {
 		setOrigemCaronaSolicitacao(origem); // id da sessao do usuario requerente
 		setDestinoCaronaSolicitacao(destino);
 		setIdDonoDaCarona(idDonoDaCarona);

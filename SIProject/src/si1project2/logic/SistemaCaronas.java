@@ -495,7 +495,8 @@ public class SistemaCaronas {
 	 * @param loginCaroneiro
 	 * @param review
 	 */
-	public void reviewVagaEmCarona(String idSessao, String idCarona, String loginCaroneiro, String review) {
+	public void reviewVagaEmCarona(String idSessao, String idCarona, 
+			String loginCaroneiro, String review) {
 		//TODO
 	}
 	
@@ -523,10 +524,13 @@ public class SistemaCaronas {
 	 * @param origem
 	 * @param destino
 	 * @param cidade
+	 * @return id carona cadastrada
 	 */
-	public void cadastrarCaronaMunicipal(String idSessao, String origem, String destino, 
-			String cidade, String data, String hora, Object vagas) {
+	public String cadastrarCaronaMunicipal(String idSessao, String origem, 
+			String destino, String cidade, String data, String hora, 
+			Object vagas) {
 		//TODO
+		return null;
 	}
 	
 	/**
@@ -538,7 +542,8 @@ public class SistemaCaronas {
 	 * @param destino
 	 * @return
 	 */
-	public List<String> localizarCaronaMunicipal(String idSessao, String cidade, String origem, String destino) {
+	public List<String> localizarCaronaMunicipal(String idSessao, String cidade,
+			String origem, String destino) {
 		//TODO
 		return null;
 	}

@@ -112,8 +112,8 @@ public class Usuario {
 			throw new Exception("Atributo inexistente");
 	}
 
-	public String cadastrarCarona(String idUsuario, String origem, String destino, String data,
-			String hora, String vagas) throws Exception {
+	public String cadastrarCarona(String idUsuario, String origem, String destino, 
+			String data, String hora, String vagas) throws Exception {
 		
 		Carona carona = new Carona(idUsuario, origem, destino, data, hora, vagas);
 		//System.out.println("Carona cadastrada id: " + carona.getIdCarona() + " origem: " + origem + " destino: " + destino);
