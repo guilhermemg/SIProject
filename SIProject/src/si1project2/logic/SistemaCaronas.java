@@ -25,27 +25,18 @@ public class SistemaCaronas {
 		Usuario user = new Usuario(login, senha, nome, endereco, email);
 		mapIdUsuario.put(user.getIdUsuario(), user);
 	}
+	
+	public void criarUsuario(String login, String senha, String nome,
+			String endereco) throws Exception {
 
-/*	public void criarUsuario(String login, String nome, String endereco,
-			String email) throws Exception {
-
-		for (Usuario u : mapIdUsuario.values())
+		for (Usuario u : mapIdUsuario.values()) {
 			if (u.getLogin().equals(login))
 				throw new Exception("Já existe um usuário com este login");
-
-		Usuario user = new Usuario(login, nome, endereco, email);
+		}
+		
+		Usuario user = new Usuario(login, senha, nome, endereco);
 		mapIdUsuario.put(user.getIdUsuario(), user);
 	}
-	
-	public void criarUsuario(String login, String nome, String endereco) throws Exception {
-
-		for (Usuario u : mapIdUsuario.values())
-			if (u.getLogin().equals(login))
-				throw new Exception("Já existe um usuário com este login");
-
-		Usuario user = new Usuario(login, nome, endereco);
-		mapIdUsuario.put(user.getIdUsuario(), user);
-	}*/
 
 	/**
 	 * Cadastra carona na listaDeCaronasOferecidas do usuario cadastrante e no
@@ -157,7 +148,7 @@ public class SistemaCaronas {
 	public Object getAtributoCarona(String idCarona, String nomeAtributo)
 			throws Exception {
 		if (idCarona == null || idCarona.equals(""))
-			throw new Exception("IdCarona é inválido");
+			throw new Exception("Identificador do carona é inválido");
 
 		for (Usuario u : mapIdUsuario.values()) {
 			if (u.getMapIdCaronasOferecidas().containsKey(idCarona))

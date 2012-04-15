@@ -32,6 +32,17 @@ public class Usuario {
 		criaPerfil(nome, endereco, email);
 	}
 	
+	public Usuario(String login, String senha, String nome, String endereco) throws Exception{
+		setLogin(login);
+		setSenha(senha);
+		setNome(nome);
+		setEndereco(endereco);
+		
+		setIdUsuario(this.hashCode() + "");
+		
+		//criaPerfil(nome, endereco, email);
+	}
+	
 	private void criaPerfil(String nome2, String endereco2, String email2) {
 		setPerfil(new Perfil(nome2, endereco2, email2));
 	}

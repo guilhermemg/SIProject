@@ -16,8 +16,8 @@ public class SistemaCaronasTest {
          files.add("scripts/US03.txt");
          files.add("scripts/US04.txt");
          files.add("scripts/US05.txt");
-         files.add("scripts/US06.txt");
-         files.add("scripts/US07.txt");
+//         files.add("scripts/US06.txt");
+//         files.add("scripts/US07.txt");
 //         files.add("scripts/US08.txt");
 //         files.add("scripts/US09.txt");
 //         files.add("scripts/US10.txt");
