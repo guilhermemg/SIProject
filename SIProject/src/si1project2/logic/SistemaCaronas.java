@@ -10,7 +10,8 @@ import si1project2.util.DateUtil;
 public class SistemaCaronas {
 	private Map<String, Sessao> mapIdSessao = new TreeMap<String, Sessao>(); // contem apenas sessoes abertas
 	private Map<String, Usuario> mapIdUsuario = new TreeMap<String, Usuario>();
-
+	private DateUtil dateUtil = new DateUtil();
+	
 	public void criarUsuario(String login, String senha, String nome,
 			String endereco, String email) throws Exception {
 
@@ -58,10 +59,10 @@ public class SistemaCaronas {
 			throws Exception {
 		if (idSessao == null || idSessao.equals(""))
 			throw new Exception("Sessão inválida");
-		if (data == null || data.equals("") || !DateUtil.validaData(data)) {
+		if (data == null || data.equals("") || !dateUtil.validaData(data)) {
 			throw new Exception("Data inválida");
 		}
-		if (DateUtil.datajapassou(data)) {
+		if (dateUtil.datajapassou(data)) {
 			// XXX CONSERTAR E DESCOBRIR QUAL O PROBLEMA COM ESSE IF
 			throw new Exception("Data inválida");
 		}
