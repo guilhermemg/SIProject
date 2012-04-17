@@ -51,7 +51,8 @@ expect ""William Henry Gates III" " getAtributoPerfil login="mark" atributo="nom
 expect "Medina, Washington" getAtributoPerfil login="mark" atributo="endereco"
 expect "billzin@gmail.com" getAtributoPerfil login="mark" atributo="email"
 expect [${carona4ID}, ${carona5ID}] getAtributoPerfil login="bill" atributo="historico de vagas em caronas"
-expect "" getAtributoPerfil login="mark" atributo="historico de caronas"
+# HISTORICO EH UMA LISTA
+expect [""] getAtributoPerfil login="mark" atributo="historico de caronas"
 expect "0" getAtributoPerfil login="mark" atributo="caronas seguras e tranquilas"
 expect "0" getAtributoPerfil login="mark" atributo="caronas que não funcionaram"
 expect "1" getAtributoPerfil login="mark" atributo="faltas em vagas de caronas"
@@ -63,7 +64,8 @@ expect ""William Henry Gates III" " getAtributoPerfil login="bill" atributo="nom
 expect "Medina, Washington" getAtributoPerfil login="bill" atributo="endereco"
 expect "billzin@gmail.com" getAtributoPerfil login="bill" atributo="email"
 expect [${carona4ID}, ${carona5ID}] getAtributoPerfil login="bill" atributo="historico de vagas em caronas"
-expect "" getAtributoPerfil login="bill" atributo="historico de caronas"
+# HISTORICO EH UMA LISTA
+expect [""] getAtributoPerfil login="bill" atributo="historico de caronas"
 expect "0" getAtributoPerfil login="bill" atributo="caronas seguras e tranquilas"
 expect "0" getAtributoPerfil login="bill" atributo="caronas que não funcionaram"
 expect "1" getAtributoPerfil login="bill" atributo="faltas em vagas de caronas"
