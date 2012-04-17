@@ -413,9 +413,7 @@ public class SistemaCaronas {
 			throw new Exception("IdSessao inválido");
 
 		Usuario solicitante = null;
-		for (Sessao s : mapIdSessao.values()) { // procura pelo usuario
-												// solicitante dentre os
-												// usuarios
+		for (Sessao s : mapIdSessao.values()) { // procura pelo usuario solicitante dentre os usuarios
 			if (s.getIdSessao().equals(idSessao)) {
 				solicitante = mapIdUsuario.get(s.getIdUser());
 				break;
@@ -433,7 +431,8 @@ public class SistemaCaronas {
 		}
 		if (donoDaCarona == null)
 			throw new Exception("IdCarona inválido");
-
+		
+		//TODO isto está esquisito ==> resolver
 		return donoDaCarona.solicitarVaga(idCarona,
 				donoDaCarona.getIdUsuario(), solicitante.getIdUsuario());
 	}
