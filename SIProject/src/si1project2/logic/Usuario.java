@@ -10,11 +10,7 @@ import si1project2.util.SpecialLinkedList;
 public class Usuario {
 	private String idUsuario;
 	private String login;
-	private String email;
 	private String senha;
-	private String nome;
-	private String endereco;
-	
 	private Perfil perfil;
 
 	private Map<String, Carona> mapIdCaronasOferecidas = new TreeMap<String, Carona>();
@@ -23,24 +19,13 @@ public class Usuario {
 	public Usuario(String login, String senha, String nome, String endereco, String email) throws Exception{
 		setLogin(login);
 		setSenha(senha);
+		
+		criaPerfil(nome, endereco, email);
+		setIdUsuario(this.hashCode() + "");
+				
 		setNome(nome);
 		setEndereco(endereco);
 		setEmail(email);
-		
-		setIdUsuario(this.hashCode() + "");
-		
-		criaPerfil(nome, endereco, email);
-	}
-	
-	public Usuario(String login, String senha, String nome, String endereco) throws Exception{
-		setLogin(login);
-		setSenha(senha);
-		setNome(nome);
-		setEndereco(endereco);
-		
-		setIdUsuario(this.hashCode() + "");
-		
-		//criaPerfil(nome, endereco, email);
 	}
 	
 	private void criaPerfil(String nome2, String endereco2, String email2) {
@@ -70,14 +55,14 @@ public class Usuario {
 	}
 
 	public String getEmail() {
-		return email;
+		return this.perfil.getEmail();
 	}
 
 	public void setEmail(String email) throws Exception {
 		if(email == null || email.equals(""))
 			throw new Exception("Email inválido");
 		//TODO criar validador de emails
-		this.email = email;
+		this.perfil.setEmail(email);
 	}
 
 	public String getSenha() {
@@ -91,23 +76,23 @@ public class Usuario {
 	}
 
 	public String getNome() {
-		return nome;
+		return this.perfil.getNome();
 	}
 
 	public void setNome(String nome) throws Exception {
 		if(nome == null || nome.equals(""))
 			throw new Exception("Nome inválido");
-		this.nome = nome;
+		this.perfil.setNome(nome);
 	}
 
 	public String getEndereco() {
-		return endereco;
+		return this.perfil.getEndereco();
 	}
 
 	public void setEndereco(String endereco) throws Exception {
 		if(endereco == null || endereco.equals(""))
 			throw new Exception("Endereço inválido");
-		this.endereco = endereco;
+		this.perfil.setEndereco(endereco);
 	}
 
 	public Object getAtributo(String nomeAtributo) throws Exception {
@@ -115,19 +100,18 @@ public class Usuario {
 			throw new Exception("Atributo inválido");
 		
 		if(nomeAtributo.equals("nome"))
-			return this.getNome();
+			return this.perfil.getNome();
 		else if (nomeAtributo.equals("login"))
 			return this.getLogin();
 		else if(nomeAtributo.equals("email"))
-			return this.getEmail();
+			return this.perfil.getEmail();
 		else if(nomeAtributo.equals("senha"))
 			return this.getSenha();
 		else if(nomeAtributo.equals("endereco"))
-			return this.getEndereco();
+			return this.perfil.getEndereco();
 		else if(nomeAtributo.equals("perfil"))
 			return this.getPerfil();
-		else
-			throw new Exception("Atributo inexistente");
+		throw new Exception("Atributo inexistente");
 	}
 
 	public String cadastrarCarona(String idUsuario, String origem, String destino, 
@@ -176,61 +160,7 @@ public class Usuario {
 		return caronas;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((endereco == null) ? 0 : endereco.hashCode());
-		result = prime * result
-				+ ((idUsuario == null) ? 0 : idUsuario.hashCode());
-		result = prime * result + ((login == null) ? 0 : login.hashCode());
-		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof Usuario)) {
-			return false;
-		}
-		Usuario other = (Usuario) obj;
-		if (endereco == null) {
-			if (other.endereco != null) {
-				return false;
-			}
-		} else if (!endereco.equals(other.endereco)) {
-			return false;
-		}
-		if (idUsuario == null) {
-			if (other.idUsuario != null) {
-				return false;
-			}
-		} else if (!idUsuario.equals(other.idUsuario)) {
-			return false;
-		}
-		if (login == null) {
-			if (other.login != null) {
-				return false;
-			}
-		} else if (!login.equals(other.login)) {
-			return false;
-		}
-		if (nome == null) {
-			if (other.nome != null) {
-				return false;
-			}
-		} else if (!nome.equals(other.nome)) {
-			return false;
-		}
-		return true;
-	}
+	
 
 	public Object getAtributoCarona(String idCarona, String nomeAtributo) throws Exception {
 		return mapIdCaronasOferecidas.get(idCarona).getAtributo(nomeAtributo);
@@ -334,7 +264,44 @@ public class Usuario {
 	// pure fabrication
 	@Override
 	public String toString() {
-		return "Usuario [idUsuario=" + idUsuario + ", nome=" + nome + "]";
+		return "Usuario [idUsuario=" + idUsuario + ", nome=" + perfil.getNome() + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((login == null) ? 0 : login.hashCode());
+		result = prime * result + ((perfil == null) ? 0 : perfil.hashCode());
+		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usuario other = (Usuario) obj;
+		if (login == null) {
+			if (other.login != null)
+				return false;
+		} else if (!login.equals(other.login))
+			return false;
+		if (perfil == null) {
+			if (other.perfil != null)
+				return false;
+		} else if (!perfil.equals(other.perfil))
+			return false;
+		if (senha == null) {
+			if (other.senha != null)
+				return false;
+		} else if (!senha.equals(other.senha))
+			return false;
+		return true;
 	}
 
 	public String solicitarVaga(String idCarona, String idDonoDaCarona, String idDonoDaSolicitacao) {

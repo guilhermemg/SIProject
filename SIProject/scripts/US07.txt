@@ -113,6 +113,6 @@ expect "[Acude Velho;Hiper Bompreco]" getPontosSugeridos idSessao=${sessaoMark} 
 expect "[Acude Velho;Hiper Bompreco]" getPontosEncontro idSessao=${sessaoMark} idCarona=${carona2ID}
 
 #Finaliza o sistema
-encerrarSistema
-quit
+#encerrarSistema
+#quit
 

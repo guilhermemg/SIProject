@@ -26,18 +26,6 @@ public class SistemaCaronas {
 		Usuario user = new Usuario(login, senha, nome, endereco, email);
 		mapIdUsuario.put(user.getIdUsuario(), user);
 	}
-	
-	public void criarUsuario(String login, String senha, String nome,
-			String endereco) throws Exception {
-
-		for (Usuario u : mapIdUsuario.values()) {
-			if (u.getLogin().equals(login))
-				throw new Exception("Já existe um usuário com este login");
-		}
-		
-		Usuario user = new Usuario(login, senha, nome, endereco);
-		mapIdUsuario.put(user.getIdUsuario(), user);
-	}
 
 	/**
 	 * Cadastra carona na listaDeCaronasOferecidas do usuario cadastrante e no
@@ -505,11 +493,11 @@ public class SistemaCaronas {
 	 * @param login
 	 * @return idPerfil
 	 */
-	public Perfil visualizarPerfil(String idSessao, String login)
+	public String visualizarPerfil(String idSessao, String login)
 			throws Exception {
 		for (Usuario u : mapIdUsuario.values())
 			if (u.getLogin().equals(login))
-				return u.getPerfil();
+				return u.getPerfil().getIdPerfil();
 
 		// caso nao tenha nenhum usuario compativel com o login dado
 		throw new Exception("Login inválido");
