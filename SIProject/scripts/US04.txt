@@ -18,20 +18,21 @@ criarUsuario login="mark" senha="m@rk" nome="Mark Zuckerberg" endereco="Palo Alt
 sessaoMark=abrirSessao login="mark" senha="m@rk"
 
 #Cadastrar caronas.
-carona1ID=cadastrarCarona idSessao=${sessaoMark} origem="Cajazeiras" destino="Patos" data="20/07/2012" hora="14:00" vagas="4"
-carona2ID=cadastrarCarona idSessao=${sessaoMark} origem="São Francisco" destino="Palo Alto" data="12/09/2012" hora="21:00" vagas="2"
-carona3ID=cadastrarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="João Pessoa" data="01/06/2012" hora="12:00" vagas="1"
-carona4ID=cadastrarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="João Pessoa" data="02/06/2012" hora="12:00" vagas="3"
-carona5ID=cadastrarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="João Pessoa" data="04/06/2012" hora="16:00" vagas="2"
-carona6ID=cadastrarCarona idSessao=${sessaoMark} origem="Leeds" destino="Londres" data="10/02/2013" hora="10:00" vagas="3"
+carona1ID=cadastrarCarona idSessao=${sessaoMark} origem="Cajazeiras" destino="Patos" data="20/07/2012" hora="14:00" vagas=4
+carona2ID=cadastrarCarona idSessao=${sessaoMark} origem="São Francisco" destino="Palo Alto" data="12/09/2012" hora="21:00" vagas=2
+carona3ID=cadastrarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="João Pessoa" data="01/06/2012" hora="12:00" vagas=1
+carona4ID=cadastrarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="João Pessoa" data="02/06/2012" hora="12:00" vagas=3
+carona5ID=cadastrarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="João Pessoa" data="04/06/2012" hora="16:00" vagas=2
+carona6ID=cadastrarCarona idSessao=${sessaoMark} origem="Leeds" destino="Londres" data="10/02/2013" hora="10:00" vagas=3
 
 #Encerrar a sessao de mark.
 encerrarSessao login="mark"
 
 #Iniciar sessão com outro usuário.
-#USUARIO TEM QUE RECEBER UM SENHA PARA SER VALIDADA
-criarUsuario login="bill" senha="b1ll" nome="William Henry Gates III" endereco="Medina, Washington"
-sessaoBill=abrirSessao login="bill" senha="b1ll"
+#USUARIO TEM QUE RECEBER UM SENHA PARA SER VALIDADO
+#USUARIO TEM QUE RECEBER UM EMAIL PARA SER VALIDADO
+criarUsuario login="bill" senha="billz@o" nome="William Henry Gates III" endereco="Medina, Washington" email="billzin@gmail.com"
+sessaoBill=abrirSessao login="bill" senha="billz@o"
 
 #Sugerir ponto de encontro para uma carona
 sugestaoID=sugerirPontoEncontro idSessao=${sessaoBill} idCarona=${carona4ID} pontos="Acude Velho; Hiper Bompreco"
@@ -44,7 +45,7 @@ responderSugestaoPontoEncontro idSessao=${sessaoMark} idCarona=${carona4ID} idSu
 encerrarSessao login="mark"
 
 #Requisitar vaga na carona.
-sessaoBill=abrirSessao login="bill" senha="b1ll"
+sessaoBill=abrirSessao login="bill" senha="billz@o"
 solicitacao1ID=solicitarVagaPontoEncontro idSessao=${sessaoBill} idCarona=${carona4ID} ponto="Acude Velho"
 expect "Campina Grande" getAtributoSolicitacao idSolicitacao=${solicitacao1ID} atributo="origem"
 expect "João Pessoa" getAtributoSolicitacao idSolicitacao=${solicitacao1ID} atributo="destino"
@@ -57,20 +58,20 @@ encerrarSessao login="bill"
 #Aceitar requisição
 sessaoMark=abrirSessao login="mark" senha="m@rk"
 aceitarSolicitacaoPontoEncontro idSessao=${sessaoMark} idSolicitacao=${solicitacao1ID}
-expect "2" getAtributoCarona idCarona=${carona4ID} atributo="vagas"
+expect 2 getAtributoCarona idCarona=${carona4ID} atributo="vagas"
 expect "Acude Velho" getAtributoCarona idCarona=${carona4ID} atributo="Ponto de Encontro"
 
 #Tentar aceitar novamente a requisição
 #O METODO aceitarSolicitacao e aceitarSolicitacaoPontoEncontro FAZEM A MESMA COISA ==> DEVEM TER A MESMA ASSINATURA
-#O UNICO USUARIO QUE TEM PODE ACEITAR NOVAMENTE EH MARK, JAH QUE ELE EH Q TEM UMA SESSAO ABERTA, NAO BILL
+#O UNICO USUARIO QUE PODE ACEITAR NOVAMENTE EH MARK, JAH QUE ELE EH Q TEM UMA SESSAO ABERTA, NAO BILL
 expectError "Solicitação inexistente" aceitarSolicitacao idSessao=${sessaoMark} idSolicitacao=${solicitacao1ID}
-expect "2" getAtributoCarona idCarona=${carona4ID} atributo="vagas"
+expect 2 getAtributoCarona idCarona=${carona4ID} atributo="vagas"
 
 
 #Iniciar sessão com outro usuário.
 #USUARIO PRECISA DE SENHA E ESTE USUARIO JAH ESTAH CRIADO, APENAS PRECISA ABRIR SESSAO
-#criarUsuario login="bill" senha="b1ll" nome="William Henry Gates III" endereco="Medina, Washington"
-sessaoBill=abrirSessao login="bill" senha="b1ll"
+#criarUsuario login="bill" senha="b1ll" nome="William Henry Gates III" endereco="Medina, Washington" email="billzin@gmail.com"
+sessaoBill=abrirSessao login="bill" senha="billz@o"
 
 #Sugerir ponto de encontro para uma carona
 sugestaoID=sugerirPontoEncontro idSessao=${sessaoBill} idCarona=${carona4ID} pontos="Acude Velho; Hiper Bompreco"

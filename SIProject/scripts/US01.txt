@@ -30,7 +30,7 @@ expectError "Nome inválido" criarUsuario login="xpto" senha="x" nome="" enderec
 expectError "Email inválido" criarUsuario login="xpto" senha="x" nome="patriciano" endereco="xpto" email=
 expectError "Email inválido" criarUsuario login="xpto" senha="x" nome="pantcho" endereco="xpto" email=""
 expectError "Já existe um usuário com este email" criarUsuario login="xpto" senha="x" nome="markito" endereco="xpto" email="mark@facebook.com"
-expectError "Já existe um usuário com este login" criarUsuario login="mark" senha="x" nome="xpto" endereco="xpto"
+expectError "Já existe um usuário com este login" criarUsuario login="mark" senha="x" nome="xpto" endereco="xpto" email="mark@facebook.com"
 expectError "Login inválido" abrirSessao login= senha="teste"
 expectError "Login inválido" abrirSessao login="" senha="segundoteste"
 expectError "Login inválido" abrirSessao login="mark" senha="teste"
