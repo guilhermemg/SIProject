@@ -74,9 +74,9 @@ public class DateUtil {
 		calendario2.set(Calendar.DAY_OF_MONTH, dia);
 		calendario2.set(Calendar.MONTH, mes + 1);
 		calendario2.set(Calendar.YEAR, ano);
-		System.out.println(calendario2.compareTo(calendar));
+		//System.out.println(calendario2.compareTo(calendar));
 		if (calendario2.compareTo(calendar) < 0) {
-			System.out.println(calendario2.compareTo(calendar));
+			//System.out.println(calendario2.compareTo(calendar));
 			return true;
 		}
 		return false;

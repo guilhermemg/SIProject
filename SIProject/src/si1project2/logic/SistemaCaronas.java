@@ -68,7 +68,7 @@ public class SistemaCaronas {
 				return mapIdUsuario.get(idUsuario).cadastrarCarona(idUsuario,
 						origem, destino, data, hora, vagas);
 			}
-		return null;
+		throw new Exception("Sessao inválida");
 	}
 
 	/*
