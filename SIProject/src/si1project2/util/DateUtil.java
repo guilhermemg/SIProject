@@ -44,10 +44,10 @@ public class DateUtil {
 		return true;
 	}
 
-	public static boolean validaData(String data) throws Exception {
+	public boolean validaData(String data) throws Exception {
 		String data2 = ""+data;
-		
 		String[] data1 = data2.split("/");
+
 		int dia, mes, ano;
 		try {
 			dia = Integer.parseInt(data1[0]);
@@ -59,7 +59,7 @@ public class DateUtil {
 		return verificaDataValida(dia, mes, ano);
 	}
 
-	public static boolean datajapassou(String data) throws Exception {
+	public boolean datajapassou(String data) throws Exception {
 		String[] data1 = data.split("/");
 		int dia, mes, ano;
 		try {
@@ -74,27 +74,29 @@ public class DateUtil {
 		calendario2.set(Calendar.DAY_OF_MONTH, dia);
 		calendario2.set(Calendar.MONTH, mes + 1);
 		calendario2.set(Calendar.YEAR, ano);
-		if (calendar.compareTo(calendario2) > 0) {
-			System.out.println(calendar.compareTo(calendario2));
+		System.out.println(calendario2.compareTo(calendar));
+		if (calendario2.compareTo(calendar) < 0) {
+			System.out.println(calendario2.compareTo(calendar));
 			return true;
 		}
 		return false;
 	}
 
-	/*public static void main(String[] args) {
-		String data = "25/12/2011";
-		try {
-			System.out.println(data);
-			System.out.println(DateUtil.datajapassou(data));
-			System.out.println(data);
-			System.out.println(!DateUtil.validaData(data) || DateUtil.datajapassou(data));
-			System.out.println(data);
-			System.out.println(DateUtil.datajapassou(data));
-			System.out.println(data);
-			System.out.println(!DateUtil.validaData(data));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}*/
+//	public static void main(String[] args) {
+//		String data = "25/12/2011";
+//		try {
+//DateUtil dateUtil = new DateUtil();
+//			//			System.out.println(data);
+//			System.out.println(dateUtil.datajapassou(data));
+////			System.out.println(data);
+//			System.out.println(!dateUtil.validaData(data));
+////			System.out.println(data);
+//			System.out.println(dateUtil.datajapassou(data));
+////			System.out.println(data);
+////			System.out.println(DateUtil.validaData(data));
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 }

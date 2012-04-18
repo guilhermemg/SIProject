@@ -53,7 +53,7 @@ expect {${carona2ID}} localizarCarona idSessao=${sessaoMark} origem="" destino="
 #Todas as caronas que irão acontecer.
 #FALTA A CARONA5
 #DAH PROBLEMA COM OS ESPACOS EM BRANCO NO ARRAY
-expect {${carona1ID},${carona5ID},${carona2ID},${carona3ID},${carona4ID}} localizarCarona idSessao=${sessaoMark} origem="" destino=""
+expect {${carona1ID},${carona2ID},${carona3ID},${carona4ID},${carona5ID}} localizarCarona idSessao=${sessaoMark} origem="" destino=""
 
 #Cadastro de carona com entradas inválidas, Nenhuma carona aqui deve ser cadastrada.
 expectError "Sessão inválida" cadastrarCarona idSessao= origem="Campina Grande" destino="João Pessoa" data="23/06/2012" hora="16:00" vagas=3
@@ -72,7 +72,7 @@ expectError "Data inválida" cadastrarCarona idSessao=${sessaoMark} origem="Camp
 expectError "Data inválida" cadastrarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="João Pessoa" data="31/04/2012" hora="16:00" vagas=3
 expectError "Data inválida" cadastrarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="João Pessoa" data="32/12/2012" hora="16:00" vagas=3
 #25/12/11 ==> EH UMA DATA VALIDA
-#expectError "Data inválida" cadastrarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="João Pessoa" data="25/12/2011" hora="16:00" vagas=3
+expectError "Data inválida" cadastrarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="João Pessoa" data="25/12/2011" hora="16:00" vagas=3
 
 
 expectError "Hora inválida" cadastrarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="João Pessoa" data="23/06/2012" hora= vagas=3
