@@ -495,7 +495,7 @@ public class SistemaCaronas {
 			throws Exception {
 		for (Usuario u : mapIdUsuario.values())
 			if (u.getLogin().equals(login))
-				return u.getPerfil().getIdPerfil();
+				return u.visualizarPerfil();
 
 		// caso nao tenha nenhum usuario compativel com o login dado
 		throw new Exception("Login inválido");
@@ -515,7 +515,7 @@ public class SistemaCaronas {
 			throws Exception {
 		for (Usuario u : mapIdUsuario.values())
 			if (u.getLogin().equals(login))
-				return u.getPerfil().getAtributoPerfil(atributo);
+				return u.getAtributoPerfil(atributo);
 
 		// caso nao tenha nenhum usuario compativel com o login dado
 		throw new Exception("Login inválido");

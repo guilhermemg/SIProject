@@ -329,7 +329,14 @@ public class Usuario {
 	}
 
 	public Perfil getPerfil() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.perfil;
+	}
+
+	public String visualizarPerfil() {
+		return perfil.visualizarPerfil();
+	}
+
+	public Object getAtributoPerfil(String atributo) throws Exception {
+		return this.perfil.getAtributoPerfil(atributo);
 	}
 }

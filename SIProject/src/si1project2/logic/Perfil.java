@@ -1,5 +1,6 @@
 package si1project2.logic;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class Perfil {
@@ -19,10 +20,19 @@ public class Perfil {
 		setNome(nome);
 		setEndereco(endereco);
 		setEmail(email);
-		
+		setHistoricoDeCaronas(new LinkedList<String>());
+		setHistoricoDeVagasEmCaronas(new LinkedList<String>());
 		setIdPerfil(hashCode() + "");
 	}
 	
+	private void setHistoricoDeVagasEmCaronas(LinkedList<String> historico) {
+		this.historicoDeVagasEmCaronas = historico;
+	}
+
+	private void setHistoricoDeCaronas(LinkedList<String> historico) {
+		this.historicoDeCaronas = historico;
+	}
+
 	public String getNome() {
 		return this.nome;
 	}
@@ -55,12 +65,10 @@ public class Perfil {
 		this.idPerfil = idPerfil;
 	}
 
-	
-	
 	public Object getAtributoPerfil(String atributo) throws Exception {
 		if (atributo.equals("nome")) {
 			return getNome();
-		}else if (atributo.equals("endereço")) {
+		}else if (atributo.equals("endereco")) {
 			return getEndereco();
 		}else if (atributo.equals("email")) {
 			return getEmail();
@@ -176,27 +184,31 @@ public class Perfil {
 		return true;
 	}
 
-	private List<String> getHistoricoDeCaronas() {
+	public List<String> getHistoricoDeCaronas() {
 		return this.historicoDeCaronas;
 	}
 	
-	private List<String> getHistoricoDeVagasEmCaronas() {
+	public List<String> getHistoricoDeVagasEmCaronas() {
 		return this.historicoDeVagasEmCaronas;
 	}
 	
-	private String getCaronasSegurasETranquilas() {
+	public String getCaronasSegurasETranquilas() {
 		return this.caronasSegurasETranquilas.toString();
 	}
 	
-	private String getCaronasQueNaoFuncionaram() {
+	public String getCaronasQueNaoFuncionaram() {
 		return this.caronasQueNaoFuncionaram.toString();
 	}
 	
-	private String getFaltasEmVagasDeCaronas() {
+	public String getFaltasEmVagasDeCaronas() {
 		return this.faltasEmVagasDeCaronas.toString();
 	}
 	
-	private String getPresencasEmVagasDeCaronas() {
+	public String getPresencasEmVagasDeCaronas() {
 		return this.presencasEmVagasDeCaronas.toString();
+	}
+
+	public String visualizarPerfil() {
+		return this.idPerfil;
 	}
 }

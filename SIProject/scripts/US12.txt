@@ -2,7 +2,6 @@
 
 #US12 - Aviso do processo de negociação de carona e de novas caronas sendo publicadas por email. 
 
-
 #Limpar os dados do sistema.
 zerarSistema
 
