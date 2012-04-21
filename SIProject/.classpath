@@ -4,5 +4,6 @@
 	<classpathentry exported="true" kind="lib" path="easyaccept-1.0.3-jar/easyaccept.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/home/leonardo/Downloads/jdom-2.0.0.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
