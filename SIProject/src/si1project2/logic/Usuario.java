@@ -1,5 +1,6 @@
 package si1project2.logic;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -18,32 +19,26 @@ public class Usuario {
 	private String idUsuario;
 	private String login;
 	private String senha;
-	private Perfil perfil;
 
 	//GerenciadorDeDados gerenciadorDeDados = new GerenciadorDeDados();
 	private Map<String, Carona> mapIdCaronasOferecidas = new TreeMap<String, Carona>();
-	private Map<String, Carona> mapIdCaronasPegas = new TreeMap<String, Carona>();
+	
+	// somente contem caronas concluidas (julgadas, revisadas pelo motorista)
+	private List<String> listaIdsCaronasPegas = new LinkedList<String>(); 
+	
+	// caronas aprovadas mas que ainda nao foram julgadas pelo motorista (dono da carona)
+	private List<String> listaIdsCaronasAprovadas = new LinkedList<String>();
+	
+	// somente contem caronas concluidas (julgadas, revisadas pelo motorista)
+	private List<String> listaIdsCaronasEmQueFaltou = new LinkedList<String>();
 
-	public Usuario(String login, String senha, String nome, String endereco, String email) throws Exception{
+	public Usuario(String login, String senha) throws Exception{
 		setLogin(login);
 		setSenha(senha);
 		
-		criaPerfil(nome, endereco, email);
 		setIdUsuario(this.hashCode() + "");
-				
-		setNome(nome);
-		setEndereco(endereco);
-		setEmail(email);
 	}
 	
-	private void criaPerfil(String nome2, String endereco2, String email2) {
-		setPerfil(new Perfil(nome2, endereco2, email2));
-	}
-
-	private void setPerfil(Perfil perfil2) {
-		this.perfil = perfil2;
-	}
-
 	private void setIdUsuario(String string) {
 		this.idUsuario = string;
 	}
@@ -62,16 +57,6 @@ public class Usuario {
 		this.login = login;
 	}
 
-	public String getEmail() {
-		return this.perfil.getEmail();
-	}
-
-	public void setEmail(String email) throws Exception {
-		if(email == null || email.equals(""))
-			throw new Exception("Email inválido");
-		this.perfil.setEmail(email);
-	}
-
 	public String getSenha() {
 		return senha;
 	}
@@ -82,42 +67,16 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	public String getNome() {
-		return this.perfil.getNome();
-	}
 
-	public void setNome(String nome) throws Exception {
-		if(nome == null || nome.equals(""))
-			throw new Exception("Nome inválido");
-		this.perfil.setNome(nome);
-	}
 
-	public String getEndereco() {
-		return this.perfil.getEndereco();
-	}
-
-	public void setEndereco(String endereco) throws Exception {
-		if(endereco == null || endereco.equals(""))
-			throw new Exception("Endereço inválido");
-		this.perfil.setEndereco(endereco);
-	}
-
-	public Object getAtributo(String nomeAtributo) throws Exception {
+	public Object getAtributoUsuario(String nomeAtributo) throws Exception {
 		if(nomeAtributo == null || nomeAtributo.equals(""))
 			throw new Exception("Atributo inválido");
 		
-		if(nomeAtributo.equals("nome"))
-			return this.perfil.getNome();
 		else if (nomeAtributo.equals("login"))
 			return this.getLogin();
-		else if(nomeAtributo.equals("email"))
-			return this.perfil.getEmail();
 		else if(nomeAtributo.equals("senha"))
 			return this.getSenha();
-		else if(nomeAtributo.equals("endereco"))
-			return this.perfil.getEndereco();
-		else if(nomeAtributo.equals("perfil"))
-			return this.getPerfil();
 		throw new Exception("Atributo inexistente");
 	}
 
@@ -194,7 +153,7 @@ public class Usuario {
 
 	public void zerarSistema() {
 		this.mapIdCaronasOferecidas.clear();
-		this.mapIdCaronasPegas.clear();
+		this.listaIdsCaronasPegas.clear();
 	}
 	
 	/**
@@ -247,29 +206,6 @@ public class Usuario {
 	}
 	
 	/**
-	 * Adiciona id-carona no
-	 * mapa de ids-caronas do gerenciador de
-	 * dados do sistema. 
-	 * 
-	 * QUANDO A CARONA EH ADICIONADA, AS CARONAS
-	 * PEGAS SIGNIFICA QUE O DONO DA CARONA JAH ACEITOU
-	 * A SOLICITACAO DO USUARIO SOLICITANTE (CARONEIRO).
-	 * 
-	 * A pesquisa acontece em TODAS as caronas
-	 * registradas no sistema.
-	 * 
-	 * @param idCarona
-	 */
-	public void adicionarIdCaronaPega(String idCarona) {
-		for(Carona c : this.mapIdCaronasOferecidas.values()) {
-			if(c.getIdCarona().equals(idCarona)) {
-				this.mapIdCaronasPegas.put(idCarona, c);
-				break;
-			}
-		}
-	}
-
-	/**
 	 * Retorna array com
 	 * id do dono da solicitacao e id
 	 * da carona em questao.
@@ -298,7 +234,7 @@ public class Usuario {
 	// pure fabrication
 	@Override
 	public String toString() {
-		return "Usuario [idUsuario=" + idUsuario + ", nome=" + perfil.getNome() + "]";
+		return "Usuario [idUsuario=" + idUsuario + ", login=" + this.getLogin() + "]";
 	}
 
 	@Override
@@ -306,7 +242,6 @@ public class Usuario {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((login == null) ? 0 : login.hashCode());
-		result = prime * result + ((perfil == null) ? 0 : perfil.hashCode());
 		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
 		return result;
 	}
@@ -324,11 +259,6 @@ public class Usuario {
 			if (other.login != null)
 				return false;
 		} else if (!login.equals(other.login))
-			return false;
-		if (perfil == null) {
-			if (other.perfil != null)
-				return false;
-		} else if (!perfil.equals(other.perfil))
 			return false;
 		if (senha == null) {
 			if (other.senha != null)
@@ -362,22 +292,11 @@ public class Usuario {
 		c.removeSolicitacao(idSolicitacao);
 	}
 
-	public Perfil getPerfil() {
-		return this.perfil;
-	}
-
-	public String visualizarPerfil() {
-		return perfil.visualizarPerfil();
-	}
-
-	public Object getAtributoPerfil(String atributo) throws Exception {
-		return this.perfil.getAtributoPerfil(atributo);
-	}
-
-	public void setReviewCarona(String idCarona, String review) {
-		Carona c = this.mapIdCaronasPegas.get(idCarona);
+	// corresponde ao julgamento feito pelos caroneiros sobre a carona
+	/*public void setReviewCarona(String idCarona, String review) {
+		Carona c = this.listaIdsCaronasPegas.get(idCarona);
 		c.setReview(review);
-	}
+	}*/
 	
 	/**
 	 * Verifica se usuario esteve
@@ -389,26 +308,39 @@ public class Usuario {
 	 * @param loginCaroneiro
 	 * @param review
 	 */
-	public void reviewVagaEmCarona(String idUsuario, String idCarona, String loginCaroneiro,
-			String review) {
+/*	public void reviewVagaEmCarona(String idCarona, String idCaroneiro,
+			String reviewVagaEmCarona) {
 		Carona c = this.mapIdCaronasOferecidas.get(idCarona);
-		//c.''
+		c.setReviewVagaEmCarona(idCaroneiro, reviewVagaEmCarona)
 		
-	}
+	}*/
 	
-/*	public String getCaronasSegurasETranquilas() {
+	/**
+	 * Adiciona id de uma carona
+	 * aprovada para este usuario (this), pelo
+	 * dono da carona.
+	 * 
+	 * A lista de caronas aprovadas estah com
+	 * o dono da carona.
+	 * 
+	 * @param idCarona
+	 */
+	public void adicionarIdCaronaAprovada(String idCarona) {
+		listaIdsCaronasAprovadas.add(idCarona);
+	}
+
+	/*public String getCaronasSegurasETranquilas() {
 		int sum = 0;
-		for(Carona c : this.mapIdCaronasPegas.values()) {
+		for(Carona c : this.listaIdsCaronasPegas.values()) {
 			if(c.getReview().equals("carona segura e tranquila")) {
 				sum++;
 			}
 		}
-		perfil.setCaronasSegurasETranquilas(sum);
-		return perfil.getCaronasSegurasETranquilas();
+		return sum+"";
 	}
 	
 	public String getHistoricoDeVagasEmCaronas() {
-		for(Carona c : this.mapIdCaronasPegas.values()) {
+		for(Carona c : this.listaIdsCaronasPegas.values()) {
 			
 		}
 	}*/

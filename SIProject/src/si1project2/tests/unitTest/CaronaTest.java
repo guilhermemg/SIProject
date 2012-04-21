@@ -14,7 +14,7 @@ public class CaronaTest {
 	
 	@Before
 	public void setup() throws Exception {
-		Usuario u = new Usuario("login1", "senha1", "nome1", "endereco1", "email1");
+		Usuario u = new Usuario("login1", "senha1");
 		Sessao s = new Sessao(u.getIdUsuario());
 		c1 = new Carona(s.getIdSessao(), "origem1", "destino1", "01/01/2000", "05:30", "4");
 		c2 = new Carona(s.getIdSessao(), "origem2", "destino2", "01/01/2000", "05:30", "4");

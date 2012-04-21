@@ -1,4 +1,4 @@
-package si1project2.tests.unitTest;
+/*package si1project2.tests.unitTest;
 
 import static org.junit.Assert.assertEquals;
 
@@ -111,3 +111,4 @@ public class UsuarioTest {
 	}
 
 }
+*/

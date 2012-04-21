@@ -2,6 +2,7 @@ package si1project2.logic;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -18,6 +19,8 @@ public class Perfil {
 	private String email;
 	private String idPerfil;
 	
+	private Usuario usuario;
+	
 	private List<String> historicoDeCaronas; // lista de ids caronas oferecidas
 	private List<String> historicoDeVagasEmCaronas; // lista de caronas pegas
 	
@@ -29,7 +32,7 @@ public class Perfil {
 	private Integer presencasEmVagasDeCaronas;
 	
 	
-	public Perfil(String nome, String endereco, String email) {
+	public Perfil(String login, String senha, String nome, String endereco, String email) throws Exception {
 		setNome(nome);
 		setEndereco(endereco);
 		setEmail(email);
@@ -38,6 +41,41 @@ public class Perfil {
 		setHistoricoDeVagasEmCaronas(new LinkedList<String>());
 		
 		setIdPerfil(hashCode() + "");
+		
+		usuario = new Usuario(login, senha);
+		
+		usuario.setLogin(login);
+		usuario.setSenha(senha);
+	}
+	
+	public String getNome() {
+		return this.nome;
+	}
+
+	public void setNome(String nome) throws Exception {
+		if(nome == null || nome.equals(""))
+			throw new Exception("Nome inválido");
+		this.nome = nome;
+	}
+
+	public String getEmail() throws Exception {
+		if(email == null || email.equals(""))
+			throw new Exception("Email inválido");
+		return this.email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public String getEndereco() {
+		return this.endereco;
+	}
+	
+	public void setEndereco(String endereco) throws Exception {
+		if(endereco == null || endereco.equals(""))
+			throw new Exception("Endereço inválido");
+		this.endereco = endereco;
 	}
 	
 	private void setHistoricoDeVagasEmCaronas(List<String> historico) {
@@ -46,30 +84,6 @@ public class Perfil {
 
 	private void setHistoricoDeCaronas(List<String> historico) {
 		this.historicoDeCaronas = historico;
-	}
-
-	public String getNome() {
-		return this.nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getEndereco() {
-		return this.endereco;
-	}
-
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
-	}
-
-	public String getEmail() {
-		return this.email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getIdPerfil() {
@@ -87,18 +101,18 @@ public class Perfil {
 			return getEndereco();
 		}else if (atributo.equals("email")) {
 			return getEmail();
-		}else if (atributo.equals("historico de caronas")) {
-			return getHistoricoDeCaronas();
+	/*	}else if (atributo.equals("historico de caronas")) {
+			return usuario.getHistoricoDeCaronas();
 		}else if (atributo.equals("historico de vagas em caronas")) {
-			return getHistoricoDeVagasEmCaronas();
+			return usuario.getHistoricoDeVagasEmCaronas();
 		}else if (atributo.equals("caronas seguras e tranquilas")) {
-			return getCaronasSegurasETranquilas();
+			return usuario.getCaronasSegurasETranquilas();
 		}else if (atributo.equals("caronas que não funcionaram")) {
-			return getCaronasQueNaoFuncionaram();
+			return usuario.getCaronasQueNaoFuncionaram();
 		}else if (atributo.equals("faltas em vagas de caronas")) {
-			return getFaltasEmVagasDeCaronas();
+			return usuario.getFaltasEmVagasDeCaronas();
 		}else if (atributo.equals("presenças em vagas de caronas")) {
-			return getPresencasEmVagasDeCaronas();
+			return usuario.getPresencasEmVagasDeCaronas();*/
 		}
 		throw new Exception("Atributo inválido");
 	}
@@ -200,19 +214,19 @@ public class Perfil {
 	}
 
 	public List<String> getHistoricoDeCaronas() {
-		return this.historicoDeCaronas;
+		return usuario.getHistoricoDeCaronas();
 	}
 	
 	public List<String> getHistoricoDeVagasEmCaronas() {
-		return this.historicoDeVagasEmCaronas;
+		return usuario.getHistoricoDeVagasEmCaronas();
 	}
 	
 	public String getCaronasSegurasETranquilas() {
-		return this.caronasSegurasETranquilas + "";
+		return usuario.getCaronasSegurasETranquilas();
 	}
 	
 	public String getCaronasQueNaoFuncionaram() {
-		return this.caronasQueNaoFuncionaram.toString();
+		return usuario.getCaronasQueNaoFuncionaram();
 	}
 	
 	public String getFaltasEmVagasDeCaronas() {
@@ -229,5 +243,90 @@ public class Perfil {
 
 	public void setCaronasSegurasETranquilas(Integer numCaronasSegurasETranquilas) {
 		this.caronasSegurasETranquilas = numCaronasSegurasETranquilas;
+	}
+
+	public String getLogin() {
+		return usuario.getLogin();
+	}
+
+	public String cadastrarCarona(String idUsuario, String origem,
+			String destino, String data, String hora, String vagas) throws Exception {
+		return usuario.cadastrarCarona(idUsuario, origem, destino, data, hora, vagas);
+	}
+
+	public String getIdUsuario() {
+		return usuario.getIdUsuario();
+	}
+
+	public boolean validaSenha(String senha) {
+		return usuario.validaSenha(senha);
+	}
+
+	public Object getAtributoUsuario(String nomeAtributo) throws Exception {
+		return usuario.getAtributoUsuario(nomeAtributo);
+	}
+
+	public List<String> localizarCarona(String origem, String destino) {
+		return usuario.localizarCarona(origem, destino);
+	}
+
+	public Map<String, Carona> getMapIdCaronasOferecidas() {
+		return usuario.getMapIdCaronasOferecidas();
+	}
+
+	public Object getAtributoCarona(String idCarona, String nomeAtributo) throws Exception {
+		return usuario.getAtributoCarona(idCarona, nomeAtributo);
+	}
+
+	public String getTrajeto(String idCarona) throws Exception {
+		return usuario.getTrajeto(idCarona);
+	}
+
+	public String getCarona(String idCarona) throws Exception {
+		return usuario.getCarona(idCarona);
+	}
+
+	public void zerarSistema() {
+		usuario.zerarSistema();
+	}
+
+	public String sugerirPontoEncontro(String idCarona, String idDonoDaCarona,
+			String idDonoDaSolicitacao, String pontos) throws Exception {
+		return usuario.sugerirPontoEncontro(idCarona, idDonoDaCarona, idDonoDaSolicitacao, pontos);
+	}
+
+	public void responderSugestaoPontoEncontro(String idCarona,
+			String idSugestao, String pontos) throws Exception {
+		usuario.responderSugestaoPontoEncontro(idCarona, idSugestao, pontos);
+	}
+
+	public String solicitarVagaPontoEncontro(String idCarona, String idDonoDaCarona,
+			String idDonoDaSolicitacao, String pontos) throws Exception {
+		return usuario.solicitarVagaPontoEncontro(idCarona, idDonoDaCarona, idDonoDaSolicitacao, pontos);
+	}
+
+	public String[] aceitarSolicitacaoPontoEncontro(String idSolicitacao) throws Exception {
+		return usuario.aceitarSolicitacaoPontoEncontro(idSolicitacao);
+	}
+
+	public void adicionarIdCaronaAprovada(String idCarona) {
+		usuario.adicionarIdCaronaAprovada(idCarona);
+	}
+
+	public String[] aceitarSolicitacao(String idSolicitacao) throws Exception {
+		return usuario.aceitarSolicitacao(idSolicitacao);
+	}
+
+	public String solicitarVaga(String idCarona, String idDonoDaCarona,
+			String idDonoDaSolicitacao) {
+		return usuario.solicitarVaga(idCarona, idDonoDaCarona, idDonoDaSolicitacao);
+	}
+
+	public void rejeitarSolicitacao(String idSolicitacao) throws Exception {
+		usuario.rejeitarSolicitacao(idSolicitacao);
+	}
+
+	public void removerSolicitacao(String idCarona, String idSolicitacao) {
+		usuario.removerSolicitacao(idCarona, idSolicitacao);
 	}
 }
