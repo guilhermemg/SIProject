@@ -1,5 +1,13 @@
 package si1project2.logic;
 
+/**
+ * 
+ * @author Guilherme Monteiro
+ * @author Leonardo Santos
+ * @author Hema Vidal
+ * @author Italo Silva
+ *
+ */
 public class Solicitacao {
 	private String origemCaronaSolicitacao;
 	private String destinoCaronaSolicitacao;

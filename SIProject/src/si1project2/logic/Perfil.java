@@ -3,13 +3,26 @@ package si1project2.logic;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * 
+ * @author Guilherme Monteiro
+ * @author Leonardo Santos
+ * @author Hema Vidal
+ * @author Italo Silva
+ *
+ * @see Usuario
+ */
 public class Perfil {
 	private String nome;
 	private String endereco;
 	private String email;
 	private String idPerfil;
-	private List<String> historicoDeCaronas;
-	private List<String> historicoDeVagasEmCaronas;
+	
+	private List<String> historicoDeCaronas; // lista de ids caronas oferecidas
+	private List<String> historicoDeVagasEmCaronas; // lista de caronas pegas
+	
+	//GerenciadorDeDados gerenciadorDeDados = new GerenciadorDeDados();
+	
 	private Integer caronasSegurasETranquilas;
 	private Integer caronasQueNaoFuncionaram;
 	private Integer faltasEmVagasDeCaronas;
@@ -20,16 +33,18 @@ public class Perfil {
 		setNome(nome);
 		setEndereco(endereco);
 		setEmail(email);
+		
 		setHistoricoDeCaronas(new LinkedList<String>());
 		setHistoricoDeVagasEmCaronas(new LinkedList<String>());
+		
 		setIdPerfil(hashCode() + "");
 	}
 	
-	private void setHistoricoDeVagasEmCaronas(LinkedList<String> historico) {
+	private void setHistoricoDeVagasEmCaronas(List<String> historico) {
 		this.historicoDeVagasEmCaronas = historico;
 	}
 
-	private void setHistoricoDeCaronas(LinkedList<String> historico) {
+	private void setHistoricoDeCaronas(List<String> historico) {
 		this.historicoDeCaronas = historico;
 	}
 
@@ -193,7 +208,7 @@ public class Perfil {
 	}
 	
 	public String getCaronasSegurasETranquilas() {
-		return this.caronasSegurasETranquilas.toString();
+		return this.caronasSegurasETranquilas + "";
 	}
 	
 	public String getCaronasQueNaoFuncionaram() {
@@ -210,5 +225,9 @@ public class Perfil {
 
 	public String visualizarPerfil() {
 		return this.idPerfil;
+	}
+
+	public void setCaronasSegurasETranquilas(Integer numCaronasSegurasETranquilas) {
+		this.caronasSegurasETranquilas = numCaronasSegurasETranquilas;
 	}
 }

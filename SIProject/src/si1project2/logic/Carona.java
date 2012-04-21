@@ -3,6 +3,14 @@ package si1project2.logic;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * 
+ * @author Guilherme Monteiro
+ * @author Leonardo Santos
+ * @author Hema Vidal
+ * @author Italo Silva
+ *
+ */
 public class Carona {
 	private String idDonoDaCarona;
 	private String idCarona;
@@ -11,9 +19,17 @@ public class Carona {
 	private String data;
 	private String vagas;
 	private String hora;
+	private String pontoEncontro;
 	
 	private Map<String, Solicitacao> mapIdSolicitacao = new TreeMap<String, Solicitacao>();
-	private String pontoEncontro;
+	//XXX private Map<String, List<Usuario>> mapIdCaronaUsuariosPresentes = new TreeMap<String, List<Usuario>>();
+	//private GerenciadorDeDados gerenciadorDeDados = new GerenciadorDeDados();
+	
+	private Map<String, String> mapReviews = new TreeMap<String, String>();
+	private Map<String, String> mapReviewsVagasEmCaronas = new TreeMap<String, String>();
+	
+	private String review; // avaliacao do motorista (dono da carona) 
+	private String reviewVagaEmCarona; // avaliacao do caroneiro
 
 	public Carona(String idDonoDaCarona, String origem2, String destino2,
 		String data2, String hora2, String vagas2) throws Exception {
@@ -203,9 +219,10 @@ public class Carona {
 		return this.origem + " para " + this.destino + ", no dia " + this.data + ", as " + hora;
 	}
 	
-	public String toString2() {
+	// XXX ajeitar isso
+/*	public String toString2() {
 		return "origem=" + getOrigem() + " destino=" + getDestino() + " data=" +getData() + " hora=" + getHora() + " vagas=" + getVagas();
-	}
+	}*/
 
 	public Object getAtributo(String nomeAtributo) throws Exception {
 		if(nomeAtributo == null || nomeAtributo.equals(""))
@@ -260,7 +277,7 @@ public class Carona {
 		if(ponto.equals("") || ponto.equals(pontoEncontro))
 			throw new Exception("Ponto Inválido");
 		Solicitacao s = new Solicitacao(origem, destino, idDonoDaCarona2, idDonoDaSolicitacao, ponto);
-		mapIdSolicitacao.put(s.getIdSolicitacao(), s);
+		this.mapIdSolicitacao.put(s.getIdSolicitacao(), s);
 		return s.getIdSolicitacao();
 	}
 
@@ -273,9 +290,9 @@ public class Carona {
 	}
 
 	public void removeSolicitacao(String idSolicitacao) {
-		for(Solicitacao s : mapIdSolicitacao.values()) {
+		for(Solicitacao s : this.mapIdSolicitacao.values()) {
 			if(s.getIdSolicitacao().equals(idSolicitacao)) {
-				mapIdSolicitacao.remove(idSolicitacao);
+				this.mapIdSolicitacao.remove(idSolicitacao);
 				break;
 			}
 		}
@@ -287,7 +304,7 @@ public class Carona {
 		if(ponto.equals(""))
 			throw new Exception("Ponto Inválido");
 		
-		for(Solicitacao s : mapIdSolicitacao.values()) {
+		for(Solicitacao s : this.mapIdSolicitacao.values()) {
 			if(s.getIdSolicitacao().equals(idSugestao)) {
 				s.setPontoEncontroCaronaSolicitacao(ponto);
 				break;
@@ -298,7 +315,7 @@ public class Carona {
 	public String addSolicitacao(String origem2, String destino2,
 			String idDonoDaCarona2, String idDonoDaSolicitacao) {
 		Solicitacao s = new Solicitacao(origem2, destino2, idDonoDaCarona2, idDonoDaSolicitacao);
-		mapIdSolicitacao.put(s.getIdSolicitacao(), s);
+		this.mapIdSolicitacao.put(s.getIdSolicitacao(), s);
 		return s.getIdSolicitacao();
 	}
 	
@@ -310,6 +327,23 @@ public class Carona {
 	 * @param idSolicitacao
 	 */
 	public void rejeitarSolicitacao(String idSolicitacao) {
-		mapIdSolicitacao.remove(idSolicitacao);
+		this.mapIdSolicitacao.remove(idSolicitacao);
+	}
+
+	
+	public String getReview() {
+		return this.review;
+	}
+	
+	public void setReview(String review) {
+		this.review = review;
+	}
+
+	public String getReviewVagaEmCarona() {
+		return reviewVagaEmCarona;
+	}
+
+	public void setReviewVagaEmCarona(String reviewVagaEmCarona) {
+		this.reviewVagaEmCarona = reviewVagaEmCarona;
 	}
 }

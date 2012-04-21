@@ -7,15 +7,26 @@ import java.util.TreeMap;
 
 import si1project2.util.DateUtil;
 
+/**
+ * 
+ * @author Guilherme Monteiro
+ * @author Leonardo Santos
+ * @author Hema Vidal
+ * @author Italo Silva
+ *
+ */
 public class SistemaCaronas {
+	
+	private DateUtil dateUtil = new DateUtil();
+	//private GerenciadorDeDados gerenciadorDeDados = new GerenciadorDeDados();
+	
 	private Map<String, Sessao> mapIdSessao = new TreeMap<String, Sessao>(); // contem apenas sessoes abertas
 	private Map<String, Usuario> mapIdUsuario = new TreeMap<String, Usuario>();
-	private DateUtil dateUtil = new DateUtil();
 	
 	public void criarUsuario(String login, String senha, String nome,
 			String endereco, String email) throws Exception {
 
-		for (Usuario u : mapIdUsuario.values()) {
+		for (Usuario u : this.mapIdUsuario.values()) {
 			if (u.getLogin().equals(login))
 				throw new Exception("Já existe um usuário com este login");
 			
@@ -24,7 +35,7 @@ public class SistemaCaronas {
 		}
 		
 		Usuario user = new Usuario(login, senha, nome, endereco, email);
-		mapIdUsuario.put(user.getIdUsuario(), user);
+		this.mapIdUsuario.put(user.getIdUsuario(), user);
 	}
 
 	/**
@@ -60,12 +71,12 @@ public class SistemaCaronas {
 		if (vagas == null || !vagas.toUpperCase().equals(vagas)) {
 			throw new Exception("Vaga inválida");
 		}
-		if (!mapIdSessao.containsKey(idSessao))
+		if (!this.mapIdSessao.containsKey(idSessao))
 			throw new Exception("Sessão inexistente");
 
-		for (String idUsuario : mapIdUsuario.keySet())
-			if (idUsuario.equals(mapIdSessao.get(idSessao).getIdUser())) {
-				return mapIdUsuario.get(idUsuario).cadastrarCarona(idUsuario,
+		for (String idUsuario : this.mapIdUsuario.keySet())
+			if (idUsuario.equals(this.mapIdSessao.get(idSessao).getIdUser())) {
+				return this.mapIdUsuario.get(idUsuario).cadastrarCarona(idUsuario,
 						origem, destino, data, hora, vagas);
 			}
 		throw new Exception("Sessao inválida");
@@ -82,12 +93,12 @@ public class SistemaCaronas {
 		if (senha == null || senha.equals(""))
 			throw new Exception("Senha inválida");
 
-		for (Usuario u : mapIdUsuario.values())
+		for (Usuario u : this.mapIdUsuario.values())
 			if (u.getLogin().equals(login)) {
 				user = u;
 				s = new Sessao(user.getIdUsuario());
 				if (user.validaSenha(senha)) {
-					mapIdSessao.put(s.getIdSessao(), s);
+					this.mapIdSessao.put(s.getIdSessao(), s);
 					// System.out.println("Sessao aberta com sucesso: login: " +
 					// login + " senha: " + senha);
 					return s.getIdSessao();
@@ -104,7 +115,7 @@ public class SistemaCaronas {
 		if (login == null || login.equals("")) {
 			throw new Exception("Login inválido");
 		}
-		for (Usuario u : mapIdUsuario.values())
+		for (Usuario u : this.mapIdUsuario.values())
 			if (u.getLogin().equals(login))
 				return u.getAtributo(atributo);
 
@@ -129,7 +140,7 @@ public class SistemaCaronas {
 						.equals(destino)))
 			throw new Exception("Destino inválido");
 
-		Usuario user = mapIdUsuario.get(mapIdSessao.get(idSessao).getIdUser());
+		Usuario user = this.mapIdUsuario.get(this.mapIdSessao.get(idSessao).getIdUser());
 		return user.localizarCarona(origem, destino);
 	}
 
@@ -139,7 +150,7 @@ public class SistemaCaronas {
 		if (idCarona == null || idCarona.equals(""))
 			throw new Exception("Identificador do carona é inválido");
 
-		for (Usuario u : mapIdUsuario.values()) {
+		for (Usuario u : this.mapIdUsuario.values()) {
 			if (u.getMapIdCaronasOferecidas().containsKey(idCarona))
 				return u.getAtributoCarona(idCarona, nomeAtributo);
 		}
@@ -160,7 +171,7 @@ public class SistemaCaronas {
 		if (idCarona.equals(""))
 			throw new Exception("Trajeto Inexistente");
 
-		for (Usuario u : mapIdUsuario.values())
+		for (Usuario u : this.mapIdUsuario.values())
 			if (u.getMapIdCaronasOferecidas().containsKey(idCarona))
 				return u.getTrajeto(idCarona);
 
@@ -180,7 +191,7 @@ public class SistemaCaronas {
 		if (idCarona.equals(""))
 			throw new Exception("Carona Inexistente");
 
-		for (Usuario u : mapIdUsuario.values())
+		for (Usuario u : this.mapIdUsuario.values())
 			if (u.getMapIdCaronasOferecidas().containsKey(idCarona))
 				return u.getCarona(idCarona);
 		throw new Exception("Carona Inexistente");
@@ -192,9 +203,9 @@ public class SistemaCaronas {
 	 * @param login
 	 */
 	public void encerrarSessao(String login) {
-		Iterator<Sessao> it = mapIdSessao.values().iterator();
+		Iterator<Sessao> it = this.mapIdSessao.values().iterator();
 		while (it.hasNext()) {
-			if (mapIdUsuario.get(it.next().getIdUser()).getLogin()
+			if (this.mapIdUsuario.get(it.next().getIdUser()).getLogin()
 					.equals(login)) {
 				it.remove();
 				break;
@@ -202,14 +213,14 @@ public class SistemaCaronas {
 		}
 	}
 
-	/*
-	 * torna null todos os objetos que estao sendo manipulados atualmente pelo
-	 * sistema
+	/**
+	 * Torna null todos os objetos que estao sendo manipulados atualmente pelo
+	 * sistema.
 	 */
 	public void zerarSistema() {
-		mapIdUsuario.clear();
-		mapIdSessao.clear();
-		for (Usuario u : mapIdUsuario.values())
+		this.mapIdUsuario.clear();
+		this.mapIdSessao.clear();
+		for (Usuario u : this.mapIdUsuario.values())
 			u.zerarSistema();
 	}
 
@@ -230,13 +241,13 @@ public class SistemaCaronas {
 	 */
 	public String sugerirPontoEncontro(String idSessao, String idCarona, 
 			String pontos) throws Exception {
-		if(idSessao == null || !mapIdSessao.containsKey(idSessao))
+		if(idSessao == null || !this.mapIdSessao.containsKey(idSessao))
 			throw new Exception("Ponto Inválido");
 
 		Usuario solicitante = null;
-		for (Sessao s : mapIdSessao.values()) { // procura solicitante
+		for (Sessao s : this.mapIdSessao.values()) { // procura solicitante
 			if (s.getIdSessao().equals(idSessao)) {
-				solicitante = mapIdUsuario.get(s.getIdUser());
+				solicitante = this.mapIdUsuario.get(s.getIdUser());
 				break;
 			}
 		}
@@ -244,7 +255,7 @@ public class SistemaCaronas {
 			throw new Exception("IdSessao Inválido");
 
 		Usuario donoDaCarona = null;
-		for (Usuario u : mapIdUsuario.values()) { // procura donoDaCarona
+		for (Usuario u : this.mapIdUsuario.values()) { // procura donoDaCarona
 			if (u.getMapIdCaronasOferecidas().containsKey(idCarona)) {
 				donoDaCarona = u;
 				break;
@@ -285,9 +296,9 @@ public class SistemaCaronas {
 		if (pontos == null || pontos.equals(""))
 			throw new Exception("Ponto Inválido");
 
-		for (Sessao s : mapIdSessao.values()) { // procura donoDaCarona
+		for (Sessao s : this.mapIdSessao.values()) { // procura donoDaCarona
 			if (s.getIdSessao().equals(idSessao)) {
-				Usuario donoDaCarona = mapIdUsuario.get(s.getIdUser());
+				Usuario donoDaCarona = this.mapIdUsuario.get(s.getIdUser());
 				donoDaCarona.responderSugestaoPontoEncontro(idCarona,
 						idSugestao, pontos);
 			}
@@ -304,14 +315,14 @@ public class SistemaCaronas {
 	 */
 	public String solicitarVagaPontoEncontro(String idSessao, String idCarona,
 			String ponto) throws Exception {
-		if (idSessao == null || !mapIdSessao.containsKey(idSessao))
+		if (idSessao == null || !this.mapIdSessao.containsKey(idSessao))
 			throw new Exception("Ponto Inválido");
 
 		Usuario solicitante = null;
-		for (Sessao s : mapIdSessao.values()) { // procura pelo usuario
+		for (Sessao s : this.mapIdSessao.values()) { // procura pelo usuario
 												// solicitante
 			if (s.getIdSessao().equals(idSessao)) {
-				solicitante = mapIdUsuario.get(s.getIdUser());
+				solicitante = this.mapIdUsuario.get(s.getIdUser());
 				break;
 			}
 		}
@@ -319,7 +330,7 @@ public class SistemaCaronas {
 			throw new Exception("IdSessao Inválido");
 
 		Usuario donoDaCarona = null;
-		for (Usuario u : mapIdUsuario.values()) { // procura pelo donoDaCarona
+		for (Usuario u : this.mapIdUsuario.values()) { // procura pelo donoDaCarona
 			if (u.getMapIdCaronasOferecidas().containsKey(idCarona)) {
 				donoDaCarona = u;
 				break;
@@ -333,18 +344,17 @@ public class SistemaCaronas {
 				solicitante.getIdUsuario(),	ponto);
 	}
 
-	// ESTAH SABENDO DEMAIS ==> VAI DE ENCONTRO AO PADRAO INFORMATION-EXPERT
 	public Object getAtributoSolicitacao(String idSolicitacao, String atributo)
 			throws Exception {
-		for (Usuario u : mapIdUsuario.values()) {
+		for (Usuario u : this.mapIdUsuario.values()) {
 			for (Carona c : u.getMapIdCaronasOferecidas().values()) {
 				if (c.getMapIdSolicitacao().containsKey(idSolicitacao)) {
 					if (atributo.equals("Dono da solicitacao"))
-						return mapIdUsuario.get(
+						return this.mapIdUsuario.get(
 								c.getAtributoSolicitacao(idSolicitacao,
 										atributo)).getNome();
 					else if (atributo.equals("Dono da carona"))
-						return mapIdUsuario.get(
+						return this.mapIdUsuario.get(
 								c.getAtributoSolicitacao(idSolicitacao,
 										atributo)).getNome();
 					return c.getAtributoSolicitacao(idSolicitacao, atributo);
@@ -367,13 +377,13 @@ public class SistemaCaronas {
 		if (idSolicitacao == null)
 			throw new Exception("Solicitação inexistente");
 
-		Usuario donoDaCarona = mapIdUsuario.get(mapIdSessao.get(idSessao)
+		Usuario donoDaCarona = this.mapIdUsuario.get(this.mapIdSessao.get(idSessao)
 				.getIdUser());
 		String[] resp = donoDaCarona
 				.aceitarSolicitacaoPontoEncontro(idSolicitacao);
 		String idDonoDaSolicitacao = resp[0];
 		String idCarona = resp[1];
-		mapIdUsuario.get(idDonoDaSolicitacao).adicionarIdCaronaPega(idCarona);
+		this.mapIdUsuario.get(idDonoDaSolicitacao).adicionarIdCaronaPega(idCarona);
 	}
 
 	/**
@@ -389,12 +399,12 @@ public class SistemaCaronas {
 		if (idSessao == null || idSolicitacao == null)
 			throw new Exception("Solicitação inexistente");
 
-		Usuario donoDaCarona = mapIdUsuario.get(mapIdSessao.get(idSessao)
+		Usuario donoDaCarona = this.mapIdUsuario.get(this.mapIdSessao.get(idSessao)
 				.getIdUser());
 		String[] resp = donoDaCarona.aceitarSolicitacao(idSolicitacao);
 		String idDonoDaSolicitacao = resp[0];
 		String idCarona = resp[1];
-		mapIdUsuario.get(idDonoDaSolicitacao).adicionarIdCaronaPega(idCarona);
+		this.mapIdUsuario.get(idDonoDaSolicitacao).adicionarIdCaronaPega(idCarona);
 	}
 
 	/**
@@ -409,13 +419,13 @@ public class SistemaCaronas {
 	 */
 	public String solicitarVaga(String idSessao, String idCarona)
 			throws Exception {
-		if (idSessao == null || !mapIdSessao.containsKey(idSessao))
+		if (idSessao == null || !this.mapIdSessao.containsKey(idSessao))
 			throw new Exception("IdSessao inválido");
 
 		Usuario solicitante = null;
-		for (Sessao s : mapIdSessao.values()) { // procura pelo usuario solicitante dentre os usuarios
+		for (Sessao s : this.mapIdSessao.values()) { // procura pelo usuario solicitante dentre os usuarios
 			if (s.getIdSessao().equals(idSessao)) {
-				solicitante = mapIdUsuario.get(s.getIdUser());
+				solicitante = this.mapIdUsuario.get(s.getIdUser());
 				break;
 			}
 		}
@@ -423,7 +433,7 @@ public class SistemaCaronas {
 			throw new Exception("IdSessao Inválido");
 
 		Usuario donoDaCarona = null;
-		for (Usuario u : mapIdUsuario.values()) { // procura pelo donoDaCarona
+		for (Usuario u : this.mapIdUsuario.values()) { // procura pelo donoDaCarona
 			if (u.getMapIdCaronasOferecidas().containsKey(idCarona)) {
 				donoDaCarona = u;
 				break;
@@ -452,9 +462,9 @@ public class SistemaCaronas {
 		if (idSolicitacao == null)
 			throw new Exception("IdSolicitacao inválida");
 
-		for (Sessao s : mapIdSessao.values()) { // procura pelo donoDaCarona
+		for (Sessao s : this.mapIdSessao.values()) { // procura pelo donoDaCarona
 			if (s.getIdSessao().equals(idSessao)) {
-				Usuario donoDaCarona = mapIdUsuario.get(s.getIdUser());
+				Usuario donoDaCarona = this.mapIdUsuario.get(s.getIdUser());
 				donoDaCarona.rejeitarSolicitacao(idSolicitacao);
 			}
 		}
@@ -479,7 +489,7 @@ public class SistemaCaronas {
 		if (idSolicitacao == null)
 			throw new Exception("IdSolicitacao inválido");
 
-		Usuario donoDaCarona = mapIdUsuario.get(mapIdSessao.get(idSessao)
+		Usuario donoDaCarona = this.mapIdUsuario.get(this.mapIdSessao.get(idSessao)
 				.getIdUser()); // O(logm + logn)
 		donoDaCarona.removerSolicitacao(idCarona, idSolicitacao);
 	}
@@ -494,7 +504,7 @@ public class SistemaCaronas {
 	 */
 	public String visualizarPerfil(String idSessao, String login)
 			throws Exception {
-		for (Usuario u : mapIdUsuario.values())
+		for (Usuario u : this.mapIdUsuario.values())
 			if (u.getLogin().equals(login))
 				return u.visualizarPerfil();
 
@@ -510,11 +520,11 @@ public class SistemaCaronas {
 	 * 
 	 * @param login
 	 * @param nomeAtributo
-	 * @return
+	 * @return atributo
 	 */
 	public Object getAtributoPerfil(String login, String atributo)
 			throws Exception {
-		for (Usuario u : mapIdUsuario.values())
+		for (Usuario u : this.mapIdUsuario.values())
 			if (u.getLogin().equals(login))
 				return u.getAtributoPerfil(atributo);
 
@@ -525,32 +535,57 @@ public class SistemaCaronas {
 	
 	/**
 	 * Seta o valor do review de vaga
-	 * em carona, diz se o solicitante
-	 * faltou ou nao.
+	 * em carona: diz se o solicitante
+	 * (caroneiro) faltou ou nao.
 	 * 
-	 * @param idSessao
-	 * @param idCarona
-	 * @param loginCaroneiro
-	 * @param review
+	 * valores validos:
+	 * . faltou
+	 * . nao faltou
+	 * 
+	 * @param idSessao: id da sessao do dono da carona
+	 * @param idCarona: id da carona oferecida
+	 * @param loginCaroneiro: login do caroneiro
+	 * @param review: faltou ou nao faltou
 	 */
 	public void reviewVagaEmCarona(String idSessao, String idCarona, 
 			String loginCaroneiro, String review) {
-		//TODO
+		Usuario u = this.mapIdUsuario.
+				get(this.mapIdSessao.get(idSessao).getIdUser());
+		u.reviewVagaEmCarona(u.getIdUsuario(), idCarona, loginCaroneiro, review);
 	}
 	
 	/**
 	 * Seta o valor do review da carona,
-	 * diz se a carona foi boa ou nao. Pesquisa
-	 * usuario (caroneiro) com idSessao, pesquisa
-	 * entre as caronas pegas por ele, idCarona e
-	 * seta o review.
+	 * diz se a carona foi boa ou nao. O
+	 * review eh feito pelo usuario da carona (caroneiro). 
+	 * Pesquisa entre as caronas pegas por ele,
+	 * idCarona e seta o review.
 	 * 
-	 * @param idSessao
-	 * @param idCarona
-	 * @param review
+	 * valores validos: 
+	 * . carona segura e tranquila
+	 * . carona nao funcionou
+	 * 
+	 * obs.: A quantidade de caronas seguras e tranquilas 
+	 * e que não funcionaram devem aparecer no perfil do motorista
+	 * 
+	 * @param idSessao: id do caroneiro
+	 * @param idCarona: id da carona pega por ele (caroneiro)
+	 * @param review: review do caroneiro presente
+	 * @throws Exception 
 	 */
-	public void reviewCarona(String idSessao, String idCarona, String review) {
-		//TODO
+	public void reviewCarona(String idSessao, String idCarona, String review) throws Exception {
+		Sessao s = this.mapIdSessao.get(idSessao);
+		
+		if(s == null) {
+			throw new Exception("IdSessao inválido");
+		}
+		
+		Usuario caroneiro = this.mapIdUsuario.
+				get(s.getIdUser());
+		
+		//XXX Carona c = caroneiro.getMapIdCaronasOferecidas();
+		
+		caroneiro.setReviewCarona(idCarona, review);
 	}
 	
 	/**
