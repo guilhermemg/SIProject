@@ -1,0 +1,13 @@
+Projeto da Disciplina de SI1 para criação de um 
+sistema que consiste em uma rede social na web para compartilhamento de caronas.
+
+Localizacao dos artefatos:
+
+- src: codigo fonte com os testes
+- diagramas: diagramas de classes do projeto
+- xml: pasta para o arquivo no qual é feita a persistência
+- scripts: pasta dos scripts dos testes de aceitação
+- target: contem o javadoc e o executavel do projeto
+
+obs.: deve-se ter um servidor smtp instalado na maquina local, por exemplo,
+o postfix no linux.
