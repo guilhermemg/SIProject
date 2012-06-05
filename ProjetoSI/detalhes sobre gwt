@@ -13,3 +13,5 @@
 ==> MUITO IMPORTANTE:
 3 - o pom.xml desse projeto está configurado para jogar os .class que ele
 mandar criar com a compilação no /war, que no caso vai ser o /EstradaSolidaria/src/main/webapp/WEB-INF/classes/, mas os testes continuam sendo jogados em /test-classes em target, normalmente.
+
+4 - is goals para executar o maven: gwt:eclipse clean compile war:inplace test

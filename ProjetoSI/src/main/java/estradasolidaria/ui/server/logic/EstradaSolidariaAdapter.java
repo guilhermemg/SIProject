@@ -11,7 +11,7 @@ import estradasolidaria.ui.server.util.SpecialLinkedListKeys;
 
 public class EstradaSolidariaAdapter {
 
-	private static EstradaSolidaria sistema = EstradaSolidaria.getInstance();
+	private static EstradaSolidariaController sistema = EstradaSolidariaController.getInstance();
 
 	private static volatile EstradaSolidariaAdapter uniqueInstance;
 

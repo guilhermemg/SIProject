@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
 jarsExcludedFromWebInfLib=
+launchConfigExternalUrlPrefix=/home/guilhermemg/apache-tomcat-7.0.19/
 warSrcDir=EstradaSolidaria/src/main/webapp
 warSrcDirIsOutput=true

@@ -22,7 +22,7 @@ import estradasolidaria.ui.server.data.GerenciadorDeDados;
  * @author Italo Silva
  * 
  */
-public class EstradaSolidaria {
+public class EstradaSolidariaController {
 	private int ordemParaCaronas = 0;
 
 	private Map<Integer, Sessao> mapIdSessao = new TreeMap<Integer, Sessao>(); // contem
@@ -40,9 +40,9 @@ public class EstradaSolidaria {
 	private GerenciadorDeDados gerenciadorDeDados = GerenciadorDeDados
 			.getInstance(this.mapIdUsuario);
 
-	private static volatile EstradaSolidaria uniqueInstance;
+	private static volatile EstradaSolidariaController uniqueInstance;
 
-	private EstradaSolidaria() {
+	private EstradaSolidariaController() {
 	};
 
 	/**
@@ -50,11 +50,11 @@ public class EstradaSolidaria {
 	 * 
 	 * @return instancia
 	 */
-	public static EstradaSolidaria getInstance() {
+	public static EstradaSolidariaController getInstance() {
 		if (uniqueInstance == null) {
-			synchronized (EstradaSolidaria.class) {
+			synchronized (EstradaSolidariaController.class) {
 				if (uniqueInstance == null)
-					uniqueInstance = new EstradaSolidaria();
+					uniqueInstance = new EstradaSolidariaController();
 			}
 		}
 		return uniqueInstance;
