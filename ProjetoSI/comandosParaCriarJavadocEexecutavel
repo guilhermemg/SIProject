@@ -1,0 +1,15 @@
+esses comandos devem ser rodados na pasta do projeto
+onde tem o pom.xml. Se vcs nao estiverem conseguindo
+fazer com o q o sistema reconheça o mvn, podem instalar
+o maven2 via sudo.
+
+obs.: o executavel eh criado junto.
+
+mvn javadoc:javadoc
+mvn javadoc:jar
+mvn javadoc:aggregate
+mvn javadoc:aggregate-jar
+mvn javadoc:test-javadoc
+mvn javadoc:test-jar
+mvn javadoc:test-aggregate
+mvn javadoc:test-aggregate-jar

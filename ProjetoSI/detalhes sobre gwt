@@ -1,0 +1,15 @@
+0 - deve-se criar um projeto GWT Java Project em GWT Designer/Model
+
+1 - tem que se mudar o output folder do projeto nas Properties dele: 
+   . o war do projeto deve ser redefinido para src/main/
+   . output folder de src: EstradaSolidaria/src/main/WEB-INF/classes (diretorio classes deve ser criado)
+   . output folder de test: EstradaSolidaria/src/main/WEB-INF/test-classes (diretorio test-classes deve ser criado)
+   . output folder do projeto: EstradaSolidaria/src/main/WEB-INF/classes
+   . //obs.: o folder target pode ser excluido, ja q o maven nao vai mais estah usando ele.
+
+2 - o projeto deve usar java 6
+  . obs.: se estiver usando o level compilance=1.5 mude para 1.6 em Java Compiler em Properties do projeto
+  
+==> MUITO IMPORTANTE:
+3 - o pom.xml desse projeto está configurado para jogar os .class que ele
+mandar criar com a compilação no /war, que no caso vai ser o /EstradaSolidaria/src/main/webapp/WEB-INF/classes/, mas os testes continuam sendo jogados em /test-classes em target, normalmente.

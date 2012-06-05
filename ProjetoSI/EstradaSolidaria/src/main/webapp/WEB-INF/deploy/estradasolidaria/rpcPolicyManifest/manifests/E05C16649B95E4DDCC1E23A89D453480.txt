@@ -1,0 +1,2 @@
+serviceClass: br.com.estradasolidaria.client.GreetingService
+path: 30CF2DF16EC8EFEB18DFF4B88FF389A5.gwt.rpc

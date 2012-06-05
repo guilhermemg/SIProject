@@ -1,0 +1,2 @@
+# Module estradasolidaria.ui.EstradaSolidariaManager
+# RPC service class, partial path of RPC policy file

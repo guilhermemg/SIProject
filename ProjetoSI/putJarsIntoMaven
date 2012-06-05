@@ -1,0 +1,20 @@
+para colocar o easyaccept no maven:
+
+- apos baixar e colocar a pasta descompactada do apache-maven 3.0.1 em /usr/local
+ou outro local de preferencia.
+
+na pasta do ProjetoSI:
+
+export PATH=/usr/local/apache-maven-3.0.4/bin/:$PATH
+
+mvn install:install-file -Dfile=easyaccept-1.0.3-jar/easyaccept.jar -DgroupId=easyaccept -DartifactId=easyaccept -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true
+
+- para colocar o junit eu editei o pom.xml na mao mesmo e o setei nas 
+dependencias, como eh uma biblioteca comum, o maven baixou e o colocou
+no .m2 sem pbls.
+
+- do mesmo jeito eu fiz pra colocar o java 1.5: editei na mao
+
+- para colocar o parcote do xstream no maven: 
+  1) fiz mvn install:install-file -DgroupId=com.thougthworks.xstream -DartifactId=xstream -Dversion=1.4.2 -Dpackaging=jar -Dfile=xstream-1.4.2/lib/xstream-1.4.2.jar
+  2) atualizei dependencias.
