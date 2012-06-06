@@ -1,5 +1,7 @@
 package estradasolidaria.ui.server.logic;
 
+import java.io.Serializable;
+
 import estradasolidaria.ui.server.util.DateUtil;
 
 /**
@@ -13,7 +15,9 @@ import estradasolidaria.ui.server.util.DateUtil;
  * @author Italo Silva
  *
  */
-public class Interesse {
+public class Interesse implements Serializable {
+	private static final long serialVersionUID = -3777456363290552046L;
+	
 	private String origem;
 	private String destino;
 	private Integer idInteresse;

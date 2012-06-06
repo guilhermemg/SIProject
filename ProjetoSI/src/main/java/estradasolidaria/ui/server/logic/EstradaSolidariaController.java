@@ -1,5 +1,6 @@
 package estradasolidaria.ui.server.logic;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -22,14 +23,12 @@ import estradasolidaria.ui.server.data.GerenciadorDeDados;
  * @author Italo Silva
  * 
  */
-public class EstradaSolidariaController {
+public class EstradaSolidariaController implements Serializable {
+	private static final long serialVersionUID = -9005050380302326978L;
+
 	private int ordemParaCaronas = 0;
 
 	private Map<Integer, Sessao> mapIdSessao = new TreeMap<Integer, Sessao>(); // contem
-																				// apenas
-																				// sessoes
-																				// abertas
-																				// atualmente
 	private Iterator<Sessao> iteratorIdSessao = this.mapIdSessao.values()
 			.iterator();
 

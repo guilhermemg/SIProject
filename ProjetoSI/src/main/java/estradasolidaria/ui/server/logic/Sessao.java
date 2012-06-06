@@ -1,5 +1,7 @@
 package estradasolidaria.ui.server.logic;
 
+import java.io.Serializable;
+
 /**
  * Classe que representa uma sessao aberta pelo
  * usuario cadastrado.
@@ -10,7 +12,9 @@ package estradasolidaria.ui.server.logic;
  * @author Italo Silva
  *
  */
-public class Sessao {
+public class Sessao implements Serializable {
+	private static final long serialVersionUID = 2692231013716399639L;
+	
 	private Integer idUser;
 	private Integer idSessao;
 

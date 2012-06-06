@@ -1,5 +1,6 @@
 package estradasolidaria.ui.server.logic;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,7 +19,9 @@ import estradasolidaria.ui.server.util.DateUtil;
  * @author Italo Silva
  * 
  */
-public class Carona implements Comparable<Carona> {
+public class Carona implements Comparable<Carona>, Serializable {
+	private static final long serialVersionUID = -467338420076141417L;
+
 	private DateUtil dateUtil = new DateUtil();
 
 	private Integer idDonoDaCarona;
@@ -185,6 +188,8 @@ public class Carona implements Comparable<Carona> {
 	 * @param idDonoDaCarona2
 	 */
 	public void setIdDonoDaCarona(Integer idDonoDaCarona2) {
+		if(idDonoDaCarona2 == null)
+			throw new IllegalArgumentException("IdDonoDaCarona inválido");
 		this.idDonoDaCarona = idDonoDaCarona2;
 	}
 

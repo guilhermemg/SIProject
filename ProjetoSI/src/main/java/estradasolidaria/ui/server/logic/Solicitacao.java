@@ -1,5 +1,7 @@
 package estradasolidaria.ui.server.logic;
 
+import java.io.Serializable;
+
 /**
  * Classe que representa uma solicitacao de um
  * usuario feita a outro usuario.
@@ -10,7 +12,9 @@ package estradasolidaria.ui.server.logic;
  * @author Italo Silva
  *
  */
-public class Solicitacao {
+public class Solicitacao implements Serializable {
+	private static final long serialVersionUID = -302122542720041842L;
+	
 	private String origemCaronaSolicitacao;
 	private String destinoCaronaSolicitacao;
 	private String pontoEncontroCaronaSolicitacao;

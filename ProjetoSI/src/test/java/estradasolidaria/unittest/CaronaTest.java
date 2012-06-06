@@ -24,13 +24,7 @@ public class CaronaTest {
 		try {
 			carona1 = new Carona(null, "Campina Grande", "Jo�o Pessoa", "21/06/2012", "05:30", 4, 1);
 		} catch (Exception e){
-			assertEquals(e.getMessage(), "Identificador do carona é inválido");
-		}
-		
-		try {
-			carona1 = new Carona(null, "Campina Grande", "Jo�o Pessoa", "21/06/2012", "05:30", 4, 1);
-		} catch (Exception e){
-			assertEquals(e.getMessage(), "Identificador do carona é inválido");
+			assertEquals(e.getMessage(), "IdDonoDaCarona inválido");
 		}
 	}
 	
@@ -39,13 +33,7 @@ public class CaronaTest {
 		try {
 			carona2 = new Carona(null, "Centen�rio", "Conjunto dos Professores", "21/06/2012", "05:30", 4, "Campina Grande", 1);
 		} catch (Exception e){
-			assertEquals(e.getMessage(), "Identificador do carona é inválido");
-		}
-		
-		try {
-			carona2 = new Carona(null, "Centen�rio", "Conjunto dos Professores", "21/06/2012", "05:30", 4, "Campina Grande", 1);
-		} catch (Exception e){
-			assertEquals(e.getMessage(), "Identificador do carona é inválido");
+			assertEquals(e.getMessage(), "IdDonoDaCarona inválido");
 		}
 	}
 	

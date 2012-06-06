@@ -54,10 +54,14 @@ public class DateUtil {
 			return false;
 		}
 		else {
-			return !(calendar.getTimeInMillis() < Calendar.getInstance().getTimeInMillis());
+			return !validaDataJaPassou();
 		}
 	}
-
+	
+	private boolean validaDataJaPassou() {
+		return (calendar.getTimeInMillis() < Calendar.getInstance().getTimeInMillis());
+	}
+	
 	/**
 	 * Configura o dia.
 	 * 

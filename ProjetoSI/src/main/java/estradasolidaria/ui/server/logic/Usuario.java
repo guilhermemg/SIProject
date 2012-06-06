@@ -1,5 +1,6 @@
 package estradasolidaria.ui.server.logic;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -21,7 +22,9 @@ import estradasolidaria.ui.server.util.SenderMail;
  * @author Italo Silva
  * 
  */
-public class Usuario {
+public class Usuario implements Serializable {
+	private static final long serialVersionUID = -3288136633613252896L;
+	
 	private Integer idUsuario;
 	private String login;
 	private String senha;

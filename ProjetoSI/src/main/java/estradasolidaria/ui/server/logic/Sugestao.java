@@ -1,5 +1,7 @@
 package estradasolidaria.ui.server.logic;
 
+import java.io.Serializable;
+
 /**
  * Classe que representa uma sugestao
  * de um ponto de encontro para uma carona.
@@ -10,8 +12,9 @@ package estradasolidaria.ui.server.logic;
  * @author Italo Silva
  *
  */
-public class Sugestao {
-
+public class Sugestao implements Serializable {
+	private static final long serialVersionUID = 5035043339505436230L;
+	
 	private String sugestaoPontoDeEncontro;
 	private Integer idSugestao;
 	private String resposta;
