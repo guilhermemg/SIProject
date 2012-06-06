@@ -62,7 +62,7 @@ public class EstradaSolidariaAdapter {
 			String destino, String data, String hora, String vagas) {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
-
+		
 		Integer idSessao2 = null;
 		try {
 			idSessao2 = Integer.parseInt(idSessao);
@@ -80,10 +80,12 @@ public class EstradaSolidariaAdapter {
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Vaga inválida");
 		}
+		
+		if(data.equals(""))
+			throw new IllegalArgumentException("Data inválida");
 
-		return sistema
-				.cadastrarCarona(idSessao2, origem, destino, data, hora,
-						vagasInt).getIdCarona().toString();
+		return sistema.cadastrarCarona(idSessao2, origem, destino, data, hora,
+				vagasInt).getIdCarona().toString();
 	}
 
 	/**
@@ -374,7 +376,7 @@ public class EstradaSolidariaAdapter {
 			String atributo) {
 		Solicitacao s = c.getMapIdSolicitacao().get(idSolicitacao);
 		if (s == null)
-			throw new IllegalArgumentException("Atributo inexistente");
+			throw new IllegalArgumentException("Solicitacao inexistente");
 		return getAtributo(s, atributo);
 	}
 
@@ -395,14 +397,11 @@ public class EstradaSolidariaAdapter {
 			return s.getDestino();
 		else if (atributo.equals(EnumSolicitacao.DONO_CARONA.getNomeAtributo()))
 			return s.getDonoDaCarona().getNome();
-		else if (atributo.equals(EnumSolicitacao.DONO_SOLICITACAO
-				.getNomeAtributo()))
+		else if (atributo.equals(EnumSolicitacao.DONO_SOLICITACAO.getNomeAtributo()))
 			return s.getDonoDaSolicitacao().getNome();
-		else if (atributo.equals(EnumSolicitacao.PONTO_ENCONTRO
-				.getNomeAtributo()))
+		else if (atributo.equals(EnumSolicitacao.PONTO_ENCONTRO.getNomeAtributo()))
 			return s.getPontoEncontro();
-		else if (atributo.equals(EnumSolicitacao.ESTADO_SOLICITACAO
-				.getNomeAtributo()))
+		else if (atributo.equals(EnumSolicitacao.ESTADO_SOLICITACAO.getNomeAtributo()))
 			return s.getEstado();
 		else
 			throw new IllegalArgumentException("Atributo inexistente");
@@ -856,7 +855,7 @@ public class EstradaSolidariaAdapter {
 
 		List<Carona> listaCaronas = sistema.localizarCaronaMunicipal(idSessao2,
 				cidade, origem, destino);
-		List<String> listaIdsCaronas = new SpecialLinkedListBrackets<String>();
+		List<String> listaIdsCaronas = new SpecialLinkedListKeys<String>();
 
 		Iterator<Carona> it = listaCaronas.iterator();
 		while (it.hasNext()) {
@@ -889,7 +888,7 @@ public class EstradaSolidariaAdapter {
 
 		List<Carona> listaCaronas = sistema.localizarCaronaMunicipal(idSessao2,
 				cidade);
-		List<String> listaIdsCaronas = new SpecialLinkedListBrackets<String>();
+		List<String> listaIdsCaronas = new SpecialLinkedListKeys<String>();
 
 		Iterator<Carona> it = listaCaronas.iterator();
 		while (it.hasNext()) {
@@ -1054,7 +1053,7 @@ public class EstradaSolidariaAdapter {
 			e.printStackTrace();
 		}
 
-		String pontos = "";
+		String pontos = "[";
 		int i = 0;
 		for (String ponto : sistema.getPontosSugeridos(idSessao2, idCarona2)) {
 			if (i == 0) {
@@ -1063,7 +1062,7 @@ public class EstradaSolidariaAdapter {
 				pontos = ", " + ponto;
 			}
 		}
-		return pontos + "";
+		return pontos + "]";
 	}
 
 	/**
@@ -1088,7 +1087,7 @@ public class EstradaSolidariaAdapter {
 			e.printStackTrace();
 		}
 
-		String pontos = "";
+		String pontos = "[";
 		int i = 0;
 		for (String ponto : sistema.getPontosSugeridos(idSessao2, idCarona2)) {
 			if (i == 0) {
@@ -1097,7 +1096,7 @@ public class EstradaSolidariaAdapter {
 				pontos = ", " + ponto;
 			}
 		}
-		return pontos + "";
+		return pontos + "]";
 	}
 
 	/**

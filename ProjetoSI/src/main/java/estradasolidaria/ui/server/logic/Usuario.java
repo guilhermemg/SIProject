@@ -383,18 +383,13 @@ public class Usuario {
 		while (iteratorIdCaronasOferecidas.hasNext()) {
 			Carona c = iteratorIdCaronasOferecidas.next();
 			// Iterator Pattern
-			Iterator<Solicitacao> it = c.getMapIdSolicitacao().values()
+			Iterator<Solicitacao> it = c.getMapIdSolicitacaoComPontoEncontro().values()
 					.iterator();
 			while (it.hasNext()) {
 				Solicitacao s = it.next();
 				if (s.getIdSolicitacao().equals(idSolicitacao)) {
-					c.setPontoEncontro(s.getPontoEncontro()); // seta ponto de
-																// encontro para
-																// carona apos
-																// aceitar ponto
-																// encontro
-					c.setVagas(c.getVagas() - 1); // decrementa o numero de
-													// vagas
+					c.setPontoEncontro(s.getPontoEncontro()); // seta ponto de encontro para carona apos aceitar ponto encontro
+					c.decrementaNumeroDeVagas();
 					return s;
 				}
 			}

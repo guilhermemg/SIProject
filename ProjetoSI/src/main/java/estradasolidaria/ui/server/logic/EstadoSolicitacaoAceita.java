@@ -7,6 +7,7 @@ public class EstadoSolicitacaoAceita implements EstadoSolicitacaoInterface {
 	}
 
 	public void cancelar(Solicitacao s) {
+		s.setEstado(new EstadoSolicitacaoCancelada());
 		return;
 	}
 

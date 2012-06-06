@@ -4,7 +4,7 @@ public class EstadoSolicitacaoPendente implements EstadoSolicitacaoInterface {
 
 	public void aceitar(Solicitacao s, Carona carona) throws IllegalArgumentException {
 		s.setEstado(new EstadoSolicitacaoAceita());
-//		carona.aceitaVaga();
+		carona.decrementaNumeroDeVagas();
 	}
 
 	public void cancelar(Solicitacao s) {

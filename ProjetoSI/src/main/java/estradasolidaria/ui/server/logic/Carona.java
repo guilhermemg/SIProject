@@ -39,6 +39,7 @@ public class Carona implements Comparable<Carona> {
 
 	// as solicitacoes sao apagadas apos aceitas pelo dono da carona
 	private Map<Integer, Solicitacao> mapIdSolicitacoes = new TreeMap<Integer, Solicitacao>();
+	private Map<Integer, Solicitacao> mapIdSolicitacoesComPontoEncontro = new TreeMap<Integer, Solicitacao>();
 	private Iterator<Solicitacao> iteratorIdSolicitacoes = this.mapIdSolicitacoes
 			.values().iterator();
 
@@ -53,6 +54,7 @@ public class Carona implements Comparable<Carona> {
 	// carona faz dele.
 	private Map<Integer, String> mapIdUsuarioReviewVagaEmCarona = new TreeMap<Integer, String>();
 	private Map<Integer, Sugestao> mapSugestoesPontoDeEncontro = new TreeMap<Integer, Sugestao>();
+
 
 	// ------------------------------------------------------------------------------------------------------
 
@@ -247,19 +249,14 @@ public class Carona implements Comparable<Carona> {
 	}
 
 	/**
-	 * Modifica o número de vagas da carona. Se o parametro for null, ou uma
-	 * palavra vazia, ou não for um caractere númérico, então é lançada uma
-	 * exceção.
+	 * Modifica o número de vagas da carona. Se o parametro for null ou um
+	 * numero negativo.
 	 * 
 	 * @param vagas
 	 */
 	public void setVagas(Integer vagas) {
-		if (vagas == null)
+		if (vagas == null || vagas < 0)
 			throw new IllegalArgumentException("Vaga inválida");
-
-		if (vagas < 0)
-			throw new IllegalArgumentException("Vaga inválida");
-
 		this.vagas = vagas;
 	}
 
@@ -461,27 +458,6 @@ public class Carona implements Comparable<Carona> {
 	}
 
 	/**
-	 * Retorna o id da solicitacao adicionada.
-	 * 
-	 * @param donoDaCarona
-	 * @param donoDaSolicitacao
-	 * @param ponto
-	 *            : ponto de encontro
-	 * @return id da solicitacao
-	 */
-	public Solicitacao addSolicitacao(String origem, String destino,
-			Usuario donoDaCarona, Usuario donoDaSolicitacao, String ponto) {
-		if (validaPontoEncontro(donoDaSolicitacao, ponto)) {
-			Solicitacao s = new Solicitacao(getIdCarona(), origem, destino, donoDaCarona,
-					donoDaSolicitacao, ponto);
-			this.mapIdSolicitacoes.put(s.getIdSolicitacao(), s);
-			return s;
-		} else {
-			throw new IllegalArgumentException("Ponto Inválido");
-		}
-	}
-
-	/**
 	 * Verifica se usuario já não fez uma solicitação idêntica.
 	 * 
 	 * @param donoDaSolicitacao
@@ -567,9 +543,29 @@ public class Carona implements Comparable<Carona> {
 			throws IllegalArgumentException {
 		Solicitacao s = new Solicitacao(this.getIdCarona(), origem2, destino2, donoDaCarona2,
 				donoDaSolicitacao);
-		aceitaVaga();
 		this.mapIdSolicitacoes.put(s.getIdSolicitacao(), s);
 		return s;
+	}
+	
+	/**
+	 * Retorna o id da solicitacao adicionada.
+	 * 
+	 * @param donoDaCarona
+	 * @param donoDaSolicitacao
+	 * @param ponto
+	 *            : ponto de encontro
+	 * @return id da solicitacao
+	 */
+	public Solicitacao addSolicitacao(String origem, String destino,
+			Usuario donoDaCarona, Usuario donoDaSolicitacao, String ponto) {
+		if (validaPontoEncontro(donoDaSolicitacao, ponto)) {
+			Solicitacao s = new Solicitacao(getIdCarona(), origem, destino, donoDaCarona,
+					donoDaSolicitacao, ponto);
+			this.mapIdSolicitacoesComPontoEncontro .put(s.getIdSolicitacao(), s);
+			return s;
+		} else {
+			throw new IllegalArgumentException("Ponto Inválido");
+		}
 	}
 
 	/**
@@ -725,7 +721,7 @@ public class Carona implements Comparable<Carona> {
 	 * 
 	 * @throws Exception
 	 */
-	public void aceitaVaga() throws IllegalArgumentException {
+	public void decrementaNumeroDeVagas() throws IllegalArgumentException {
 		if (!((getVagas() - 1) < 0)) {
 			setVagas(getVagas() - 1); // decrementa o numero de vagas;
 		}
@@ -755,6 +751,11 @@ public class Carona implements Comparable<Carona> {
 		s.aceitar(this);
 	}
 
+	/**
+	 * Retorna lista de pontos sugeridos para essa carona.
+	 *
+	 * @return lista de pontos de encontro
+	 */
 	public List<String> getPontosSugeridos() {
 		List<String> pontosSugeridos = new LinkedList<String>();
 
@@ -766,11 +767,24 @@ public class Carona implements Comparable<Carona> {
 		return pontosSugeridos;
 	}
 	
+	/**
+	 * Retorna mapa de sugestoes com pontos de encontro
+	 * associadas a essa carona.
+	 * 
+	 * @return mapa de sugestoes
+	 */
 	public Map<Integer, Sugestao> getSugestoesPontoDeEncontro() {
 		return this.getMapSugestoesPontoDeEncontro();
 	}
-
-	public Solicitacao responderSugestaoPontoEncontro(String idSolicitacao, String resposta) {
+	
+	/**
+	 * 
+	 * 
+	 * @param idSolicitacao
+	 * @param resposta
+	 * @return
+	 */
+	public Solicitacao setRespostaSugestaoPontoEncontro(String idSolicitacao, String resposta) {
 		Solicitacao s = getMapIdSolicitacao().get(idSolicitacao); 
 		if (s != null) {
 			s.setRespostaPontoEncontro(resposta);
@@ -778,7 +792,23 @@ public class Carona implements Comparable<Carona> {
 		return s;
 	}
 
+	/**
+	 * Retorna mapa de sugestoes de ponto de encontro
+	 * para essa carona.
+	 * 
+	 * @return mapa de sugestoes
+	 */
 	public Map<Integer, Sugestao> getMapSugestoesPontoDeEncontro() {
 		return mapSugestoesPontoDeEncontro;
+	}
+	
+	/**
+	 * Retorna mapa de solicitacoes com ponto encontro
+	 * pertencentes a essa carona.
+	 * 
+	 * @return mapa de solicitacoes com ponto encontro
+	 */
+	public Map<Integer, Solicitacao> getMapIdSolicitacaoComPontoEncontro() {
+		return this.mapIdSolicitacoesComPontoEncontro;
 	}
 }

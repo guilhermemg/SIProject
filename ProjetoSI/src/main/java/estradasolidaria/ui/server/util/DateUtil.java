@@ -49,32 +49,13 @@ public class DateUtil {
 		// 01 <= mes <= 12
 		calendar.set(Calendar.MONTH, --mes); // 0=janeiro, 1=fevereiro, ...
 		calendar.set(Calendar.YEAR, ano);
-
+		
 		if (dia > calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
 			return false;
 		}
 		else {
-			return !verificaDataJaPassou();
+			return !(calendar.getTimeInMillis() < Calendar.getInstance().getTimeInMillis());
 		}
-	}
-
-	/**
-	 * Verifica se data ja passou.
-	 * 
-	 * @param data
-	 * @return true se data ja passou
-	 */
-	public boolean verificaDataJaPassou() {
-		return calendar.getTimeInMillis() < getDataAtualInMillis() ? true : false;
-	}
-
-	/**
-	 * Retorna o dia.
-	 * 
-	 * @return dia
-	 */
-	public int getDia() {
-		return dia;
 	}
 
 	/**
@@ -93,15 +74,7 @@ public class DateUtil {
 		}
 		this.dia = day;
 	}
-
-	/**
-	 * Retorna o mes.
-	 * @return mes
-	 */
-	public int getMes() {
-		return mes;
-	}
-
+	
 	/**
 	 * Configura o mes.
 	 * 
@@ -118,15 +91,6 @@ public class DateUtil {
 		}
 		this.mes = month;
 	}
-	
-	/**
-	 * Retorna o ano.
-	 * 
-	 * @return ano
-	 */
-	public int getAno() {
-		return ano;
-	}
 
 	/** 
 	 * Configura o ano.
@@ -142,15 +106,6 @@ public class DateUtil {
 			throw new IllegalArgumentException("Data inválida");
 		}
 		this.ano = year;
-	}
-	
-	/**
-	 * Retorna data atual em milisegundos.
-	 * 
-	 * @return data atual.
-	 */
-	public long getDataAtualInMillis() {
-		return Calendar.getInstance().getTimeInMillis();
 	}
 	
 	/**
