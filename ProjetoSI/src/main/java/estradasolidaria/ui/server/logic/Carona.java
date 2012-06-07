@@ -36,8 +36,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 
 	private int posicaoNaInsercaoNoSistema;
 
-	private boolean municipal = false; // muda para true quando uma
-										// carona municipal eh cadastrada
+	private boolean municipal = false; // muda para true quando uma carona municipal eh cadastrada
 	private String cidade;
 
 	// as solicitacoes sao apagadas apos aceitas pelo dono da carona
@@ -51,11 +50,11 @@ public class Carona implements Comparable<Carona>, Serializable {
 
 	// contem o mapeamento de cada usuario que compareceu a carona para o review
 	// q ele faz dela.
-	private Map<Integer, String> mapIdUsuarioReview = new TreeMap<Integer, String>();
+	private Map<Integer, String> mapCaroneiroReviewDono = new TreeMap<Integer, String>();
 
 	// contem o mapeamento de cada usuario presente para o review q o dono da
 	// carona faz dele.
-	private Map<Integer, String> mapIdUsuarioReviewVagaEmCarona = new TreeMap<Integer, String>();
+	private Map<Integer, String> mapDonoReviewCaroneiro = new TreeMap<Integer, String>();
 	private Map<Integer, Sugestao> mapSugestoesPontoDeEncontro = new TreeMap<Integer, Sugestao>();
 
 
@@ -297,12 +296,12 @@ public class Carona implements Comparable<Carona>, Serializable {
 						.hashCode());
 		result = prime
 				* result
-				+ ((mapIdUsuarioReview == null) ? 0 : mapIdUsuarioReview
+				+ ((mapCaroneiroReviewDono == null) ? 0 : mapCaroneiroReviewDono
 						.hashCode());
 		result = prime
 				* result
-				+ ((mapIdUsuarioReviewVagaEmCarona == null) ? 0
-						: mapIdUsuarioReviewVagaEmCarona.hashCode());
+				+ ((mapDonoReviewCaroneiro == null) ? 0
+						: mapDonoReviewCaroneiro.hashCode());
 		result = prime
 				* result
 				+ ((mapSugestoesPontoDeEncontro == null) ? 0
@@ -362,16 +361,16 @@ public class Carona implements Comparable<Carona>, Serializable {
 				return false;
 		} else if (!mapIdSolicitacoes.equals(other.mapIdSolicitacoes))
 			return false;
-		if (mapIdUsuarioReview == null) {
-			if (other.mapIdUsuarioReview != null)
+		if (mapCaroneiroReviewDono == null) {
+			if (other.mapCaroneiroReviewDono != null)
 				return false;
-		} else if (!mapIdUsuarioReview.equals(other.mapIdUsuarioReview))
+		} else if (!mapCaroneiroReviewDono.equals(other.mapCaroneiroReviewDono))
 			return false;
-		if (mapIdUsuarioReviewVagaEmCarona == null) {
-			if (other.mapIdUsuarioReviewVagaEmCarona != null)
+		if (mapDonoReviewCaroneiro == null) {
+			if (other.mapDonoReviewCaroneiro != null)
 				return false;
-		} else if (!mapIdUsuarioReviewVagaEmCarona
-				.equals(other.mapIdUsuarioReviewVagaEmCarona))
+		} else if (!mapDonoReviewCaroneiro
+				.equals(other.mapDonoReviewCaroneiro))
 			return false;
 		if (mapSugestoesPontoDeEncontro == null) {
 			if (other.mapSugestoesPontoDeEncontro != null)
@@ -580,7 +579,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @return mapa
 	 */
 	public Map<Integer, String> getMapIdUsuarioReviewVagaEmCarona() {
-		return this.mapIdUsuarioReviewVagaEmCarona;
+		return this.mapDonoReviewCaroneiro;
 	}
 
 	/**
@@ -595,7 +594,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 */
 	public void setReviewCarona(Integer idCaroneiro, String review) {
 		if (validaReview(review)) {
-			this.mapIdUsuarioReview.put(idCaroneiro, review);
+			this.mapCaroneiroReviewDono.put(idCaroneiro, review);
 		} else
 			throw new IllegalArgumentException("Opção inválida.");
 	}
@@ -611,7 +610,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 */
 	public void setReviewVagaEmCarona(Integer idCaroneiro, String review) {
 		if (validaReview(review))
-			this.mapIdUsuarioReviewVagaEmCarona.put(idCaroneiro, review);
+			this.mapDonoReviewCaroneiro.put(idCaroneiro, review);
 	}
 
 	/**
@@ -641,7 +640,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @return mapIdUsuarioReview
 	 */
 	public Map<Integer, String> getMapIdUsuarioReview() {
-		return this.mapIdUsuarioReview;
+		return this.mapCaroneiroReviewDono;
 	}
 
 	/**
