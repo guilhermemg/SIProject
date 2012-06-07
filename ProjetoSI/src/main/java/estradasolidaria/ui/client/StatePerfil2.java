@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.MenuItemSeparator;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.widget.client.TextButton;
+import com.google.gwt.user.datepicker.client.DatePicker;
 
 public class StatePerfil2 extends Composite {
 	
@@ -25,74 +26,33 @@ public class StatePerfil2 extends Composite {
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
-		absolutePanel.setSize("781px", "592px");
+		absolutePanel.setSize("991px", "726px");
 		
-		ListBox comboBox = new ListBox();
-		comboBox.addItem("carona1");
-		comboBox.addItem("carona2");
-		absolutePanel.add(comboBox, 66, 515);
-		comboBox.setSize("212px", "20px");
+		AbsolutePanel absolutePanel_2 = new AbsolutePanel();
+		absolutePanel.add(absolutePanel_2, 10, 215);
+		absolutePanel_2.setSize("140px", "348px");
 		
-		MenuBar menuBar = new MenuBar(false);
-		absolutePanel.add(menuBar, 528, 23);
+		TextButton txtbtnNewButton = new TextButton("Cadastrar Carona");
+		absolutePanel_2.add(txtbtnNewButton, 10, 39);
 		
-		MenuItem mntmOpes = new MenuItem("Opções", false, (Command) null);
-		menuBar.addItem(mntmOpes);
-		
-		MenuItemSeparator separator = new MenuItemSeparator();
-		menuBar.addSeparator(separator);
-		
-		MenuItem mntmSair = new MenuItem("Sair", false, new Command() {
-			public void execute() {
-				estrada.rootPanel.remove(panel);
-				Widget newPanel = new StateHomePage(estrada);
-				newPanel.setSize("600px", "417px");
-				estrada.setStatePanel(newPanel);
-				Window.alert("Logoff efetuado com sucesso!");
-			}
-		});
-		menuBar.addItem(mntmSair);
-		
-		TextButton txtbtnNewButton = new TextButton("Cadastrar uma carona");
-		absolutePanel.add(txtbtnNewButton, 66, 278);
-		
-		Image image = new Image((String) null);
-		absolutePanel.add(image, 54, 65);
-		image.setSize("100px", "100px");
-		
-		Label lblNomeDoUsuario = new Label("Nome do usuario");
-		absolutePanel.add(lblNomeDoUsuario, 54, 176);
+		TextButton txtbtnVerCanoasQue = new TextButton("Visualizar Caronas");
+		absolutePanel_2.add(txtbtnVerCanoasQue, 10, 73);
+		txtbtnVerCanoasQue.setSize("122px", "44px");
 		
 		TextButton txtbtnNewButton_1 = new TextButton("Pesquisar carona");
-		absolutePanel.add(txtbtnNewButton_1, 66, 402);
+		absolutePanel_2.add(txtbtnNewButton_1, 10, 123);
+		txtbtnNewButton_1.setSize("122px", "28px");
 		
-		Label lblVisualizarCaronasCadastradas = new Label("Visualizar caronas cadastradas");
-		absolutePanel.add(lblVisualizarCaronasCadastradas, 66, 475);
-		
-		Label lblMinhasCaronasOferecidas = new Label("Eu motorista:");
-		absolutePanel.add(lblMinhasCaronasOferecidas, 54, 249);
-		
-		Label lblEuCaroneiro = new Label("Eu Caroneiro:");
-		absolutePanel.add(lblEuCaroneiro, 54, 376);
-		
-		Label lblEndereo = new Label("Endereço:");
-		absolutePanel.add(lblEndereo, 250, 87);
-		
-		Label lblEmail = new Label("Email:");
-		absolutePanel.add(lblEmail, 250, 109);
-		
-		Label lblResidoEm = new Label("Resido em:");
-		lblResidoEm.setStyleName("gwt-LabelHomePage");
-		absolutePanel.add(lblResidoEm, 250, 65);
-		
-		Label lblInteresses = new Label("Interesses:");
-		absolutePanel.add(lblInteresses, 250, 131);
+		AbsolutePanel absolutePanel_1 = new AbsolutePanel();
+		absolutePanel.add(absolutePanel_1, 741, 215);
+		absolutePanel_1.setSize("240px", "487px");
 		
 		Label lblAmigos = new Label("Amigos:");
-		absolutePanel.add(lblAmigos, 507, 249);
+		absolutePanel_1.add(lblAmigos, 91, 0);
+		lblAmigos.setSize("57px", "15px");
 		
 		FlexTable flexTable = new FlexTable();
-		absolutePanel.add(flexTable, 507, 278);
+		absolutePanel_1.add(flexTable, 14, 21);
 		flexTable.setSize("212px", "213px");
 		
 		Image image_1 = new Image((String) null);
@@ -113,17 +73,51 @@ public class StatePerfil2 extends Composite {
 		Image image_6 = new Image((String) null);
 		flexTable.setWidget(2, 1, image_6);
 		
-		TextButton txtbtnVisualizarTodosOs = new TextButton("Visualizar todos os amigos");
-		absolutePanel.add(txtbtnVisualizarTodosOs, 540, 507);
-		txtbtnVisualizarTodosOs.setSize("182px", "28px");
+		TextButton txtbtnVisualizarTodosOs = new TextButton("Ver Todos");
+		absolutePanel_1.add(txtbtnVisualizarTodosOs, 51, 244);
+		txtbtnVisualizarTodosOs.setSize("137px", "28px");
 		
-		TextButton txtbtnVerCanoasQue = new TextButton("Ver caronas que ofereço");
-		absolutePanel.add(txtbtnVerCanoasQue, 66, 312);
+		DatePicker datePicker = new DatePicker();
+		absolutePanel_1.add(datePicker, 14, 313);
+		datePicker.setSize("210px", "162px");
 		
-		TextButton txtbtnVerCaronasEm = new TextButton("Ver caronas em que estou cadastrado");
-		absolutePanel.add(txtbtnVerCaronasEm, 66, 436);
+		Label lblPrximasCaronas = new Label("Próximas Caronas");
+		absolutePanel_1.add(lblPrximasCaronas, 66, 292);
 		
-		TextButton txtbtnNewButton_2 = new TextButton("Pesquisar um amigo");
-		absolutePanel.add(txtbtnNewButton_2, 539, 541);
+		AbsolutePanel absolutePanel_3 = new AbsolutePanel();
+		absolutePanel.add(absolutePanel_3, 10, 43);
+		absolutePanel_3.setSize("971px", "140px");
+		
+		Image image = new Image((String) null);
+		absolutePanel_3.add(image, 21, 5);
+		image.setSize("100px", "100px");
+		
+		Label lblNomeDoUsuario = new Label("Nome do usuario");
+		absolutePanel_3.add(lblNomeDoUsuario, 21, 115);
+		
+		MenuBar menuBar = new MenuBar(false);
+		absolutePanel_3.add(menuBar, 701, 10);
+		menuBar.setSize("258px", "19px");
+		
+		MenuItem mntmOpes = new MenuItem("Opções", false, (Command) null);
+		menuBar.addItem(mntmOpes);
+		
+		MenuItemSeparator separator = new MenuItemSeparator();
+		menuBar.addSeparator(separator);
+		
+		MenuItem mntmSair = new MenuItem("Sair", false, new Command() {
+			public void execute() {
+				estrada.rootPanel.remove(panel);
+				Widget newPanel = new StateHomePage(estrada);
+				newPanel.setSize("600px", "417px");
+				estrada.setStatePanel(newPanel);
+				Window.alert("Logoff efetuado com sucesso!");
+			}
+		});
+		menuBar.addItem(mntmSair);
+		
+		AbsolutePanel absolutePanel_4 = new AbsolutePanel();
+		absolutePanel_3.add(absolutePanel_4, 147, 83);
+		absolutePanel_4.setSize("586px", "528px");
 	}
 }
