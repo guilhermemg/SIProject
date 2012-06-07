@@ -7,7 +7,7 @@ Localizacao dos artefatos:
 - diagramas: diagramas de classes do projeto
 - xml: pasta para o arquivo no qual é feita a persistência
 - scripts: pasta dos scripts dos testes de aceitação
-- target: contem o javadoc e o executavel do projeto
+- target: contem os .class dos testes do projeto, o javadoc e o executavel
 
 obs.: deve-se ter um servidor smtp instalado na maquina local, por exemplo,
 o postfix no linux.
