@@ -40,8 +40,8 @@
 			  <execution>
 			    <configuration>
 			      <module>src/main/java/estradasolidaria/ui/client/EstradaSolidariaManager</module>
-			      <runTarget>EstradaSolidaria/src/main/webapp/EstradaSolidariaViewer.html</runTarget>
-			      <webappDirectory>EstradaSolidaria/src/main/webapp/</webappDirectory>
+			      <runTarget>ProjetoSI/EstradaSolidaria/src/main/webapp/EstradaSolidariaViewer.html</runTarget>
+			      <webappDirectory>ProjetoSI/EstradaSolidaria/src/main/webapp/</webappDirectory>
 			    </configuration>
 			    <goals>
 			      <goal>compile</goal>
@@ -56,10 +56,10 @@
 			<artifactId>maven-war-plugin</artifactId>
 			<version>2.1.1</version>
 			<configuration>
- 			          <hostedWebapp>EstradaSolidaria/src/main/webapp</hostedWebapp>
-				  <warSourceDirectory>EstradaSolidaria/src/main/webapp</warSourceDirectory>
-				  <webXml>EstradaSolidaria/src/main/webapp/WEB-INF/web.xml</webXml>
-				  <webappDirectory>EstradaSolidaria/src/main/webapp/</webappDirectory>
+ 			          <hostedWebapp>ProjetoSI/EstradaSolidaria/src/main/webapp</hostedWebapp>
+				  <warSourceDirectory>ProjetoSI/EstradaSolidaria/src/main/webapp</warSourceDirectory>
+				  <webXml>ProjetoSI/EstradaSolidaria/src/main/webapp/WEB-INF/web.xml</webXml>
+				  <webappDirectory>ProjetoSI/EstradaSolidaria/src/main/webapp/</webappDirectory>
 			</configuration>
 		</plugin>
 	</plugins>
