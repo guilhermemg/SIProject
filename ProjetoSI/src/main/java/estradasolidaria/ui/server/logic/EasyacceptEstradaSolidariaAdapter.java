@@ -9,55 +9,40 @@ import javax.mail.MessagingException;
 import estradasolidaria.ui.server.util.SpecialLinkedListBrackets;
 import estradasolidaria.ui.server.util.SpecialLinkedListKeys;
 
-public class EstradaSolidariaAdapter {
+public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 
 	private static EstradaSolidariaController sistema = EstradaSolidariaController.getInstance();
 
-	private static volatile EstradaSolidariaAdapter uniqueInstance;
+	private static volatile AdapterInterface uniqueInstance;
 
 	/**
 	 * Retorna unica instancia do adapter do controlador
 	 * 
 	 * @return instancia
 	 */
-	public static EstradaSolidariaAdapter getInstance() {
+	public static AdapterInterface getInstance() {
 		if (uniqueInstance == null) {
-			synchronized (EstradaSolidariaAdapter.class) {
+			synchronized (EasyacceptEstradaSolidariaAdapter.class) {
 				if (uniqueInstance == null)
-					uniqueInstance = new EstradaSolidariaAdapter();
+					uniqueInstance = new EasyacceptEstradaSolidariaAdapter();
 			}
 		}
 		return uniqueInstance;
 	}
 
-	/**
-	 * Cria usuario para o sistema.
-	 * 
-	 * @param login
-	 * @param senha
-	 * @param nome
-	 * @param endereco
-	 * @param email
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#criarUsuario(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public void criarUsuario(String login, String senha, String nome,
 			String endereco, String email) {
 		sistema.criarUsuario(login, senha, nome, endereco, email);
 	}
 
-	/**
-	 * Cadastra carona na listaDeCaronasOferecidas do usuario cadastrante e no
-	 * mapa de caronas do sistema.
-	 * 
-	 * @param idSessao
-	 * @param origem
-	 * @param destino
-	 * @param data
-	 * @param hora
-	 * @param vagas
-	 * @return id da carona cadastrada
-	 * 
-	 * @see Usuario, SistemaCaronas
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#cadastrarCarona(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public String cadastrarCarona(String idSessao, String origem,
 			String destino, String data, String hora, String vagas) {
 		if (idSessao == null || idSessao.equals(""))
@@ -88,13 +73,10 @@ public class EstradaSolidariaAdapter {
 				vagasInt).getIdCarona().toString();
 	}
 
-	/**
-	 * Abre sessao para usuario identificado por login e senha.
-	 * 
-	 * @param login
-	 * @param senha
-	 * @return id sessao aberta
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#abrirSessao(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public String abrirSessao(String login, String senha) {
 		try {
 			return sistema.abrirSessao(login, senha).getIdSessao().toString();
@@ -105,13 +87,10 @@ public class EstradaSolidariaAdapter {
 		}
 	}
 
-	/**
-	 * Retorna atributo de um usuario.
-	 * 
-	 * @param login
-	 * @param atributo
-	 * @return atributo
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getAtributoUsuario(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public Object getAtributoUsuario(String login, String atributo) {
 		if (login == null || login.equals("")) {
 			throw new IllegalArgumentException("Login inválido");
@@ -146,14 +125,10 @@ public class EstradaSolidariaAdapter {
 		throw new IllegalArgumentException("Atributo inexistente");
 	}
 
-	/**
-	 * Retorna lista de ids de carona localizadas.
-	 * 
-	 * @param idSessao
-	 * @param origem
-	 * @param destino
-	 * @return lista de ids de caronas como string
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#localizarCarona(java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public String localizarCarona(String idSessao, String origem, String destino) {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
@@ -176,13 +151,10 @@ public class EstradaSolidariaAdapter {
 		return listaIdsCaronas.toString();
 	}
 
-	/**
-	 * Retorna atributo de carona
-	 * 
-	 * @param idCarona
-	 * @param nomeAtributo
-	 * @return atributo
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getAtributoCarona(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public Object getAtributoCarona(String idCarona, String nomeAtributo) {
 		if (idCarona == null || idCarona.equals(""))
 			throw new IllegalArgumentException(
@@ -252,13 +224,10 @@ public class EstradaSolidariaAdapter {
 			throw new IllegalArgumentException("Atributo inexistente");
 	}
 
-	/**
-	 * Retorna trajeto da carona.
-	 * 
-	 * @param idCarona
-	 * @return trajeto
-	 * @throws TrajetoInexistenteException
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getTrajeto(java.lang.String)
 	 */
+	@Override
 	public String getTrajeto(String idCarona)
 			throws TrajetoInexistenteException {
 		if (idCarona == null)
@@ -278,12 +247,10 @@ public class EstradaSolidariaAdapter {
 		return trajeto[0] + " - " + trajeto[1];
 	}
 
-	/**
-	 * Retorna carona.
-	 * 
-	 * @param idCarona
-	 * @return carona
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getCarona(java.lang.String)
 	 */
+	@Override
 	public String getCarona(String idCarona) {
 		if (idCarona == null)
 			throw new IllegalArgumentException("Carona Inválida");
@@ -300,43 +267,42 @@ public class EstradaSolidariaAdapter {
 		return sistema.getCarona(idCarona2).toString();
 	}
 
-	/**
-	 * Encerra sessao aberta.
-	 * 
-	 * @param login
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#encerrarSessao(java.lang.String)
 	 */
+	@Override
 	public void encerrarSessao(String login) {
 		sistema.encerrarSessao(login);
 	}
 
-	/**
-	 * Torna null todos os objetos do sistema.
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#zerarSistema()
 	 */
+	@Override
 	public void zerarSistema() {
 		sistema.zerarSistema();
 	}
 
-	/**
-	 * Persiste e encerra o sistema.
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#encerrarSistema()
 	 */
+	@Override
 	public void encerrarSistema() {
 		sistema.encerrarSistema();
 	}
 
-	/**
-	 * Reinicia o sistema com os dados persistidos no encerramento.
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#reiniciarSistema()
 	 */
+	@Override
 	public void reiniciarSistema() {
 		sistema.reiniciarSistema();
 	}
 
-	/**
-	 * Retorna atributo da solicitacao a partir do nome do atributo.
-	 * 
-	 * @param idSolicitacao
-	 * @param atributo
-	 * @return atributo
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getAtributoSolicitacao(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public Object getAtributoSolicitacao(String idSolicitacao, String atributo) {
 		if (idSolicitacao == null || idSolicitacao.equals(""))
 			throw new IllegalArgumentException("Solicitação inválida");
@@ -407,14 +373,10 @@ public class EstradaSolidariaAdapter {
 			throw new IllegalArgumentException("Atributo inexistente");
 	}
 
-	/**
-	 * Sugere ponto de encontro para uma carona.
-	 * 
-	 * @param idSessao
-	 * @param idCarona
-	 * @param pontos
-	 * @return id da sugestao feita
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#sugerirPontoEncontro(java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public String sugerirPontoEncontro(String idSessao, String idCarona,
 			String pontos) {
 
@@ -436,15 +398,10 @@ public class EstradaSolidariaAdapter {
 				.getIdSugestao().toString();
 	}
 
-	/**
-	 * Responde a uma sugestao feita por outro usuario.
-	 * 
-	 * @param idSessao
-	 * @param idCarona
-	 * @param idSugestao
-	 * @param pontos
-	 *            : ponto de encontro escolhido ate o momento para a carona
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#responderSugestaoPontoEncontro(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public void responderSugestaoPontoEncontro(String idSessao,
 			String idCarona, String idSugestao, String pontos) {
 		if (idSessao == null || idSessao.equals(""))
@@ -470,15 +427,10 @@ public class EstradaSolidariaAdapter {
 				idSugestao2, pontos);
 	}
 
-	/**
-	 * Solicita vaga e sugere um ponto de encontro para a carona.
-	 * 
-	 * @param idSessao
-	 * @param idCarona
-	 * @param ponto
-	 * @return id de solicitacao
-	 * @throws CaronaInvalidaException
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#solicitarVagaPontoEncontro(java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public String solicitarVagaPontoEncontro(String idSessao, String idCarona,
 			String ponto) throws CaronaInvalidaException {
 		if (idSessao == null || idSessao.equals(""))
@@ -496,13 +448,10 @@ public class EstradaSolidariaAdapter {
 				.getIdSolicitacao().toString();
 	}
 
-	/**
-	 * Aceita uma solicitacão.
-	 * 
-	 * @param idSessao
-	 *            : id da sessao do usuario dono da carona
-	 * @param idSolicitacao
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#aceitarSolicitacaoPontoEncontro(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public void aceitarSolicitacaoPontoEncontro(String idSessao,
 			String idSolicitacao) {
 		if (idSessao == null || idSessao.equals(""))
@@ -522,13 +471,10 @@ public class EstradaSolidariaAdapter {
 		sistema.aceitarSolicitacaoPontoEncontro(idSessao2, idSolicitacao2);
 	}
 
-	/**
-	 * Aceita solicitacao
-	 * 
-	 * @param idSessao
-	 *            : id da sessao do usuario dono da carona
-	 * @param idSolicitacao
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#aceitarSolicitacao(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public void aceitarSolicitacao(String idSessao, String idSolicitacao) {
 		if (idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
@@ -546,16 +492,10 @@ public class EstradaSolidariaAdapter {
 		sistema.aceitarSolicitacao(idSessao2, idSolicitacao2);
 	}
 
-	/**
-	 * Adiciona solicitacao a lista de solicitacoes associadas a uma carona,
-	 * indicada por idCarona. A solicitacao eh feita pelo usuario indicado por
-	 * idSessao.
-	 * 
-	 * @param idSessao
-	 * @param idCarona
-	 * @return solicitacao feita
-	 * @throws CaronaInvalidaException
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#solicitarVaga(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public String solicitarVaga(String idSessao, String idCarona)
 			throws CaronaInvalidaException {
 		if (idSessao == null || idSessao.equals(""))
@@ -575,13 +515,10 @@ public class EstradaSolidariaAdapter {
 				.toString();
 	}
 
-	/**
-	 * Usuario dono da carona, indicado por idSessao, rejeita solicitacao,
-	 * indicada por idSolicitacao.
-	 * 
-	 * @param idSessao
-	 * @param idSolicitacao
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#rejeitarSolicitacao(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public void rejeitarSolicitacao(String idSessao, String idSolicitacao) {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
@@ -599,16 +536,10 @@ public class EstradaSolidariaAdapter {
 		sistema.rejeitarSolicitacao(idSessao2, idSolicitacao2);
 	}
 
-	/**
-	 * Remove a solicitacao, indicada por idSolicitacao, da lista de
-	 * solicitacoes da carona indicada por idCarona, feita pelo usuario indicado
-	 * por idSessao.
-	 * 
-	 * @param idSessao
-	 * @param idCarona
-	 * @param idSolicitacao
-	 * @throws CaronaInvalidaException
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#desistirRequisicao(java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public void desistirRequisicao(String idSessao, String idCarona,
 			String idSolicitacao) throws CaronaInvalidaException {
 		if (idSessao == null || idSessao.equals(""))
@@ -630,14 +561,10 @@ public class EstradaSolidariaAdapter {
 		sistema.desistirRequisicao(idSessao2, idCarona2, idSolicitacao2);
 	}
 
-	/**
-	 * Pega usuario associado a sessao indicada por idSessao e pega o perfil
-	 * dele.
-	 * 
-	 * @param idSessao
-	 * @param login
-	 * @return idPerfil
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#visualizarPerfil(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public String visualizarPerfil(String idSessao, String login) {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("IdSessao inválido");
@@ -653,13 +580,10 @@ public class EstradaSolidariaAdapter {
 				.toString();
 	}
 
-	/**
-	 * Pesquisa usuario com login e retorna um atributo do perfil dele.
-	 * 
-	 * @param login
-	 * @param nomeAtributo
-	 * @return atributo
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getAtributoPerfil(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public Object getAtributoPerfil(String login, String atributo) {
 		// Iterator Pattern
 		Iterator<Usuario> iteratorIdUsuario = sistema.getMapIdUsuario()
@@ -726,22 +650,10 @@ public class EstradaSolidariaAdapter {
 		return historico.toString();
 	}
 
-	/**
-	 * Seta o valor do review de vaga em carona: diz se o solicitante
-	 * (caroneiro) faltou ou nao.
-	 * 
-	 * valores validos: . faltou . nao faltou
-	 * 
-	 * @param idSessao
-	 *            : id da sessao do dono da carona
-	 * @param idCarona
-	 *            : id da carona oferecida
-	 * @param loginCaroneiro
-	 *            : login do caroneiro
-	 * @param review
-	 *            : faltou ou nao faltou
-	 * @throws CaronaInvalidaException
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#reviewVagaEmCarona(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public void reviewVagaEmCarona(String idSessao, String idCarona,
 			String loginCaroneiro, String review)
 			throws CaronaInvalidaException {
@@ -763,23 +675,10 @@ public class EstradaSolidariaAdapter {
 		sistema.reviewVagaEmCarona(idSessao2, idCarona2, loginCaroneiro, review);
 	}
 
-	/**
-	 * Seta o valor do review da carona, diz se a carona foi boa ou nao. O
-	 * review eh feito pelo usuario da carona (caroneiro). Pesquisa entre as
-	 * caronas pegas por ele, idCarona e seta o review.
-	 * 
-	 * valores validos: . carona segura e tranquila . carona nao funcionou
-	 * 
-	 * obs.: A quantidade de caronas seguras e tranquilas e que não funcionaram
-	 * devem aparecer no perfil do motorista
-	 * 
-	 * @param idSessao
-	 *            : id do caroneiro
-	 * @param idCarona
-	 *            : id da carona pega por ele (caroneiro)
-	 * @param review
-	 *            : review do caroneiro presente
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#reviewCarona(java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public void reviewCarona(String idSessao, String idCarona, String review)
 			throws CaronaInexistenteException {
 		if (idSessao == null || idSessao.equals(""))
@@ -799,16 +698,10 @@ public class EstradaSolidariaAdapter {
 		sistema.reviewCarona(idSessao2, idCarona2, review);
 	}
 
-	/**
-	 * Cadastra no usuario identificado por idSessao, a carona com os atributos
-	 * origem, destino, cidade, data, hora e vagas.
-	 * 
-	 * @param idSessao
-	 * @param origem
-	 * @param destino
-	 * @param cidade
-	 * @return id carona cadastrada
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#cadastrarCaronaMunicipal(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public String cadastrarCaronaMunicipal(String idSessao, String origem,
 			String destino, String cidade, String data, String hora,
 			String vagas) {
@@ -830,16 +723,10 @@ public class EstradaSolidariaAdapter {
 						data, hora, vagas2).getIdCarona().toString();
 	}
 
-	/**
-	 * Pesquisa entre as caronas oferecidas por todos os usuarios as que sao
-	 * municipais e tem as especificacoes requeridas pelo o cliente.
-	 * 
-	 * @param idSessao
-	 * @param cidade
-	 * @param origem
-	 * @param destino
-	 * @return lista de ids de caronas localizadas
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#localizarCaronaMunicipal(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public List<String> localizarCaronaMunicipal(String idSessao,
 			String cidade, String origem, String destino) {
 
@@ -866,15 +753,10 @@ public class EstradaSolidariaAdapter {
 		return listaIdsCaronas;
 	}
 
-	/**
-	 * Pesquisa entre as caronas oferecidas por todos os usuarios as que sao
-	 * municipais e tem a especificacao requerida pelo o cliente, no caso cidade
-	 * da carona.
-	 * 
-	 * @param idSessao
-	 * @param cidade
-	 * @return lista de ids de caronas
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#localizarCaronaMunicipal(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public List<String> localizarCaronaMunicipal(String idSessao, String cidade) {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
@@ -899,15 +781,10 @@ public class EstradaSolidariaAdapter {
 		return listaIdsCaronas;
 	}
 
-	/**
-	 * Retorna carona do usuario identificado por idSessao. O indexCarona vai
-	 * trabalhar com a ordemParaCaronas, jah que o indice vai está na mesma
-	 * ordem relativa de inserção das caronas no sistema.
-	 * 
-	 * @param idSessao
-	 * @param indexCarona
-	 * @return carona
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getCaronaUsuario(java.lang.String, int)
 	 */
+	@Override
 	public String getCaronaUsuario(String idSessao, int indexCarona) {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
@@ -923,13 +800,10 @@ public class EstradaSolidariaAdapter {
 				.toString();
 	}
 
-	/**
-	 * Retorna todas as caronas cadastradas pelo usuario identificado por
-	 * idSessao.
-	 * 
-	 * @param idSessao
-	 * @return lista de ids de caronas como string
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getTodasCaronasUsuario(java.lang.String)
 	 */
+	@Override
 	public String getTodasCaronasUsuario(String idSessao) {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
@@ -953,14 +827,10 @@ public class EstradaSolidariaAdapter {
 		return listaIdsCaronas.toString();
 	}
 
-	/**
-	 * Retorna lista de ids de solicitacoes confirmadas para a carona (idCarona)
-	 * oferecida pelo usuario identificado por idSessao.
-	 * 
-	 * @param idSessao
-	 * @param idCarona
-	 * @return lista de ids de solicitacoes confirmadas como string
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getSolicitacoesConfirmadas(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public String getSolicitacoesConfirmadas(String idSessao, String idCarona) {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
@@ -989,15 +859,10 @@ public class EstradaSolidariaAdapter {
 		return result;
 	}
 
-	/**
-	 * Retorna lista de solicitacoes pendentes de serem respondidas pelo usuario
-	 * dono da carona.
-	 * 
-	 * @param idSessao
-	 * @param idCarona
-	 * @return lista de ids de solicitacoes
-	 * @throws CaronaInvalidaException
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getSolicitacoesPendentes(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public String getSolicitacoesPendentes(String idSessao, String idCarona)
 			throws CaronaInvalidaException {
 		if (idSessao == null || idSessao.equals(""))
@@ -1026,17 +891,10 @@ public class EstradaSolidariaAdapter {
 		return result;
 	}
 
-	/**
-	 * Retorna string com o ponto sugerido para idCarona. O usuario identificado
-	 * por idSessao deve ser o dono da carona.
-	 * 
-	 * @param idSessao
-	 *            : id da sessao do dono da carona
-	 * @param idCarona
-	 *            : id da carona referida
-	 * @return string de lista de pontos sugeridos
-	 * @throws CaronaInvalidaException
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getPontosSugeridos(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public String getPontosSugeridos(String idSessao, String idCarona)
 			throws CaronaInvalidaException {
 		if (idSessao == null || idSessao.equals(""))
@@ -1065,14 +923,10 @@ public class EstradaSolidariaAdapter {
 		return pontos + "]";
 	}
 
-	/**
-	 * Retorna ponto de encontro para a carona identificada por idCarona.
-	 * idSessao eh o identificador do usuario dono da carona.
-	 * 
-	 * @param idSessao
-	 * @param idCarona
-	 * @return string com ponto de encontro
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getPontosEncontro(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public String getPontosEncontro(String idSessao, String idCarona) {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
@@ -1099,26 +953,10 @@ public class EstradaSolidariaAdapter {
 		return pontos + "]";
 	}
 
-	/**
-	 * Cadastra interesse em determinada carona, mas nao envia solicitacao de
-	 * participacao. As caronas selecionadas como atendentes ao interesse do
-	 * usuario registrador vai aparecer nas mensagens do perfil dele.
-	 * 
-	 * obs.: Para os horários o sistema poderá deixar o usuário livre, ou seja,
-	 * ele poderá não colocar horaInicio (pegará todos a partir das 0h do dia
-	 * especificado. ou horaFim(pegará todos até às 11:59 do dia especificado)
-	 * que a consulta será realizada.
-	 * 
-	 * obs.: data="" retornará todas as caronas que tem marcadas da data atual
-	 * em diante.
-	 * 
-	 * @param idSessao
-	 * @param origem
-	 * @param destino
-	 * @param horaInicio
-	 * @param horaFim
-	 * @return idInteresse
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#cadastrarInteresse(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public String cadastrarInteresse(String idSessao, String origem,
 			String destino, String data, String horaInicio, String horaFim) {
 		if (idSessao == null || idSessao.equals(""))
@@ -1135,13 +973,10 @@ public class EstradaSolidariaAdapter {
 						horaInicio, horaFim).getIdInteresse().toString();
 	}
 
-	/**
-	 * Resume as mensagens sobre as caronas sobre as quais o usuario demonstra
-	 * interesse.
-	 * 
-	 * @param idSessao
-	 * @return mensagens
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#verificarMensagensPerfil(java.lang.String)
 	 */
+	@Override
 	public String verificarMensagensPerfil(String idSessao) {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
@@ -1168,16 +1003,10 @@ public class EstradaSolidariaAdapter {
 		return resp + "]";
 	}
 
-	/**
-	 * Envia email criado automaticamente pelo sistema, a partir de um conjunto
-	 * predefinido de mensagens.
-	 * 
-	 * @param idSessao
-	 * @param destino
-	 * @param message
-	 * @return boolean indicando se email foi enviado com sucesso
-	 * @throws MessagingException
+	/* (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#enviarEmail(java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public boolean enviarEmail(String idSessao, String destino, String message)
 			throws MessagingException {
 		if (idSessao == null || idSessao.equals(""))
