@@ -15,3 +15,18 @@
 mandar criar com a compilação no /war, que no caso vai ser o /EstradaSolidaria/src/main/webapp/WEB-INF/classes/, mas os testes continuam sendo jogados em /test-classes em target, normalmente.
 
 4 - is goals para executar o maven: gwt:eclipse clean compile war:inplace test
+
+5 - para fazer o aap-engine fazer do aplicativo threadsafe ou nao eh so alterar o componente:
+<!--    By default, App Engine sends requests serially to a given web server.
+    To allow App Engine to send multiple requests in parallel specify:
+
+      <threadsafe>false</threadsafe>
+-->
+
+que fica:
+
+<!--    By default, App Engine sends requests serially to a given web server.
+    To allow App Engine to send multiple requests in parallel specify:
+-->
+      <threadsafe>false</threadsafe>
+

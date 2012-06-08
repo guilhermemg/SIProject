@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite failures="1" time="5.183" errors="0" skipped="0" tests="1" name="estradasolidaria.tests.USTest">
+  <properties>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-6-openjdk/jre/lib/i386"/>
+    <property name="java.vm.version" value="20.0-b11"/>
+    <property name="java.vm.vendor" value="Sun Microsystems Inc."/>
+    <property name="java.vendor.url" value="http://java.sun.com/"/>
+    <property name="path.separator" value=":"/>
+    <property name="java.vm.name" value="OpenJDK Server VM"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="user.country" value="BR"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.os.patch.level" value="unknown"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="/home/guilhermemg/git/SIProject/ProjetoSI"/>
+    <property name="java.runtime.version" value="1.6.0_22-b22"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
+    <property name="basedir" value="/home/guilhermemg/git/SIProject/ProjetoSI"/>
+    <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-6-openjdk/jre/lib/endorsed"/>
+    <property name="os.arch" value="i386"/>
+    <property name="surefire.real.class.path" value="/home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefirebooter8420813472460398937.jar"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="line.separator" value="
+"/>
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."/>
+    <property name="os.name" value="Linux"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/lib/jvm/java-6-openjdk/jre/lib/i386/server:/usr/lib/jvm/java-6-openjdk/jre/lib/i386:/usr/lib/jvm/java-6-openjdk/jre/../lib/i386:/usr/lib/jvm/java-6-openjdk/jre/lib/i386/client:/usr/lib/jvm/java-6-openjdk/jre/lib/i386::/usr/java/packages/lib/i386:/usr/lib/i386-linux-gnu/jni:/lib/i386-linux-gnu:/usr/lib/i386-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
+    <property name="surefire.test.class.path" value="/home/guilhermemg/git/SIProject/ProjetoSI/target/test-classes:/home/guilhermemg/git/SIProject/ProjetoSI/ProjetoSI/EstradaSolidaria/src/main/webapp/WEB-INF/classes:/home/guilhermemg/.m2/repository/com/google/gwt/gwt-servlet/2.4.0/gwt-servlet-2.4.0.jar:/home/guilhermemg/.m2/repository/com/google/gwt/gwt-user/2.4.0/gwt-user-2.4.0.jar:/home/guilhermemg/.m2/repository/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA.jar:/home/guilhermemg/.m2/repository/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA-sources.jar:/home/guilhermemg/.m2/repository/junit/junit/4.8.2/junit-4.8.2.jar:/home/guilhermemg/.m2/repository/easyaccept/easyaccept/1.0/easyaccept-1.0.jar:/home/guilhermemg/.m2/repository/javax/mail/mail/1.4.5/mail-1.4.5.jar:/home/guilhermemg/.m2/repository/javax/activation/activation/1.1/activation-1.1.jar:/home/guilhermemg/.m2/repository/com/thoughtworks/xstream/xstream/1.4.2/xstream-1.4.2.jar:/home/guilhermemg/.m2/repository/xmlpull/xmlpull/1.1.3.1/xmlpull-1.1.3.1.jar:/home/guilhermemg/.m2/repository/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c.jar:"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.class.version" value="50.0"/>
+    <property name="sun.management.compiler" value="HotSpot Tiered Compilers"/>
+    <property name="os.version" value="2.6.35-22-generic"/>
+    <property name="user.home" value="/home/guilhermemg"/>
+    <property name="user.timezone" value="America/Fortaleza"/>
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.specification.version" value="1.6"/>
+    <property name="user.name" value="guilhermemg"/>
+    <property name="java.class.path" value="/home/guilhermemg/git/SIProject/ProjetoSI/target/test-classes:/home/guilhermemg/git/SIProject/ProjetoSI/ProjetoSI/EstradaSolidaria/src/main/webapp/WEB-INF/classes:/home/guilhermemg/.m2/repository/com/google/gwt/gwt-servlet/2.4.0/gwt-servlet-2.4.0.jar:/home/guilhermemg/.m2/repository/com/google/gwt/gwt-user/2.4.0/gwt-user-2.4.0.jar:/home/guilhermemg/.m2/repository/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA.jar:/home/guilhermemg/.m2/repository/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA-sources.jar:/home/guilhermemg/.m2/repository/junit/junit/4.8.2/junit-4.8.2.jar:/home/guilhermemg/.m2/repository/easyaccept/easyaccept/1.0/easyaccept-1.0.jar:/home/guilhermemg/.m2/repository/javax/mail/mail/1.4.5/mail-1.4.5.jar:/home/guilhermemg/.m2/repository/javax/activation/activation/1.1/activation-1.1.jar:/home/guilhermemg/.m2/repository/com/thoughtworks/xstream/xstream/1.4.2/xstream-1.4.2.jar:/home/guilhermemg/.m2/repository/xmlpull/xmlpull/1.1.3.1/xmlpull-1.1.3.1.jar:/home/guilhermemg/.m2/repository/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c.jar:"/>
+    <property name="java.vm.specification.version" value="1.0"/>
+    <property name="sun.arch.data.model" value="32"/>
+    <property name="java.home" value="/usr/lib/jvm/java-6-openjdk/jre"/>
+    <property name="sun.java.command" value="/home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefirebooter8420813472460398937.jar /home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefire153963268956422925tmp /home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefire1146915428408940547tmp"/>
+    <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
+    <property name="user.language" value="pt"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.version" value="1.6.0_22"/>
+    <property name="java.ext.dirs" value="/usr/lib/jvm/java-6-openjdk/jre/lib/ext:/usr/java/packages/lib/ext"/>
+    <property name="sun.boot.class.path" value="/usr/lib/jvm/java-6-openjdk/jre/lib/resources.jar:/usr/lib/jvm/java-6-openjdk/jre/lib/rt.jar:/usr/lib/jvm/java-6-openjdk/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-6-openjdk/jre/lib/jsse.jar:/usr/lib/jvm/java-6-openjdk/jre/lib/jce.jar:/usr/lib/jvm/java-6-openjdk/jre/lib/charsets.jar:/usr/lib/jvm/java-6-openjdk/jre/lib/netx.jar:/usr/lib/jvm/java-6-openjdk/jre/lib/plugin.jar:/usr/lib/jvm/java-6-openjdk/jre/lib/rhino.jar:/usr/lib/jvm/java-6-openjdk/jre/lib/modules/jdk.boot.jar:/usr/lib/jvm/java-6-openjdk/jre/classes"/>
+    <property name="java.vendor" value="Sun Microsystems Inc."/>
+    <property name="localRepository" value="/home/guilhermemg/.m2/repository"/>
+    <property name="file.separator" value="/"/>
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"/>
+    <property name="mail.smtp.host" value="localhost"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.desktop" value="gnome"/>
+    <property name="sun.cpu.isalist" value=""/>
+  </properties>
+  <testcase time="5.164" classname="estradasolidaria.tests.USTest" name="testarEasyAcceptScript">
+    <failure message="null" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: null
+	at junit.framework.Assert.fail(Assert.java:47)
+	at junit.framework.Assert.assertTrue(Assert.java:20)
+	at junit.framework.Assert.assertTrue(Assert.java:27)
+	at estradasolidaria.tests.USTest.testarEasyAcceptScript(USTest.java:52)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:243)
+	at junit.framework.TestSuite.run(TestSuite.java:238)
+	at org.junit.internal.runners.JUnit38ClassRunner.run(JUnit38ClassRunner.java:83)
+	at org.apache.maven.surefire.junit4.JUnit4TestSet.execute(JUnit4TestSet.java:35)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:146)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:97)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.booter.ProviderFactory$ClassLoaderProxy.invoke(ProviderFactory.java:103)
+	at $Proxy0.invoke(Unknown Source)
+	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:145)
+	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcess(SurefireStarter.java:87)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:69)
+</failure>
+    <system-out>@SLTests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 sec
+@SLRunning estradasolidaria.tests.USTest
+Test file: scripts/US01.txt | Passed Tests: 33 | Not Passed Tests: 0
+
+======================== 
+
+Test file: scripts/US02.txt | Passed Tests: 51 | Not Passed Tests: 13
+
+FAILURES:
+   At line 22:Data inválida
+   At line 23: Unexpected error: Identificador do carona é inválido
+   At line 24: Unexpected error: Identificador do carona é inválido
+   At line 25: Unexpected error: Trajeto Inexistente
+   At line 27:Data inválida
+   At line 28: Unexpected error: Identificador do carona é inválido
+   At line 29: Unexpected error: Identificador do carona é inválido
+   At line 52: Expected &lt;{,,-32418646,781490428,574305186}&gt;, but was &lt;{-32418646,781490428,574305186}&gt;
+   At line 65: Expected the error message &lt;Data inválida&gt;, but the error message was &lt;(no message: exception = java.lang.NullPointerException)&gt;
+   At line 74: Expected the error message &lt;Hora inválida&gt;, but the error message was &lt;Data inválida&gt;
+   At line 75: Expected the error message &lt;Hora inválida&gt;, but the error message was &lt;Data inválida&gt;
+   At line 84: Expected the error message &lt;Atributo inválido&gt;, but the error message was &lt;Identificador do carona é inválido&gt;
+   At line 85: Expected the error message &lt;Atributo inexistente&gt;, but the error message was &lt;Identificador do carona é inválido&gt;
+======================== 
+
+Test file: scripts/US03.txt | Passed Tests: 21 | Not Passed Tests: 0
+
+======================== 
+
+Test file: scripts/US04.txt | Passed Tests: 34 | Not Passed Tests: 7
+
+FAILURES:
+   At line 47: Unexpected error: Atributo inexistente
+   At line 48: Unexpected error: Atributo inexistente
+   At line 49: Unexpected error: Atributo inexistente
+   At line 50: Unexpected error: Atributo inexistente
+   At line 51: Unexpected error: Atributo inexistente
+   At line 58: Unexpected error: Atributo inexistente
+   At line 73: exception = java.lang.NullPointerException)
+======================== 
+
+Test file: scripts/US05.txt | Passed Tests: 22 | Not Passed Tests: 10
+
+FAILURES:
+   At line 23:Data inválida
+   At line 52:Carona Inválida
+   At line 53: Unexpected error: Solicitação inválida
+   At line 54: Unexpected error: Solicitação inválida
+   At line 55: Unexpected error: Solicitação inválida
+   At line 56: Unexpected error: Solicitação inválida
+   At line 59:Id solicitação inválido
+   At line 60: Unexpected error: Identificador do carona é inválido
+   At line 63: Expected the error message &lt;Solicitação inexistente&gt;, but the error message was &lt;Id solicitação inválido&gt;
+   At line 64: Unexpected error: Identificador do carona é inválido
+======================== 
+
+Test file: scripts/US06.txt | Passed Tests: 26 | Not Passed Tests: 0
+
+======================== 
+
+Test file: scripts/US07.txt | Passed Tests: 62 | Not Passed Tests: 0
+
+======================== 
+
+Test file: scripts/US08.txt | Passed Tests: 48 | Not Passed Tests: 0
+
+======================== 
+
+Test file: scripts/US09.txt | Passed Tests: 35 | Not Passed Tests: 11
+
+FAILURES:
+   At line 19:Data inválida
+   At line 26:Carona Inválida
+   At line 27: Unexpected error: Solicitação inválida
+   At line 28: Unexpected error: Solicitação inválida
+   At line 29: Unexpected error: Solicitação inválida
+   At line 30: Unexpected error: Solicitação inválida
+   At line 33:Solicitação inexistente
+   At line 34: Unexpected error: Identificador do carona é inválido
+   At line 48:Carona inválida
+   At line 54: Expected &lt;1&gt;, but was &lt;0&gt;
+   At line 65: Expected &lt;1&gt;, but was &lt;0&gt;
+======================== 
+
+Test file: scripts/US10.txt | Passed Tests: 21 | Not Passed Tests: 3
+
+FAILURES:
+   At line 24:Data inválida
+   At line 31: Unexpected error: Identificador do carona é inválido
+   At line 38: Expected &lt;{-2118737433,}&gt;, but was &lt;{-2118737433}&gt;
+======================== 
+
+Test file: scripts/US11.txt | Passed Tests: 32 | Not Passed Tests: 1
+
+FAILURES:
+   At line 54: Expected &lt;[Carona cadastrada no dia 23/06/2012, às 16:00 de acordo com os seus interesses registrados. Entrar em contato com jucaPeroba@gmail.com]&gt;, but was &lt;[]&gt;
+======================== 
+
+Test file: scripts/US12.txt | Passed Tests: 26 | Not Passed Tests: 0
+
+======================== 
+
+
+</system-out>
+    <system-err>java.lang.NumberFormatException: For input string: &quot;&quot;
+	at java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
+	at java.lang.Integer.parseInt(Integer.java:493)
+	at java.lang.Integer.parseInt(Integer.java:514)
+	at estradasolidaria.ui.server.logic.EasyacceptEstradaSolidariaAdapter.aceitarSolicitacao(EasyacceptEstradaSolidariaAdapter.java:487)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at easyaccept.JavaApplicationFacadeAdapter.invoke(JavaApplicationFacadeAdapter.java:43)
+	at easyaccept.script.Script.execute(Script.java:315)
+	at easyaccept.script.Script.executeCommand(Script.java:231)
+	at easyaccept.script.Script.getAndExecuteCommand(Script.java:211)
+	at easyaccept.script.Script.execute(Script.java:375)
+	at easyaccept.script.Script.executeAndCheck(Script.java:343)
+	at easyaccept.script.Script.scriptExecutor(Script.java:497)
+	at easyaccept.script.Script.run(Script.java:150)
+	at easyaccept.EasyAcceptRunner.runScript(EasyAcceptRunner.java:60)
+	at easyaccept.EasyAcceptFacade.runAcceptanceTest(EasyAcceptFacade.java:68)
+	at easyaccept.EasyAcceptFacade.executeTests(EasyAcceptFacade.java:79)
+	at estradasolidaria.tests.USTest.testarEasyAcceptScript(USTest.java:47)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:243)
+	at junit.framework.TestSuite.run(TestSuite.java:238)
+	at org.junit.internal.runners.JUnit38ClassRunner.run(JUnit38ClassRunner.java:83)
+	at org.apache.maven.surefire.junit4.JUnit4TestSet.execute(JUnit4TestSet.java:35)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:146)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:97)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.booter.ProviderFactory$ClassLoaderProxy.invoke(ProviderFactory.java:103)
+	at $Proxy0.invoke(Unknown Source)
+	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:145)
+	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcess(SurefireStarter.java:87)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:69)
+</system-err>
+  </testcase>
+</testsuite>
