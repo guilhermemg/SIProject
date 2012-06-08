@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: estradasolidaria.unittest.SolicitacaoTest
 -------------------------------------------------------------------------------
-Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.029 sec
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 sec

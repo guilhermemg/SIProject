@@ -5,7 +5,8 @@ import java.util.List;
 import javax.mail.MessagingException;
 
 public class GUIEstradaSolidariaAdapter implements AdapterInterface {
-
+	private EstradaSolidariaController controller = EstradaSolidariaController.getInstance();
+	
 	@Override
 	public void criarUsuario(String login, String senha, String nome,
 			String endereco, String email) {

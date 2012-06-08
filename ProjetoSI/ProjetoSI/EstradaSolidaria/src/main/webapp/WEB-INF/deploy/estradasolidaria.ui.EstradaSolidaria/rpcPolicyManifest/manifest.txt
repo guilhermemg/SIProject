@@ -1,2 +1,3 @@
 # Module estradasolidaria.ui.EstradaSolidaria
 # RPC service class, partial path of RPC policy file
+estradasolidaria.ui.client.GreetingService, 9F50642ACA2EA5232B6C4BEE9272D89B.gwt.rpc
