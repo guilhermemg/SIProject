@@ -600,11 +600,11 @@ public class Usuario implements Serializable {
 		iteratorCaronasPegas = this.mapIdCaronasPegas.values().iterator();
 		while (iteratorCaronasPegas.hasNext()) {
 			Carona c = iteratorCaronasPegas.next();
-			Iterator<String> it = c.getMapIdUsuarioReviewVagaEmCarona()
+			Iterator<EnumCaronaReview> it = c.getMapDonoReviewCaroneiro()
 					.values().iterator();
 			while (it.hasNext()) {
-				String review = it.next();
-				if (review.equals(EnumCaronaReview.NAO_FALTOU.getReview())) {
+				EnumCaronaReview review = it.next();
+				if (review.equals(EnumCaronaReview.NAO_FALTOU)) {
 					sum++;
 				}
 			}
@@ -624,11 +624,11 @@ public class Usuario implements Serializable {
 		iteratorCaronasPegas = this.mapIdCaronasPegas.values().iterator();
 		while (iteratorCaronasPegas.hasNext()) {
 			Carona c = iteratorCaronasPegas.next();
-			Iterator<String> it = c.getMapIdUsuarioReviewVagaEmCarona()
+			Iterator<EnumCaronaReview> it = c.getMapDonoReviewCaroneiro()
 					.values().iterator();
 			while (it.hasNext()) {
-				String review = it.next();
-				if (review.equals(EnumCaronaReview.FALTOU.getReview())) {
+				EnumCaronaReview review = it.next();
+				if (review.equals(EnumCaronaReview.FALTOU)) {
 					sum++;
 				}
 			}
@@ -648,10 +648,10 @@ public class Usuario implements Serializable {
 				.iterator();
 		while (iteratorIdCaronasOferecidas.hasNext()) {
 			Carona c = iteratorIdCaronasOferecidas.next();
-			Iterator<String> it = c.getMapIdUsuarioReview().values().iterator();
+			Iterator<EnumCaronaReview> it = c.getMapDonoReviewCaroneiro().values().iterator();
 			while (it.hasNext()) {
-				String review = it.next();
-				if (review.equals(EnumCaronaReview.NAO_FUNCIONOU.getReview())) {
+				EnumCaronaReview review = it.next();
+				if (review.equals(EnumCaronaReview.NAO_FUNCIONOU)) {
 					sum++;
 				}
 			}
@@ -671,11 +671,10 @@ public class Usuario implements Serializable {
 				.iterator();
 		while (iteratorIdCaronasOferecidas.hasNext()) {
 			Carona c = iteratorIdCaronasOferecidas.next();
-			Iterator<String> it = c.getMapIdUsuarioReview().values().iterator();
+			Iterator<EnumCaronaReview> it = c.getMapDonoReviewCaroneiro().values().iterator();
 			while (it.hasNext()) {
-				String review = it.next();
-				if (review.equals(EnumCaronaReview.SEGURA_E_TRANQUILA
-						.getReview())) {
+				EnumCaronaReview review = it.next();
+				if (review.equals(EnumCaronaReview.SEGURA_E_TRANQUILA)) {
 					sum++;
 				}
 			}

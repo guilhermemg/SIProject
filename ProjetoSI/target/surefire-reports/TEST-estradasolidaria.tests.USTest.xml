@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="1" time="1.096" errors="0" skipped="0" tests="1" name="estradasolidaria.tests.USTest">
+<testsuite failures="1" time="1.439" errors="0" skipped="0" tests="1" name="estradasolidaria.tests.USTest">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-6-openjdk/jre/lib/i386"/>
@@ -19,7 +19,7 @@
     <property name="basedir" value="/home/guilhermemg/git/SIProject/ProjetoSI"/>
     <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-6-openjdk/jre/lib/endorsed"/>
     <property name="os.arch" value="i386"/>
-    <property name="surefire.real.class.path" value="/home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefirebooter5371378914802050600.jar"/>
+    <property name="surefire.real.class.path" value="/home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefirebooter6875277487097236989.jar"/>
     <property name="java.io.tmpdir" value="/tmp"/>
     <property name="line.separator" value="
 "/>
@@ -42,7 +42,7 @@
     <property name="java.vm.specification.version" value="1.0"/>
     <property name="sun.arch.data.model" value="32"/>
     <property name="java.home" value="/usr/lib/jvm/java-6-openjdk/jre"/>
-    <property name="sun.java.command" value="/home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefirebooter5371378914802050600.jar /home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefire2403297541278825450tmp /home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefire3275149591785405305tmp"/>
+    <property name="sun.java.command" value="/home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefirebooter6875277487097236989.jar /home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefire5523537925887830499tmp /home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefire7524250725650597098tmp"/>
     <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
     <property name="user.language" value="pt"/>
     <property name="java.vm.info" value="mixed mode"/>
@@ -59,7 +59,7 @@
     <property name="sun.desktop" value="gnome"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="1.086" classname="estradasolidaria.tests.USTest" name="testarEasyAcceptScript">
+  <testcase time="1.412" classname="estradasolidaria.tests.USTest" name="testarEasyAcceptScript">
     <failure message="null" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: null
 	at junit.framework.Assert.fail(Assert.java:47)
 	at junit.framework.Assert.assertTrue(Assert.java:20)
@@ -91,7 +91,7 @@
 	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcess(SurefireStarter.java:87)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:69)
 </failure>
-    <system-out>@SLTests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 sec
+    <system-out>@SLTests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.025 sec
 @SLRunning estradasolidaria.tests.USTest
 Validou data
 Data está ultrapassada. Não validou data.
@@ -208,7 +208,7 @@ FAILURES:
    At line 27:Data inválida
    At line 28: Unexpected error: Identificador do carona é inválido
    At line 29: Unexpected error: Identificador do carona é inválido
-   At line 52: Expected &lt;{,,675700021,-1349634260,397102539}&gt;, but was &lt;{675700021,-1349634260,397102539}&gt;
+   At line 52: Expected &lt;{,,675700021,1472910805,794453364}&gt;, but was &lt;{675700021,1472910805,794453364}&gt;
    At line 65: Expected the error message &lt;Data inválida&gt;, but the error message was &lt;(no message: exception = java.lang.NullPointerException)&gt;
    At line 73: Expected the error message &lt;Hora inválida&gt;, but the error message was &lt;Data inválida&gt;
    At line 74: Expected the error message &lt;Hora inválida&gt;, but the error message was &lt;Data inválida&gt;

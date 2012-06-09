@@ -50,11 +50,11 @@ public class Carona implements Comparable<Carona>, Serializable {
 
 	// contem o mapeamento de cada usuario que compareceu a carona para o review
 	// q ele faz dela.
-	private Map<Integer, String> mapCaroneiroReviewDono = new TreeMap<Integer, String>();
+	private Map<Integer, EnumCaronaReview> mapCaroneiroReviewDono = new TreeMap<Integer, EnumCaronaReview>();
 
 	// contem o mapeamento de cada usuario presente para o review q o dono da
 	// carona faz dele.
-	private Map<Integer, String> mapDonoReviewCaroneiro = new TreeMap<Integer, String>();
+	private Map<Integer, EnumCaronaReview> mapDonoReviewCaroneiro = new TreeMap<Integer, EnumCaronaReview>();
 	private Map<Integer, Sugestao> mapSugestoesPontoDeEncontro = new TreeMap<Integer, Sugestao>();
 
 
@@ -578,7 +578,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return mapa
 	 */
-	public Map<Integer, String> getMapIdUsuarioReviewVagaEmCarona() {
+	public Map<Integer, EnumCaronaReview> getMapDonoReviewCaroneiro() {
 		return this.mapDonoReviewCaroneiro;
 	}
 
@@ -593,10 +593,9 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 */
 	public void setReviewCarona(Integer idCaroneiro, String review) {
-		if (validaReview(review)) {
-			this.mapCaroneiroReviewDono.put(idCaroneiro, review);
-		} else
-			throw new IllegalArgumentException("Opção inválida.");
+		EnumCaronaReview e = getReview(review);
+		this.mapCaroneiroReviewDono.put(idCaroneiro, e);
+		
 	}
 
 	/**
@@ -609,8 +608,8 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 */
 	public void setReviewVagaEmCarona(Integer idCaroneiro, String review) {
-		if (validaReview(review))
-			this.mapDonoReviewCaroneiro.put(idCaroneiro, review);
+		EnumCaronaReview e = getReview(review);
+		this.mapDonoReviewCaroneiro.put(idCaroneiro, e);
 	}
 
 	/**
@@ -620,17 +619,18 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @param review
 	 * @return true: se existe, false: se não existe @
 	 */
-	private boolean validaReview(String review) {
-		List<String> reviewsValidos = new LinkedList<String>();
-		reviewsValidos.add(EnumCaronaReview.FALTOU.getReview());
-		reviewsValidos.add(EnumCaronaReview.NAO_FALTOU.getReview());
-		reviewsValidos.add(EnumCaronaReview.SEGURA_E_TRANQUILA.getReview());
-		reviewsValidos.add(EnumCaronaReview.NAO_FUNCIONOU.getReview());
+	private EnumCaronaReview getReview(String review) {
+		List<EnumCaronaReview> reviewsValidos = new LinkedList<EnumCaronaReview>();
+		reviewsValidos.add(EnumCaronaReview.FALTOU);
+		reviewsValidos.add(EnumCaronaReview.NAO_FALTOU);
+		reviewsValidos.add(EnumCaronaReview.SEGURA_E_TRANQUILA);
+		reviewsValidos.add(EnumCaronaReview.NAO_FUNCIONOU);
 
-		if (!reviewsValidos.contains(review)) {
-			throw new IllegalArgumentException("Opção inválida.");
+		for(EnumCaronaReview e : reviewsValidos) {
+			if(e.getReview().equals(review))
+				return e;
 		}
-		return true;
+		throw new IllegalArgumentException("Opção inválida.");
 	}
 
 	/**
@@ -639,7 +639,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return mapIdUsuarioReview
 	 */
-	public Map<Integer, String> getMapIdUsuarioReview() {
+	public Map<Integer, EnumCaronaReview> getMapCaroneiroReviewDono() {
 		return this.mapCaroneiroReviewDono;
 	}
 
