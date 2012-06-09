@@ -175,7 +175,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	public void setData(String data) {
 		if(data == null || data.equals(""))
 			throw new IllegalArgumentException("Data inválida");
-		else if(dateUtil.validaData(data))
+		else if(dateUtil.validaData(data) && dateUtil.validaDataJaPassou())
 			this.data = data;
 		else
 			throw new IllegalArgumentException("Data inválida");

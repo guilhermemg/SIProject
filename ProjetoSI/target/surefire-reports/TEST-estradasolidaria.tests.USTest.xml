@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="1" time="5.183" errors="0" skipped="0" tests="1" name="estradasolidaria.tests.USTest">
+<testsuite failures="1" time="1.096" errors="0" skipped="0" tests="1" name="estradasolidaria.tests.USTest">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-6-openjdk/jre/lib/i386"/>
@@ -19,7 +19,7 @@
     <property name="basedir" value="/home/guilhermemg/git/SIProject/ProjetoSI"/>
     <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-6-openjdk/jre/lib/endorsed"/>
     <property name="os.arch" value="i386"/>
-    <property name="surefire.real.class.path" value="/home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefirebooter8420813472460398937.jar"/>
+    <property name="surefire.real.class.path" value="/home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefirebooter5371378914802050600.jar"/>
     <property name="java.io.tmpdir" value="/tmp"/>
     <property name="line.separator" value="
 "/>
@@ -27,7 +27,7 @@
     <property name="os.name" value="Linux"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
     <property name="java.library.path" value="/usr/lib/jvm/java-6-openjdk/jre/lib/i386/server:/usr/lib/jvm/java-6-openjdk/jre/lib/i386:/usr/lib/jvm/java-6-openjdk/jre/../lib/i386:/usr/lib/jvm/java-6-openjdk/jre/lib/i386/client:/usr/lib/jvm/java-6-openjdk/jre/lib/i386::/usr/java/packages/lib/i386:/usr/lib/i386-linux-gnu/jni:/lib/i386-linux-gnu:/usr/lib/i386-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
-    <property name="surefire.test.class.path" value="/home/guilhermemg/git/SIProject/ProjetoSI/target/test-classes:/home/guilhermemg/git/SIProject/ProjetoSI/ProjetoSI/EstradaSolidaria/src/main/webapp/WEB-INF/classes:/home/guilhermemg/.m2/repository/com/google/gwt/gwt-servlet/2.4.0/gwt-servlet-2.4.0.jar:/home/guilhermemg/.m2/repository/com/google/gwt/gwt-user/2.4.0/gwt-user-2.4.0.jar:/home/guilhermemg/.m2/repository/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA.jar:/home/guilhermemg/.m2/repository/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA-sources.jar:/home/guilhermemg/.m2/repository/junit/junit/4.8.2/junit-4.8.2.jar:/home/guilhermemg/.m2/repository/easyaccept/easyaccept/1.0/easyaccept-1.0.jar:/home/guilhermemg/.m2/repository/javax/mail/mail/1.4.5/mail-1.4.5.jar:/home/guilhermemg/.m2/repository/javax/activation/activation/1.1/activation-1.1.jar:/home/guilhermemg/.m2/repository/com/thoughtworks/xstream/xstream/1.4.2/xstream-1.4.2.jar:/home/guilhermemg/.m2/repository/xmlpull/xmlpull/1.1.3.1/xmlpull-1.1.3.1.jar:/home/guilhermemg/.m2/repository/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c.jar:"/>
+    <property name="surefire.test.class.path" value="/home/guilhermemg/git/SIProject/ProjetoSI/ProjetoSI/EstradaSolidaria/src/main/webapp/WEB-INF/test-classes:/home/guilhermemg/git/SIProject/ProjetoSI/ProjetoSI/EstradaSolidaria/src/main/webapp/WEB-INF/classes:/home/guilhermemg/.m2/repository/com/google/gwt/gwt-servlet/2.4.0/gwt-servlet-2.4.0.jar:/home/guilhermemg/.m2/repository/com/google/gwt/gwt-user/2.4.0/gwt-user-2.4.0.jar:/home/guilhermemg/.m2/repository/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA.jar:/home/guilhermemg/.m2/repository/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA-sources.jar:/home/guilhermemg/.m2/repository/junit/junit/4.8.2/junit-4.8.2.jar:/home/guilhermemg/.m2/repository/easyaccept/easyaccept/1.0/easyaccept-1.0.jar:/home/guilhermemg/.m2/repository/javax/mail/mail/1.4.5/mail-1.4.5.jar:/home/guilhermemg/.m2/repository/javax/activation/activation/1.1/activation-1.1.jar:/home/guilhermemg/.m2/repository/com/thoughtworks/xstream/xstream/1.4.2/xstream-1.4.2.jar:/home/guilhermemg/.m2/repository/xmlpull/xmlpull/1.1.3.1/xmlpull-1.1.3.1.jar:/home/guilhermemg/.m2/repository/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c.jar:"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.class.version" value="50.0"/>
     <property name="sun.management.compiler" value="HotSpot Tiered Compilers"/>
@@ -38,11 +38,11 @@
     <property name="file.encoding" value="UTF-8"/>
     <property name="java.specification.version" value="1.6"/>
     <property name="user.name" value="guilhermemg"/>
-    <property name="java.class.path" value="/home/guilhermemg/git/SIProject/ProjetoSI/target/test-classes:/home/guilhermemg/git/SIProject/ProjetoSI/ProjetoSI/EstradaSolidaria/src/main/webapp/WEB-INF/classes:/home/guilhermemg/.m2/repository/com/google/gwt/gwt-servlet/2.4.0/gwt-servlet-2.4.0.jar:/home/guilhermemg/.m2/repository/com/google/gwt/gwt-user/2.4.0/gwt-user-2.4.0.jar:/home/guilhermemg/.m2/repository/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA.jar:/home/guilhermemg/.m2/repository/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA-sources.jar:/home/guilhermemg/.m2/repository/junit/junit/4.8.2/junit-4.8.2.jar:/home/guilhermemg/.m2/repository/easyaccept/easyaccept/1.0/easyaccept-1.0.jar:/home/guilhermemg/.m2/repository/javax/mail/mail/1.4.5/mail-1.4.5.jar:/home/guilhermemg/.m2/repository/javax/activation/activation/1.1/activation-1.1.jar:/home/guilhermemg/.m2/repository/com/thoughtworks/xstream/xstream/1.4.2/xstream-1.4.2.jar:/home/guilhermemg/.m2/repository/xmlpull/xmlpull/1.1.3.1/xmlpull-1.1.3.1.jar:/home/guilhermemg/.m2/repository/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c.jar:"/>
+    <property name="java.class.path" value="/home/guilhermemg/git/SIProject/ProjetoSI/ProjetoSI/EstradaSolidaria/src/main/webapp/WEB-INF/test-classes:/home/guilhermemg/git/SIProject/ProjetoSI/ProjetoSI/EstradaSolidaria/src/main/webapp/WEB-INF/classes:/home/guilhermemg/.m2/repository/com/google/gwt/gwt-servlet/2.4.0/gwt-servlet-2.4.0.jar:/home/guilhermemg/.m2/repository/com/google/gwt/gwt-user/2.4.0/gwt-user-2.4.0.jar:/home/guilhermemg/.m2/repository/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA.jar:/home/guilhermemg/.m2/repository/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA-sources.jar:/home/guilhermemg/.m2/repository/junit/junit/4.8.2/junit-4.8.2.jar:/home/guilhermemg/.m2/repository/easyaccept/easyaccept/1.0/easyaccept-1.0.jar:/home/guilhermemg/.m2/repository/javax/mail/mail/1.4.5/mail-1.4.5.jar:/home/guilhermemg/.m2/repository/javax/activation/activation/1.1/activation-1.1.jar:/home/guilhermemg/.m2/repository/com/thoughtworks/xstream/xstream/1.4.2/xstream-1.4.2.jar:/home/guilhermemg/.m2/repository/xmlpull/xmlpull/1.1.3.1/xmlpull-1.1.3.1.jar:/home/guilhermemg/.m2/repository/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c.jar:"/>
     <property name="java.vm.specification.version" value="1.0"/>
     <property name="sun.arch.data.model" value="32"/>
     <property name="java.home" value="/usr/lib/jvm/java-6-openjdk/jre"/>
-    <property name="sun.java.command" value="/home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefirebooter8420813472460398937.jar /home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefire153963268956422925tmp /home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefire1146915428408940547tmp"/>
+    <property name="sun.java.command" value="/home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefirebooter5371378914802050600.jar /home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefire2403297541278825450tmp /home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefire3275149591785405305tmp"/>
     <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
     <property name="user.language" value="pt"/>
     <property name="java.vm.info" value="mixed mode"/>
@@ -59,7 +59,7 @@
     <property name="sun.desktop" value="gnome"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="5.164" classname="estradasolidaria.tests.USTest" name="testarEasyAcceptScript">
+  <testcase time="1.086" classname="estradasolidaria.tests.USTest" name="testarEasyAcceptScript">
     <failure message="null" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: null
 	at junit.framework.Assert.fail(Assert.java:47)
 	at junit.framework.Assert.assertTrue(Assert.java:20)
@@ -91,13 +91,114 @@
 	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcess(SurefireStarter.java:87)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:69)
 </failure>
-    <system-out>@SLTests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 sec
+    <system-out>@SLTests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 sec
 @SLRunning estradasolidaria.tests.USTest
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data ainda nao passou
+Validou data
+Data ainda nao passou
+Validou data
+Data ainda nao passou
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data ainda nao passou
+Validou data
+Data ainda nao passou
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data ainda nao passou
+Validou data
+Data ainda nao passou
+Validou data
+Data ainda nao passou
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data ainda nao passou
+Validou data
+Data ainda nao passou
+Validou data
+Data ainda nao passou
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data ainda nao passou
+Validou data
+Data ainda nao passou
+Validou data
+Data ainda nao passou
+Validou data
+Data ainda nao passou
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data ainda nao passou
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Validou data
+Validou data
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
+Validou data
+Data está ultrapassada. Não validou data.
 Test file: scripts/US01.txt | Passed Tests: 33 | Not Passed Tests: 0
 
 ======================== 
 
-Test file: scripts/US02.txt | Passed Tests: 51 | Not Passed Tests: 13
+Test file: scripts/US02.txt | Passed Tests: 50 | Not Passed Tests: 14
 
 FAILURES:
    At line 22:Data inválida
@@ -107,34 +208,63 @@ FAILURES:
    At line 27:Data inválida
    At line 28: Unexpected error: Identificador do carona é inválido
    At line 29: Unexpected error: Identificador do carona é inválido
-   At line 52: Expected &lt;{,,-32418646,781490428,574305186}&gt;, but was &lt;{-32418646,781490428,574305186}&gt;
+   At line 52: Expected &lt;{,,675700021,-1349634260,397102539}&gt;, but was &lt;{675700021,-1349634260,397102539}&gt;
    At line 65: Expected the error message &lt;Data inválida&gt;, but the error message was &lt;(no message: exception = java.lang.NullPointerException)&gt;
+   At line 73: Expected the error message &lt;Hora inválida&gt;, but the error message was &lt;Data inválida&gt;
    At line 74: Expected the error message &lt;Hora inválida&gt;, but the error message was &lt;Data inválida&gt;
    At line 75: Expected the error message &lt;Hora inválida&gt;, but the error message was &lt;Data inválida&gt;
    At line 84: Expected the error message &lt;Atributo inválido&gt;, but the error message was &lt;Identificador do carona é inválido&gt;
    At line 85: Expected the error message &lt;Atributo inexistente&gt;, but the error message was &lt;Identificador do carona é inválido&gt;
 ======================== 
 
-Test file: scripts/US03.txt | Passed Tests: 21 | Not Passed Tests: 0
-
-======================== 
-
-Test file: scripts/US04.txt | Passed Tests: 34 | Not Passed Tests: 7
+Test file: scripts/US03.txt | Passed Tests: 17 | Not Passed Tests: 4
 
 FAILURES:
-   At line 47: Unexpected error: Atributo inexistente
-   At line 48: Unexpected error: Atributo inexistente
-   At line 49: Unexpected error: Atributo inexistente
-   At line 50: Unexpected error: Atributo inexistente
-   At line 51: Unexpected error: Atributo inexistente
-   At line 58: Unexpected error: Atributo inexistente
-   At line 73: exception = java.lang.NullPointerException)
+   At line 24:Data inválida
+   At line 25:Data inválida
+   At line 26:Data inválida
+   At line 32: Expected &lt;{,,}&gt;, but was &lt;{}&gt;
 ======================== 
 
-Test file: scripts/US05.txt | Passed Tests: 22 | Not Passed Tests: 10
+Test file: scripts/US04.txt | Passed Tests: 21 | Not Passed Tests: 20
 
 FAILURES:
    At line 23:Data inválida
+   At line 24:Data inválida
+   At line 25:Data inválida
+   At line 36:IdCarona inválido
+   At line 41:Identificador do carona é inválido
+   At line 46:Carona Inexistente
+   At line 47: Unexpected error: Solicitação inválida
+   At line 48: Unexpected error: Solicitação inválida
+   At line 49: Unexpected error: Solicitação inválida
+   At line 50: Unexpected error: Solicitação inválida
+   At line 51: Unexpected error: Solicitação inválida
+   At line 56:Solicitação inexistente
+   At line 57: Unexpected error: Identificador do carona é inválido
+   At line 58: Unexpected error: Solicitação inválida
+   At line 63: Unexpected error: Identificador do carona é inválido
+   At line 66:IdCarona inválido
+   At line 70:Identificador do carona é inválido
+   At line 73:Carona Inválida
+   At line 76: Expected the error message &lt;Ponto Inválido&gt;, but the error message was &lt;IdCarona inválido&gt;
+   At line 77: Expected the error message &lt;Ponto Inválido&gt;, but the error message was &lt;Identificador do carona é inválido&gt;
+======================== 
+
+Test file: scripts/US05.txt | Passed Tests: 12 | Not Passed Tests: 20
+
+FAILURES:
+   At line 21:Data inválida
+   At line 22:Data inválida
+   At line 23:Data inválida
+   At line 34:Carona Inválida
+   At line 35: Unexpected error: Solicitação inválida
+   At line 36: Unexpected error: Solicitação inválida
+   At line 37: Unexpected error: Solicitação inválida
+   At line 38: Unexpected error: Solicitação inválida
+   At line 44:Solicitação inexistente
+   At line 45: Unexpected error: Identificador do carona é inválido
+   At line 49: Unexpected error: Identificador do carona é inválido
    At line 52:Carona Inválida
    At line 53: Unexpected error: Solicitação inválida
    At line 54: Unexpected error: Solicitação inválida
@@ -150,18 +280,50 @@ Test file: scripts/US06.txt | Passed Tests: 26 | Not Passed Tests: 0
 
 ======================== 
 
-Test file: scripts/US07.txt | Passed Tests: 62 | Not Passed Tests: 0
+Test file: scripts/US07.txt | Passed Tests: 28 | Not Passed Tests: 34
 
+FAILURES:
+   At line 33:Data inválida
+   At line 34:Data inválida
+   At line 35:Data inválida
+   At line 57: Unexpected error: Identificador do carona é inválido
+   At line 70:Usuário inexistente
+   At line 71:Usuário inexistente
+   At line 74: Unexpected error: Usuário inexistente
+   At line 75: Unexpected error: Usuário inexistente
+   At line 76: Unexpected error: Usuário inexistente
+   At line 77: Unexpected error: Usuário inexistente
+   At line 80: exception = java.lang.NullPointerException)
+   At line 81: Unexpected error: Item inexistente
+   At line 82: Unexpected error: Item inexistente
+   At line 84: exception = java.lang.NullPointerException)
+   At line 85: Unexpected error: Item inexistente
+   At line 86: Unexpected error: Item inexistente
+   At line 88: exception = java.lang.NullPointerException)
+   At line 89: Unexpected error: Identificador do carona é inválido
+   At line 90: Unexpected error: Identificador do carona é inválido
+   At line 92: exception = java.lang.NullPointerException)
+   At line 93: Unexpected error: Identificador do carona é inválido
+   At line 94: Unexpected error: Identificador do carona é inválido
+   At line 96: exception = java.lang.NullPointerException)
+   At line 97: Unexpected error: Identificador do carona é inválido
+   At line 98: Unexpected error: Identificador do carona é inválido
+   At line 100: exception = java.lang.NullPointerException)
+   At line 101: Unexpected error: Item inexistente
+   At line 102: Unexpected error: Item inexistente
+   At line 105: Unexpected error: (no message: exception = java.lang.NullPointerException)
+   At line 106: Unexpected error: (no message: exception = java.lang.NullPointerException)
+   At line 109: Unexpected error: (no message: exception = java.lang.NullPointerException)
+   At line 110: Unexpected error: (no message: exception = java.lang.NullPointerException)
+   At line 111: Unexpected error: Carona Inexistente
+   At line 114: Unexpected error: Carona Inexistente
 ======================== 
 
-Test file: scripts/US08.txt | Passed Tests: 48 | Not Passed Tests: 0
-
-======================== 
-
-Test file: scripts/US09.txt | Passed Tests: 35 | Not Passed Tests: 11
+Test file: scripts/US08.txt | Passed Tests: 23 | Not Passed Tests: 25
 
 FAILURES:
    At line 19:Data inválida
+   At line 20:Data inválida
    At line 26:Carona Inválida
    At line 27: Unexpected error: Solicitação inválida
    At line 28: Unexpected error: Solicitação inválida
@@ -169,77 +331,104 @@ FAILURES:
    At line 30: Unexpected error: Solicitação inválida
    At line 33:Solicitação inexistente
    At line 34: Unexpected error: Identificador do carona é inválido
+   At line 37:Carona Inválida
+   At line 38: Unexpected error: Solicitação inválida
+   At line 39: Unexpected error: Solicitação inválida
+   At line 40: Unexpected error: Solicitação inválida
+   At line 41: Unexpected error: Solicitação inválida
+   At line 44:Solicitação inexistente
+   At line 45: Unexpected error: Identificador do carona é inválido
+   At line 48:Carona Inválida
+   At line 53: Expected &lt;[,]&gt;, but was &lt;[]&gt;
+   At line 57: Expected &lt;1&gt;, but was &lt;0&gt;
+   At line 60:Carona Inválida
+   At line 65: Expected &lt;[,]&gt;, but was &lt;[]&gt;
+   At line 69: Expected &lt;1&gt;, but was &lt;0&gt;
+   At line 70: Expected &lt;1&gt;, but was &lt;0&gt;
+   At line 73: Expected the error message &lt;Opção inválida.&gt;, but the error message was &lt;Carona Inválida&gt;
+   At line 78: Expected the error message &lt;Usuário não possui vaga na carona.&gt;, but the error message was &lt;Carona Inválida&gt;
+======================== 
+
+Test file: scripts/US09.txt | Passed Tests: 23 | Not Passed Tests: 23
+
+FAILURES:
+   At line 19:Data inválida
+   At line 20:Data inválida
+   At line 26:Carona Inválida
+   At line 27: Unexpected error: Solicitação inválida
+   At line 28: Unexpected error: Solicitação inválida
+   At line 29: Unexpected error: Solicitação inválida
+   At line 30: Unexpected error: Solicitação inválida
+   At line 33:Solicitação inexistente
+   At line 34: Unexpected error: Identificador do carona é inválido
+   At line 37:Carona Inválida
+   At line 38: Unexpected error: Solicitação inválida
+   At line 39: Unexpected error: Solicitação inválida
+   At line 40: Unexpected error: Solicitação inválida
+   At line 41: Unexpected error: Solicitação inválida
+   At line 44:Solicitação inexistente
+   At line 45: Unexpected error: Identificador do carona é inválido
    At line 48:Carona inválida
    At line 54: Expected &lt;1&gt;, but was &lt;0&gt;
+   At line 59:Carona inválida
    At line 65: Expected &lt;1&gt;, but was &lt;0&gt;
+   At line 66: Expected &lt;1&gt;, but was &lt;0&gt;
+   At line 70: Expected the error message &lt;Opção inválida.&gt;, but the error message was &lt;Carona inválida&gt;
+   At line 75: Expected the error message &lt;Usuário não possui vaga na carona.&gt;, but the error message was &lt;Carona inválida&gt;
 ======================== 
 
-Test file: scripts/US10.txt | Passed Tests: 21 | Not Passed Tests: 3
+Test file: scripts/US10.txt | Passed Tests: 11 | Not Passed Tests: 13
 
 FAILURES:
+   At line 19:Data inválida
+   At line 20:Data inválida
+   At line 21:Data inválida
+   At line 22:Data inválida
+   At line 23:Data inválida
    At line 24:Data inválida
+   At line 26: Unexpected error: Identificador do carona é inválido
+   At line 27: Unexpected error: Identificador do carona é inválido
+   At line 28: Unexpected error: Identificador do carona é inválido
+   At line 29: Unexpected error: Identificador do carona é inválido
+   At line 30: Unexpected error: Identificador do carona é inválido
    At line 31: Unexpected error: Identificador do carona é inválido
-   At line 38: Expected &lt;{-2118737433,}&gt;, but was &lt;{-2118737433}&gt;
+   At line 38: Expected &lt;{,}&gt;, but was &lt;{}&gt;
 ======================== 
 
-Test file: scripts/US11.txt | Passed Tests: 32 | Not Passed Tests: 1
+Test file: scripts/US11.txt | Passed Tests: 26 | Not Passed Tests: 7
 
 FAILURES:
+   At line 33:Data inválida
+   At line 41: Expected the error message &lt;Destino inválido&gt;, but the error message was &lt;Data inválida&gt;
+   At line 46:Data inválida
+   At line 47:Data inválida
+   At line 48:Data inválida
+   At line 53: Expected &lt;[Carona cadastrada no dia 23/06/2012, às 16:00 de acordo com os seus interesses registrados. Entrar em contato com jucaPeroba@gmail.com]&gt;, but was &lt;[]&gt;
    At line 54: Expected &lt;[Carona cadastrada no dia 23/06/2012, às 16:00 de acordo com os seus interesses registrados. Entrar em contato com jucaPeroba@gmail.com]&gt;, but was &lt;[]&gt;
 ======================== 
 
-Test file: scripts/US12.txt | Passed Tests: 26 | Not Passed Tests: 0
+Test file: scripts/US12.txt | Passed Tests: 10 | Not Passed Tests: 16
 
+FAILURES:
+   At line 16:Data inválida
+   At line 17:Data inválida
+   At line 23:Carona Inválida
+   At line 24: Unexpected error: Solicitação inválida
+   At line 25: Unexpected error: Solicitação inválida
+   At line 26: Unexpected error: Solicitação inválida
+   At line 27: Unexpected error: Solicitação inválida
+   At line 34:Solicitação inexistente
+   At line 35: Unexpected error: Identificador do carona é inválido
+   At line 42:Carona Inválida
+   At line 43: Unexpected error: Solicitação inválida
+   At line 44: Unexpected error: Solicitação inválida
+   At line 45: Unexpected error: Solicitação inválida
+   At line 46: Unexpected error: Solicitação inválida
+   At line 52:Id solicitação inválido
+   At line 53: Unexpected error: Identificador do carona é inválido
 ======================== 
 
 
 </system-out>
-    <system-err>java.lang.NumberFormatException: For input string: &quot;&quot;
-	at java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
-	at java.lang.Integer.parseInt(Integer.java:493)
-	at java.lang.Integer.parseInt(Integer.java:514)
-	at estradasolidaria.ui.server.logic.EasyacceptEstradaSolidariaAdapter.aceitarSolicitacao(EasyacceptEstradaSolidariaAdapter.java:487)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:616)
-	at easyaccept.JavaApplicationFacadeAdapter.invoke(JavaApplicationFacadeAdapter.java:43)
-	at easyaccept.script.Script.execute(Script.java:315)
-	at easyaccept.script.Script.executeCommand(Script.java:231)
-	at easyaccept.script.Script.getAndExecuteCommand(Script.java:211)
-	at easyaccept.script.Script.execute(Script.java:375)
-	at easyaccept.script.Script.executeAndCheck(Script.java:343)
-	at easyaccept.script.Script.scriptExecutor(Script.java:497)
-	at easyaccept.script.Script.run(Script.java:150)
-	at easyaccept.EasyAcceptRunner.runScript(EasyAcceptRunner.java:60)
-	at easyaccept.EasyAcceptFacade.runAcceptanceTest(EasyAcceptFacade.java:68)
-	at easyaccept.EasyAcceptFacade.executeTests(EasyAcceptFacade.java:79)
-	at estradasolidaria.tests.USTest.testarEasyAcceptScript(USTest.java:47)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:616)
-	at junit.framework.TestCase.runTest(TestCase.java:168)
-	at junit.framework.TestCase.runBare(TestCase.java:134)
-	at junit.framework.TestResult$1.protect(TestResult.java:110)
-	at junit.framework.TestResult.runProtected(TestResult.java:128)
-	at junit.framework.TestResult.run(TestResult.java:113)
-	at junit.framework.TestCase.run(TestCase.java:124)
-	at junit.framework.TestSuite.runTest(TestSuite.java:243)
-	at junit.framework.TestSuite.run(TestSuite.java:238)
-	at org.junit.internal.runners.JUnit38ClassRunner.run(JUnit38ClassRunner.java:83)
-	at org.apache.maven.surefire.junit4.JUnit4TestSet.execute(JUnit4TestSet.java:35)
-	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:146)
-	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:97)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:616)
-	at org.apache.maven.surefire.booter.ProviderFactory$ClassLoaderProxy.invoke(ProviderFactory.java:103)
-	at $Proxy0.invoke(Unknown Source)
-	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:145)
-	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcess(SurefireStarter.java:87)
-	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:69)
-</system-err>
   </testcase>
 </testsuite>

@@ -432,10 +432,12 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	 */
 	@Override
 	public String solicitarVagaPontoEncontro(String idSessao, String idCarona,
-			String ponto) throws CaronaInvalidaException {
+			String ponto) throws CaronaInvalidaException, CaronaInexistenteException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
-
+		if(idCarona == null || idCarona.equals(""))
+			throw new CaronaInexistenteException();
+		
 		Integer idSessao2 = null, idCarona2 = null;
 		try {
 			idSessao2 = Integer.parseInt(idSessao);
@@ -476,9 +478,9 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	 */
 	@Override
 	public void aceitarSolicitacao(String idSessao, String idSolicitacao) {
-		if (idSessao == null)
+		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
-		if (idSolicitacao == null)
+		if (idSolicitacao == null || idSolicitacao.equals(""))
 			throw new IllegalArgumentException("Solicitação inexistente");
 
 		Integer idSessao2 = null, idSolicitacao2 = null;
@@ -709,7 +711,10 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 			throw new IllegalArgumentException("IdSessao inválido");
 		if (vagas == null || vagas.equals(""))
 			throw new IllegalArgumentException("Vagas inválida");
-
+		
+		if(data == null || data.equals(""))
+			throw new IllegalArgumentException("Data inválida");
+		
 		Integer idSessao2 = null, vagas2 = null;
 		try {
 			idSessao2 = Integer.parseInt(idSessao);
@@ -961,6 +966,9 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 			String destino, String data, String horaInicio, String horaFim) {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
+		if(data == null || data.equals(""))
+			throw new IllegalArgumentException("Data inválida");
+		
 		Integer idSessao2 = null;
 		try {
 			idSessao2 = Integer.parseInt(idSessao);

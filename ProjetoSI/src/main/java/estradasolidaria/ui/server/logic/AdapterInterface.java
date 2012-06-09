@@ -155,9 +155,10 @@ public interface AdapterInterface {
 	 * @param ponto
 	 * @return id de solicitacao
 	 * @throws CaronaInvalidaException
+	 * @throws CaronaInexistenteException 
 	 */
 	public abstract String solicitarVagaPontoEncontro(String idSessao,
-			String idCarona, String ponto) throws CaronaInvalidaException;
+			String idCarona, String ponto) throws CaronaInvalidaException, CaronaInexistenteException;
 
 	/**
 	 * Aceita uma solicitacão.

@@ -54,12 +54,25 @@ public class DateUtil {
 			return false;
 		}
 		else {
-			return !validaDataJaPassou();
+			System.out.println("Validou data");
+			return true;
 		}
 	}
 	
-	private boolean validaDataJaPassou() {
-		return (calendar.getTimeInMillis() < Calendar.getInstance().getTimeInMillis());
+	/**
+	 * Valida se data ja passou
+	 * 
+	 * @return true se data ainda nao passou
+	 */
+	public boolean validaDataJaPassou() {
+		if(calendar.getTimeInMillis() > Calendar.getInstance().getTimeInMillis()) {
+			System.out.println("Data ainda nao passou");
+			return true;
+		}
+		else {
+			System.out.println("Data está ultrapassada. Não validou data.");
+			return false;
+		}
 	}
 	
 	/**
