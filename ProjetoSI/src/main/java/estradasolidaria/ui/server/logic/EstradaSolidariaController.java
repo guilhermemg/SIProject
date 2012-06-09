@@ -682,8 +682,6 @@ public class EstradaSolidariaController implements Serializable {
 			throw new IllegalArgumentException("Sessão inválida");
 		}
 
-		
-
 		Integer idCaroneiro = mapIdSessao.get(idSessao).getIdUser();
 
 		if (idCaroneiro == null)
@@ -691,15 +689,7 @@ public class EstradaSolidariaController implements Serializable {
 
 		Usuario caroneiro = mapIdUsuario.get(idCaroneiro);
 
-		if (!caroneiro.getMapIdCaronasPegas().containsKey(idCarona)) { // garante
-																		// que o
-																		// caroneiro
-																		// foi
-																		// aceito
-																		// pelo
-																		// dono
-																		// da
-																		// carona
+		if (!caroneiro.getMapIdCaronasPegas().containsKey(idCarona)) { // garante  que o caroneiro foi aceito pelo dono da carona
 			throw new IllegalArgumentException(
 					"Usuário não possui vaga na carona.");
 		}

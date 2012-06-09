@@ -109,7 +109,7 @@ public class InteresseTest {
 		assertEquals("Hora de Inicio esta errada.Espected \" \"",
 				i2.getHoraInicio(), "");
 		try {
-			new Interesse("Campina Grande", "João Pessoa", "29/02/2011",
+			new Interesse("Campina Grande", "João Pessoa", "28/02/2016",
 					"11:60", "");
 			fail();
 		} catch (IllegalArgumentException iae) {

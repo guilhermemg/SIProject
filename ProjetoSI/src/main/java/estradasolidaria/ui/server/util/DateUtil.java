@@ -47,6 +47,7 @@ public class DateUtil {
 			return false;
 		}
 		// 01 <= mes <= 12
+		calendar.set(Calendar.DAY_OF_MONTH, dia);
 		calendar.set(Calendar.MONTH, --mes); // 0=janeiro, 1=fevereiro, ...
 		calendar.set(Calendar.YEAR, ano);
 		
@@ -54,7 +55,6 @@ public class DateUtil {
 			return false;
 		}
 		else {
-			System.out.println("Validou data");
 			return true;
 		}
 	}
@@ -66,11 +66,9 @@ public class DateUtil {
 	 */
 	public boolean validaDataJaPassou() {
 		if(calendar.getTimeInMillis() > Calendar.getInstance().getTimeInMillis()) {
-			System.out.println("Data ainda nao passou");
 			return true;
 		}
 		else {
-			System.out.println("Data está ultrapassada. Não validou data.");
 			return false;
 		}
 	}

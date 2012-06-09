@@ -56,20 +56,20 @@ public class GerenciadorDeDados {
 	
 	private void makePersistence() {
 		String usuarios = xstream.toXML(mapIdUsuario); 
-//		writeIntoFile(usuarios);
+		writeIntoFile(usuarios);
 	}
 	
-//	private void writeIntoFile(String x) {
-//		try{
-//			FileOutputStream file = new FileOutputStream(fname, false);
-//			PrintWriter outputStream = new PrintWriter(new BufferedWriter(new OutputStreamWriter(file ,"UTF-8")));
-//			outputStream.write(x);
-//	        outputStream.close();
-//		}
-//		catch(Exception e){
-//			e.printStackTrace();
-//		}
-//	}
+	private void writeIntoFile(String x) {
+		try{
+			FileOutputStream file = new FileOutputStream(fname, false);
+			PrintWriter outputStream = new PrintWriter(new BufferedWriter(new OutputStreamWriter(file ,"UTF-8")));
+			outputStream.write(x);
+	        outputStream.close();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 	
 	/**
 	 * Repovoa o mapa de usuario do
@@ -92,6 +92,6 @@ public class GerenciadorDeDados {
 	 * Zera arquivo xml.
 	 */
 	public void zerarSistema() {
-//		writeIntoFile("");
+		writeIntoFile("");
 	}
 }

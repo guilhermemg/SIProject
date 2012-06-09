@@ -648,7 +648,7 @@ public class Usuario implements Serializable {
 				.iterator();
 		while (iteratorIdCaronasOferecidas.hasNext()) {
 			Carona c = iteratorIdCaronasOferecidas.next();
-			Iterator<EnumCaronaReview> it = c.getMapDonoReviewCaroneiro().values().iterator();
+			Iterator<EnumCaronaReview> it = c.getMapCaroneiroReviewDono().values().iterator();
 			while (it.hasNext()) {
 				EnumCaronaReview review = it.next();
 				if (review.equals(EnumCaronaReview.NAO_FUNCIONOU)) {
@@ -671,7 +671,7 @@ public class Usuario implements Serializable {
 				.iterator();
 		while (iteratorIdCaronasOferecidas.hasNext()) {
 			Carona c = iteratorIdCaronasOferecidas.next();
-			Iterator<EnumCaronaReview> it = c.getMapDonoReviewCaroneiro().values().iterator();
+			Iterator<EnumCaronaReview> it = c.getMapCaroneiroReviewDono().values().iterator();
 			while (it.hasNext()) {
 				EnumCaronaReview review = it.next();
 				if (review.equals(EnumCaronaReview.SEGURA_E_TRANQUILA)) {
