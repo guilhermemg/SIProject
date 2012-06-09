@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: estradasolidaria.unittest.InteresseTest
 -------------------------------------------------------------------------------
-Tests run: 4, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.256 sec <<< FAILURE!
-testConstrutorData(estradasolidaria.unittest.InteresseTest)  Time elapsed: 0.062 sec  <<< FAILURE!
+Tests run: 4, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.181 sec <<< FAILURE!
+testConstrutorData(estradasolidaria.unittest.InteresseTest)  Time elapsed: 0.067 sec  <<< FAILURE!
 java.lang.AssertionError: 
 	at org.junit.Assert.fail(Assert.java:91)
 	at org.junit.Assert.fail(Assert.java:98)
@@ -38,7 +38,7 @@ java.lang.AssertionError:
 	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcess(SurefireStarter.java:87)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:69)
 
-testConstrutorHora(estradasolidaria.unittest.InteresseTest)  Time elapsed: 0.015 sec  <<< FAILURE!
+testConstrutorHora(estradasolidaria.unittest.InteresseTest)  Time elapsed: 0.004 sec  <<< FAILURE!
 org.junit.ComparisonFailure: expected:<[Hor]a inválida> but was:<[Dat]a inválida>
 	at org.junit.Assert.assertEquals(Assert.java:123)
 	at org.junit.Assert.assertEquals(Assert.java:145)
