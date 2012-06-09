@@ -13,6 +13,7 @@ public class StateEditarPerfil extends Composite {
 		
 		AbsolutePanel absolutePanel_EditarPerfil = new AbsolutePanel();
 		initWidget(absolutePanel_EditarPerfil);
+		absolutePanel_EditarPerfil.setSize("683px", "371px");
 		
 		Label lblEditarPerfil = new Label("Editar Perfil");
 		absolutePanel_EditarPerfil.add(lblEditarPerfil, 10, 10);
