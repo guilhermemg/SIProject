@@ -66,9 +66,6 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 			throw new IllegalArgumentException("Vaga inválida");
 		}
 		
-		if(data.equals(""))
-			throw new IllegalArgumentException("Data inválida");
-
 		return sistema.cadastrarCarona(idSessao2, origem, destino, data, hora,
 				vagasInt).getIdCarona().toString();
 	}
@@ -712,9 +709,6 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 		if (vagas == null || vagas.equals(""))
 			throw new IllegalArgumentException("Vagas inválida");
 		
-		if(data == null || data.equals(""))
-			throw new IllegalArgumentException("Data inválida");
-		
 		Integer idSessao2 = null, vagas2 = null;
 		try {
 			idSessao2 = Integer.parseInt(idSessao);
@@ -966,9 +960,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 			String destino, String data, String horaInicio, String horaFim) {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
-		if(data == null || data.equals(""))
-			throw new IllegalArgumentException("Data inválida");
-		
+
 		Integer idSessao2 = null;
 		try {
 			idSessao2 = Integer.parseInt(idSessao);

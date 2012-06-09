@@ -15,8 +15,8 @@
   </properties>
 
   <build>
-        <outputDirectory>ProjetoSI/EstradaSolidaria/src/main/webapp/WEB-INF/classes/</outputDirectory>			
-        <testOutputDirectory>ProjetoSI/EstradaSolidaria/src/main/webapp/WEB-INF/test-classes/</testOutputDirectory>
+        <outputDirectory>EstradaSolidaria/src/main/webapp/WEB-INF/classes/</outputDirectory>			
+        <testOutputDirectory>EstradaSolidaria/src/main/webapp/WEB-INF/test-classes/</testOutputDirectory>
 	<plugins>
 		<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
