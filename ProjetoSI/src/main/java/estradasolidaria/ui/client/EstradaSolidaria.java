@@ -24,8 +24,8 @@ public class EstradaSolidaria implements EntryPoint {
 	/** 
 	 * Create a remote service proxy to talk to the server-side Greeting service.
 	 */
-	private final GreetingServiceAsync greetingService = GWT
-			.create(GreetingService.class);
+	private final EstradaSolidariaServiceAsync greetingService = GWT
+			.create(EstradaSolidariaService.class);
 
 	/**
 	 * This is the entry point method.
