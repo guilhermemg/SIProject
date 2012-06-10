@@ -41,8 +41,9 @@ public interface AdapterInterface {
 	 * @param login
 	 * @param senha
 	 * @return id sessao aberta
+	 * @throws UsuarioInexistenteException 
 	 */
-	public abstract String abrirSessao(String login, String senha);
+	public abstract String abrirSessao(String login, String senha) throws UsuarioInexistenteException;
 
 	/**
 	 * Retorna atributo de um usuario.
@@ -50,8 +51,9 @@ public interface AdapterInterface {
 	 * @param login
 	 * @param atributo
 	 * @return atributo
+	 * @throws UsuarioInexistenteException 
 	 */
-	public abstract Object getAtributoUsuario(String login, String atributo);
+	public abstract Object getAtributoUsuario(String login, String atributo) throws UsuarioInexistenteException;
 
 	/**
 	 * Retorna lista de ids de carona localizadas.
@@ -250,10 +252,11 @@ public interface AdapterInterface {
 	 * @param review
 	 *            : faltou ou nao faltou
 	 * @throws CaronaInvalidaException
+	 * @throws UsuarioInexistenteException 
 	 */
 	public abstract void reviewVagaEmCarona(String idSessao, String idCarona,
 			String loginCaroneiro, String review)
-			throws CaronaInvalidaException;
+			throws CaronaInvalidaException, UsuarioInexistenteException;
 
 	/**
 	 * Seta o valor do review da carona, diz se a carona foi boa ou nao. O
@@ -271,9 +274,10 @@ public interface AdapterInterface {
 	 *            : id da carona pega por ele (caroneiro)
 	 * @param review
 	 *            : review do caroneiro presente
+	 * @throws UsuarioInexistenteException 
 	 */
 	public abstract void reviewCarona(String idSessao, String idCarona,
-			String review) throws CaronaInexistenteException;
+			String review) throws CaronaInexistenteException, UsuarioInexistenteException;
 
 	/**
 	 * Cadastra no usuario identificado por idSessao, a carona com os atributos

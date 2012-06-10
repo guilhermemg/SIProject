@@ -124,29 +124,21 @@ public class StateHomePage extends AbsolutePanel {
 	private void abrirSessaoGUI(TextBox userName, PasswordTextBox passwordTextBox) {
 		String login = userName.getText(), senha = passwordTextBox.getText();
 		
-		AsyncCallback<String> callback = new AsyncCallback<String>() {
+		estradaSolidariaService.abrirSessao(login, senha, new AsyncCallback<String>() { 
 			@Override
 			public void onFailure(Throwable caught) {
 				// Show the RPC error message to the user
-				Window.alert("Remote Procedure Call - Failure: " + this.toString());
+				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
 			}
 
 			@Override
 			public void onSuccess(String result) {
-				Window.alert("Remote Procedure Call is succefull");
+				Window.alert("Result: " + result);
+				estrada.rootPanel.remove(panel);
+				Widget newPanel = new StatePerfil2(estrada, estradaSolidariaService);
+				newPanel.setSize("781px", "592px");
+				estrada.setStatePanel(newPanel);
 			}
-		  };
-		
-		try {
-			estradaSolidariaService.abrirSessao(login, senha, callback);
-			
-			estrada.rootPanel.remove(panel);
-			Widget newPanel = new StatePerfil2(estrada, this.estradaSolidariaService);
-			newPanel.setSize("781px", "592px");
-			estrada.setStatePanel(newPanel);
-			
-		} catch (Exception e) {
-			Window.alert(e.getMessage());
-		}
+		  });
 	}
 }

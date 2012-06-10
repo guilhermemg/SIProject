@@ -7,13 +7,12 @@ import javax.mail.MessagingException;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+
 /**
  * The client side stub for the RPC service.
  */
 @RemoteServiceRelativePath("estradaSolidariaService")
 public interface EstradaSolidariaService extends RemoteService {
-	
-	//String greetServer(String name) throws IllegalArgumentException;
 	
 	/**
 	 * Cria usuario para o sistema.
@@ -26,7 +25,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @throws Exception 
 	 */
 	public abstract void criarUsuario(String login, String senha, String nome,
-			String endereco, String email) throws Exception;
+			String endereco, String email) throws GWTException;
 
 	/**
 	 * Cadastra carona na listaDeCaronasOferecidas do usuario cadastrante e no
@@ -53,7 +52,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @return id sessao aberta
 	 * @throws Exception 
 	 */
-	public abstract String abrirSessao(String login, String senha) throws Exception;
+	public abstract String abrirSessao(String login, String senha) throws GWTException;
 
 	/**
 	 * Retorna lista de ids de carona localizadas.

@@ -7,6 +7,7 @@ import javax.mail.MessagingException;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import estradasolidaria.ui.client.EstradaSolidariaService;
+import estradasolidaria.ui.client.GWTException;
 import estradasolidaria.ui.server.logic.CaronaInexistenteException;
 import estradasolidaria.ui.server.logic.CaronaInvalidaException;
 import estradasolidaria.ui.server.logic.EstradaSolidariaController;
@@ -23,12 +24,12 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public void criarUsuario(String login, String senha, String nome,
-			String endereco, String email) throws Exception {
+			String endereco, String email) throws GWTException {
 		try {
 			controller.criarUsuario(login, senha, nome, endereco, email);
 		}
 		catch (Exception e) {
-			throw new Exception(e.getMessage());
+			throw new GWTException(e.getMessage());
 		}
 	}
 
@@ -40,12 +41,15 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public String abrirSessao(String login, String senha) throws Exception {
+	public String abrirSessao(String login, String senha) throws GWTException {
 		try {
 			return controller.abrirSessao(login, senha).getIdSessao().toString();
 		}
 		catch(UsuarioInexistenteException uie) {
-			throw new Exception("Usuario inexistente exception");
+			throw new GWTException("Usuario inexistente exception");
+		}
+		catch(IllegalArgumentException iae) {
+			throw new GWTException(iae.getMessage());
 		}
 	}
 
