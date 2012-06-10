@@ -13,6 +13,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.user.datepicker.client.DateBox.DefaultFormat;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 
 public class StateCadastroCaronas extends Composite {
 
@@ -23,15 +25,16 @@ public class StateCadastroCaronas extends Composite {
 	@SuppressWarnings("deprecation")
 	public StateCadastroCaronas(EstradaSolidaria estradaSolidaria, final EstradaSolidariaServiceAsync estradaSolidariaService) {
 		this.estrada = estradaSolidaria;
-		VerticalPanel verticalPanel = new VerticalPanel();
-		initWidget(verticalPanel);
+		AbsolutePanel absPanelCadastroCarona = new AbsolutePanel();
+		initWidget(absPanelCadastroCarona);
 		
 		Label lblCadastreUmaN = new Label("Cadastre uma nova carona");
+		lblCadastreUmaN.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		lblCadastreUmaN.setStyleName("gwt-LabelEstradaSolidaria2");
-		verticalPanel.add(lblCadastreUmaN);
+		absPanelCadastroCarona.add(lblCadastreUmaN);
 		
 		FlexTable flexTable = new FlexTable();
-		verticalPanel.add(flexTable);
+		absPanelCadastroCarona.add(flexTable, 84, 73);
 		flexTable.setSize("288px", "174px");
 		
 		Label lblOrigem = new Label("Origem:");
@@ -67,7 +70,7 @@ public class StateCadastroCaronas extends Composite {
 		lblVagas.setStyleName("gwt-LabelEstradaSolidaria4");
 		flexTable.setWidget(4, 0, lblVagas);
 		
-		TextBox textBoxVagas = new TextBox();
+		final TextBox textBoxVagas = new TextBox();
 		flexTable.setWidget(4, 1, textBoxVagas);
 		
 		Button btnEnviar = new Button("Enviar");
@@ -78,12 +81,16 @@ public class StateCadastroCaronas extends Composite {
 						|| textBoxHora.getText().length() == 0 ||  dateBox.getTextBox().getText().length() == 0){
 					Window.alert("Todos os campos devem ser preenchidos corretamente.");
 				} else {
-					estrada.rootPanel.remove(panel);
-					Widget newPanel = new StatePerfil2(estrada, estradaSolidariaService);
-					newPanel.setSize("600px", "417px");
-					estrada.setStatePanel(newPanel);
+					textBoxOrigem.setText("");
+					textBoxDestino.setText("");
+					textBoxHora.setText("");
+					dateBox.setValue(null);
+					textBoxVagas.setText("");
+					
 					Window.alert("Carona cadastrada com sucesso.");
 				}
+				
+				
 			}
 		});
 		flexTable.setWidget(5, 1, btnEnviar);

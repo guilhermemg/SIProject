@@ -21,40 +21,46 @@ public class StatePerfil2 extends Composite {
 	final Widget panel= this;
 	private EstradaSolidariaServiceAsync estradaSolidariaService;
 	
+	final AbsolutePanel bodyPanel;
 	public StatePerfil2(EstradaSolidaria estradaSolidaria, final EstradaSolidariaServiceAsync estradaSolidariaService) {
 		
 		estrada = estradaSolidaria;
 		this.estradaSolidariaService = estradaSolidariaService;
 		
-		AbsolutePanel absolutePanel = new AbsolutePanel();
-		initWidget(absolutePanel);
-		absolutePanel.setSize("1000px", "710px");
+		AbsolutePanel mainPanel = new AbsolutePanel();
+		initWidget(mainPanel);
+		mainPanel.setSize("1000px", "710px");
 		
-		AbsolutePanel absolutePanel_2 = new AbsolutePanel();
-		absolutePanel.add(absolutePanel_2, 10, 215);
-		absolutePanel_2.setSize("140px", "348px");
+		AbsolutePanel leftSideBarPanel = new AbsolutePanel();
+		mainPanel.add(leftSideBarPanel, 10, 215);
+		leftSideBarPanel.setSize("140px", "202px");
 		
 		Button txtbtnCadastrarCarona = new Button("Cadastrar Carona");
-		absolutePanel_2.add(txtbtnCadastrarCarona, 10, 39);
+		leftSideBarPanel.add(txtbtnCadastrarCarona, 10, 66);
+		txtbtnCadastrarCarona.setSize("122px", "24px");
 		
 		Button txtbtnVisualizarCaronas = new Button("Visualizar Caronas");
-		absolutePanel_2.add(txtbtnVisualizarCaronas, 10, 73);
-		txtbtnVisualizarCaronas.setSize("122px", "44px");
+		leftSideBarPanel.add(txtbtnVisualizarCaronas, 10, 111);
+		txtbtnVisualizarCaronas.setSize("122px", "24px");
 		
 		Button txtbtnPesquisarCarona = new Button("Pesquisar carona");
-		absolutePanel_2.add(txtbtnPesquisarCarona, 10, 123);
-		txtbtnPesquisarCarona.setSize("122px", "28px");
+		leftSideBarPanel.add(txtbtnPesquisarCarona, 10, 156);
+		txtbtnPesquisarCarona.setSize("122px", "24px");
 		
-		AbsolutePanel absolutePanel_1 = new AbsolutePanel();
-		absolutePanel.add(absolutePanel_1, 748, 215);
-		absolutePanel_1.setSize("233px", "487px");
+		Button btnInicio = new Button("Inicio");
+		leftSideBarPanel.add(btnInicio, 10, 21);
+		btnInicio.setSize("122px", "24px");
+		
+		AbsolutePanel rightSidebarPanel = new AbsolutePanel();
+		mainPanel.add(rightSidebarPanel, 748, 215);
+		rightSidebarPanel.setSize("233px", "487px");
 		
 		Label lblAmigos = new Label("Amigos:");
-		absolutePanel_1.add(lblAmigos, 91, 0);
+		rightSidebarPanel.add(lblAmigos, 91, 0);
 		lblAmigos.setSize("57px", "15px");
 		
 		FlexTable flexTable = new FlexTable();
-		absolutePanel_1.add(flexTable, 14, 21);
+		rightSidebarPanel.add(flexTable, 14, 21);
 		flexTable.setSize("212px", "213px");
 		
 //		Image image_1 = new Image((String) null);
@@ -80,21 +86,21 @@ public class StatePerfil2 extends Composite {
 //		txtbtnVisualizarTodosOs.setSize("137px", "28px");
 		
 		DatePicker datePicker = new DatePicker();
-		absolutePanel_1.add(datePicker, 14, 313);
+		rightSidebarPanel.add(datePicker, 14, 313);
 		datePicker.setSize("210px", "162px");
 		
 		Label lblProximasCaronas = new Label("Próximas Caronas");
-		absolutePanel_1.add(lblProximasCaronas, 66, 292);
+		rightSidebarPanel.add(lblProximasCaronas, 66, 292);
 		
-		AbsolutePanel absolutePanel_3 = new AbsolutePanel();
-		absolutePanel.add(absolutePanel_3, 10, 43);
-		absolutePanel_3.setSize("971px", "140px");
+		AbsolutePanel headerPanel = new AbsolutePanel();
+		mainPanel.add(headerPanel, 10, 43);
+		headerPanel.setSize("971px", "140px");
 		
 		Label lblNomeDoUsuario = new Label("Nome do usuario");
-		absolutePanel_3.add(lblNomeDoUsuario, 21, 115);
+		headerPanel.add(lblNomeDoUsuario, 21, 115);
 		
 		MenuBar menuBar = new MenuBar(false);
-		absolutePanel_3.add(menuBar, 701, 10);
+		headerPanel.add(menuBar, 701, 10);
 		menuBar.setSize("258px", "19px");
 		
 		MenuItem menuItemOpcoes = new MenuItem("Opções", false, (Command) null);
@@ -114,9 +120,16 @@ public class StatePerfil2 extends Composite {
 		});
 		menuBar.addItem(menuItemSair);
 		
-		final AbsolutePanel absolutePanel_4 = new AbsolutePanel();
-		absolutePanel.add(absolutePanel_4, 156, 215);
-		absolutePanel_4.setSize("586px", "487px");
+		bodyPanel = new AbsolutePanel();
+		mainPanel.add(bodyPanel, 156, 215);
+		bodyPanel.setSize("586px", "487px");
+
+		btnInicio.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				inicio();
+			}
+		});
 		
 		txtbtnCadastrarCarona.addClickHandler(new ClickHandler() {
 			
@@ -138,25 +151,34 @@ public class StatePerfil2 extends Composite {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				absolutePanel_4.add(new StateVisualizarCaronas(estrada, estradaSolidariaService));
-				
+		
 				visualizarCaronaGUI();
 			}
 		});
 	}
 
+	protected void inicio() {
+		
+		bodyPanel.clear();	
+	}
+
 	protected void visualizarCaronaGUI() {
-		// TODO Auto-generated method stub
+		bodyPanel.clear();
+		Widget visualizarCarona= new StateVisualizarCaronas(estrada, estradaSolidariaService);
+		bodyPanel.add(visualizarCarona);
+		visualizarCarona.setSize("100%", "100%");
 		
 	}
 
 	protected void cadastrarCaronaGUI() {
-		// TODO Auto-generated method stub
-		
+	bodyPanel.clear();
+	Widget cadastrarCarona = new StateCadastroCaronas(estrada, estradaSolidariaService);
+	bodyPanel.add(cadastrarCarona);
+	cadastrarCarona.setSize("100%", "100%");
 	}
 
 	protected void pesquisarCaronaGUI() {
-		// TODO Auto-generated method stub
+		//TODO
 		
 	}
 }
