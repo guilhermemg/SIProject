@@ -1,124 +1,116 @@
 package estradasolidaria.ui.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.CheckboxCell;
-import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.NumberCell;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TabPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 import estradasolidaria.ui.server.logic.Carona;
 
 public class StateVisualizarCaronas extends Composite {
-	private Carona carona = new Carona(1, "Campina Grande", "João Pessoa", "12/12/2012", "08:30", 4, 1);
-	public StateVisualizarCaronas() {
+	private List<Carona> caronas = new ArrayList<Carona>();
+	
+	final EstradaSolidaria estrada;
+	final Widget panel= this;
+	private EstradaSolidariaServiceAsync estradaSolidariaService;
+	
+	public StateVisualizarCaronas(EstradaSolidaria estrada, EstradaSolidariaServiceAsync estradaSolidariaService) {
+		this.estrada = estrada;
+		this.estradaSolidariaService = estradaSolidariaService;
+		
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
-		absolutePanel.setSize("100%", "100%");
-		
-		ListBox comboBox = new ListBox();
-		absolutePanel.add(comboBox, 561, 10);
-		
-		Label lblTipo = new Label("Tipo:");
-		absolutePanel.add(lblTipo, 513, 10);
+		absolutePanel.setSize("798px", "487px");
 		
 		TabPanel tabPanel = new TabPanel();
 		absolutePanel.add(tabPanel, 10, 10);
-		tabPanel.setSize("780px", "600px");
+		tabPanel.setSize("754px", "467px");
 		
 		FlexTable flexTable = new FlexTable();
 		tabPanel.add(flexTable, "Oferecidas", false);
-		flexTable.setSize("100%", "100%");
+		flexTable.setSize("561px", "3cm");
 		
-		CellTable<Object> cellTable = new CellTable<Object>();
-		flexTable.setWidget(0, 0, cellTable);
+		CellTable<Carona> caronas_cellTable = new CellTable<Carona>();
+		flexTable.setWidget(0, 0, caronas_cellTable);
+		caronas_cellTable.setWidth("526px");
 		
-		Column<Object, Boolean> column = new Column<Object, Boolean>(new CheckboxCell()) {
+		Column<Carona, Boolean> checkBox_column = new Column<Carona, Boolean>(new CheckboxCell()) {
 			@Override
-			public Boolean getValue(Object object) {
-				return ((CheckBox) object).getValue();
+			public Boolean getValue(Carona object) {
+				return (Boolean) null;
 			}
 		};
-		cellTable.addColumn(column, SafeHtmlUtils.fromSafeConstant("<br/>"));
+		caronas_cellTable.addColumn(checkBox_column);
 		
-		TextColumn<Object> origem_textColumn = new TextColumn<Object>() {
+		TextColumn<Carona> origem_textColumn = new TextColumn<Carona>() {
 			@Override
-			public String getValue(Object object) {
+			public String getValue(Carona object) {
+				return object.getOrigem();
+			}
+		};
+		caronas_cellTable.addColumn(origem_textColumn, "Origem");
+		caronas_cellTable.setRowCount(caronas.size(), true);
+	    caronas_cellTable.setRowData(0, caronas);
+		
+		TextColumn<Carona> destino_textColumn = new TextColumn<Carona>() {
+			@Override
+			public String getValue(Carona object) {
 				return object.toString();
 			}
 		};
-		cellTable.addColumn(origem_textColumn, "Origem");
-		origem_textColumn.setFieldUpdater(new FieldUpdater<Object, String>() {
-			@Override
-			public void update(int arg0, Object arg1, String arg2) {
-				
-			}
-		});
+		caronas_cellTable.addColumn(destino_textColumn, "Destino");
 		
-		origem_textColumn.getFieldUpdater().update(0, carona,  "");
-		
-		TextColumn<Object> destino_textColumn = new TextColumn<Object>() {
+		TextColumn<Carona> data_textColumn = new TextColumn<Carona>() {
 			@Override
-			public String getValue(Object object) {
+			public String getValue(Carona object) {
 				return object.toString();
 			}
 		};
-		cellTable.addColumn(destino_textColumn, "Destino");
+		caronas_cellTable.addColumn(data_textColumn, "Data");
 		
-		TextColumn<Object> data_textColumn = new TextColumn<Object>() {
+		TextColumn<Carona> hora_textColumn = new TextColumn<Carona>() {
 			@Override
-			public String getValue(Object object) {
+			public String getValue(Carona object) {
 				return object.toString();
 			}
 		};
-		cellTable.addColumn(data_textColumn, "Data");
+		caronas_cellTable.addColumn(hora_textColumn, "Hora-Saida");
 		
-		TextColumn<Object> hora_saida_textColumn = new TextColumn<Object>() {
+		Column<Carona, Number> vagas_column = new Column<Carona, Number>(new NumberCell()) {
 			@Override
-			public String getValue(Object object) {
-				return object.toString();
+			public Number getValue(Carona object) {
+				return (Number) null;
 			}
 		};
-		cellTable.addColumn(hora_saida_textColumn, "Hora:Saida");
+		caronas_cellTable.addColumn(vagas_column, "Vagas");
 		
-		Column<Object, Number> vagas_column = new Column<Object, Number>(new NumberCell()) {
+		Column<Carona, String> review_column = new Column<Carona, String>(new ButtonCell()) {
 			@Override
-			public Number getValue(Object object) {
-				return ((Carona) object).getVagas();
-			}
-		};
-		cellTable.addColumn(vagas_column, "Vagas");
-		vagas_column.setFieldUpdater(new FieldUpdater<Object, Number>() {
-			@Override
-			public void update(int arg0, Object arg1, Number arg2) {
-				
-			}
-		});
-		
-		Column<Object, String> column_2 = new Column<Object, String>(new ButtonCell()) {
-			@Override
-			public String getValue(Object object) {
+			public String getValue(Carona object) {
 				return (String) null;
 			}
 		};
-		cellTable.addColumn(column_2, "Review");
+		caronas_cellTable.addColumn(review_column, "Review");
 		
 		FlexTable flexTable_1 = new FlexTable();
 		tabPanel.add(flexTable_1, "Pegas", false);
-		flexTable_1.setSize("100%", "100%");
+		flexTable_1.setSize("5cm", "3cm");
 		
 		FlexTable flexTable_2 = new FlexTable();
 		tabPanel.add(flexTable_2, "Solicitadas", false);
-		flexTable_2.setSize("100%", "100%");
+		flexTable_2.setSize("5cm", "3cm");
+		
+		
 	}
 }
