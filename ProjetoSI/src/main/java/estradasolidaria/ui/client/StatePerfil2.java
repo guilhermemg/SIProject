@@ -120,7 +120,7 @@ public class StatePerfil2 extends Composite {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				cadastrarCarona();
+				cadastrarCaronaGUI();
 			}
 		});
 		
@@ -128,7 +128,7 @@ public class StatePerfil2 extends Composite {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				pesquisarCarona();
+				pesquisarCaronaGUI();
 			}
 		});
 		
@@ -136,22 +136,22 @@ public class StatePerfil2 extends Composite {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				visualizarCarona();
+				visualizarCaronaGUI();
 			}
 		});
 	}
 
-	protected void visualizarCarona() {
+	protected void visualizarCaronaGUI() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	protected void cadastrarCarona() {
+	protected void cadastrarCaronaGUI() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	protected void pesquisarCarona() {
+	protected void pesquisarCaronaGUI() {
 		// TODO Auto-generated method stub
 		
 	}
