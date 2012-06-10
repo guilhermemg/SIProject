@@ -124,10 +124,4 @@ public class StateCadastroUsuario extends AbsolutePanel implements StatePanel {
 		add(lblCadastroDeUsurio, 301, 10);
 		
 	}
-
-	@Override
-	public void nextState() {
-		// TODO Auto-generated method stub
-		
-	}
 }

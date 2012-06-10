@@ -47,10 +47,4 @@ public class StateCadastroUsuarioAceito extends Composite implements StatePanel{
 		absolutePanel.add(lblNewLabel, 54, 48);
 		lblNewLabel.setSize("436px", "88px");
 	}
-
-	@Override
-	public void nextState() {
-		// TODO Auto-generated method stub
-		
-	}
 }

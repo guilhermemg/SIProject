@@ -100,10 +100,4 @@ public class StatePerfil extends AbsolutePanel implements StatePanel {
 		
 		
 	}
-
-	@Override
-	public void nextState() {
-		// TODO Auto-generated method stub
-		
-	}
 }
