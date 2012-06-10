@@ -15,10 +15,8 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import estradasolidaria.ui.server.logic.Carona;
-
 public class StateVisualizarCaronas extends Composite {
-	private List<Carona> caronas = new ArrayList<Carona>();
+	private List<Object> caronas = new ArrayList<Object>();
 	
 	final EstradaSolidaria estrada;
 	final Widget panel= this;
@@ -28,80 +26,81 @@ public class StateVisualizarCaronas extends Composite {
 		this.estrada = estrada;
 		this.estradaSolidariaService = estradaSolidariaService;
 		
+		caronas.add(new String("Campina Grande"));
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
-		absolutePanel.setSize("798px", "487px");
+		absolutePanel.setSize("586px", "487px");
 		
 		TabPanel tabPanel = new TabPanel();
 		absolutePanel.add(tabPanel, 10, 10);
-		tabPanel.setSize("754px", "467px");
+		tabPanel.setSize("547px", "467px");
 		
 		FlexTable flexTable = new FlexTable();
 		tabPanel.add(flexTable, "Oferecidas", false);
-		flexTable.setSize("561px", "3cm");
+		flexTable.setSize("532px", "3cm");
 		
-		CellTable<Carona> caronas_cellTable = new CellTable<Carona>();
-		flexTable.setWidget(0, 0, caronas_cellTable);
-		caronas_cellTable.setWidth("526px");
+		CellTable<Object> Objects_cellTable = new CellTable<Object>();
+		flexTable.setWidget(0, 0, Objects_cellTable);
+		Objects_cellTable.setWidth("526px");
 		
-		Column<Carona, Boolean> checkBox_column = new Column<Carona, Boolean>(new CheckboxCell()) {
+		Column<Object, Boolean> checkBox_column = new Column<Object, Boolean>(new CheckboxCell()) {
 			@Override
-			public Boolean getValue(Carona object) {
+			public Boolean getValue(Object object) {
 				return (Boolean) null;
 			}
 		};
-		caronas_cellTable.addColumn(checkBox_column);
+		Objects_cellTable.addColumn(checkBox_column);
 		
-		TextColumn<Carona> origem_textColumn = new TextColumn<Carona>() {
+		TextColumn<Object> origem_textColumn = new TextColumn<Object>() {
 			@Override
-			public String getValue(Carona object) {
-				return object.getOrigem();
-			}
-		};
-		caronas_cellTable.addColumn(origem_textColumn, "Origem");
-		caronas_cellTable.setRowCount(caronas.size(), true);
-	    caronas_cellTable.setRowData(0, caronas);
-		
-		TextColumn<Carona> destino_textColumn = new TextColumn<Carona>() {
-			@Override
-			public String getValue(Carona object) {
+			public String getValue(Object object) {
 				return object.toString();
 			}
 		};
-		caronas_cellTable.addColumn(destino_textColumn, "Destino");
+		Objects_cellTable.addColumn(origem_textColumn, "Origem");
+		Objects_cellTable.setRowCount(caronas.size(), true);
+	    Objects_cellTable.setRowData(0, caronas);
 		
-		TextColumn<Carona> data_textColumn = new TextColumn<Carona>() {
+		TextColumn<Object> destino_textColumn = new TextColumn<Object>() {
 			@Override
-			public String getValue(Carona object) {
+			public String getValue(Object object) {
 				return object.toString();
 			}
 		};
-		caronas_cellTable.addColumn(data_textColumn, "Data");
+		Objects_cellTable.addColumn(destino_textColumn, "Destino");
 		
-		TextColumn<Carona> hora_textColumn = new TextColumn<Carona>() {
+		TextColumn<Object> data_textColumn = new TextColumn<Object>() {
 			@Override
-			public String getValue(Carona object) {
+			public String getValue(Object object) {
 				return object.toString();
 			}
 		};
-		caronas_cellTable.addColumn(hora_textColumn, "Hora-Saida");
+		Objects_cellTable.addColumn(data_textColumn, "Data");
 		
-		Column<Carona, Number> vagas_column = new Column<Carona, Number>(new NumberCell()) {
+		TextColumn<Object> hora_textColumn = new TextColumn<Object>() {
 			@Override
-			public Number getValue(Carona object) {
-				return (Number) null;
+			public String getValue(Object object) {
+				return object.toString();
 			}
 		};
-		caronas_cellTable.addColumn(vagas_column, "Vagas");
+		Objects_cellTable.addColumn(hora_textColumn, "Hora-Saida");
 		
-		Column<Carona, String> review_column = new Column<Carona, String>(new ButtonCell()) {
-			@Override
-			public String getValue(Carona object) {
-				return (String) null;
-			}
-		};
-		caronas_cellTable.addColumn(review_column, "Review");
+//		Column<Object, Number> vagas_column = new Column<Object, Number>(new NumberCell()) {
+//			@Override
+//			public Number getValue(Object object) {
+//				return (Number) null;
+//			}
+//		};
+//		Objects_cellTable.addColumn(vagas_column, "Vagas");
+//		
+//		Column<Object, String> review_column = new Column<Object, String>(new ButtonCell()) {
+//			@Override
+//			public String getValue(Object object) {
+//				return (String) null;
+//			}
+//		};
+//		Objects_cellTable.addColumn(review_column, "Review");
 		
 		FlexTable flexTable_1 = new FlexTable();
 		tabPanel.add(flexTable_1, "Pegas", false);

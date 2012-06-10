@@ -114,9 +114,9 @@ public class StatePerfil2 extends Composite {
 		});
 		menuBar.addItem(menuItemSair);
 		
-		AbsolutePanel absolutePanel_4 = new AbsolutePanel();
-		absolutePanel_3.add(absolutePanel_4, 147, 150);
-		absolutePanel_4.setSize("586px", "461px");
+		final AbsolutePanel absolutePanel_4 = new AbsolutePanel();
+		absolutePanel.add(absolutePanel_4, 156, 215);
+		absolutePanel_4.setSize("586px", "487px");
 		
 		txtbtnCadastrarCarona.addClickHandler(new ClickHandler() {
 			
@@ -138,6 +138,8 @@ public class StatePerfil2 extends Composite {
 			
 			@Override
 			public void onClick(ClickEvent event) {
+				absolutePanel_4.add(new StateVisualizarCaronas(estrada, estradaSolidariaService));
+				
 				visualizarCaronaGUI();
 			}
 		});
