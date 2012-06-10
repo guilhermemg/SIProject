@@ -15,6 +15,7 @@ public class StateCadastroUsuarioAceito extends Composite implements StatePanel{
 	private EstradaSolidariaServiceAsync estradaSolidariaService;
 	
 	public StateCadastroUsuarioAceito(EstradaSolidaria estradaSolidaria, final EstradaSolidariaServiceAsync estradaSolidariaService) {
+		this.estradaSolidariaService = estradaSolidariaService;
 		this.estrada = estradaSolidaria;
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();

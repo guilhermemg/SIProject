@@ -1,6 +1,5 @@
 package estradasolidaria.ui.client;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -18,11 +17,13 @@ public class StateCadastroUsuario extends AbsolutePanel implements StatePanel {
 	StatePanel state; 
 	final EstradaSolidaria estrada;
 	final Widget panel = this;
-	private EstradaSolidariaServiceAsync estradaSolidariaService = 
-			(EstradaSolidariaServiceAsync) GWT.create(EstradaSolidariaService.class);
+	private final EstradaSolidariaServiceAsync estradaSolidariaService;
 
-	public StateCadastroUsuario(EstradaSolidaria estradaSolidaria) {
+	public StateCadastroUsuario(EstradaSolidaria estradaSolidaria, final EstradaSolidariaServiceAsync estradaSolidariaService) {
+		
 		this.estrada = estradaSolidaria;
+		this.estradaSolidariaService = estradaSolidariaService;
+		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		absolutePanel.setStyleName("h2");
 		add(absolutePanel, 109, 83);

@@ -94,10 +94,7 @@ public class StateHomePage extends AbsolutePanel {
 		
 		btnCadastro.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				estrada.rootPanel.remove(panel);
-				Widget newPanel = new StateCadastroUsuario(estrada);
-				newPanel.setSize("600px", "417px");
-				estrada.setStatePanel(newPanel);
+				cadastraUsuarioGUI();
 			}
 		});
 		btnCadastro.setStyleName("gwt-LabelEstradaSolidaria4");
@@ -115,6 +112,13 @@ public class StateHomePage extends AbsolutePanel {
 		imagem = new Image(resources.home());
 		add(imagem, 151, 412);
 		imagem.setSize("368px", "222px");
+	}
+
+	protected void cadastraUsuarioGUI() {
+		estrada.rootPanel.remove(panel);
+		Widget newPanel = new StateCadastroUsuario(estrada, estradaSolidariaService);
+		newPanel.setSize("600px", "417px");
+		estrada.setStatePanel(newPanel);
 	}
 
 	private void abrirSessaoGUI(TextBox userName, PasswordTextBox passwordTextBox) {
