@@ -1,7 +1,6 @@
 package estradasolidaria.ui.client;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -11,7 +10,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class EstradaSolidaria implements EntryPoint {
 	Widget statepanel;
 	final RootPanel rootPanel = RootPanel.get();
-
+	
 	/**
 	 * This is the entry point method.
 	 */

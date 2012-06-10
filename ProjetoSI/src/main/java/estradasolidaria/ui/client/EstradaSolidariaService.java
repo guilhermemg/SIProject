@@ -7,11 +7,6 @@ import javax.mail.MessagingException;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
-import estradasolidaria.ui.server.logic.CaronaInexistenteException;
-import estradasolidaria.ui.server.logic.CaronaInvalidaException;
-import estradasolidaria.ui.server.logic.Sessao;
-import estradasolidaria.ui.server.logic.TrajetoInexistenteException;
-
 /**
  * The client side stub for the RPC service.
  */
@@ -55,17 +50,9 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param login
 	 * @param senha
 	 * @return id sessao aberta
+	 * @throws Exception 
 	 */
-	public abstract Sessao abrirSessao(String login, String senha);
-
-	/**
-	 * Retorna atributo de um usuario.
-	 * 
-	 * @param login
-	 * @param atributo
-	 * @return atributo
-	 */
-	public abstract Object getAtributoUsuario(String login, String atributo);
+	public abstract String abrirSessao(String login, String senha) throws Exception;
 
 	/**
 	 * Retorna lista de ids de carona localizadas.
@@ -79,16 +66,6 @@ public interface EstradaSolidariaService extends RemoteService {
 			String destino);
 
 	/**
-	 * Retorna atributo de carona
-	 * 
-	 * @param idCarona
-	 * @param nomeAtributo
-	 * @return atributo
-	 */
-	public abstract Object getAtributoCarona(String idCarona,
-			String nomeAtributo);
-
-	/**
 	 * Retorna trajeto da carona.
 	 * 
 	 * @param idCarona
@@ -96,7 +73,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @throws TrajetoInexistenteException
 	 */
 	public abstract String getTrajeto(String idCarona)
-			throws TrajetoInexistenteException;
+			throws Exception;
 
 	/**
 	 * Retorna carona.
@@ -127,16 +104,6 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * Reinicia o sistema com os dados persistidos no encerramento.
 	 */
 	public abstract void reiniciarSistema();
-
-	/**
-	 * Retorna atributo da solicitacao a partir do nome do atributo.
-	 * 
-	 * @param idSolicitacao
-	 * @param atributo
-	 * @return atributo
-	 */
-	public abstract Object getAtributoSolicitacao(String idSolicitacao,
-			String atributo);
 
 	/**
 	 * Sugere ponto de encontro para uma carona.
@@ -172,7 +139,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @throws CaronaInexistenteException 
 	 */
 	public abstract String solicitarVagaPontoEncontro(String idSessao,
-			String idCarona, String ponto) throws CaronaInvalidaException, CaronaInexistenteException;
+			String idCarona, String ponto) throws Exception;
 
 	/**
 	 * Aceita uma solicitacão.
@@ -205,7 +172,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @throws CaronaInvalidaException
 	 */
 	public abstract String solicitarVaga(String idSessao, String idCarona)
-			throws CaronaInvalidaException;
+			throws Exception;
 
 	/**
 	 * Usuario dono da carona, indicado por idSessao, rejeita solicitacao,
@@ -228,7 +195,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @throws CaronaInvalidaException
 	 */
 	public abstract void desistirRequisicao(String idSessao, String idCarona,
-			String idSolicitacao) throws CaronaInvalidaException;
+			String idSolicitacao) throws Exception;
 
 	/**
 	 * Pega usuario associado a sessao indicada por idSessao e pega o perfil
@@ -239,15 +206,6 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @return idPerfil
 	 */
 	public abstract String visualizarPerfil(String idSessao, String login);
-
-	/**
-	 * Pesquisa usuario com login e retorna um atributo do perfil dele.
-	 * 
-	 * @param login
-	 * @param nomeAtributo
-	 * @return atributo
-	 */
-	public abstract Object getAtributoPerfil(String login, String atributo);
 
 	/**
 	 * Seta o valor do review de vaga em carona: diz se o solicitante
@@ -267,7 +225,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 */
 	public abstract void reviewVagaEmCarona(String idSessao, String idCarona,
 			String loginCaroneiro, String review)
-			throws CaronaInvalidaException;
+			throws Exception;
 
 	/**
 	 * Seta o valor do review da carona, diz se a carona foi boa ou nao. O
@@ -287,7 +245,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 *            : review do caroneiro presente
 	 */
 	public abstract void reviewCarona(String idSessao, String idCarona,
-			String review) throws CaronaInexistenteException;
+			String review) throws Exception;
 
 	/**
 	 * Cadastra no usuario identificado por idSessao, a carona com os atributos
@@ -369,7 +327,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @throws CaronaInvalidaException
 	 */
 	public abstract String getSolicitacoesPendentes(String idSessao,
-			String idCarona) throws CaronaInvalidaException;
+			String idCarona) throws Exception;
 
 	/**
 	 * Retorna string com o ponto sugerido para idCarona. O usuario identificado
@@ -383,7 +341,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @throws CaronaInvalidaException
 	 */
 	public abstract String getPontosSugeridos(String idSessao, String idCarona)
-			throws CaronaInvalidaException;
+			throws Exception;
 
 	/**
 	 * Retorna ponto de encontro para a carona identificada por idCarona.
@@ -438,6 +396,6 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @throws MessagingException
 	 */
 	public abstract boolean enviarEmail(String idSessao, String destino,
-			String message) throws MessagingException;
+			String message) throws Exception;
 
 }

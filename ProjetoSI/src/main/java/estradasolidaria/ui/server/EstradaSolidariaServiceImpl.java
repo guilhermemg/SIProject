@@ -4,14 +4,14 @@ import java.util.List;
 
 import javax.mail.MessagingException;
 
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+
 import estradasolidaria.ui.client.EstradaSolidariaService;
 import estradasolidaria.ui.server.logic.CaronaInexistenteException;
 import estradasolidaria.ui.server.logic.CaronaInvalidaException;
 import estradasolidaria.ui.server.logic.EstradaSolidariaController;
-import estradasolidaria.ui.server.logic.Sessao;
 import estradasolidaria.ui.server.logic.TrajetoInexistenteException;
-//import estradasolidaria.ui.shared.FieldVerifier;
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import estradasolidaria.ui.server.logic.UsuarioInexistenteException;
 
 /**
  * The server side implementation of the RPC service.
@@ -20,41 +20,6 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		EstradaSolidariaService {
 	private static final long serialVersionUID = -1007968486871020509L;
 	private EstradaSolidariaController controller = EstradaSolidariaController.getInstance();
-	
-//	public String greetServer(String input) throws IllegalArgumentException {
-//		// Verify that the input is valid. 
-//		if (!FieldVerifier.isValidName(input)) {
-//			// If the input is not valid, throw an IllegalArgumentException back to
-//			// the client.
-//			throw new IllegalArgumentException(
-//					"Name must be at least 4 characters long");
-//		}
-//
-//		String serverInfo = getServletContext().getServerInfo();
-//		String userAgent = getThreadLocalRequest().getHeader("User-Agent");
-//
-//		// Escape data from the client to avoid cross-site script vulnerabilities.
-//		input = escapeHtml(input);
-//		userAgent = escapeHtml(userAgent);
-//
-//		return "Hello, " + input + "!<br><br>I am running " + serverInfo
-//				+ ".<br><br>It looks like you are using:<br>" + userAgent;
-//	}
-//
-//	/**
-//	 * Escape an html string. Escaping data received from the client helps to
-//	 * prevent cross-site script vulnerabilities.
-//	 * 
-//	 * @param html the html string to escape
-//	 * @return the escaped string
-//	 */
-//	private String escapeHtml(String html) {
-//		if (html == null) {
-//			return null;
-//		}
-//		return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;")
-//				.replaceAll(">", "&gt;");
-//	}
 
 	@Override
 	public void criarUsuario(String login, String senha, String nome,
@@ -71,24 +36,17 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public Sessao abrirSessao(String login, String senha) {
-		return controller.abrirSessao(login, senha);
-	}
-
-	@Override
-	public Object getAtributoUsuario(String login, String atributo) {
-		// TODO Auto-generated method stub
-		return null;
+	public String abrirSessao(String login, String senha) throws Exception {
+		try {
+			return controller.abrirSessao(login, senha).getIdSessao().toString();
+		}
+		catch(UsuarioInexistenteException uie) {
+			throw new Exception("Usuario inexistente exception");
+		}
 	}
 
 	@Override
 	public String localizarCarona(String idSessao, String origem, String destino) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object getAtributoCarona(String idCarona, String nomeAtributo) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -128,12 +86,6 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	public void reiniciarSistema() {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public Object getAtributoSolicitacao(String idSolicitacao, String atributo) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -193,12 +145,6 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public String visualizarPerfil(String idSessao, String login) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object getAtributoPerfil(String login, String atributo) {
 		// TODO Auto-generated method stub
 		return null;
 	}

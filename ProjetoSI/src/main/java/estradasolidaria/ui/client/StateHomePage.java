@@ -9,14 +9,12 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-
-import estradasolidaria.ui.server.logic.EstradaSolidariaController;
-import estradasolidaria.ui.server.logic.Sessao;
 
 public class StateHomePage extends AbsolutePanel implements StatePanel {
 //	EstradaSolidariaController sistema = EstradaSolidariaController.getInstance();
@@ -25,6 +23,14 @@ public class StateHomePage extends AbsolutePanel implements StatePanel {
 	final EstradaSolidaria estrada;
 	final Widget panel= this;
 	Image imagem;
+	
+	/**
+	 * The message displayed to the user when the server cannot be reached or
+	 * returns an error.
+	 */
+	private static final String SERVER_ERROR = "An error occurred while "
+			+ "attempting to contact the server. Please check your network "
+			+ "connection and try again.";
 	
 	/**
 	 * Create a remote service proxy to talk to the server-side EstradaSolidaria service.
@@ -68,6 +74,8 @@ public class StateHomePage extends AbsolutePanel implements StatePanel {
 		absPanelLogin.add(passwordTextBox, 74, 78);
 		passwordTextBox.setSize("180px", "17px");
 		
+		final HTML serverResponseLabel = new HTML();
+		
 		Button btnLogin = new Button("Login");
 		btnLogin.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -79,28 +87,35 @@ public class StateHomePage extends AbsolutePanel implements StatePanel {
 					
 					try {
 						estradaSolidariaService.abrirSessao(login, senha, 
-								new AsyncCallback<Sessao>() {
-
+								new AsyncCallback<String>() {
 									@Override
 									public void onFailure(Throwable caught) {
-										Window.alert("RPC Falhou!");
+										// Show the RPC error message to the user
+										Window.alert("Remote Procedure Call - Failure");
+										serverResponseLabel
+												.addStyleName("serverResponseLabelError");
+										serverResponseLabel.setHTML(SERVER_ERROR);
 									}
 
 									@Override
-									public void onSuccess(Sessao result) {
-										Window.alert("RPC funcionou");
+									public void onSuccess(String result) {
+										Window.alert("Remote Procedure Call");
+										serverResponseLabel
+												.removeStyleName("serverResponseLabelError");
+										serverResponseLabel.setHTML(result);
+										
+										estrada.rootPanel.remove(panel);
+										Widget newPanel = new StatePerfil2(estrada);
+										newPanel.setSize("781px", "592px");
+										estrada.setStatePanel(newPanel);
 									}
 						});
 						
-						estrada.rootPanel.remove(panel);
-						Widget newPanel = new StatePerfil2(estrada);
-						newPanel.setSize("781px", "592px");
-						estrada.setStatePanel(newPanel);
+						
+						
 					} catch (Exception e) {
 						Window.alert(e.getMessage());
 					}
-					
-					
 				}
 			}
 		});
