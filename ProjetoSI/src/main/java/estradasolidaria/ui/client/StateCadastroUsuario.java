@@ -139,7 +139,7 @@ public class StateCadastroUsuario extends AbsolutePanel implements StatePanel {
 				Window.alert("Remote Procedure Call is succefull");
 			}
 		  };
-		
+		System.out.println("Deu certo");
 		try {
 			estradaSolidariaService.criarUsuario(login, senha, nome, endereco, email, callback);
 			

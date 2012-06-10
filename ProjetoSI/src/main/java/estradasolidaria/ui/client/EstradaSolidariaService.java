@@ -10,7 +10,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 /**
  * The client side stub for the RPC service.
  */
-@RemoteServiceRelativePath("estradasolidaria")
+@RemoteServiceRelativePath("estradaSolidariaService")
 public interface EstradaSolidariaService extends RemoteService {
 	
 	//String greetServer(String name) throws IllegalArgumentException;

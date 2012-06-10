@@ -40,9 +40,9 @@ public class StateVisualizarCaronas extends Composite {
 		tabPanel.add(flexTable, "Oferecidas", false);
 		flexTable.setSize("532px", "3cm");
 		
-		CellTable<Object> Objects_cellTable = new CellTable<Object>();
-		flexTable.setWidget(0, 0, Objects_cellTable);
-		Objects_cellTable.setWidth("526px");
+		CellTable<Object> caronas_cellTable = new CellTable<Object>();
+		flexTable.setWidget(0, 0, caronas_cellTable);
+		caronas_cellTable.setWidth("526px");
 		
 		Column<Object, Boolean> checkBox_column = new Column<Object, Boolean>(new CheckboxCell()) {
 			@Override
@@ -50,7 +50,7 @@ public class StateVisualizarCaronas extends Composite {
 				return (Boolean) null;
 			}
 		};
-		Objects_cellTable.addColumn(checkBox_column);
+		caronas_cellTable.addColumn(checkBox_column);
 		
 		TextColumn<Object> origem_textColumn = new TextColumn<Object>() {
 			@Override
@@ -58,9 +58,10 @@ public class StateVisualizarCaronas extends Composite {
 				return object.toString();
 			}
 		};
-		Objects_cellTable.addColumn(origem_textColumn, "Origem");
-		Objects_cellTable.setRowCount(caronas.size(), true);
-	    Objects_cellTable.setRowData(0, caronas);
+		
+		caronas_cellTable.addColumn(origem_textColumn, "Origem");
+		caronas_cellTable.setRowCount(caronas.size(), true);
+	    caronas_cellTable.setRowData(0, caronas);
 		
 		TextColumn<Object> destino_textColumn = new TextColumn<Object>() {
 			@Override
@@ -68,7 +69,7 @@ public class StateVisualizarCaronas extends Composite {
 				return object.toString();
 			}
 		};
-		Objects_cellTable.addColumn(destino_textColumn, "Destino");
+		caronas_cellTable.addColumn(destino_textColumn, "Destino");
 		
 		TextColumn<Object> data_textColumn = new TextColumn<Object>() {
 			@Override
@@ -76,7 +77,7 @@ public class StateVisualizarCaronas extends Composite {
 				return object.toString();
 			}
 		};
-		Objects_cellTable.addColumn(data_textColumn, "Data");
+		caronas_cellTable.addColumn(data_textColumn, "Data");
 		
 		TextColumn<Object> hora_textColumn = new TextColumn<Object>() {
 			@Override
@@ -84,7 +85,7 @@ public class StateVisualizarCaronas extends Composite {
 				return object.toString();
 			}
 		};
-		Objects_cellTable.addColumn(hora_textColumn, "Hora-Saida");
+		caronas_cellTable.addColumn(hora_textColumn, "Hora-Saida");
 		
 //		Column<Object, Number> vagas_column = new Column<Object, Number>(new NumberCell()) {
 //			@Override
