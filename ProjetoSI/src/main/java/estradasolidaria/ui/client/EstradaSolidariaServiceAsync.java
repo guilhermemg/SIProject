@@ -4,14 +4,16 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import estradasolidaria.ui.server.logic.Sessao;
+
 /**
  * The async counterpart of <code>GreetingService</code>.
  */
 public interface EstradaSolidariaServiceAsync {
-	void greetServer(String input, AsyncCallback<String> callback)
-			throws IllegalArgumentException;
+//	void greetServer(String input, AsyncCallback<String> callback)
+//			throws IllegalArgumentException;
 
-	void abrirSessao(String login, String senha, AsyncCallback<String> callback);
+	void abrirSessao(String login, String senha, AsyncCallback<Sessao> callback);
 
 	void aceitarSolicitacao(String idSessao, String idSolicitacao,
 			AsyncCallback<Void> callback);
@@ -116,6 +118,4 @@ public interface EstradaSolidariaServiceAsync {
 			AsyncCallback<String> callback);
 
 	void zerarSistema(AsyncCallback<Void> callback);
-
-	
 }

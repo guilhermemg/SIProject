@@ -5,6 +5,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
@@ -14,11 +15,22 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
+import estradasolidaria.ui.server.logic.EstradaSolidariaController;
+import estradasolidaria.ui.server.logic.Sessao;
+
 public class StateHomePage extends AbsolutePanel implements StatePanel {
+//	EstradaSolidariaController sistema = EstradaSolidariaController.getInstance();
+	
 	StatePanel state;
 	final EstradaSolidaria estrada;
 	final Widget panel= this;
 	Image imagem;
+	
+	/**
+	 * Create a remote service proxy to talk to the server-side EstradaSolidaria service.
+	 */
+	private final EstradaSolidariaServiceAsync estradaSolidariaService = GWT
+			.create(EstradaSolidariaService.class);
 	
 	public StateHomePage(EstradaSolidaria estradaSolidaria) {
 		estrada = estradaSolidaria;
@@ -62,10 +74,33 @@ public class StateHomePage extends AbsolutePanel implements StatePanel {
 				if(userName.getText().length() == 0|| passwordTextBox.getText().length() == 0){
 					Window.alert("Digite todos os campos corretamente");
 				} else {
-					estrada.rootPanel.remove(panel);
-					Widget newPanel = new StatePerfil(estrada);
-					newPanel.setSize("781px", "592px");
-					estrada.setStatePanel(newPanel);
+					String login = userName.getText(),
+						   senha = passwordTextBox.getText();
+					
+					try {
+						estradaSolidariaService.abrirSessao(login, senha, 
+								new AsyncCallback<Sessao>() {
+
+									@Override
+									public void onFailure(Throwable caught) {
+										Window.alert("RPC Falhou!");
+									}
+
+									@Override
+									public void onSuccess(Sessao result) {
+										Window.alert("RPC funcionou");
+									}
+						});
+						
+						estrada.rootPanel.remove(panel);
+						Widget newPanel = new StatePerfil2(estrada);
+						newPanel.setSize("781px", "592px");
+						estrada.setStatePanel(newPanel);
+					} catch (Exception e) {
+						Window.alert(e.getMessage());
+					}
+					
+					
 				}
 			}
 		});

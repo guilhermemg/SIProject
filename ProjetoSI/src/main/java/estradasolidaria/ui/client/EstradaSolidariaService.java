@@ -9,14 +9,17 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import estradasolidaria.ui.server.logic.CaronaInexistenteException;
 import estradasolidaria.ui.server.logic.CaronaInvalidaException;
+import estradasolidaria.ui.server.logic.Sessao;
 import estradasolidaria.ui.server.logic.TrajetoInexistenteException;
 
 /**
  * The client side stub for the RPC service.
  */
-@RemoteServiceRelativePath("greet")
+@RemoteServiceRelativePath("estradasolidaria")
 public interface EstradaSolidariaService extends RemoteService {
-	String greetServer(String name) throws IllegalArgumentException;
+	
+	//String greetServer(String name) throws IllegalArgumentException;
+	
 	/**
 	 * Cria usuario para o sistema.
 	 * 
@@ -53,7 +56,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param senha
 	 * @return id sessao aberta
 	 */
-	public abstract String abrirSessao(String login, String senha);
+	public abstract Sessao abrirSessao(String login, String senha);
 
 	/**
 	 * Retorna atributo de um usuario.

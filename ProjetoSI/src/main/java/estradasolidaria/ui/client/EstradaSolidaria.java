@@ -9,37 +9,22 @@ import com.google.gwt.user.client.ui.Widget;
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class EstradaSolidaria implements EntryPoint {
-	 Widget statepanel;
-	 final RootPanel rootPanel = RootPanel.get();
-	
-	
-	/**
-	 * The message displayed to the user when the server cannot be reached or
-	 * returns an error.
-	 */    
-	private static final String SERVER_ERROR = "An error occurred while "
-			+ "attempting to contact the server. Please check your network "
-			+ "connection and try again.";
-
-	/** 
-	 * Create a remote service proxy to talk to the server-side Greeting service.
-	 */
-	private final EstradaSolidariaServiceAsync greetingService = GWT
-			.create(EstradaSolidariaService.class);
+	Widget statepanel;
+	final RootPanel rootPanel = RootPanel.get();
 
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		rootPanel.setSize("1000", "600");
+		rootPanel.setSize("1000px", "1000px");
 		statepanel = new StateHomePage(this);
-		rootPanel.add(statepanel,68, 45);
-		statepanel.setSize("660px", "417px");
+		rootPanel.add(statepanel, 68, 45);
+		statepanel.setSize("1000px", "1000px");
 	}
 
 	public void setStatePanel(Widget statePanel) {
-		this.statepanel =  statePanel;
+		this.statepanel = statePanel;
 		rootPanel.add(statepanel);
-		this.statepanel.setSize("660px", "417px");
+		this.statepanel.setSize("1000px", "1000px");
 	}
 }
