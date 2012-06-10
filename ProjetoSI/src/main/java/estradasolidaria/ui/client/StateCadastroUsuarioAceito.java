@@ -24,7 +24,7 @@ public class StateCadastroUsuarioAceito extends Composite implements StatePanel{
 		btnVerPerfil.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				estrada.rootPanel.remove(panel);
-				Widget newPanel = new StatePerfil(estrada);
+				Widget newPanel = new StatePerfil2(estrada);
 				newPanel.setSize("600px", "417px");
 				estrada.setStatePanel(newPanel);
 			}

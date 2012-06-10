@@ -23,9 +23,13 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public void criarUsuario(String login, String senha, String nome,
-			String endereco, String email) {
-		// TODO Auto-generated method stub
-		
+			String endereco, String email) throws Exception {
+		try {
+			controller.criarUsuario(login, senha, nome, endereco, email);
+		}
+		catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
 	}
 
 	@Override

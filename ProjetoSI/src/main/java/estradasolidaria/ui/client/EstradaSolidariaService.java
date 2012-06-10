@@ -23,9 +23,10 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param nome
 	 * @param endereco
 	 * @param email
+	 * @throws Exception 
 	 */
 	public abstract void criarUsuario(String login, String senha, String nome,
-			String endereco, String email);
+			String endereco, String email) throws Exception;
 
 	/**
 	 * Cadastra carona na listaDeCaronasOferecidas do usuario cadastrante e no

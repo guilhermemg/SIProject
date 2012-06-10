@@ -1,13 +1,15 @@
-/**
- * 
- */
 package estradasolidaria.ui.client;
 
 /**
- * @author leonardo
+ * Classe que representa um estado de um
+ * painel da gui.
+ * 
+ * @author Guilherme Monteiro
+ * @author Leonardo Santos
+ * @author Hema Vidal
+ * @author Italo Silva
  *
  */
 public interface StatePanel {
-	public void nextState();
-	
+
 }

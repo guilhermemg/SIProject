@@ -1,14 +1,14 @@
 package estradasolidaria.ui.client;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.MenuItemSeparator;
@@ -32,16 +32,16 @@ public class StatePerfil2 extends Composite {
 		absolutePanel.add(absolutePanel_2, 10, 215);
 		absolutePanel_2.setSize("140px", "348px");
 		
-		Button txtbtnNewButton = new Button("Cadastrar Carona");
-		absolutePanel_2.add(txtbtnNewButton, 10, 39);
+		Button txtbtnCadastrarCarona = new Button("Cadastrar Carona");
+		absolutePanel_2.add(txtbtnCadastrarCarona, 10, 39);
 		
-		Button txtbtnVerCanoasQue = new Button("Visualizar Caronas");
-		absolutePanel_2.add(txtbtnVerCanoasQue, 10, 73);
-		txtbtnVerCanoasQue.setSize("122px", "44px");
+		Button txtbtnVisualizarCaronas = new Button("Visualizar Caronas");
+		absolutePanel_2.add(txtbtnVisualizarCaronas, 10, 73);
+		txtbtnVisualizarCaronas.setSize("122px", "44px");
 		
-		Button txtbtnNewButton_1 = new Button("Pesquisar carona");
-		absolutePanel_2.add(txtbtnNewButton_1, 10, 123);
-		txtbtnNewButton_1.setSize("122px", "28px");
+		Button txtbtnPesquisarCarona = new Button("Pesquisar carona");
+		absolutePanel_2.add(txtbtnPesquisarCarona, 10, 123);
+		txtbtnPesquisarCarona.setSize("122px", "28px");
 		
 		AbsolutePanel absolutePanel_1 = new AbsolutePanel();
 		absolutePanel.add(absolutePanel_1, 748, 215);
@@ -73,16 +73,16 @@ public class StatePerfil2 extends Composite {
 //		Image image_6 = new Image((String) null);
 //		flexTable.setWidget(2, 1, image_6);
 		
-		Button txtbtnVisualizarTodosOs = new Button("Ver Todos");
-		absolutePanel_1.add(txtbtnVisualizarTodosOs, 51, 244);
-		txtbtnVisualizarTodosOs.setSize("137px", "28px");
+//		Button txtbtnVisualizarTodosOs = new Button("Ver Todos");
+//		absolutePanel_1.add(txtbtnVisualizarTodosOs, 51, 244);
+//		txtbtnVisualizarTodosOs.setSize("137px", "28px");
 		
 		DatePicker datePicker = new DatePicker();
 		absolutePanel_1.add(datePicker, 14, 313);
 		datePicker.setSize("210px", "162px");
 		
-		Label lblPrximasCaronas = new Label("Próximas Caronas");
-		absolutePanel_1.add(lblPrximasCaronas, 66, 292);
+		Label lblProximasCaronas = new Label("Próximas Caronas");
+		absolutePanel_1.add(lblProximasCaronas, 66, 292);
 		
 		AbsolutePanel absolutePanel_3 = new AbsolutePanel();
 		absolutePanel.add(absolutePanel_3, 10, 43);
@@ -95,13 +95,13 @@ public class StatePerfil2 extends Composite {
 		absolutePanel_3.add(menuBar, 701, 10);
 		menuBar.setSize("258px", "19px");
 		
-		MenuItem mntmOpes = new MenuItem("Opções", false, (Command) null);
-		menuBar.addItem(mntmOpes);
+		MenuItem menuItemOpcoes = new MenuItem("Opções", false, (Command) null);
+		menuBar.addItem(menuItemOpcoes);
 		
 		MenuItemSeparator separator = new MenuItemSeparator();
 		menuBar.addSeparator(separator);
 		
-		MenuItem mntmSair = new MenuItem("Sair", false, new Command() {
+		MenuItem menuItemSair = new MenuItem("Sair", false, new Command() {
 			public void execute() {
 				estrada.rootPanel.remove(panel);
 				Widget newPanel = new StateHomePage(estrada);
@@ -110,10 +110,49 @@ public class StatePerfil2 extends Composite {
 				Window.alert("Logoff efetuado com sucesso!");
 			}
 		});
-		menuBar.addItem(mntmSair);
+		menuBar.addItem(menuItemSair);
 		
 		AbsolutePanel absolutePanel_4 = new AbsolutePanel();
 		absolutePanel_3.add(absolutePanel_4, 147, 150);
 		absolutePanel_4.setSize("586px", "461px");
+		
+		txtbtnCadastrarCarona.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				cadastrarCarona();
+			}
+		});
+		
+		txtbtnPesquisarCarona.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				pesquisarCarona();
+			}
+		});
+		
+		txtbtnVisualizarCaronas.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				visualizarCarona();
+			}
+		});
+	}
+
+	protected void visualizarCarona() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	protected void cadastrarCarona() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	protected void pesquisarCarona() {
+		// TODO Auto-generated method stub
+		
 	}
 }

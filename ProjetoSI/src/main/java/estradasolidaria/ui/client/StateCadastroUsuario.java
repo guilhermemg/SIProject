@@ -1,8 +1,10 @@
 package estradasolidaria.ui.client;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -16,6 +18,8 @@ public class StateCadastroUsuario extends AbsolutePanel implements StatePanel {
 	StatePanel state; 
 	final EstradaSolidaria estrada;
 	final Widget panel = this;
+	private EstradaSolidariaServiceAsync estradaSolidariaService = 
+			GWT.create(EstradaSolidariaService.class);
 
 	public StateCadastroUsuario(EstradaSolidaria estradaSolidaria) {
 		this.estrada = estradaSolidaria;
@@ -47,23 +51,23 @@ public class StateCadastroUsuario extends AbsolutePanel implements StatePanel {
 		lblComfirmaASenha.setStyleName("gwt-LabelEstradaSolidaria4");
 		absolutePanel.add(lblComfirmaASenha, 60, 102);
 		
-		final TextBox txtbxNome = new TextBox();
-		absolutePanel.add(txtbxNome, 206, 0);
-		txtbxNome.setName("Digite seu nome");
-		txtbxNome.setSize("262px", "17px");
+		final TextBox textBbxNome = new TextBox();
+		absolutePanel.add(textBbxNome, 206, 0);
+		textBbxNome.setName("Digite seu nome");
+		textBbxNome.setSize("262px", "17px");
 		
 		final TextBox textBoxLogin = new TextBox();
 		absolutePanel.add(textBoxLogin, 206, 31);
 		textBoxLogin.setName("Digite seu nome");
 		textBoxLogin.setSize("262px", "17px");
 		
-		final PasswordTextBox passwordTextBox = new PasswordTextBox();
-		absolutePanel.add(passwordTextBox, 206, 62);
-		passwordTextBox.setSize("262px", "17px");
+		final PasswordTextBox textBoxPassword = new PasswordTextBox();
+		absolutePanel.add(textBoxPassword, 206, 62);
+		textBoxPassword.setSize("262px", "17px");
 		
-		final PasswordTextBox passwordTextBox_1 = new PasswordTextBox();
-		absolutePanel.add(passwordTextBox_1, 206, 93);
-		passwordTextBox_1.setSize("262px", "17px");
+//		final PasswordTextBox passwordTextBox_1 = new PasswordTextBox();
+//		absolutePanel.add(passwordTextBox_1, 206, 93);
+//		passwordTextBox_1.setSize("262px", "17px");
 		
 		Label lblEndereo = new Label("Endereço:");
 		lblEndereo.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -88,23 +92,20 @@ public class StateCadastroUsuario extends AbsolutePanel implements StatePanel {
 		textBoxEmail.setName("Digite seu nome");
 		textBoxEmail.setSize("262px", "17px");
 		
-		Button btnComfirmar = new Button("Comfirmar");
-		btnComfirmar.addClickHandler(new ClickHandler() {
+		Button btnConfirmar = new Button("Confirmar");
+		btnConfirmar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				if(txtbxNome.getText().length() == 0|| textBoxLogin.getText().length() == 0 || textBoxEndereco.getText().length() == 0 || 
-						textBoxEmail.getText().length() == 0 || passwordTextBox.getText().length() == 0 || passwordTextBox_1.getText().length() == 0){
+				if(textBbxNome.getText().length() == 0|| textBoxLogin.getText().length() == 0 || textBoxEndereco.getText().length() == 0 || 
+						textBoxEmail.getText().length() == 0 || textBoxPassword.getText().length() == 0 || textBoxPassword.getText().length() == 0){
 					Window.alert("Digite todos os campos corretamente");
 				} else {
-					estrada.rootPanel.remove(panel);
-					Widget newPanel = new StateCadastroUsuarioAceito(estrada);
-					newPanel.setSize("600px", "417px");
-					estrada.setStatePanel(newPanel);
+					cadastraUsuarioGUI(textBoxLogin, textBoxPassword, textBbxNome, textBoxEndereco, textBoxEmail);
 				}
 			}
 		});
-		absolutePanel.add(btnComfirmar, 395, 232);
-		btnComfirmar.setText("Criar");
-		btnComfirmar.setSize("81px", "24px");
+		absolutePanel.add(btnConfirmar, 395, 232);
+		btnConfirmar.setText("Criar");
+		btnConfirmar.setSize("81px", "24px");
 		
 		
 		Button btnVoltar = new Button("Cancelar");
@@ -122,6 +123,37 @@ public class StateCadastroUsuario extends AbsolutePanel implements StatePanel {
 		Label lblCadastroDeUsurio = new Label("Cadastro de Usuário");
 		lblCadastroDeUsurio.setStyleName("gwt-LabelEstradaSolidaria2");
 		add(lblCadastroDeUsurio, 301, 10);
+		
+	}
+
+	protected void cadastraUsuarioGUI(TextBox textBoxLogin, PasswordTextBox textBoxPassword, TextBox textBbxNome, TextBox textBoxEndereco, TextBox textBoxEmail) {
+		String login = textBoxLogin.getText(), senha = textBoxPassword.getText(),
+				nome = textBbxNome.getText(), endereco = textBoxEndereco.getText(), email = textBoxEmail.getText();
+		
+		AsyncCallback<Void> callback = new AsyncCallback<Void>() {
+			@Override
+			public void onFailure(Throwable caught) {
+				// Show the RPC error message to the user
+				Window.alert("Remote Procedure Call - Failure: " + this.toString());
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				Window.alert("Remote Procedure Call is succefull");
+			}
+		  };
+		
+		try {
+			estradaSolidariaService.criarUsuario(login, senha, nome, endereco, email, callback);
+			
+			estrada.rootPanel.remove(panel);
+			Widget newPanel = new StateCadastroUsuarioAceito(estrada);
+			newPanel.setSize("600px", "417px");
+			estrada.setStatePanel(newPanel);
+			
+		} catch (Exception e) {
+			Window.alert(e.getMessage());
+		}
 		
 	}
 }

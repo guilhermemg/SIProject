@@ -84,6 +84,7 @@ public class EstradaSolidariaController implements Serializable {
 		}
 
 		Usuario user = new Usuario(login, senha, nome, endereco, email);
+		System.out.println("Usuario criado com sucesso");
 		this.mapIdUsuario.put(user.getIdUsuario(), user);
 	}
 
