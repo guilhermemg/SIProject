@@ -12,10 +12,11 @@ public class StateCadastroUsuarioAceito extends Composite implements StatePanel{
 	
 	final EstradaSolidaria estrada;
 	final Widget panel= this;
-
-	public StateCadastroUsuarioAceito(EstradaSolidaria estradaSolidaria) {
-		
+	private EstradaSolidariaServiceAsync estradaSolidariaService;
+	
+	public StateCadastroUsuarioAceito(EstradaSolidaria estradaSolidaria, final EstradaSolidariaServiceAsync estradaSolidariaService) {
 		this.estrada = estradaSolidaria;
+		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
 		absolutePanel.setSize("580px", "220px");
@@ -24,7 +25,7 @@ public class StateCadastroUsuarioAceito extends Composite implements StatePanel{
 		btnVerPerfil.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				estrada.rootPanel.remove(panel);
-				Widget newPanel = new StatePerfil2(estrada);
+				Widget newPanel = new StatePerfil2(estrada, estradaSolidariaService);
 				newPanel.setSize("600px", "417px");
 				estrada.setStatePanel(newPanel);
 			}
@@ -35,7 +36,7 @@ public class StateCadastroUsuarioAceito extends Composite implements StatePanel{
 		btnPginaInicial.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				estrada.rootPanel.remove(panel);
-				Widget newPanel = new StateHomePage(estrada);
+				Widget newPanel = new StateHomePage(estrada, estradaSolidariaService);
 				newPanel.setSize("600px", "417px");
 				estrada.setStatePanel(newPanel);
 			}

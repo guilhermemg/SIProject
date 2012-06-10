@@ -19,7 +19,7 @@ public class StateCadastroUsuario extends AbsolutePanel implements StatePanel {
 	final EstradaSolidaria estrada;
 	final Widget panel = this;
 	private EstradaSolidariaServiceAsync estradaSolidariaService = 
-			GWT.create(EstradaSolidariaService.class);
+			(EstradaSolidariaServiceAsync) GWT.create(EstradaSolidariaService.class);
 
 	public StateCadastroUsuario(EstradaSolidaria estradaSolidaria) {
 		this.estrada = estradaSolidaria;
@@ -65,10 +65,6 @@ public class StateCadastroUsuario extends AbsolutePanel implements StatePanel {
 		absolutePanel.add(textBoxPassword, 206, 62);
 		textBoxPassword.setSize("262px", "17px");
 		
-//		final PasswordTextBox passwordTextBox_1 = new PasswordTextBox();
-//		absolutePanel.add(passwordTextBox_1, 206, 93);
-//		passwordTextBox_1.setSize("262px", "17px");
-		
 		Label lblEndereo = new Label("Endereço:");
 		lblEndereo.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		lblEndereo.setDirectionEstimator(false);
@@ -112,7 +108,7 @@ public class StateCadastroUsuario extends AbsolutePanel implements StatePanel {
 		btnVoltar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				estrada.rootPanel.remove(panel);
-				Widget newPanel = new StateHomePage(estrada);
+				Widget newPanel = new StateHomePage(estrada, estradaSolidariaService);
 				newPanel.setSize("600px", "417px");
 				estrada.setStatePanel(newPanel);
 			}
@@ -147,7 +143,7 @@ public class StateCadastroUsuario extends AbsolutePanel implements StatePanel {
 			estradaSolidariaService.criarUsuario(login, senha, nome, endereco, email, callback);
 			
 			estrada.rootPanel.remove(panel);
-			Widget newPanel = new StateCadastroUsuarioAceito(estrada);
+			Widget newPanel = new StateCadastroUsuarioAceito(estrada, this.estradaSolidariaService);
 			newPanel.setSize("600px", "417px");
 			estrada.setStatePanel(newPanel);
 			

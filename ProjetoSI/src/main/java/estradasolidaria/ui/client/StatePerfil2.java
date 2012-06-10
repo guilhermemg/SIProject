@@ -19,10 +19,12 @@ public class StatePerfil2 extends Composite {
 	
 	final EstradaSolidaria estrada;
 	final Widget panel= this;
+	private EstradaSolidariaServiceAsync estradaSolidariaService;
 	
-	public StatePerfil2(EstradaSolidaria estradaSolidaria) {
+	public StatePerfil2(EstradaSolidaria estradaSolidaria, final EstradaSolidariaServiceAsync estradaSolidariaService) {
 		
 		estrada = estradaSolidaria;
+		this.estradaSolidariaService = estradaSolidariaService;
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
@@ -104,7 +106,7 @@ public class StatePerfil2 extends Composite {
 		MenuItem menuItemSair = new MenuItem("Sair", false, new Command() {
 			public void execute() {
 				estrada.rootPanel.remove(panel);
-				Widget newPanel = new StateHomePage(estrada);
+				Widget newPanel = new StateHomePage(estrada, estradaSolidariaService);
 				newPanel.setSize("600px", "417px");
 				estrada.setStatePanel(newPanel);
 				Window.alert("Logoff efetuado com sucesso!");
@@ -120,7 +122,7 @@ public class StatePerfil2 extends Composite {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				cadastrarCarona();
+				cadastrarCaronaGUI();
 			}
 		});
 		
@@ -128,7 +130,7 @@ public class StatePerfil2 extends Composite {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				pesquisarCarona();
+				pesquisarCaronaGUI();
 			}
 		});
 		
@@ -136,22 +138,22 @@ public class StatePerfil2 extends Composite {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				visualizarCarona();
+				visualizarCaronaGUI();
 			}
 		});
 	}
 
-	protected void visualizarCarona() {
+	protected void visualizarCaronaGUI() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	protected void cadastrarCarona() {
+	protected void cadastrarCaronaGUI() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	protected void pesquisarCarona() {
+	protected void pesquisarCaronaGUI() {
 		// TODO Auto-generated method stub
 		
 	}

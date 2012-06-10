@@ -16,21 +16,16 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public class StateHomePage extends AbsolutePanel {
-//	EstradaSolidariaController sistema = EstradaSolidariaController.getInstance();
-	
 	StatePanel state;
 	final EstradaSolidaria estrada;
 	final Widget panel= this;
 	Image imagem;
 	
-	/**
-	 * Create a remote service proxy to talk to the server-side EstradaSolidaria service.
-	 */
-	private final EstradaSolidariaServiceAsync estradaSolidariaService = GWT
-			.create(EstradaSolidariaService.class);
+	EstradaSolidariaServiceAsync estradaSolidariaService;
 	
-	public StateHomePage(EstradaSolidaria estradaSolidaria) {
+	public StateHomePage(EstradaSolidaria estradaSolidaria, EstradaSolidariaServiceAsync estradaSolidariaService) {
 		estrada = estradaSolidaria;
+		this.estradaSolidariaService = estradaSolidariaService;
 		
 		Resources resources = GWT.create(Resources.class);
 		//imagem = new Image("http://www.fhwa.dot.gov/policyinformation/motorfuel/hwytaxes/2008/index_clip_image002.jpg");
@@ -53,25 +48,25 @@ public class StateHomePage extends AbsolutePanel {
 		absPanelLogin.add(lblUsurio, 10, 51);
 		lblUsurio.setSize("58px", "15px");
 		
-		final TextBox userName = new TextBox();
-		absPanelLogin.add(userName, 74, 51);
-		userName.setSize("180px", "13px");
+		final TextBox txtboxNome = new TextBox();
+		absPanelLogin.add(txtboxNome, 74, 51);
+		txtboxNome.setSize("180px", "13px");
 		
 		Label lblSenha = new Label("Senha:");
 		lblSenha.setStyleName("gwt-LabelEstradaSolidaria4");
 		absPanelLogin.add(lblSenha, 10, 78);
 		
-		final PasswordTextBox passwordTextBox = new PasswordTextBox();
-		absPanelLogin.add(passwordTextBox, 74, 78);
-		passwordTextBox.setSize("180px", "17px");
+		final PasswordTextBox textBoxPassword = new PasswordTextBox();
+		absPanelLogin.add(textBoxPassword, 74, 78);
+		textBoxPassword.setSize("180px", "17px");
 		
 		Button btnLogin = new Button("Login");
 		btnLogin.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				if(userName.getText().length() == 0|| passwordTextBox.getText().length() == 0){
+				if(txtboxNome.getText().length() == 0|| textBoxPassword.getText().length() == 0){
 					Window.alert("Digite todos os campos corretamente");
 				} else {
-					 abrirSessaoGUI(userName, passwordTextBox);
+					 abrirSessaoGUI(txtboxNome, textBoxPassword);
 				}
 			}
 		});
@@ -142,7 +137,7 @@ public class StateHomePage extends AbsolutePanel {
 			estradaSolidariaService.abrirSessao(login, senha, callback);
 			
 			estrada.rootPanel.remove(panel);
-			Widget newPanel = new StatePerfil2(estrada);
+			Widget newPanel = new StatePerfil2(estrada, this.estradaSolidariaService);
 			newPanel.setSize("781px", "592px");
 			estrada.setStatePanel(newPanel);
 			

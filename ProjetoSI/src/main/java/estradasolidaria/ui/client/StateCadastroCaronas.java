@@ -18,9 +18,10 @@ public class StateCadastroCaronas extends Composite {
 
 	final EstradaSolidaria estrada;
 	final Widget panel= this;
+	private EstradaSolidariaServiceAsync estradaSolidariaService;
 
 	@SuppressWarnings("deprecation")
-	public StateCadastroCaronas(EstradaSolidaria estradaSolidaria) {
+	public StateCadastroCaronas(EstradaSolidaria estradaSolidaria, final EstradaSolidariaServiceAsync estradaSolidariaService) {
 		this.estrada = estradaSolidaria;
 		VerticalPanel verticalPanel = new VerticalPanel();
 		initWidget(verticalPanel);
@@ -78,7 +79,7 @@ public class StateCadastroCaronas extends Composite {
 					Window.alert("Todos os campos devem ser preenchidos corretamente.");
 				} else {
 					estrada.rootPanel.remove(panel);
-					Widget newPanel = new StatePerfil(estrada);
+					Widget newPanel = new StatePerfil2(estrada, estradaSolidariaService);
 					newPanel.setSize("600px", "417px");
 					estrada.setStatePanel(newPanel);
 					Window.alert("Carona cadastrada com sucesso.");
