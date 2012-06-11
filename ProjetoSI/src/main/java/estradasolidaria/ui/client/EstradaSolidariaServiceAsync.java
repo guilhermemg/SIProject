@@ -3,7 +3,6 @@ package estradasolidaria.ui.client;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 /**
  * The async counterpart of <code>GreetingService</code>.
@@ -65,7 +64,7 @@ public interface EstradaSolidariaServiceAsync {
 	void getTrajeto(String idCarona, AsyncCallback<String> callback);
 
 	void localizarCarona(String idSessao, String origem, String destino,
-			AsyncCallback<String> callback);
+			AsyncCallback<List<String>> callback);
 
 	void localizarCaronaMunicipal(String idSessao, String cidade,
 			AsyncCallback<List<String>> callback);

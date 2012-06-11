@@ -1,5 +1,6 @@
 package estradasolidaria.ui.server;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -66,9 +67,18 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public String localizarCarona(String idSessao, String origem, String destino) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<String> localizarCarona(String idSessao, String origem, String destino) throws GWTException {
+		try {
+			Integer idSessaoInt = Integer.parseInt(idSessao);
+			List<String> listaCaronasToString = new ArrayList<String>();
+			List<Carona> listaCaronas = controller.localizarCarona(idSessaoInt, origem, destino);
+			for(Carona c : listaCaronas){
+				listaCaronasToString.add(c.toString());
+			}
+			return listaCaronasToString;
+		} catch(Exception e){
+			throw new GWTException(e.getMessage());
+		}
 	}
 
 	@Override

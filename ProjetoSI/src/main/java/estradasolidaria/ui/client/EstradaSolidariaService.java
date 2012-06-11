@@ -62,9 +62,10 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param origem
 	 * @param destino
 	 * @return lista de ids de caronas como string
+	 * @throws GWTException 
 	 */
-	public abstract String localizarCarona(String idSessao, String origem,
-			String destino);
+	public abstract List<String> localizarCarona(String idSessao, String origem,
+			String destino) throws GWTException;
 
 	/**
 	 * Retorna trajeto da carona.

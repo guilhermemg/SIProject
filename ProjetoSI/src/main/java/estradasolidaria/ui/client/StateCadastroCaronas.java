@@ -1,8 +1,5 @@
 package estradasolidaria.ui.client;
 
-import java.text.Format;
-import java.util.Formatter;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -17,8 +14,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
-import com.google.gwt.user.datepicker.client.DateBox.DefaultFormat;
-import com.ibm.icu.text.DateFormat;
 
 public class StateCadastroCaronas extends Composite {
 
@@ -26,7 +21,6 @@ public class StateCadastroCaronas extends Composite {
 	final Widget panel= this;
 	private EstradaSolidariaServiceAsync estradaSolidariaService;
 
-	@SuppressWarnings("deprecation")
 	public StateCadastroCaronas(EstradaSolidaria estradaSolidaria, EstradaSolidariaServiceAsync estradaSolidariaService) {
 		this.estrada = estradaSolidaria;
 		this.estradaSolidariaService = estradaSolidariaService;
