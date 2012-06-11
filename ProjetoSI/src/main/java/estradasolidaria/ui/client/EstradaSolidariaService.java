@@ -38,11 +38,12 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param hora
 	 * @param vagas
 	 * @return id da carona cadastrada
+	 * @throws GWTException 
 	 * 
 	 * @see Usuario, SistemaCaronas
 	 */
-	public abstract String cadastrarCarona(String idSessao, String origem,
-			String destino, String data, String hora, String vagas);
+	public abstract String cadastrarCarona(Integer idSessao, String origem,
+			String destino, String data, String hora, String vagas) throws GWTException;
 
 	/**
 	 * Abre sessao para usuario identificado por login e senha.

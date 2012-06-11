@@ -36,10 +36,18 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public String cadastrarCarona(String idSessao, String origem,
-			String destino, String data, String hora, String vagas) {
-		// TODO Auto-generated method stub
-		return null;
+	public String cadastrarCarona(Integer idSessao, String origem,
+			String destino, String data, String hora, String vagas) throws GWTException {
+		try {
+			Integer vagasInt = Integer.parseInt(vagas);
+			Carona c = controller.cadastrarCarona(idSessao, origem, destino, data, hora, vagasInt);
+			System.out.println("Carona cadastrada:" + c.toString());
+			return c.getIdCarona().toString();
+		} catch (NumberFormatException nfe) {
+			throw new GWTException("Formato de vagas inválido.");
+		} catch (IllegalArgumentException iae) {
+			throw new GWTException(iae.getMessage());
+		}
 	}
 
 	@Override

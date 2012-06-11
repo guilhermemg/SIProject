@@ -18,7 +18,7 @@ public interface EstradaSolidariaServiceAsync {
 	void aceitarSolicitacaoPontoEncontro(String idSessao, String idSolicitacao,
 			AsyncCallback<Void> callback);
 
-	void cadastrarCarona(String idSessao, String origem, String destino,
+	void cadastrarCarona(Integer idSessao, String origem, String destino,
 			String data, String hora, String vagas,
 			AsyncCallback<String> callback);
 

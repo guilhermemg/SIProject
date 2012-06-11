@@ -1,9 +1,13 @@
 package estradasolidaria.ui.client;
 
+import java.text.Format;
+import java.util.Formatter;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -14,6 +18,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.user.datepicker.client.DateBox.DefaultFormat;
+import com.ibm.icu.text.DateFormat;
 
 public class StateCadastroCaronas extends Composite {
 
@@ -22,8 +27,10 @@ public class StateCadastroCaronas extends Composite {
 	private EstradaSolidariaServiceAsync estradaSolidariaService;
 
 	@SuppressWarnings("deprecation")
-	public StateCadastroCaronas(EstradaSolidaria estradaSolidaria, final EstradaSolidariaServiceAsync estradaSolidariaService) {
+	public StateCadastroCaronas(EstradaSolidaria estradaSolidaria, EstradaSolidariaServiceAsync estradaSolidariaService) {
 		this.estrada = estradaSolidaria;
+		this.estradaSolidariaService = estradaSolidariaService;
+		
 		
 		AbsolutePanel absPanelCadastroCarona = new AbsolutePanel();
 		initWidget(absPanelCadastroCarona);
@@ -63,7 +70,8 @@ public class StateCadastroCaronas extends Composite {
 		flexTable.setWidget(3, 0, lblData);
 		
 		final DateBox dateBox = new DateBox();
-		dateBox.setFormat(new DefaultFormat(DateTimeFormat.getFullDateFormat()));
+		DateTimeFormat dateFormat = DateTimeFormat.getFormat("dd/MM/yyyy");
+	    dateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
 		flexTable.setWidget(3, 1, dateBox);
 		
 		Label lblVagas = new Label("Vagas:");
@@ -81,19 +89,49 @@ public class StateCadastroCaronas extends Composite {
 						|| textBoxHora.getText().length() == 0 ||  dateBox.getTextBox().getText().length() == 0){
 					Window.alert("Todos os campos devem ser preenchidos corretamente.");
 				} else {
+					cadastraCaronaGUI(textBoxOrigem, textBoxDestino, dateBox, textBoxHora, textBoxVagas);
+					
+					//LIMPA TEXTBOX's
 					textBoxOrigem.setText("");
 					textBoxDestino.setText("");
 					textBoxHora.setText("");
 					dateBox.setValue(null);
 					textBoxVagas.setText("");
 					
-					Window.alert("Carona cadastrada com sucesso.");
 				}
 				
 				
 			}
 		});
 		flexTable.setWidget(5, 1, btnEnviar);
+		
+		
+	}
+	private void cadastraCaronaGUI(TextBox textBoxOrigem, TextBox textBoxDestino, DateBox dateBox, TextBox textBoxHora, TextBox textBoxVagas) {
+		Integer idSessao = EstradaSolidaria.getIdSessaoAberta();
+		System.out.println("IdSessao:" + idSessao);
+		AsyncCallback<String> callback = new AsyncCallback<String>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
+				
+			}
+
+			@Override
+			public void onSuccess(String result) {
+				Window.alert("Carona cadastrada com sucesso.");
+				
+			}
+		};
+		estradaSolidariaService.cadastrarCarona(idSessao, 
+												textBoxOrigem.getText(), 
+												textBoxDestino.getText(), 
+												dateBox.getTextBox().getText(),
+												textBoxHora.getText(),
+												textBoxVagas.getText(), 
+												callback);
+		
 	}
 
 }

@@ -136,10 +136,9 @@ public class StateCadastroUsuario extends AbsolutePanel implements StatePanel {
 
 			@Override
 			public void onSuccess(Void result) {
-				Window.alert("Remote Procedure Call is succefull");
+				Window.alert("Usuário cadastrado!");
 			}
 		  };
-		System.out.println("Deu certo");
 		try {
 			estradaSolidariaService.criarUsuario(login, senha, nome, endereco, email, callback);
 			
