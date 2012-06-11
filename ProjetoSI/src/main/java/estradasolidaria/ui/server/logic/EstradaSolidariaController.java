@@ -10,6 +10,7 @@ import java.util.TreeMap;
 
 import javax.mail.MessagingException;
 
+import estradasolidaria.ui.server.adder.Adder;
 import estradasolidaria.ui.server.data.GerenciadorDeDados;
 
 
@@ -1107,5 +1108,14 @@ public class EstradaSolidariaController implements Serializable {
 		caronasPegas.addAll(u.getMapIdCaronasPegas().values());
 			
 		return caronasPegas;
+	}
+	
+	/**
+	 * Metodo para adicionar usuarios e caronas automaticamente
+	 * ao sistema.
+	 */
+	public void adicionaUsuarioECaronasAutomaticamente() {
+		Adder adder = new Adder(uniqueInstance);
+		adder.addElements();
 	}
 }
