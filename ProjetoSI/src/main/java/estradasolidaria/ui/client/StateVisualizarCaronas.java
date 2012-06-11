@@ -3,7 +3,9 @@ package estradasolidaria.ui.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.CheckboxCell;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -14,10 +16,16 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.view.client.DefaultSelectionEventManager;
+import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.ProvidesKey;
+import com.google.gwt.view.client.SelectionModel;
 
 public class StateVisualizarCaronas extends Composite {
-	private List<Object> caronas = new ArrayList<Object>();
-	
+	private List<GWTCarona> caronas;
+	private CellTable<GWTCarona> caronas_cellTable;
 	final EstradaSolidaria estrada;
 	final Widget panel= this;
 	private EstradaSolidariaServiceAsync estradaSolidariaService;
@@ -44,26 +52,8 @@ public class StateVisualizarCaronas extends Composite {
 		this.estrada = estrada;
 		this.estradaSolidariaService = estradaSolidariaService;
 		Integer idSessao = EstradaSolidaria.getIdSessaoAberta();
-		this.estradaSolidariaService.getTodasCaronasUsuario(idSessao, new AsyncCallback<List<List<String>>>() {
-
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
-			}
-
-			@Override
-			public void onSuccess(List<List<String>> result) {
-				for (List<String> carona : result) {
-					GWTCarona gwt_c = new GWTCarona(carona.get(0),
-													carona.get(1),
-													carona.get(2),
-													carona.get(3),
-													carona.get(4),
-													carona.get(5));
-					caronas.add(gwt_c);
-				}
-			}
-		});
+		caronas = new ArrayList<GWTCarona>();
+		
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
@@ -71,72 +61,98 @@ public class StateVisualizarCaronas extends Composite {
 		
 		TabPanel tabPanel = new TabPanel();
 		absolutePanel.add(tabPanel, 10, 10);
-		tabPanel.setSize("547px", "467px");
+		tabPanel.setSize("566px", "467px");
 		
 		FlexTable flexTable = new FlexTable();
 		tabPanel.add(flexTable, "Oferecidas", false);
-		flexTable.setSize("532px", "3cm");
+		flexTable.setSize("549px", "426px");
 		
-		CellTable<Object> caronas_cellTable = new CellTable<Object>();
+		caronas_cellTable = new CellTable<GWTCarona>();
 		flexTable.setWidget(0, 0, caronas_cellTable);
-		caronas_cellTable.setWidth("526px");
+		caronas_cellTable.setHeight("145px");
+		caronas_cellTable.setWidth("100%", true);
 		
-		Column<Object, Boolean> checkBox_column = new Column<Object, Boolean>(new CheckboxCell()) {
+		
+		final SelectionModel<GWTCarona> selectionModel = new MultiSelectionModel<GWTCarona>( new ProvidesKey<GWTCarona>() {
+
 			@Override
-			public Boolean getValue(Object object) {
-				return (Boolean) null;
+			public Object getKey(GWTCarona item) {
+				return item;
+			}
+		});
+		caronas_cellTable.setSelectionModel(selectionModel,
+		DefaultSelectionEventManager.<GWTCarona> createCheckboxManager());
+		Column<GWTCarona, Boolean> checkBox_column = new Column<GWTCarona, Boolean>(new CheckboxCell()) {
+			@Override
+			public Boolean getValue(GWTCarona carona) {
+				return selectionModel.isSelected(carona);
 			}
 		};
+		checkBox_column.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		caronas_cellTable.addColumn(checkBox_column);
+		caronas_cellTable.setColumnWidth(checkBox_column, "100%");
 		
-		TextColumn<Object> origem_textColumn = new TextColumn<Object>() {
+		TextColumn<GWTCarona> origem_textColumn = new TextColumn<GWTCarona>() {
 			@Override
-			public String getValue(Object object) {
-				return ((GWTCarona)object).origem;
+			public String getValue(GWTCarona carona) {
+				return carona.origem;
 			}
 		};
-//		
+		origem_textColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		caronas_cellTable.addColumn(origem_textColumn, "Origem");
-		
-		TextColumn<Object> destino_textColumn = new TextColumn<Object>() {
-			@Override
-			public String getValue(Object object) {
-				return ((GWTCarona)object).destino;
-			}
-		};
-		caronas_cellTable.addColumn(destino_textColumn, "Destino");
-		
-		TextColumn<Object> data_textColumn = new TextColumn<Object>() {
-			@Override
-			public String getValue(Object object) {
-				return ((GWTCarona)object).data;
-			}
-		};
-		caronas_cellTable.addColumn(data_textColumn, "Data");
-		
-		TextColumn<Object> hora_textColumn = new TextColumn<Object>() {
-			@Override
-			public String getValue(Object object) {
-				return ((GWTCarona)object).hora;
-			}
-		};
-		caronas_cellTable.addColumn(hora_textColumn, "Hora-Saida");
-		
-//		Column<Object, Number> vagas_column = new Column<Object, Number>(new NumberCell()) {
-//			@Override
-//			public Number getValue(Object object) {
-//				return (Number) null;
-//			}
-//		};
-//		Objects_cellTable.addColumn(vagas_column, "Vagas");
+		caronas_cellTable.setColumnWidth(origem_textColumn, "100%");
 //		
-//		Column<Object, String> review_column = new Column<Object, String>(new ButtonCell()) {
-//			@Override
-//			public String getValue(Object object) {
-//				return (String) null;
-//			}
-//		};
-//		Objects_cellTable.addColumn(review_column, "Review");
+		
+		TextColumn<GWTCarona> destino_textColumn = new TextColumn<GWTCarona>() {
+			@Override
+			public String getValue(GWTCarona carona) {
+				return carona.destino;
+			}
+		};
+		destino_textColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		caronas_cellTable.addColumn(destino_textColumn, "Destino");
+		caronas_cellTable.setColumnWidth(destino_textColumn, "100%");
+		
+		TextColumn<GWTCarona> data_textColumn = new TextColumn<GWTCarona>() {
+			@Override
+			public String getValue(GWTCarona carona) {
+				return carona.data;
+			}
+		};
+		data_textColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		caronas_cellTable.addColumn(data_textColumn, "Data");
+		caronas_cellTable.setColumnWidth(data_textColumn, "100%");
+		
+		TextColumn<GWTCarona> hora_textColumn = new TextColumn<GWTCarona>() {
+			@Override
+			public String getValue(GWTCarona carona) {
+				return carona.hora;
+			}
+		};
+		hora_textColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		caronas_cellTable.addColumn(hora_textColumn, "Hora-Saida");
+		caronas_cellTable.setColumnWidth(hora_textColumn, "100%");
+		
+		TextColumn<GWTCarona> vagas_textColumn = new TextColumn<GWTCarona>() {
+			@Override
+			public String getValue(GWTCarona carona) {
+				return carona.vagas;
+			}
+		};
+		vagas_textColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		caronas_cellTable.addColumn(vagas_textColumn, "Vagas");
+		caronas_cellTable.setColumnWidth(vagas_textColumn, "100%");
+		
+		Column<GWTCarona, String> review_textColumn = new Column<GWTCarona, String>(new ButtonCell()) {
+			@Override
+			public String getValue(GWTCarona carona) {
+				return carona.review;
+			}
+		};
+		review_textColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		caronas_cellTable.addColumn(review_textColumn, "Review");
+		caronas_cellTable.setColumnWidth(review_textColumn, "100%");
+		flexTable.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
 		
 		FlexTable flexTable_1 = new FlexTable();
 		tabPanel.add(flexTable_1, "Pegas", false);
@@ -147,7 +163,34 @@ public class StateVisualizarCaronas extends Composite {
 		flexTable_2.setSize("5cm", "3cm");
 		
 //		COLOCAR DADOS NA TABELA	
-		caronas_cellTable.setRowCount(caronas.size(), true);
-		caronas_cellTable.setRowData(0, caronas);
+		geraListaDeCaronas(idSessao);
+		
+	}
+
+	private void geraListaDeCaronas(Integer idSessao) {
+		this.estradaSolidariaService.getTodasCaronasUsuario(idSessao, new AsyncCallback<List<List<String>>>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(List<List<String>> result) {
+				System.out.println(result.size() + " caronas cadastradas!");
+				for (List<String> carona : result) {
+					GWTCarona gwt_c = new GWTCarona(carona.get(0),
+													carona.get(1),
+													carona.get(2),
+													carona.get(3),
+													carona.get(4),
+													carona.get(5));
+					caronas.add(gwt_c);
+				}
+				System.out.println(caronas.size() + " CaronasGWT");
+				caronas_cellTable.setRowCount(caronas.size(), true);
+				caronas_cellTable.setRowData(0, caronas);
+			}
+		});
 	}
 }
