@@ -2,14 +2,14 @@ package estradasolidaria.ui.client;
 
 import java.util.List;
 
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.widget.client.TextButton;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.widget.client.TextButton;
 
 public class StateCaronasEncontradas extends Composite {
 	private List<String> listaDeResultados;
@@ -39,7 +39,7 @@ public class StateCaronasEncontradas extends Composite {
 			public void onClick(ClickEvent arg0) {
 				if(listBoxCaronasEncontradas.isItemSelected(0) || listBoxCaronasEncontradas.isItemSelected(1) || 
 						listBoxCaronasEncontradas.isItemSelected(2)){
-					Window.alert("eh nóis truta");
+					Window.alert("eh nóis truta" + listBoxCaronasEncontradas.getSelectedIndex());
 				}
 			}
 		});

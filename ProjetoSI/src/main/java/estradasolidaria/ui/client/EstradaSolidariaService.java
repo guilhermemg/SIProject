@@ -7,6 +7,10 @@ import javax.mail.MessagingException;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+import estradasolidaria.ui.server.logic.CaronaInexistenteException;
+import estradasolidaria.ui.server.logic.CaronaInvalidaException;
+import estradasolidaria.ui.server.logic.TrajetoInexistenteException;
+
 
 /**
  * The client side stub for the RPC service.
