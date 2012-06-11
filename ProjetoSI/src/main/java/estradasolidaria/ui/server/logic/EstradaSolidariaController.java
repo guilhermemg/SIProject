@@ -1101,6 +1101,9 @@ public class EstradaSolidariaController implements Serializable {
 	}
 
 	public List<Carona> getTodasCaronasPegas(Integer idSessao) {
+		if(idSessao == null)
+			throw new IllegalArgumentException("Sessão inválida");
+		
 		Sessao s = getMapIdSessao().get(idSessao);
 		Usuario u = getMapIdUsuario().get(s.getIdUser());
 		List<Carona> caronasPegas = new LinkedList<Carona>();
