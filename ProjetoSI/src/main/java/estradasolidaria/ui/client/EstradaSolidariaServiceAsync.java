@@ -63,7 +63,7 @@ public interface EstradaSolidariaServiceAsync {
 
 	void getTrajeto(String idCarona, AsyncCallback<String> callback);
 
-	void localizarCarona(String idSessao, String origem, String destino,
+	void localizarCarona(Integer idSessao, String origem, String destino,
 			AsyncCallback<List<String>> callback);
 
 	void localizarCaronaMunicipal(String idSessao, String cidade,

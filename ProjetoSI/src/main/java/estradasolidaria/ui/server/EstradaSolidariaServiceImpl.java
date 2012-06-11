@@ -67,11 +67,10 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public List<String> localizarCarona(String idSessao, String origem, String destino) throws GWTException {
+	public List<String> localizarCarona(Integer idSessao, String origem, String destino) throws GWTException {
 		try {
-			Integer idSessaoInt = Integer.parseInt(idSessao);
 			List<String> listaCaronasToString = new ArrayList<String>();
-			List<Carona> listaCaronas = controller.localizarCarona(idSessaoInt, origem, destino);
+			List<Carona> listaCaronas = controller.localizarCarona(idSessao, origem, destino);
 			for(Carona c : listaCaronas){
 				listaCaronasToString.add(c.toString());
 			}

@@ -27,7 +27,7 @@ public class StatePesquisaCarona extends Composite {
 		this.estrada = estradaSolidaria;
 		this.estradaSolidariaService = estradaSolidariaService;
 		this.bodyPanel = bodyPanel;
-		final String idSessao = EstradaSolidaria.getIdSessaoAberta().toString();
+		final Integer idSessao = EstradaSolidaria.getIdSessaoAberta();
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
@@ -64,7 +64,7 @@ public class StatePesquisaCarona extends Composite {
 		btnPesquisa.setText("Go!");
 	}
 
-	private void pesquisarCaronasNoSistema(String sessao, String origem, String destino) {
+	private void pesquisarCaronasNoSistema(Integer sessao, String origem, String destino) {
 		estradaSolidariaService.localizarCarona(sessao, origem, destino,  new AsyncCallback<List<String>>(){ 
 			@Override
 			public void onFailure(Throwable caught) {
