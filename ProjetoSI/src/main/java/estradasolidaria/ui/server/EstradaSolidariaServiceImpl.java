@@ -1,5 +1,6 @@
 package estradasolidaria.ui.server;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -8,6 +9,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import estradasolidaria.ui.client.EstradaSolidariaService;
 import estradasolidaria.ui.client.GWTException;
+import estradasolidaria.ui.server.logic.Carona;
 import estradasolidaria.ui.server.logic.CaronaInexistenteException;
 import estradasolidaria.ui.server.logic.CaronaInvalidaException;
 import estradasolidaria.ui.server.logic.EstradaSolidariaController;
@@ -201,8 +203,19 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public List<List<String>> getTodasCaronasUsuario(Integer idSessao) {
-		// TODO Auto-generated method stub
-		return null;
+		List<List<String>> result = new LinkedList<List<String>>();
+		List<Carona> listaCaronas = controller.getTodasCaronasUsuario(idSessao);
+		for (Carona c : listaCaronas) {
+			List<String> caronaList = new LinkedList<String>();
+			caronaList.add(c.getOrigem());
+			caronaList.add(c.getDestino());
+			caronaList.add(c.getData());
+			caronaList.add(c.getHora());
+			caronaList.add(c.getVagas().toString());
+			caronaList.add("Review");
+			result.add(caronaList);
+		}
+		return result;
 	}
 
 	@Override

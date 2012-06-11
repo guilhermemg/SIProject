@@ -32,7 +32,7 @@ public class EstradaSolidaria implements EntryPoint {
 		this.statepanel.setSize("1000px", "1000px");
 	}
 
-	public Integer getIdSessaoAberta() {
+	public static Integer getIdSessaoAberta() {
 		return idSessaoAberta;
 	}
 

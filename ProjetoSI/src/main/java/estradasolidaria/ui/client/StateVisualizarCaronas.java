@@ -7,6 +7,8 @@ import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -20,11 +22,48 @@ public class StateVisualizarCaronas extends Composite {
 	final Widget panel= this;
 	private EstradaSolidariaServiceAsync estradaSolidariaService;
 	
+	class GWTCarona {
+		public GWTCarona(String origem, String destino, String data,
+				String hora, String vagas, String review) {
+					this.origem = origem;
+					this.destino = destino;
+					this.data = data;
+					this.hora = hora;
+					this.vagas = vagas;
+					this.review = review;
+		}
+		String origem;
+		String destino;
+		String data;
+		String hora;
+		String vagas;
+		String review;
+	}
+	
 	public StateVisualizarCaronas(EstradaSolidaria estrada, EstradaSolidariaServiceAsync estradaSolidariaService) {
 		this.estrada = estrada;
 		this.estradaSolidariaService = estradaSolidariaService;
-		
-		caronas.add(new String("Campina Grande"));
+		Integer idSessao = EstradaSolidaria.getIdSessaoAberta();
+		this.estradaSolidariaService.getTodasCaronasUsuario(idSessao, new AsyncCallback<List<List<String>>>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(List<List<String>> result) {
+				for (List<String> carona : result) {
+					GWTCarona gwt_c = new GWTCarona(carona.get(0),
+													carona.get(1),
+													carona.get(2),
+													carona.get(3),
+													carona.get(4),
+													carona.get(5));
+					caronas.add(gwt_c);
+				}
+			}
+		});
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
@@ -53,18 +92,16 @@ public class StateVisualizarCaronas extends Composite {
 		TextColumn<Object> origem_textColumn = new TextColumn<Object>() {
 			@Override
 			public String getValue(Object object) {
-				return object.toString();
+				return ((GWTCarona)object).origem;
 			}
 		};
-		
+//		
 		caronas_cellTable.addColumn(origem_textColumn, "Origem");
-		caronas_cellTable.setRowCount(caronas.size(), true);
-	    caronas_cellTable.setRowData(0, caronas);
 		
 		TextColumn<Object> destino_textColumn = new TextColumn<Object>() {
 			@Override
 			public String getValue(Object object) {
-				return object.toString();
+				return ((GWTCarona)object).destino;
 			}
 		};
 		caronas_cellTable.addColumn(destino_textColumn, "Destino");
@@ -72,7 +109,7 @@ public class StateVisualizarCaronas extends Composite {
 		TextColumn<Object> data_textColumn = new TextColumn<Object>() {
 			@Override
 			public String getValue(Object object) {
-				return object.toString();
+				return ((GWTCarona)object).data;
 			}
 		};
 		caronas_cellTable.addColumn(data_textColumn, "Data");
@@ -80,7 +117,7 @@ public class StateVisualizarCaronas extends Composite {
 		TextColumn<Object> hora_textColumn = new TextColumn<Object>() {
 			@Override
 			public String getValue(Object object) {
-				return object.toString();
+				return ((GWTCarona)object).hora;
 			}
 		};
 		caronas_cellTable.addColumn(hora_textColumn, "Hora-Saida");
@@ -109,6 +146,8 @@ public class StateVisualizarCaronas extends Composite {
 		tabPanel.add(flexTable_2, "Solicitadas", false);
 		flexTable_2.setSize("5cm", "3cm");
 		
-		
+//		COLOCAR DADOS NA TABELA	
+		caronas_cellTable.setRowCount(caronas.size(), true);
+		caronas_cellTable.setRowData(0, caronas);
 	}
 }
