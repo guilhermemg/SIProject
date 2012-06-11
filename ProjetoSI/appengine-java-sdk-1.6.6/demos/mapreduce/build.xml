@@ -1,0 +1,53 @@
+<project name="AppEngineMapReduce" default="compile" basedir=".">
+  <description>
+    A user space MapReduce library for AppEngine.
+  </description>
+  <property name="src" location="src" />
+  <property name="build" location="build" />
+  <property name="lib" location="lib" />
+
+  <property name="sdk" location="../.." />
+  <property name="sdklibdir" location="${sdk}/lib" />
+
+  <path id="sdkjars">
+    <fileset dir="${sdklibdir}/user">
+      <include name="appengine-api-1.0-sdk-*.jar" />
+      <include name="appengine-api-labs-*.jar" />
+    </fileset>
+    <fileset dir="${sdklibdir}/shared">
+      <include name="geronimo-servlet_2.5_spec-1.2.jar" />
+      <include name="servlet-api.jar" />
+    </fileset>
+  </path>
+
+  <path id="thirdpartyjars">
+    <fileset dir="${lib}">
+      <include name="*.jar" />
+    </fileset>
+  </path>
+
+  <target name="copy_libs">
+    <copy todir="example/war/WEB-INF/lib">
+      <path refid="sdkjars" />
+      <path refid="thirdpartyjars" />
+    </copy>
+  </target>
+
+  <target name="compile" depends="copy_libs">
+    <mkdir dir="example/war/WEB-INF/classes" />
+    <javac srcdir="example" destdir="example/war/WEB-INF/classes">
+      <compilerarg value="-Xlint:all"/>
+      <compilerarg value="-Xlint:-sunapi"/>
+      <classpath>
+        <fileset dir="example/war/WEB-INF/lib" />
+        <path refid="sdkjars" />
+        <path refid="thirdpartyjars" />
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="clean">
+    <delete dir="example/war/WEB-INF/lib" />
+    <delete dir="example/war/WEB-INF/classes" />
+  </target>
+</project>
