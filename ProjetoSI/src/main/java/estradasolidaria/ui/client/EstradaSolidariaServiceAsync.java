@@ -10,7 +10,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  */
 public interface EstradaSolidariaServiceAsync {
 
-	void abrirSessao(String login, String senha, AsyncCallback<String> callback);
+	void abrirSessao(String login, String senha, AsyncCallback<Integer> callback);
 
 	void aceitarSolicitacao(String idSessao, String idSolicitacao,
 			AsyncCallback<Void> callback);
@@ -60,7 +60,7 @@ public interface EstradaSolidariaServiceAsync {
 	void getSolicitacoesPendentes(String idSessao, String idCarona,
 			AsyncCallback<String> callback);
 
-	void getTodasCaronasUsuario(String idSessao, AsyncCallback<String> callback);
+	void getTodasCaronasUsuario(Integer idSessao, AsyncCallback<List<List<String>>> callback);
 
 	void getTrajeto(String idCarona, AsyncCallback<String> callback);
 

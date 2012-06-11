@@ -41,9 +41,9 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public String abrirSessao(String login, String senha) throws GWTException {
+	public Integer abrirSessao(String login, String senha) throws GWTException {
 		try {
-			return controller.abrirSessao(login, senha).getIdSessao().toString();
+			return controller.abrirSessao(login, senha).getIdSessao();
 		}
 		catch(UsuarioInexistenteException uie) {
 			throw new GWTException("Usuario inexistente exception");
@@ -200,7 +200,7 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public String getTodasCaronasUsuario(String idSessao) {
+	public List<List<String>> getTodasCaronasUsuario(Integer idSessao) {
 		// TODO Auto-generated method stub
 		return null;
 	}

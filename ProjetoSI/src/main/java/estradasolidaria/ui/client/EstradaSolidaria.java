@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Widget;
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class EstradaSolidaria implements EntryPoint {
+	private static Integer idSessaoAberta;
 	Widget statepanel;
 	final RootPanel rootPanel = RootPanel.get();
 	
@@ -29,5 +30,13 @@ public class EstradaSolidaria implements EntryPoint {
 		this.statepanel = statePanel;
 		rootPanel.add(statepanel);
 		this.statepanel.setSize("1000px", "1000px");
+	}
+
+	public Integer getIdSessaoAberta() {
+		return idSessaoAberta;
+	}
+
+	public static void setIdSessaoAberta(Integer id) {
+		idSessaoAberta = id;
 	}
 }

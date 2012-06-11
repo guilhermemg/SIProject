@@ -124,7 +124,7 @@ public class StateHomePage extends AbsolutePanel {
 	private void abrirSessaoGUI(TextBox userName, PasswordTextBox passwordTextBox) {
 		String login = userName.getText(), senha = passwordTextBox.getText();
 		
-		estradaSolidariaService.abrirSessao(login, senha, new AsyncCallback<String>() { 
+		estradaSolidariaService.abrirSessao(login, senha, new AsyncCallback<Integer>() { 
 			@Override
 			public void onFailure(Throwable caught) {
 				// Show the RPC error message to the user
@@ -132,8 +132,8 @@ public class StateHomePage extends AbsolutePanel {
 			}
 
 			@Override
-			public void onSuccess(String result) {
-				Window.alert("Result: " + result);
+			public void onSuccess(Integer result) {
+				EstradaSolidaria.setIdSessaoAberta(result);
 				estrada.rootPanel.remove(panel);
 				Widget newPanel = new StatePerfil2(estrada, estradaSolidariaService);
 				newPanel.setSize("781px", "592px");

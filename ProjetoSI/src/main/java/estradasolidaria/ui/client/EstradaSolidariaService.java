@@ -52,7 +52,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @return id sessao aberta
 	 * @throws Exception 
 	 */
-	public abstract String abrirSessao(String login, String senha) throws GWTException;
+	public abstract Integer abrirSessao(String login, String senha) throws GWTException;
 
 	/**
 	 * Retorna lista de ids de carona localizadas.
@@ -304,7 +304,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param idSessao
 	 * @return lista de ids de caronas como string
 	 */
-	public abstract String getTodasCaronasUsuario(String idSessao);
+	public abstract List<List<String>> getTodasCaronasUsuario(Integer idSessao);
 
 	/**
 	 * Retorna lista de ids de solicitacoes confirmadas para a carona (idCarona)
