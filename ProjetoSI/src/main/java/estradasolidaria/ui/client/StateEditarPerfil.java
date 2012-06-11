@@ -1,19 +1,25 @@
 package estradasolidaria.ui.client;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.FileUpload;
 
 public class StateEditarPerfil extends Composite {
+	
+	private Image imagem;
 
 	public StateEditarPerfil() {
 		
+		Resources resources = GWT.create(Resources.class);
+		
 		AbsolutePanel absolutePanel_EditarPerfil = new AbsolutePanel();
 		initWidget(absolutePanel_EditarPerfil);
-		absolutePanel_EditarPerfil.setSize("683px", "371px");
+		absolutePanel_EditarPerfil.setSize("713px", "512px");
 		
 		Label lblEditarPerfil = new Label("Editar Perfil");
 		absolutePanel_EditarPerfil.add(lblEditarPerfil, 10, 10);
@@ -68,14 +74,18 @@ public class StateEditarPerfil extends Composite {
 		flexTable.setWidget(4, 2, btnEditar_4);
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
-		absolutePanel_EditarPerfil.add(absolutePanel, 381, 69);
-		absolutePanel.setSize("347px", "191px");
+		absolutePanel_EditarPerfil.add(absolutePanel, 43, 295);
+		absolutePanel.setSize("423px", "191px");
 		
-		Image image = new Image((String) null);
-		absolutePanel.add(image, 10, 10);
-		image.setSize("181px", "160px");
+		imagem= new Image(resources.editar());
+		absolutePanel.add(imagem, 10, 10);
+		imagem.setSize("181px", "160px");
 		
 		Button btnEditar_5 = new Button("Editar");
 		absolutePanel.add(btnEditar_5, 197, 10);
+		
+		FileUpload fileUpload = new FileUpload();
+		absolutePanel.add(fileUpload, 206, 144);
+		fileUpload.setSize("189px", "22px");
 	}
 }

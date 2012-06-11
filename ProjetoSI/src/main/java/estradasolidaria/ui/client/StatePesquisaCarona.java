@@ -13,10 +13,14 @@ import com.google.gwt.user.client.ui.Widget;
 public class StatePesquisaCarona extends Composite {
 	
 	final EstradaSolidaria estrada;
+	private EstradaSolidariaServiceAsync estradaSolidariaService;
+	private AbsolutePanel bodyPanel;
 	
-	public StatePesquisaCarona(EstradaSolidaria estradaSolidaria) {
+	public StatePesquisaCarona(EstradaSolidaria estradaSolidaria, EstradaSolidariaServiceAsync estradaSolidariaService, AbsolutePanel bodyPanel) {
 		
 		this.estrada = estradaSolidaria;
+		this.estradaSolidariaService = estradaSolidariaService;
+		this.bodyPanel = bodyPanel;
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
@@ -24,7 +28,7 @@ public class StatePesquisaCarona extends Composite {
 		
 		FlexTable flexTable = new FlexTable();
 		absolutePanel.add(flexTable, 28, 52);
-		flexTable.setSize("314px", "66px");
+		flexTable.setSize("283px", "53px");
 		
 		Label lblPesuisa = new Label("Pesquisa:");
 		lblPesuisa.setStyleName("gwt-LabelHomePage");
@@ -36,8 +40,7 @@ public class StatePesquisaCarona extends Composite {
 		Button btnPesquisa = new Button("New button");
 		btnPesquisa.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				Widget newPanel = new StateCaronasEncontradas();
-				estrada.setStatePanel(newPanel);
+				visualizarCaronasEncontradas();
 			}
 		});
 		btnPesquisa.setText("Go!");
@@ -46,5 +49,13 @@ public class StatePesquisaCarona extends Composite {
 		Label lblPesquiseUmaCarona = new Label("Pesquise uma carona");
 		lblPesquiseUmaCarona.setStyleName("gwt-LabelHomePage2");
 		absolutePanel.add(lblPesquiseUmaCarona, 28, 10);
+	}
+
+	protected void visualizarCaronasEncontradas() {
+		bodyPanel.clear();
+		Widget caronasEncontradas = new StateCaronasEncontradas();
+		bodyPanel.add(caronasEncontradas);
+		caronasEncontradas.setSize("100%", "100%");
+		
 	}
 }

@@ -3,9 +3,7 @@ package estradasolidaria.ui.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.CheckboxCell;
-import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;

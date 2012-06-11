@@ -103,7 +103,11 @@ public class StatePerfil2 extends Composite {
 		headerPanel.add(menuBar, 701, 10);
 		menuBar.setSize("258px", "19px");
 		
-		MenuItem menuItemOpcoes = new MenuItem("Opções", false, (Command) null);
+		MenuItem menuItemOpcoes = new MenuItem("Editar Perfil", false, new Command() {
+			public void execute() {
+				editarPerfilGUI();
+			}
+		});
 		menuBar.addItem(menuItemOpcoes);
 		
 		MenuItemSeparator separator = new MenuItemSeparator();
@@ -157,6 +161,14 @@ public class StatePerfil2 extends Composite {
 		});
 	}
 
+	protected void editarPerfilGUI() {
+		bodyPanel.clear();
+		Widget editarPerfil= new StateEditarPerfil();
+		bodyPanel.add(editarPerfil);
+		editarPerfil.setSize("100%", "100%");
+		
+	}
+
 	protected void inicio() {
 		
 		bodyPanel.clear();	
@@ -178,7 +190,9 @@ public class StatePerfil2 extends Composite {
 	}
 
 	protected void pesquisarCaronaGUI() {
-		//TODO
-		
+		bodyPanel.clear();
+		Widget pesquisarCarona = new StatePesquisaCarona(estrada, estradaSolidariaService, bodyPanel);
+		bodyPanel.add(pesquisarCarona);
+		pesquisarCarona.setSize("100%", "100%");
 	}
 }
