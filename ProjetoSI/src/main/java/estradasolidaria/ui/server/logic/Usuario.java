@@ -740,7 +740,7 @@ public class Usuario implements Serializable {
 		if (c == null)
 			throw new IllegalArgumentException(
 					"Identificador do carona é inválido");
-		c.setReviewCarona(idCaroneiro, review);
+		c.setDonoReviewCaroneiro(idCaroneiro, review);
 	}
 
 	/**

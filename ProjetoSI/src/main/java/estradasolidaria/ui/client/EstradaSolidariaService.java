@@ -315,8 +315,8 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param idCarona
 	 * @return lista de ids de solicitacoes confirmadas como string
 	 */
-	public abstract String getSolicitacoesConfirmadas(String idSessao,
-			String idCarona);
+	public abstract List<List<String>> getSolicitacoesConfirmadas(Integer idSessao,
+			Integer idCarona);
 
 	/**
 	 * Retorna lista de solicitacoes pendentes de serem respondidas pelo usuario
@@ -327,8 +327,8 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @return lista de ids de solicitacoes
 	 * @throws CaronaInvalidaException
 	 */
-	public abstract String getSolicitacoesPendentes(String idSessao,
-			String idCarona) throws Exception;
+	public abstract List<List<String>> getSolicitacoesPendentes(Integer idSessao,
+			Integer idCarona) throws Exception;
 
 	/**
 	 * Retorna string com o ponto sugerido para idCarona. O usuario identificado
@@ -398,5 +398,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 */
 	public abstract boolean enviarEmail(String idSessao, String destino,
 			String message) throws Exception;
+
+	public abstract List<List<String>> getTodasCaronasPegas(Integer idSessao);
 
 }

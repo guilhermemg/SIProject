@@ -592,7 +592,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @param review
 	 * 
 	 */
-	public void setReviewCarona(Integer idCaroneiro, String review) {
+	public void setDonoReviewCaroneiro(Integer idCaroneiro, String review) {
 		EnumCaronaReview e = getReview(review);
 		this.mapCaroneiroReviewDono.put(idCaroneiro, e);
 		
@@ -814,5 +814,21 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 */
 	public Map<Integer, Solicitacao> getMapIdSolicitacaoComPontoEncontro() {
 		return this.mapIdSolicitacoesComPontoEncontro;
+	}
+
+	public Integer getDonoReviewCaroneiro(Integer idCaroneiro) {
+		EnumCaronaReview review = getMapDonoReviewCaroneiro().get(idCaroneiro); 
+		if (review == EnumCaronaReview.FALTOU) {
+			return 0;
+		}
+		return 1;
+	}
+	
+	public Integer getCaroneiroReviewDono(Integer idCaroneiro) {
+		EnumCaronaReview review = getMapCaroneiroReviewDono().get(idCaroneiro); 
+		if (review == EnumCaronaReview.NAO_FUNCIONOU) {
+			return 0;
+		}
+		return 1;
 	}
 }

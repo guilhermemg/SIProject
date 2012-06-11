@@ -1,6 +1,7 @@
 package estradasolidaria.ui.client;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.google.gwt.cell.client.ButtonCell;
@@ -24,13 +25,18 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.cell.client.Cell;
 
+import estradasolidaria.ui.client.StateVisualizarCaronas.GWTCarona;
+
 public class StateVisualizarCaronas extends Composite {
-	private List<GWTCarona> caronas;
+	private List<GWTCarona> caronas_oferecidas;
 	private CellTable<GWTCarona> oferecidas_cellTable;
 	final EstradaSolidaria estrada;
 	final Widget panel= this;
 	private EstradaSolidariaServiceAsync estradaSolidariaService;
 	private CellTable<GWTCarona> pegas_cellTable;
+	private List<GWTCarona> caronas_pegas;
+	private CellTable<GWTCarona> solicitadas_cellTable;
+	private ArrayList<GWTCarona> caronas_solicitadas;
 	
 	class GWTCarona {
 		public GWTCarona(String origem, String destino, String data,
@@ -48,20 +54,21 @@ public class StateVisualizarCaronas extends Composite {
 		protected String hora;
 		protected String vagas;
 		protected String review;
+		protected String dono;
 	}
 	
 	public StateVisualizarCaronas(EstradaSolidaria estrada, EstradaSolidariaServiceAsync estradaSolidariaService) {
 		this.estrada = estrada;
 		this.estradaSolidariaService = estradaSolidariaService;
 		Integer idSessao = EstradaSolidaria.getIdSessaoAberta();
-		caronas = new ArrayList<GWTCarona>();
+		
 		
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
 		absolutePanel.setSize("586px", "487px");
 		
-		//CARONAS OFERECIDAS -----------------------------
+//----- CARONAS OFERECIDAS -----------------------------
 		TabPanel tabPanel = new TabPanel();
 		absolutePanel.add(tabPanel, 10, 10);
 		tabPanel.setSize("566px", "467px");
@@ -156,10 +163,11 @@ public class StateVisualizarCaronas extends Composite {
 		oferecidas_cellTable.setColumnWidth(review_textColumn, "100%");
 		flexTable.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
 		
-//		COLOCAR DADOS NA TABELA	
+        //COLOCAR DADOS NA TABELA	
 		geraListaDeCaronasOferecidas(idSessao);
 		
-		//CARONAS PEGAS -----------------------------------
+//----- CARONAS PEGAS -----------------------------------
+		
 		FlexTable flexTable_pegas = new FlexTable();
 		tabPanel.add(flexTable_pegas, "Pegas", false);
 		flexTable_pegas.setSize("549px", "426px");
@@ -236,16 +244,90 @@ public class StateVisualizarCaronas extends Composite {
 		pegas_cellTable.setColumnWidth(review_column_2, "100%");
 		
 		flexTable_pegas.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
+		//COLOCA OS DADOS NA TABELA DE CARONAS PEGAS
+		geraListaDeCaronasPegas(idSessao);
 		
+//----- CARONAS SOLICITADAS -------------------------------
 		FlexTable flexTable_2 = new FlexTable();
 		tabPanel.add(flexTable_2, "Solicitadas", false);
-		flexTable_2.setSize("5cm", "3cm");
+		flexTable_2.setSize("549px", "426px");
 		
-
+		solicitadas_cellTable = new CellTable<GWTCarona>();
+		flexTable_2.setWidget(0, 0, solicitadas_cellTable);
+		solicitadas_cellTable.setHeight("145px");
+		solicitadas_cellTable.setWidth("100%", true);
+		
+		Column<GWTCarona, Boolean> checkBox_column_3 = new Column<GWTCarona, Boolean>(new CheckboxCell()) {
+			public Boolean getValue(GWTCarona carona) {
+				return selectionModel.isSelected(carona);
+			}
+		};
+		solicitadas_cellTable.addColumn(checkBox_column_3);
+		solicitadas_cellTable.setColumnWidth(checkBox_column_3, "100%");
+		
+		TextColumn<GWTCarona> dono_textColumn_3 = new TextColumn<GWTCarona>() {
+			public String getValue(GWTCarona carona) {
+				return "Dono"/*carona.dono*/;
+			}
+		};
+		solicitadas_cellTable.addColumn(dono_textColumn_3, "Dono");
+		solicitadas_cellTable.setColumnWidth(dono_textColumn_3, "100%");
+		
+		TextColumn<GWTCarona> origem_textColumn_3 = new TextColumn<GWTCarona>() {
+			public String getValue(GWTCarona carona) {
+				return carona.origem;
+			}
+		};
+		solicitadas_cellTable.addColumn(origem_textColumn_3, "Origem");
+		solicitadas_cellTable.setColumnWidth(origem_textColumn_3, "100%");
+		
+		TextColumn<GWTCarona> destino_textColumn_3 = new TextColumn<GWTCarona>() {
+			public String getValue(GWTCarona carona) {
+				return carona.destino;
+			}
+		};
+		solicitadas_cellTable.addColumn(destino_textColumn_3, "Destino");
+		solicitadas_cellTable.setColumnWidth(destino_textColumn_3, "100%");
+		
+		TextColumn<GWTCarona> data_textColumn_3 = new TextColumn<GWTCarona>() {
+			public String getValue(GWTCarona carona) {
+				return carona.data;
+			}
+		};
+		solicitadas_cellTable.addColumn(data_textColumn_3, "Data");
+		solicitadas_cellTable.setColumnWidth(data_textColumn_3, "100%");
+		
+		TextColumn<GWTCarona> hora_textColumn_3 = new TextColumn<GWTCarona>() {
+			public String getValue(GWTCarona carona) {
+				return carona.hora;
+			}
+		};
+		solicitadas_cellTable.addColumn(hora_textColumn_3, "Hora-Saida");
+		solicitadas_cellTable.setColumnWidth(hora_textColumn_3, "100%");
+		
+		TextColumn<GWTCarona> vagas_textColumn_3 = new TextColumn<GWTCarona>() {
+			public String getValue(GWTCarona carona) {
+				return carona.vagas;
+			}
+		};
+		solicitadas_cellTable.addColumn(vagas_textColumn_3, "Vagas");
+		solicitadas_cellTable.setColumnWidth(vagas_textColumn_3, "100%");
+		
+		Column<GWTCarona, String> review_column_3 = new Column<GWTCarona, String>(new ButtonCell()) {
+			public String getValue(GWTCarona carona) {
+				return carona.review;
+			}
+		};
+		solicitadas_cellTable.addColumn(review_column_3, "Review");
+		solicitadas_cellTable.setColumnWidth(review_column_3, "100%");
+		flexTable_2.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
+		
+		geraListaDeCaronasSolicitadas(idSessao);
 		
 	}
 
 	private void geraListaDeCaronasOferecidas(Integer idSessao) {
+		caronas_oferecidas = new ArrayList<GWTCarona>();
 		this.estradaSolidariaService.getTodasCaronasUsuario(idSessao, new AsyncCallback<List<List<String>>>() {
 
 			@Override
@@ -255,7 +337,6 @@ public class StateVisualizarCaronas extends Composite {
 
 			@Override
 			public void onSuccess(List<List<String>> result) {
-				System.out.println(result.size() + " caronas cadastradas!");
 				for (List<String> carona : result) {
 					GWTCarona gwt_c = new GWTCarona(carona.get(0),
 													carona.get(1),
@@ -263,17 +344,17 @@ public class StateVisualizarCaronas extends Composite {
 													carona.get(3),
 													carona.get(4),
 													carona.get(5));
-					caronas.add(gwt_c);
+					caronas_oferecidas.add(gwt_c);
 				}
-				System.out.println(caronas.size() + " CaronasGWT");
-				oferecidas_cellTable.setRowCount(caronas.size(), true);
-				oferecidas_cellTable.setRowData(0, caronas);
+				oferecidas_cellTable.setRowCount(caronas_oferecidas.size(), true);
+				oferecidas_cellTable.setRowData(0, caronas_oferecidas);
 			}
 		});
 	}
 	
 	private void geraListaDeCaronasPegas(Integer idSessao) {
-		this.estradaSolidariaService.getTodasCaronasUsuario(idSessao, new AsyncCallback<List<List<String>>>() {
+		caronas_pegas= new ArrayList<GWTCarona>();
+		this.estradaSolidariaService.getTodasCaronasPegas(idSessao, new AsyncCallback<List<List<String>>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -282,7 +363,6 @@ public class StateVisualizarCaronas extends Composite {
 
 			@Override
 			public void onSuccess(List<List<String>> result) {
-				System.out.println(result.size() + " caronas cadastradas!");
 				for (List<String> carona : result) {
 					GWTCarona gwt_c = new GWTCarona(carona.get(0),
 													carona.get(1),
@@ -290,12 +370,38 @@ public class StateVisualizarCaronas extends Composite {
 													carona.get(3),
 													carona.get(4),
 													carona.get(5));
-					caronas.add(gwt_c);
+					caronas_pegas.add(gwt_c);
 				}
-				System.out.println(caronas.size() + " CaronasGWT");
-				oferecidas_cellTable.setRowCount(caronas.size(), true);
-				oferecidas_cellTable.setRowData(0, caronas);
+				pegas_cellTable.setRowCount(caronas_pegas.size(), true);
+				pegas_cellTable.setRowData(0, caronas_pegas);
 			}
 		});
+	}
+
+	private void geraListaDeCaronasSolicitadas(Integer idSessao) {
+//		caronas_solicitadas = new ArrayList<GWTCarona>();
+//		this.estradaSolidariaService.getSolicitacoesConfirmadas(idSessao, new AsyncCallback<List<List<String>>>() {
+//
+//			@Override
+//			public void onFailure(Throwable caught) {
+//				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
+//			}
+//
+//			@Override
+//			public void onSuccess(List<List<String>> result) {
+//				for (List<String> c : result) {
+//					GWTCarona gwt_c = new GWTCarona(c.get(0),
+//													c.get(1),
+//													c.get(2),
+//													c.get(3),
+//													c.get(4),
+//													c.get(5));
+//					gwt_c.dono = c.get(6);
+//					caronas_solicitadas.add(gwt_c);
+//				}
+//				solicitadas_cellTable.setRowCount(caronas_solicitadas.size(), true);
+//				solicitadas_cellTable.setRowData(0, caronas_solicitadas);
+//			}
+//		});
 	}
 }

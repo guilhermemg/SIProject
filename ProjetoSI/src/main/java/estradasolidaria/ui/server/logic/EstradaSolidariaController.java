@@ -1098,4 +1098,14 @@ public class EstradaSolidariaController implements Serializable {
 	public GerenciadorDeDados getGerenciadorDeDados() {
 		return gerenciadorDeDados;
 	}
+
+	public List<Carona> getTodasCaronasPegas(Integer idSessao) {
+		Sessao s = getMapIdSessao().get(idSessao);
+		Usuario u = getMapIdUsuario().get(s.getIdUser());
+		List<Carona> caronasPegas = new LinkedList<Carona>();
+		
+		caronasPegas.addAll(u.getMapIdCaronasPegas().values());
+			
+		return caronasPegas;
+	}
 }

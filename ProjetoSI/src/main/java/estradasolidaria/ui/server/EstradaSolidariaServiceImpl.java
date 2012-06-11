@@ -13,7 +13,9 @@ import estradasolidaria.ui.server.logic.Carona;
 import estradasolidaria.ui.server.logic.CaronaInexistenteException;
 import estradasolidaria.ui.server.logic.CaronaInvalidaException;
 import estradasolidaria.ui.server.logic.EstradaSolidariaController;
+import estradasolidaria.ui.server.logic.Solicitacao;
 import estradasolidaria.ui.server.logic.TrajetoInexistenteException;
+import estradasolidaria.ui.server.logic.Usuario;
 import estradasolidaria.ui.server.logic.UsuarioInexistenteException;
 
 /**
@@ -220,6 +222,7 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 			caronaList.add(c.getData());
 			caronaList.add(c.getHora());
 			caronaList.add(c.getVagas().toString());
+//			caronaList.add(c.getDonoReviewCaroneiros().toString()); //Será esse
 			caronaList.add("Review");
 			result.add(caronaList);
 		}
@@ -227,13 +230,32 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public String getSolicitacoesConfirmadas(String idSessao, String idCarona) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<List<String>> getSolicitacoesConfirmadas(Integer idSessao, Integer idCarona) {
+		List<List<String>> result = new LinkedList<List<String>>();
+		List<Solicitacao> listaCaronas = controller.getSolicitacoesConfirmadas(idSessao, idCarona);
+		for (Solicitacao s : listaCaronas) {
+			Usuario dono = s.getDonoDaCarona();
+			Carona carona = null;
+			for (Carona c : dono.getTodasCaronasUsuario()) {
+				if (c.getIdCarona().equals(idCarona)) {
+					carona = c;
+				}
+			}
+			List<String> caronaList = new LinkedList<String>();
+			caronaList.add(carona.getOrigem());
+			caronaList.add(carona.getDestino());
+			caronaList.add(carona.getData());
+			caronaList.add(carona.getHora());
+			caronaList.add(carona.getVagas().toString());
+//			caronaList.add(c.getDonoReviewCaroneiros().toString()); //Será esse
+			caronaList.add("Review");
+			result.add(caronaList);
+		}
+		return result;
 	}
 
 	@Override
-	public String getSolicitacoesPendentes(String idSessao, String idCarona)
+	public List<List<String>> getSolicitacoesPendentes(Integer idSessao, Integer idCarona)
 			throws CaronaInvalidaException {
 		// TODO Auto-generated method stub
 		return null;
@@ -271,4 +293,24 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public List<List<String>> getTodasCaronasPegas(Integer idSessao) {
+		List<List<String>> result = new LinkedList<List<String>>();
+		List<Carona> listaCaronas = controller.getTodasCaronasPegas(idSessao);
+		for (Carona c : listaCaronas) {
+			List<String> caronaList = new LinkedList<String>();
+			caronaList.add(c.getOrigem());
+			caronaList.add(c.getDestino());
+			caronaList.add(c.getData());
+			caronaList.add(c.getHora());
+			caronaList.add(c.getVagas().toString());
+//			caronaList.add(c.getDonoReviewCaroneiro().toString()); //Será esse
+			caronaList.add("Review");
+			result.add(caronaList);
+		}
+		return result;
+	}
+	
+	
 }
