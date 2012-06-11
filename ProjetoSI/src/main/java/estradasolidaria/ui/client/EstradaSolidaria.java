@@ -1,4 +1,4 @@
-package estradasolidaria.ui.client;
+	package estradasolidaria.ui.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;

@@ -123,11 +123,11 @@ public class StateCadastroUsuario extends AbsolutePanel implements StatePanel {
 		
 	}
 
-	protected void cadastraUsuarioGUI(TextBox textBoxLogin, PasswordTextBox textBoxPassword, TextBox textBbxNome, TextBox textBoxEndereco, TextBox textBoxEmail) {
+	protected void cadastraUsuarioGUI(final TextBox textBoxLogin, final PasswordTextBox textBoxPassword, TextBox textBbxNome, TextBox textBoxEndereco, TextBox textBoxEmail) {
 		String login = textBoxLogin.getText(), senha = textBoxPassword.getText(),
 				nome = textBbxNome.getText(), endereco = textBoxEndereco.getText(), email = textBoxEmail.getText();
 		
-		AsyncCallback<Void> callback = new AsyncCallback<Void>() {
+		estradaSolidariaService.criarUsuario(login, senha, nome, endereco, email, new AsyncCallback<Void>() {
 			@Override
 			public void onFailure(Throwable caught) {
 				// Show the RPC error message to the user
@@ -136,20 +136,30 @@ public class StateCadastroUsuario extends AbsolutePanel implements StatePanel {
 
 			@Override
 			public void onSuccess(Void result) {
+				abrirSessao(textBoxLogin, textBoxPassword);
 				Window.alert("Usuário cadastrado!");
 			}
-		  };
-		try {
-			estradaSolidariaService.criarUsuario(login, senha, nome, endereco, email, callback);
-			
-			estrada.rootPanel.remove(panel);
-			Widget newPanel = new StateCadastroUsuarioAceito(estrada, this.estradaSolidariaService);
-			newPanel.setSize("600px", "417px");
-			estrada.setStatePanel(newPanel);
-			
-		} catch (Exception e) {
-			Window.alert(e.getMessage());
-		}
+		  });
+	}
+
+	private void abrirSessao(TextBox textBoxLogin, PasswordTextBox textBoxPassword) {
+	String login = textBoxLogin.getText(), senha = textBoxPassword.getText();
 		
+		estradaSolidariaService.abrirSessao(login, senha, new AsyncCallback<Integer>() { 
+			@Override
+			public void onFailure(Throwable caught) {
+				// Show the RPC error message to the user
+				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(Integer result) {
+				EstradaSolidaria.setIdSessaoAberta(result);
+				estrada.rootPanel.remove(panel);
+				Widget newPanel = new StatePerfil2(estrada, estradaSolidariaService);
+				newPanel.setSize("781px", "592px");
+				estrada.setStatePanel(newPanel);
+			}
+		  });
 	}
 }
