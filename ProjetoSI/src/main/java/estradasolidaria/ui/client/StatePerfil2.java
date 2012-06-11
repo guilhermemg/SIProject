@@ -119,7 +119,6 @@ public class StatePerfil2 extends Composite {
 				Widget newPanel = new StateHomePage(estrada, estradaSolidariaService);
 				newPanel.setSize("600px", "417px");
 				estrada.setStatePanel(newPanel);
-				Window.alert("Logoff efetuado com sucesso!");
 			}
 		});
 		menuBar.addItem(menuItemSair);
