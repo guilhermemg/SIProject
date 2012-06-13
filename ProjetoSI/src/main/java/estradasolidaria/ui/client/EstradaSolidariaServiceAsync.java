@@ -1,6 +1,7 @@
 package estradasolidaria.ui.client;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -64,7 +65,7 @@ public interface EstradaSolidariaServiceAsync {
 	void getTrajeto(String idCarona, AsyncCallback<String> callback);
 
 	void localizarCarona(Integer idSessao, String origem, String destino,
-			AsyncCallback<List<String>> callback);
+			AsyncCallback<Map<String, Integer>> callback);
 
 	void localizarCaronaMunicipal(String idSessao, String cidade,
 			AsyncCallback<List<String>> callback);
@@ -86,7 +87,7 @@ public interface EstradaSolidariaServiceAsync {
 	void reviewVagaEmCarona(String idSessao, String idCarona,
 			String loginCaroneiro, String review, AsyncCallback<Void> callback);
 
-	void solicitarVaga(String idSessao, String idCarona,
+	void solicitarVaga(Integer idSessao, Integer idCarona,
 			AsyncCallback<String> callback);
 
 	void solicitarVagaPontoEncontro(String idSessao, String idCarona,

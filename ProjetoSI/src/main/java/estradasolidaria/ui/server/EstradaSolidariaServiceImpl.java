@@ -1,8 +1,9 @@
 package estradasolidaria.ui.server;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.mail.MessagingException;
 
@@ -67,14 +68,14 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public List<String> localizarCarona(Integer idSessao, String origem, String destino) throws GWTException {
+	public Map<String, Integer> localizarCarona(Integer idSessao, String origem, String destino) throws GWTException {
 		try {
-			List<String> listaCaronasToString = new ArrayList<String>();
+			Map<String, Integer> mapaIdCaronasToString = new TreeMap<String, Integer>();
 			List<Carona> listaCaronas = controller.localizarCarona(idSessao, origem, destino);
 			for(Carona c : listaCaronas){
-				listaCaronasToString.add(c.toString());
+				mapaIdCaronasToString.put(c.toString(), c.getIdCarona());
 			}
-			return listaCaronasToString;
+			return mapaIdCaronasToString;
 		} catch(Exception e){
 			throw new GWTException(e.getMessage());
 		}
@@ -153,10 +154,10 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public String solicitarVaga(String idSessao, String idCarona)
+	public String solicitarVaga(Integer idSessao, Integer idCarona)
 			throws CaronaInvalidaException {
-		// TODO Auto-generated method stub
-		return null;
+		Solicitacao s = controller.solicitarVaga(idSessao, idCarona);
+		return s.toString();
 	}
 
 	@Override
