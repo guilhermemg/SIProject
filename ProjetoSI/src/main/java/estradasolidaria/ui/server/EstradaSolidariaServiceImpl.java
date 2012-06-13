@@ -329,6 +329,12 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		}
 		return result;
 	}
+
+	@Override
+	public void editarSenha(Integer idSessaoAberta, String novaSenha) {
+		controller.setSenha(idSessaoAberta, novaSenha);
+		
+	}
 	
 	
 }
