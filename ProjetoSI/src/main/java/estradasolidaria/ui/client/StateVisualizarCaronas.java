@@ -1,6 +1,7 @@
 package estradasolidaria.ui.client;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.google.gwt.cell.client.ButtonCell;
@@ -22,307 +23,155 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 
+import estradasolidaria.ui.client.StateVisualizarCaronas.GWTCarona;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
+import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.i18n.server.Type;
+
 public class StateVisualizarCaronas extends Composite {
-	private List<GWTCarona> caronas_oferecidas;
-	private CellTable<GWTCarona> oferecidas_cellTable;
 	final EstradaSolidaria estrada;
 	final Widget panel= this;
 	private EstradaSolidariaServiceAsync estradaSolidariaService;
-	private CellTable<GWTCarona> pegas_cellTable;
-	private List<GWTCarona> caronas_pegas;
-	private CellTable<GWTCarona> solicitadas_cellTable;
-	private ArrayList<GWTCarona> caronas_solicitadas;
+	
+	private CellTable<GWTCarona> caronasCellTable;
+	
+	private LinkedList<GWTCarona> caronasGWT; //Lista de Caronas transformadas para a classe GWTCarona
+	private FlexTable flexTableOferecidas;
+	private SelectionModel<GWTCarona> selectionModel;
+	private Column<GWTCarona, String> donoDaCaronaColumn;
+	private TextColumn<GWTCarona> origemColumn;
+	private TextColumn<GWTCarona> destinoColumn;
+	private Column<GWTCarona, Boolean> checkBoxColumn;
+	private TextColumn<GWTCarona> dataColumn;
+	private TextColumn<GWTCarona> horaColumn;
+	private TextColumn<GWTCarona> vagasColumn;
+	private Column<GWTCarona, String> reviewColumn;
+	private HasHorizontalAlignment pontoDeEncontroColumn;
+	private Integer idSessao;
+	private FlexTable flexTablePegas;
+	private FlexTable flexTableSolicitadas;
+	private TabPanel tabPanel;
 	
 	class GWTCarona {
-		public GWTCarona(String origem, String destino, String data,
-				String hora, String vagas, String review) {
-			this.origem = origem;
-			this.destino = destino;
-			this.data = data;
-			this.hora = hora;
-			this.vagas = vagas;
-			this.review = review;
-		}
+		protected String dono;
+		protected String idDono;
 		protected String origem;
 		protected String destino;
 		protected String data;
 		protected String hora;
 		protected String vagas;
 		protected String review;
-		protected String dono;
+		protected String pontoEncontro;
+		protected String idCarona;
+		
+		@Override
+		public String toString() {
+			return dono +", "+origem+", " + destino + ", " + data +", " +vagas +", "+ review +", "+pontoEncontro;
+		}
 	}
 	
 	public StateVisualizarCaronas(EstradaSolidaria estrada, EstradaSolidariaServiceAsync estradaSolidariaService) {
 		this.estrada = estrada;
 		this.estradaSolidariaService = estradaSolidariaService;
-		Integer idSessao = EstradaSolidaria.getIdSessaoAberta();
-		
-		
+		idSessao = EstradaSolidaria.getIdSessaoAberta();
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
 		absolutePanel.setSize("586px", "487px");
 		
-//----- CARONAS OFERECIDAS -----------------------------
-		TabPanel tabPanel = new TabPanel();
+		tabPanel = new TabPanel();
 		absolutePanel.add(tabPanel, 10, 10);
 		tabPanel.setSize("566px", "467px");
 		
-		FlexTable flexTable = new FlexTable();
-		tabPanel.add(flexTable, "Oferecidas", false);
-		flexTable.setSize("549px", "426px");
 		
-		oferecidas_cellTable = new CellTable<GWTCarona>();
-		flexTable.setWidget(0, 0, oferecidas_cellTable);
-		oferecidas_cellTable.setHeight("145px");
-		oferecidas_cellTable.setWidth("100%", true);
+		iniciarColunas();
 		
+		iniciarCaronasCellTable();
 		
-		final SelectionModel<GWTCarona> selectionModel = new MultiSelectionModel<GWTCarona>( new ProvidesKey<GWTCarona>() {
+		iniciarFlexTableOferecidas();
+		
+		iniciarFlexTablePegas();
+		
+		iniciarFlexTableSolicitadas();
+		
+		tabPanel.getTabBar().addSelectionHandler(new SelectionHandler<Integer>() {
+			
+			@Override
+			public void onSelection(SelectionEvent<Integer> event) {
+				if (event.getSelectedItem().equals(0)) {
+					try {
+						processarTabOferecidas();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				} else if (event.getSelectedItem().equals(1)) {
+					processarTabPegas();
+				} else if (event.getSelectedItem().equals(2)) {
+//					processarSolicitadas();
+				}
+			}
+		});
+	}
+
+
+	private void iniciarFlexTableOferecidas() {
+		flexTableOferecidas = new FlexTable();
+		tabPanel.add(flexTableOferecidas, "Oferecidas", false);
+		flexTableOferecidas.setSize("549px", "426px");
+		flexTableOferecidas.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
+	}
+
+	private void iniciarFlexTablePegas() {
+		flexTablePegas = new FlexTable();
+		tabPanel.add(flexTablePegas, "Pegas", false);
+		flexTablePegas.setSize("549px", "426px");
+		flexTablePegas.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
+	}
+	
+	private void iniciarFlexTableSolicitadas() {
+		flexTableSolicitadas = new FlexTable();
+		flexTableSolicitadas.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				gerarListaDeCaronasSolicitadas(idSessao);
+				zerarCaronasCellTable();
+				iniciarColunas();
+				colocarColunasEmCaronasCellTableSolicitadas();
+			}
+
+			private void colocarColunasEmCaronasCellTableSolicitadas() {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		tabPanel.add(flexTableSolicitadas, "Solicitadas", false);
+		flexTableSolicitadas.setSize("549px", "426px");
+		flexTableSolicitadas.setWidget(0, 0, caronasCellTable);
+		flexTableSolicitadas.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
+	}
+
+	private void iniciarCaronasCellTable() {
+		selectionModel = new MultiSelectionModel<GWTCarona>( new ProvidesKey<GWTCarona>() {
 			@Override
 			public Object getKey(GWTCarona item) {
 				return item;
 			}
 		});
-		oferecidas_cellTable.setSelectionModel(selectionModel,
-		DefaultSelectionEventManager.<GWTCarona> createCheckboxManager());
-		Column<GWTCarona, Boolean> checkBox_column = new Column<GWTCarona, Boolean>(new CheckboxCell()) {
-			@Override
-			public Boolean getValue(GWTCarona carona) {
-				return selectionModel.isSelected(carona);
-			}
-		};
-		checkBox_column.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		oferecidas_cellTable.addColumn(checkBox_column);
-		oferecidas_cellTable.setColumnWidth(checkBox_column, "100%");
-		
-		TextColumn<GWTCarona> origem_textColumn = new TextColumn<GWTCarona>() {
-			@Override
-			public String getValue(GWTCarona carona) {
-				return carona.origem;
-			}
-		};
-		origem_textColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		oferecidas_cellTable.addColumn(origem_textColumn, "Origem");
-		oferecidas_cellTable.setColumnWidth(origem_textColumn, "100%");
-//		
-		
-		TextColumn<GWTCarona> destino_textColumn = new TextColumn<GWTCarona>() {
-			@Override
-			public String getValue(GWTCarona carona) {
-				return carona.destino;
-			}
-		};
-		destino_textColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		oferecidas_cellTable.addColumn(destino_textColumn, "Destino");
-		oferecidas_cellTable.setColumnWidth(destino_textColumn, "100%");
-		
-		TextColumn<GWTCarona> data_textColumn = new TextColumn<GWTCarona>() {
-			@Override
-			public String getValue(GWTCarona carona) {
-				return carona.data;
-			}
-		};
-		data_textColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		oferecidas_cellTable.addColumn(data_textColumn, "Data");
-		oferecidas_cellTable.setColumnWidth(data_textColumn, "100%");
-		
-		TextColumn<GWTCarona> hora_textColumn = new TextColumn<GWTCarona>() {
-			@Override
-			public String getValue(GWTCarona carona) {
-				return carona.hora;
-			}
-		};
-		hora_textColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		oferecidas_cellTable.addColumn(hora_textColumn, "Hora-Saida");
-		oferecidas_cellTable.setColumnWidth(hora_textColumn, "100%");
-		
-		TextColumn<GWTCarona> vagas_textColumn = new TextColumn<GWTCarona>() {
-			@Override
-			public String getValue(GWTCarona carona) {
-				return carona.vagas;
-			}
-		};
-		vagas_textColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		oferecidas_cellTable.addColumn(vagas_textColumn, "Vagas");
-		oferecidas_cellTable.setColumnWidth(vagas_textColumn, "100%");
-		
-		Column<GWTCarona, String> review_textColumn = new Column<GWTCarona, String>(new ButtonCell()) {
-			@Override
-			public String getValue(GWTCarona carona) {
-				return carona.review;
-			}
-		};
-		review_textColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		oferecidas_cellTable.addColumn(review_textColumn, "Review");
-		oferecidas_cellTable.setColumnWidth(review_textColumn, "100%");
-		flexTable.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
-		
-        //COLOCAR DADOS NA TABELA	
-		geraListaDeCaronasOferecidas(idSessao);
-		
-//----- CARONAS PEGAS -----------------------------------
-		
-		FlexTable flexTable_pegas = new FlexTable();
-		tabPanel.add(flexTable_pegas, "Pegas", false);
-		flexTable_pegas.setSize("549px", "426px");
-		
-		pegas_cellTable = new CellTable<GWTCarona>();
-		flexTable_pegas.setWidget(0, 0, pegas_cellTable);
-		pegas_cellTable.setHeight("145px");
-		pegas_cellTable.setWidth("100%", true);
-		
-		
-		Column<GWTCarona, Boolean> checkBox_column_2 = new Column<GWTCarona, Boolean>(new CheckboxCell()) {
-			public Boolean getValue(GWTCarona carona) {
-				return selectionModel.isSelected(carona);
-			}
-		};
-		pegas_cellTable.addColumn(checkBox_column_2);
-		pegas_cellTable.setColumnWidth(checkBox_column_2, "100%");
-		
-		TextColumn<GWTCarona> dono_textColumn = new TextColumn<GWTCarona>() {
-			@Override
-			public String getValue(GWTCarona object) {
-				return object.toString();
-			}
-		};
-		pegas_cellTable.addColumn(dono_textColumn, "Dono");
-		pegas_cellTable.setColumnWidth(dono_textColumn, "100%");
-		
-		TextColumn<GWTCarona> origem_textColumn_2 = new TextColumn<GWTCarona>() {
-			public String getValue(GWTCarona carona) {
-				return carona.origem;
-			}
-		};
-		pegas_cellTable.addColumn(origem_textColumn_2, "Origem");
-		pegas_cellTable.setColumnWidth(origem_textColumn_2, "100%");
-		
-		TextColumn<GWTCarona> destino_textColumn_2 = new TextColumn<GWTCarona>() {
-			public String getValue(GWTCarona carona) {
-				return carona.destino;
-			}
-		};
-		pegas_cellTable.addColumn(destino_textColumn_2, "Destino");
-		pegas_cellTable.setColumnWidth(destino_textColumn_2, "100%");
-		
-		TextColumn<GWTCarona> data_textColumn_2 = new TextColumn<GWTCarona>() {
-			public String getValue(GWTCarona carona) {
-				return carona.data;
-			}
-		};
-		pegas_cellTable.addColumn(data_textColumn_2, "Data");
-		pegas_cellTable.setColumnWidth(data_textColumn_2, "100%");
-		
-		TextColumn<GWTCarona> hora_textColumn_2 = new TextColumn<GWTCarona>() {
-			public String getValue(GWTCarona carona) {
-				return carona.hora;
-			}
-		};
-		pegas_cellTable.addColumn(hora_textColumn_2, "Hora-Saida");
-		pegas_cellTable.setColumnWidth(hora_textColumn_2, "100%");
-		
-		TextColumn<GWTCarona> vagas_textColumn_2 = new TextColumn<GWTCarona>() {
-			public String getValue(GWTCarona carona) {
-				return carona.vagas;
-			}
-		};
-		pegas_cellTable.addColumn(vagas_textColumn_2, "Vagas");
-		pegas_cellTable.setColumnWidth(vagas_textColumn_2, "100%");
-		
-		Column<GWTCarona, String> review_column_2 = new Column<GWTCarona, String>(new ButtonCell()) {
-			public String getValue(GWTCarona carona) {
-				return carona.review;
-			}
-		};
-		pegas_cellTable.addColumn(review_column_2, "Review");
-		pegas_cellTable.setColumnWidth(review_column_2, "100%");
-		
-		flexTable_pegas.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
-		//COLOCA OS DADOS NA TABELA DE CARONAS PEGAS
-		geraListaDeCaronasPegas(idSessao);
-		
-//----- CARONAS SOLICITADAS -------------------------------
-		FlexTable flexTable_2 = new FlexTable();
-		tabPanel.add(flexTable_2, "Solicitadas", false);
-		flexTable_2.setSize("549px", "426px");
-		
-		solicitadas_cellTable = new CellTable<GWTCarona>();
-		flexTable_2.setWidget(0, 0, solicitadas_cellTable);
-		solicitadas_cellTable.setHeight("145px");
-		solicitadas_cellTable.setWidth("100%", true);
-		
-		Column<GWTCarona, Boolean> checkBox_column_3 = new Column<GWTCarona, Boolean>(new CheckboxCell()) {
-			public Boolean getValue(GWTCarona carona) {
-				return selectionModel.isSelected(carona);
-			}
-		};
-		solicitadas_cellTable.addColumn(checkBox_column_3);
-		solicitadas_cellTable.setColumnWidth(checkBox_column_3, "100%");
-		
-		TextColumn<GWTCarona> dono_textColumn_3 = new TextColumn<GWTCarona>() {
-			public String getValue(GWTCarona carona) {
-				return "Dono"/*carona.dono*/;
-			}
-		};
-		solicitadas_cellTable.addColumn(dono_textColumn_3, "Dono");
-		solicitadas_cellTable.setColumnWidth(dono_textColumn_3, "100%");
-		
-		TextColumn<GWTCarona> origem_textColumn_3 = new TextColumn<GWTCarona>() {
-			public String getValue(GWTCarona carona) {
-				return carona.origem;
-			}
-		};
-		solicitadas_cellTable.addColumn(origem_textColumn_3, "Origem");
-		solicitadas_cellTable.setColumnWidth(origem_textColumn_3, "100%");
-		
-		TextColumn<GWTCarona> destino_textColumn_3 = new TextColumn<GWTCarona>() {
-			public String getValue(GWTCarona carona) {
-				return carona.destino;
-			}
-		};
-		solicitadas_cellTable.addColumn(destino_textColumn_3, "Destino");
-		solicitadas_cellTable.setColumnWidth(destino_textColumn_3, "100%");
-		
-		TextColumn<GWTCarona> data_textColumn_3 = new TextColumn<GWTCarona>() {
-			public String getValue(GWTCarona carona) {
-				return carona.data;
-			}
-		};
-		solicitadas_cellTable.addColumn(data_textColumn_3, "Data");
-		solicitadas_cellTable.setColumnWidth(data_textColumn_3, "100%");
-		
-		TextColumn<GWTCarona> hora_textColumn_3 = new TextColumn<GWTCarona>() {
-			public String getValue(GWTCarona carona) {
-				return carona.hora;
-			}
-		};
-		solicitadas_cellTable.addColumn(hora_textColumn_3, "Hora-Saida");
-		solicitadas_cellTable.setColumnWidth(hora_textColumn_3, "100%");
-		
-		TextColumn<GWTCarona> vagas_textColumn_3 = new TextColumn<GWTCarona>() {
-			public String getValue(GWTCarona carona) {
-				return carona.vagas;
-			}
-		};
-		solicitadas_cellTable.addColumn(vagas_textColumn_3, "Vagas");
-		solicitadas_cellTable.setColumnWidth(vagas_textColumn_3, "100%");
-		
-		Column<GWTCarona, String> review_column_3 = new Column<GWTCarona, String>(new ButtonCell()) {
-			public String getValue(GWTCarona carona) {
-				return carona.review;
-			}
-		};
-		solicitadas_cellTable.addColumn(review_column_3, "Review");
-		solicitadas_cellTable.setColumnWidth(review_column_3, "100%");
-		flexTable_2.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
-		
-		geraListaDeCaronasSolicitadas(idSessao);
-		
+		zerarCaronasCellTable();
 	}
 
-	private void geraListaDeCaronasOferecidas(Integer idSessao) {
-		caronas_oferecidas = new ArrayList<GWTCarona>();
+	private void zerarCaronasCellTable() {
+		caronasCellTable = new CellTable<GWTCarona>();
+		caronasCellTable.setSelectionModel(selectionModel, DefaultSelectionEventManager.<GWTCarona> createCheckboxManager());
+		caronasCellTable.setHeight("145px");
+		caronasCellTable.setWidth("100%", true);
+	}
+
+	private void gerarListaDeCaronasOferecidas(Integer idSessao) {
+		caronasGWT = new LinkedList<GWTCarona>();
 		this.estradaSolidariaService.getTodasCaronasUsuario(idSessao, new AsyncCallback<List<List<String>>>() {
 
 			@Override
@@ -332,23 +181,15 @@ public class StateVisualizarCaronas extends Composite {
 
 			@Override
 			public void onSuccess(List<List<String>> result) {
-				for (List<String> carona : result) {
-					GWTCarona gwt_c = new GWTCarona(carona.get(0),
-													carona.get(1),
-													carona.get(2),
-													carona.get(3),
-													carona.get(4),
-													carona.get(5));
-					caronas_oferecidas.add(gwt_c);
-				}
-				oferecidas_cellTable.setRowCount(caronas_oferecidas.size(), true);
-				oferecidas_cellTable.setRowData(0, caronas_oferecidas);
+				atualizaListaGWTCaronas(result);
+				
+				caronasCellTable.setRowCount(caronasGWT.size(), true);
+				caronasCellTable.setRowData(0, caronasGWT);
 			}
 		});
 	}
 	
-	private void geraListaDeCaronasPegas(Integer idSessao) {
-		caronas_pegas= new ArrayList<GWTCarona>();
+	private void gerarListaDeCaronasPegas(Integer idSessao) {
 		this.estradaSolidariaService.getTodasCaronasPegas(idSessao, new AsyncCallback<List<List<String>>>() {
 
 			@Override
@@ -358,23 +199,14 @@ public class StateVisualizarCaronas extends Composite {
 
 			@Override
 			public void onSuccess(List<List<String>> result) {
-				for (List<String> carona : result) {
-					GWTCarona gwt_c = new GWTCarona(carona.get(0),
-													carona.get(1),
-													carona.get(2),
-													carona.get(3),
-													carona.get(4),
-													carona.get(5));
-					caronas_pegas.add(gwt_c);
-				}
-				pegas_cellTable.setRowCount(caronas_pegas.size(), true);
-				pegas_cellTable.setRowData(0, caronas_pegas);
+				atualizaListaGWTCaronas(result);
+				caronasCellTable.setRowCount(caronasGWT.size(), true);
+				caronasCellTable.setRowData(0, caronasGWT);
 			}
 		});
 	}
 
-	private void geraListaDeCaronasSolicitadas(Integer idSessao) {
-//		caronas_solicitadas = new ArrayList<GWTCarona>();
+	private void gerarListaDeCaronasSolicitadas(Integer idSessao) {
 //		this.estradaSolidariaService.getSolicitacoesConfirmadas(idSessao, new AsyncCallback<List<List<String>>>() {
 //
 //			@Override
@@ -384,19 +216,189 @@ public class StateVisualizarCaronas extends Composite {
 //
 //			@Override
 //			public void onSuccess(List<List<String>> result) {
-//				for (List<String> c : result) {
-//					GWTCarona gwt_c = new GWTCarona(c.get(0),
-//													c.get(1),
-//													c.get(2),
-//													c.get(3),
-//													c.get(4),
-//													c.get(5));
-//					gwt_c.dono = c.get(6);
-//					caronas_solicitadas.add(gwt_c);
-//				}
-//				solicitadas_cellTable.setRowCount(caronas_solicitadas.size(), true);
-//				solicitadas_cellTable.setRowData(0, caronas_solicitadas);
+//				atualizaListaGWTCaronas(result);
+//				solicitadas_cellTable.setRowCount(caronasGWT.size(), true);
+//				solicitadas_cellTable.setRowData(0, caronasGWT);
 //			}
 //		});
+	}
+	
+	private void atualizaListaGWTCaronas(List<List<String>> result) {
+		//ZERA LISTA
+		caronasGWT = new LinkedList<GWTCarona>();
+		//ADICIONA AS CARONAS GWT
+		for (List<String> carona : result) {
+			GWTCarona gwt_c = new GWTCarona();
+			
+			gwt_c.dono = carona.get(0);
+			gwt_c.origem = carona.get(1);
+			gwt_c.destino = carona.get(2);
+			gwt_c.data = carona.get(3);
+			gwt_c.hora = carona.get(4);
+			gwt_c.vagas = carona.get(5);
+			gwt_c.review = carona.get(6);
+			gwt_c.pontoEncontro = carona.get(7);
+			
+			caronasGWT.add(gwt_c);
+		}
+	}
+	
+	private void iniciarColunas() {
+		//Coluna de checkBox das Caronas
+		checkBoxColumn = new Column<GWTCarona, Boolean>(new CheckboxCell()) {
+			@Override
+			public Boolean getValue(GWTCarona carona) {
+				return selectionModel.isSelected(carona);
+			}
+		};
+		checkBoxColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		
+		//Coluna de Donos das Caronas
+		donoDaCaronaColumn = new TextColumn<GWTCarona>() {
+			@Override
+			public String getValue(GWTCarona carona) {
+				return carona.dono;
+			}
+		};
+		donoDaCaronaColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		
+		//Coluna de origens das Caronas
+		origemColumn = new TextColumn<GWTCarona>() {
+			@Override
+			public String getValue(GWTCarona carona) {
+				return carona.origem;
+			}
+		};
+		origemColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		
+		//Coluna de destinos das Caronas
+		destinoColumn = new TextColumn<GWTCarona>() {
+			@Override
+			public String getValue(GWTCarona carona) {
+				return carona.destino;
+			}
+		};
+		destinoColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		
+		//Coluna de datas das Caronas
+		dataColumn = new TextColumn<GWTCarona>() {
+			@Override
+			public String getValue(GWTCarona carona) {
+				return carona.data;
+			}
+		};
+		dataColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		
+		//Coluna de horas de saida da Caronas
+		horaColumn = new TextColumn<GWTCarona>() {
+			@Override
+			public String getValue(GWTCarona carona) {
+				return carona.hora;
+			}
+		};
+		horaColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		
+		//Coluna de vagas das Caronas
+		vagasColumn = new TextColumn<GWTCarona>() {
+			@Override
+			public String getValue(GWTCarona carona) {
+				return carona.vagas;
+			}
+		};
+		vagasColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		
+		//Coluna de reviews das Caronas
+		reviewColumn = new Column<GWTCarona, String>(new ButtonCell()) {
+			@Override
+			public String getValue(GWTCarona carona) {
+				return carona.review;
+			}
+		};
+		reviewColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
+		
+		//Coluna de pontos de encontro das Caronas
+		pontoDeEncontroColumn = new TextColumn<GWTCarona>() {
+			@Override
+			public String getValue(GWTCarona carona) {
+				return carona.pontoEncontro;
+			}
+		};
+		pontoDeEncontroColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		
+	}
+	
+	private void colocarColunasEmCaronasCellTableOferecidas() {
+		zerarCaronasCellTable();
+		
+		caronasCellTable.addColumn(checkBoxColumn);
+		caronasCellTable.setColumnWidth(checkBoxColumn, "100%");
+		
+		caronasCellTable.addColumn(origemColumn, "Origem");
+		caronasCellTable.setColumnWidth(origemColumn, "100%");
+		
+		caronasCellTable.addColumn(destinoColumn, "Destino");
+		caronasCellTable.setColumnWidth(destinoColumn, "100%");
+		
+		caronasCellTable.addColumn(dataColumn, "Data");
+		caronasCellTable.setColumnWidth(dataColumn, "100%");
+		
+		caronasCellTable.addColumn(horaColumn, "Hora-Saída");
+		caronasCellTable.setColumnWidth(horaColumn, "100%");
+		
+		caronasCellTable.addColumn(vagasColumn, "Vagas");
+		caronasCellTable.setColumnWidth(vagasColumn, "100%");
+		
+		caronasCellTable.addColumn(reviewColumn, "Review");
+		caronasCellTable.setColumnWidth(reviewColumn, "100%");
+		
+		//COLOCA caronasCellTable em flexTableOferecidas
+		flexTableOferecidas.setWidget(0, 0, caronasCellTable);
+	}
+
+	private void colocarColunasEmCaronasCellTablePegas() {
+		zerarCaronasCellTable();
+		
+		caronasCellTable.addColumn(checkBoxColumn);
+		caronasCellTable.setColumnWidth(checkBoxColumn, "100%");
+		
+		caronasCellTable.addColumn(donoDaCaronaColumn, "Dono");
+		caronasCellTable.setColumnWidth(donoDaCaronaColumn, "100%");
+		
+		caronasCellTable.addColumn(origemColumn, "Origem");
+		caronasCellTable.setColumnWidth(origemColumn, "100%");
+		
+		caronasCellTable.addColumn(destinoColumn, "Destino");
+		caronasCellTable.setColumnWidth(destinoColumn, "100%");
+		
+		caronasCellTable.addColumn(dataColumn, "Data");
+		caronasCellTable.setColumnWidth(dataColumn, "100%");
+		
+		caronasCellTable.addColumn(horaColumn, "Hora-Saída");
+		caronasCellTable.setColumnWidth(horaColumn, "100%");
+		
+		caronasCellTable.addColumn(vagasColumn, "Vagas");
+		caronasCellTable.setColumnWidth(vagasColumn, "100%");
+		
+		caronasCellTable.addColumn(reviewColumn, "Review");
+		caronasCellTable.setColumnWidth(reviewColumn, "100%");
+		
+		//COLOCA caronasCellTable em flexTablePegas
+		flexTablePegas.setWidget(0, 0, caronasCellTable);
+		
+	}
+	
+	private void processarTabOferecidas() {
+		gerarListaDeCaronasOferecidas(idSessao);
+		colocarColunasEmCaronasCellTableOferecidas();
+	}
+	
+	private void processarTabPegas() {
+		gerarListaDeCaronasPegas(idSessao);
+		colocarColunasEmCaronasCellTablePegas();
+	}
+	
+	private void processarTabSolicitadas() {
+		gerarListaDeCaronasSolicitadas(idSessao);
+//		colocarColunasEmCaronasCellTableSolicitadas();
 	}
 }
