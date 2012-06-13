@@ -133,11 +133,10 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public String solicitarVagaPontoEncontro(String idSessao, String idCarona,
+	public String solicitarVagaPontoEncontro(Integer idSessao, Integer idCarona,
 			String ponto) throws CaronaInvalidaException,
 			CaronaInexistenteException {
-		// TODO Auto-generated method stub
-		return null;
+		return controller.solicitarVagaPontoEncontro(idSessao, idCarona, ponto).toString();
 	}
 
 	@Override

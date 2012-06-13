@@ -90,7 +90,7 @@ public interface EstradaSolidariaServiceAsync {
 	void solicitarVaga(Integer idSessao, Integer idCarona,
 			AsyncCallback<String> callback);
 
-	void solicitarVagaPontoEncontro(String idSessao, String idCarona,
+	void solicitarVagaPontoEncontro(Integer idSessao, Integer idCarona,
 			String ponto, AsyncCallback<String> callback);
 
 	void sugerirPontoEncontro(String idSessao, String idCarona, String pontos,

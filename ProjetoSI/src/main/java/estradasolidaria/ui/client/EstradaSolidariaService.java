@@ -145,8 +145,8 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @throws CaronaInvalidaException
 	 * @throws CaronaInexistenteException 
 	 */
-	public abstract String solicitarVagaPontoEncontro(String idSessao,
-			String idCarona, String ponto) throws Exception;
+	public abstract String solicitarVagaPontoEncontro(Integer idSessao,
+			Integer idCarona, String ponto) throws Exception;
 
 	/**
 	 * Aceita uma solicitacão.
