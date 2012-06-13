@@ -1100,6 +1100,12 @@ public class EstradaSolidariaController implements Serializable {
 		return gerenciadorDeDados;
 	}
 
+	/**
+	 * Retorna todas as caronas pegas de um usuario.
+	 * 
+	 * @param idSessao
+	 * @return todasCaronasPegas
+	 */
 	public List<Carona> getTodasCaronasPegas(Integer idSessao) {
 		if(idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
@@ -1120,5 +1126,18 @@ public class EstradaSolidariaController implements Serializable {
 	public void adicionaUsuarioECaronasAutomaticamente() {
 		Adder adder = new Adder(uniqueInstance);
 		adder.addElements();
+	}
+
+	/**
+	 * Modifica a senha de um usuario.
+	 * 
+	 * @param idSessao
+	 * @param novaSenha
+	 */
+	public void setSenha(Integer idSessao, String novaSenha) {
+		Sessao s = getMapIdSessao().get(idSessao);
+		Usuario u = getMapIdUsuario().get(s.getIdUser());
+		u.setSenha(novaSenha);
+		
 	}
 }
