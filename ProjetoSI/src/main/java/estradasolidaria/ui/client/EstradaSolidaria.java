@@ -22,13 +22,13 @@ public class EstradaSolidaria implements EntryPoint {
 	public void onModuleLoad() {
 		rootPanel.setSize("1000px", "1000px");
 		statepanel = new StateHomePage(this, estradaSolidariaService);
-		rootPanel.add(statepanel, 68, 45);
-		statepanel.setSize("1000px", "1000px");
+		rootPanel.add(statepanel, 300, 45);
+		statepanel.setSize("100%", "100%");
 	}
 
 	public void setStatePanel(Widget statePanel) {
 		this.statepanel = statePanel;
-		rootPanel.add(statepanel);
+		rootPanel.add(statepanel, 150, 45);
 		this.statepanel.setSize("1000px", "1000px");
 	}
 

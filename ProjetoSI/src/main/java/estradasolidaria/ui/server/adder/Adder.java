@@ -17,7 +17,7 @@ public class Adder {
 		Integer idSessao = sistema.getMapIdSessao().get(0).getIdSessao();
 		
 		for(int j = 1; j < 11; j++) {
-			sistema.cadastrarCarona(idSessao, "o"+j, "d"+j, "d"+j, "h"+j, j);
+			sistema.cadastrarCarona(idSessao, "o"+j, "d"+j, "12/12/12", "12:12", j);
 		}
 		
 		sistema.criarUsuario("si1", "si1si1", "nn", "ee", "emem");

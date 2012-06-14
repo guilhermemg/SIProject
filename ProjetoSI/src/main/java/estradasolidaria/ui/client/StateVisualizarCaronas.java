@@ -61,16 +61,16 @@ public class StateVisualizarCaronas extends Composite {
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
-		absolutePanel.setSize("586px", "487px");
+		absolutePanel.setSize("100%", "100%");
 		
 //----- CARONAS OFERECIDAS -----------------------------
 		TabPanel tabPanel = new TabPanel();
 		absolutePanel.add(tabPanel, 10, 10);
-		tabPanel.setSize("566px", "467px");
+		tabPanel.setSize("100%", "100%");
 		
 		FlexTable flexTable = new FlexTable();
 		tabPanel.add(flexTable, "Oferecidas", false);
-		flexTable.setSize("549px", "426px");
+		flexTable.setSize("100%", "100%");
 		
 		oferecidas_cellTable = new CellTable<GWTCarona>();
 		flexTable.setWidget(0, 0, oferecidas_cellTable);
@@ -165,7 +165,7 @@ public class StateVisualizarCaronas extends Composite {
 		
 		FlexTable flexTable_pegas = new FlexTable();
 		tabPanel.add(flexTable_pegas, "Pegas", false);
-		flexTable_pegas.setSize("549px", "426px");
+		flexTable_pegas.setSize("100%", "100%");
 		
 		pegas_cellTable = new CellTable<GWTCarona>();
 		flexTable_pegas.setWidget(0, 0, pegas_cellTable);
@@ -245,7 +245,7 @@ public class StateVisualizarCaronas extends Composite {
 //----- CARONAS SOLICITADAS -------------------------------
 		FlexTable flexTable_2 = new FlexTable();
 		tabPanel.add(flexTable_2, "Solicitadas", false);
-		flexTable_2.setSize("549px", "426px");
+		flexTable_2.setSize("100%", "100%");
 		
 		solicitadas_cellTable = new CellTable<GWTCarona>();
 		flexTable_2.setWidget(0, 0, solicitadas_cellTable);

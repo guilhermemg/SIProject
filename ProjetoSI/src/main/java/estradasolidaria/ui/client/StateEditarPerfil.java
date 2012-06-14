@@ -87,5 +87,8 @@ public class StateEditarPerfil extends Composite {
 		FileUpload fileUpload = new FileUpload();
 		absolutePanel.add(fileUpload, 206, 144);
 		fileUpload.setSize("189px", "22px");
+		
+		
+		
 	}
 }

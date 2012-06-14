@@ -36,7 +36,7 @@ public class StateHomePage extends AbsolutePanel {
 		
 		AbsolutePanel absPanelLogin = new AbsolutePanel();
 		absPanelLogin.setStylePrimaryName("gwt-LoginPanel");
-		add(absPanelLogin, 319, 151);
+		add(absPanelLogin, 494, 151);
 		absPanelLogin.setSize("268px", "214px");
 		
 		Label lblL = new Label("Já é usuário? Faça Login.");
@@ -82,7 +82,7 @@ public class StateHomePage extends AbsolutePanel {
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		absolutePanel.setStyleName("gwt-LoginPanel");
 		absolutePanel.setStylePrimaryName("gwt-LoginPanel");
-		add(absolutePanel, 37, 151);
+		add(absolutePanel, 212, 151);
 		absolutePanel.setSize("245px", "214px");
 		
 		Label lblNaoCadastrado = new Label("Ainda não é Usuário? ");
@@ -103,7 +103,7 @@ public class StateHomePage extends AbsolutePanel {
 		
 		AbsolutePanel absolutePanel_1 = new AbsolutePanel();
 		absolutePanel_1.setStyleName("gwt-LabelEstradaSolidaria2");
-		add(absolutePanel_1, 37, 21);
+		add(absolutePanel_1, 212, 20);
 		absolutePanel_1.setSize("550px", "100px");
 		
 		Label lblBemvindoAoEstrada = new Label("Bem-vindo ao Estrada Solidária!");

@@ -61,10 +61,10 @@ public class GerenciadorDeDados {
 	
 	private void writeIntoFile(String x) {
 		try{
-//			FileOutputStream file = new FileOutputStream(fname, false);
-//			PrintWriter outputStream = new PrintWriter(new BufferedWriter(new OutputStreamWriter(file ,"UTF-8")));
-//			outputStream.write(x);
-//	        outputStream.close();
+			FileOutputStream file = new FileOutputStream(fname, false);
+			PrintWriter outputStream = new PrintWriter(new BufferedWriter(new OutputStreamWriter(file ,"UTF-8")));
+			outputStream.write(x);
+	        outputStream.close();
 		}
 		catch(Exception e){
 			e.printStackTrace();

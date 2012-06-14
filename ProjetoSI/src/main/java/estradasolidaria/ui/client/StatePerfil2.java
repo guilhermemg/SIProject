@@ -182,10 +182,10 @@ public class StatePerfil2 extends Composite {
 	}
 
 	protected void cadastrarCaronaGUI() {
-	bodyPanel.clear();
-	Widget cadastrarCarona = new StateCadastroCaronas(estrada, estradaSolidariaService);
-	bodyPanel.add(cadastrarCarona);
-	cadastrarCarona.setSize("100%", "100%");
+		bodyPanel.clear();
+		Widget cadastrarCarona = new StateCadastroCaronas(estrada, estradaSolidariaService);
+		bodyPanel.add(cadastrarCarona);
+		cadastrarCarona.setSize("100%", "100%");
 	}
 
 	protected void pesquisarCaronaGUI() {

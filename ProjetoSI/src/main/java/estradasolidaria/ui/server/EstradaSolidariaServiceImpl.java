@@ -82,14 +82,14 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public String getTrajeto(String idCarona)
+	public String getTrajeto(Integer idCarona)
 			throws TrajetoInexistenteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getCarona(String idCarona) {
+	public String getCarona(Integer idCarona) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -119,21 +119,21 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public String sugerirPontoEncontro(String idSessao, String idCarona,
+	public String sugerirPontoEncontro(Integer idSessao, Integer idCarona,
 			String pontos) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void responderSugestaoPontoEncontro(String idSessao,
-			String idCarona, String idSugestao, String pontos) {
+	public void responderSugestaoPontoEncontro(Integer idSessao,
+			Integer idCarona, String idSugestao, String pontos) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public String solicitarVagaPontoEncontro(String idSessao, String idCarona,
+	public String solicitarVagaPontoEncontro(Integer idSessao, Integer idCarona,
 			String ponto) throws CaronaInvalidaException,
 			CaronaInexistenteException {
 		// TODO Auto-generated method stub
@@ -141,14 +141,14 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public void aceitarSolicitacaoPontoEncontro(String idSessao,
-			String idSolicitacao) {
+	public void aceitarSolicitacaoPontoEncontro(Integer idSessao,
+			Integer idSolicitacao) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void aceitarSolicitacao(String idSessao, String idSolicitacao) {
+	public void aceitarSolicitacao(Integer idSessao, Integer idSolicitacao) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -161,26 +161,26 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public void rejeitarSolicitacao(String idSessao, String idSolicitacao) {
+	public void rejeitarSolicitacao(Integer idSessao, Integer idSolicitacao) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void desistirRequisicao(String idSessao, String idCarona,
-			String idSolicitacao) throws CaronaInvalidaException {
+	public void desistirRequisicao(Integer idSessao, Integer idCarona,
+			Integer idSolicitacao) throws CaronaInvalidaException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public String visualizarPerfil(String idSessao, String login) {
+	public String visualizarPerfil(Integer idSessao, String login) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void reviewVagaEmCarona(String idSessao, String idCarona,
+	public void reviewVagaEmCarona(Integer idSessao, Integer idCarona,
 			String loginCaroneiro, String review)
 			throws CaronaInvalidaException {
 		// TODO Auto-generated method stub
@@ -188,14 +188,14 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public void reviewCarona(String idSessao, String idCarona, String review)
+	public void reviewCarona(Integer idSessao, Integer idCarona, String review)
 			throws CaronaInexistenteException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public String cadastrarCaronaMunicipal(String idSessao, String origem,
+	public String cadastrarCaronaMunicipal(Integer idSessao, String origem,
 			String destino, String cidade, String data, String hora,
 			String vagas) {
 		// TODO Auto-generated method stub
@@ -203,20 +203,20 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public List<String> localizarCaronaMunicipal(String idSessao,
+	public List<String> localizarCaronaMunicipal(Integer idSessao,
 			String cidade, String origem, String destino) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<String> localizarCaronaMunicipal(String idSessao, String cidade) {
+	public List<String> localizarCaronaMunicipal(Integer idSessao, String cidade) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getCaronaUsuario(String idSessao, int indexCarona) {
+	public String getCaronaUsuario(Integer idSessao, int indexCarona) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -272,33 +272,33 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public String getPontosSugeridos(String idSessao, String idCarona)
+	public String getPontosSugeridos(Integer idSessao, Integer idCarona)
 			throws CaronaInvalidaException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getPontosEncontro(String idSessao, String idCarona) {
+	public String getPontosEncontro(Integer idSessao, Integer idCarona) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String cadastrarInteresse(String idSessao, String origem,
+	public String cadastrarInteresse(Integer idSessao, String origem,
 			String destino, String data, String horaInicio, String horaFim) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String verificarMensagensPerfil(String idSessao) {
+	public String verificarMensagensPerfil(Integer idSessao) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public boolean enviarEmail(String idSessao, String destino, String message)
+	public boolean enviarEmail(Integer idSessao, String destino, String message)
 			throws MessagingException {
 		// TODO Auto-generated method stub
 		return false;

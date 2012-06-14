@@ -79,7 +79,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @return trajeto
 	 * @throws TrajetoInexistenteException
 	 */
-	public abstract String getTrajeto(String idCarona)
+	public abstract String getTrajeto(Integer idCarona)
 			throws Exception;
 
 	/**
@@ -88,7 +88,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param idCarona
 	 * @return carona
 	 */
-	public abstract String getCarona(String idCarona);
+	public abstract String getCarona(Integer idCarona);
 
 	/**
 	 * Encerra sessao aberta.
@@ -120,8 +120,8 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param pontos
 	 * @return id da sugestao feita
 	 */
-	public abstract String sugerirPontoEncontro(String idSessao,
-			String idCarona, String pontos);
+	public abstract String sugerirPontoEncontro(Integer idSessao,
+			Integer idCarona, String pontos);
 
 	/**
 	 * Responde a uma sugestao feita por outro usuario.
@@ -132,8 +132,8 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param pontos
 	 *            : ponto de encontro escolhido ate o momento para a carona
 	 */
-	public abstract void responderSugestaoPontoEncontro(String idSessao,
-			String idCarona, String idSugestao, String pontos);
+	public abstract void responderSugestaoPontoEncontro(Integer idSessao,
+			Integer idCarona, String idSugestao, String pontos);
 
 	/**
 	 * Solicita vaga e sugere um ponto de encontro para a carona.
@@ -145,8 +145,8 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @throws CaronaInvalidaException
 	 * @throws CaronaInexistenteException 
 	 */
-	public abstract String solicitarVagaPontoEncontro(String idSessao,
-			String idCarona, String ponto) throws Exception;
+	public abstract String solicitarVagaPontoEncontro(Integer idSessao,
+			Integer idCarona, String ponto) throws Exception;
 
 	/**
 	 * Aceita uma solicitacão.
@@ -155,8 +155,8 @@ public interface EstradaSolidariaService extends RemoteService {
 	 *            : id da sessao do usuario dono da carona
 	 * @param idSolicitacao
 	 */
-	public abstract void aceitarSolicitacaoPontoEncontro(String idSessao,
-			String idSolicitacao);
+	public abstract void aceitarSolicitacaoPontoEncontro(Integer idSessao,
+			Integer idSolicitacao);
 
 	/**
 	 * Aceita solicitacao
@@ -165,8 +165,8 @@ public interface EstradaSolidariaService extends RemoteService {
 	 *            : id da sessao do usuario dono da carona
 	 * @param idSolicitacao
 	 */
-	public abstract void aceitarSolicitacao(String idSessao,
-			String idSolicitacao);
+	public abstract void aceitarSolicitacao(Integer idSessao,
+			Integer idSolicitacao);
 
 	/**
 	 * Adiciona solicitacao a lista de solicitacoes associadas a uma carona,
@@ -188,8 +188,8 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param idSessao
 	 * @param idSolicitacao
 	 */
-	public abstract void rejeitarSolicitacao(String idSessao,
-			String idSolicitacao);
+	public abstract void rejeitarSolicitacao(Integer idSessao,
+			Integer idSolicitacao);
 
 	/**
 	 * Remove a solicitacao, indicada por idSolicitacao, da lista de
@@ -201,8 +201,8 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param idSolicitacao
 	 * @throws CaronaInvalidaException
 	 */
-	public abstract void desistirRequisicao(String idSessao, String idCarona,
-			String idSolicitacao) throws Exception;
+	public abstract void desistirRequisicao(Integer idSessao, Integer idCarona,
+			Integer idSolicitacao) throws Exception;
 
 	/**
 	 * Pega usuario associado a sessao indicada por idSessao e pega o perfil
@@ -212,7 +212,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param login
 	 * @return idPerfil
 	 */
-	public abstract String visualizarPerfil(String idSessao, String login);
+	public abstract String visualizarPerfil(Integer idSessao, String login);
 
 	/**
 	 * Seta o valor do review de vaga em carona: diz se o solicitante
@@ -230,7 +230,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 *            : faltou ou nao faltou
 	 * @throws CaronaInvalidaException
 	 */
-	public abstract void reviewVagaEmCarona(String idSessao, String idCarona,
+	public abstract void reviewVagaEmCarona(Integer idSessao, Integer idCarona,
 			String loginCaroneiro, String review)
 			throws Exception;
 
@@ -251,7 +251,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param review
 	 *            : review do caroneiro presente
 	 */
-	public abstract void reviewCarona(String idSessao, String idCarona,
+	public abstract void reviewCarona(Integer idSessao, Integer idCarona,
 			String review) throws Exception;
 
 	/**
@@ -264,7 +264,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param cidade
 	 * @return id carona cadastrada
 	 */
-	public abstract String cadastrarCaronaMunicipal(String idSessao,
+	public abstract String cadastrarCaronaMunicipal(Integer idSessao,
 			String origem, String destino, String cidade, String data,
 			String hora, String vagas);
 
@@ -278,7 +278,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param destino
 	 * @return lista de ids de caronas localizadas
 	 */
-	public abstract List<String> localizarCaronaMunicipal(String idSessao,
+	public abstract List<String> localizarCaronaMunicipal(Integer idSessao,
 			String cidade, String origem, String destino);
 
 	/**
@@ -290,7 +290,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param cidade
 	 * @return lista de ids de caronas
 	 */
-	public abstract List<String> localizarCaronaMunicipal(String idSessao,
+	public abstract List<String> localizarCaronaMunicipal(Integer idSessao,
 			String cidade);
 
 	/**
@@ -302,7 +302,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param indexCarona
 	 * @return carona
 	 */
-	public abstract String getCaronaUsuario(String idSessao, int indexCarona);
+	public abstract String getCaronaUsuario(Integer idSessao, int indexCarona);
 
 	/**
 	 * Retorna todas as caronas cadastradas pelo usuario identificado por
@@ -347,7 +347,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @return string de lista de pontos sugeridos
 	 * @throws CaronaInvalidaException
 	 */
-	public abstract String getPontosSugeridos(String idSessao, String idCarona)
+	public abstract String getPontosSugeridos(Integer idSessao, Integer idCarona)
 			throws Exception;
 
 	/**
@@ -358,7 +358,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param idCarona
 	 * @return string com ponto de encontro
 	 */
-	public abstract String getPontosEncontro(String idSessao, String idCarona);
+	public abstract String getPontosEncontro(Integer idSessao, Integer idCarona);
 
 	/**
 	 * Cadastra interesse em determinada carona, mas nao envia solicitacao de
@@ -380,7 +380,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param horaFim
 	 * @return idInteresse
 	 */
-	public abstract String cadastrarInteresse(String idSessao, String origem,
+	public abstract String cadastrarInteresse(Integer idSessao, String origem,
 			String destino, String data, String horaInicio, String horaFim);
 
 	/**
@@ -390,7 +390,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param idSessao
 	 * @return mensagens
 	 */
-	public abstract String verificarMensagensPerfil(String idSessao);
+	public abstract String verificarMensagensPerfil(Integer idSessao);
 
 	/**
 	 * Envia email criado automaticamente pelo sistema, a partir de um conjunto
@@ -402,7 +402,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @return boolean indicando se email foi enviado com sucesso
 	 * @throws MessagingException
 	 */
-	public abstract boolean enviarEmail(String idSessao, String destino,
+	public abstract boolean enviarEmail(Integer idSessao, String destino,
 			String message) throws Exception;
 
 	public abstract List<List<String>> getTodasCaronasPegas(Integer idSessao);
