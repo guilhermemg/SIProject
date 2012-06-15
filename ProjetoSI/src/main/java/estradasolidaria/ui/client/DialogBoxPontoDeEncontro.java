@@ -11,7 +11,6 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.widget.client.TextButton;
-
 public class DialogBoxPontoDeEncontro extends DialogBox {
 	
 	private EstradaSolidariaServiceAsync estradaSolidariaService;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="1" time="2.888" errors="0" skipped="0" tests="1" name="estradasolidaria.tests.USTest">
+<testsuite failures="1" time="1.905" errors="0" skipped="0" tests="1" name="estradasolidaria.tests.USTest">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-6-openjdk/jre/lib/i386"/>
@@ -19,7 +19,7 @@
     <property name="basedir" value="/home/guilhermemg/git/SIProject/ProjetoSI"/>
     <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-6-openjdk/jre/lib/endorsed"/>
     <property name="os.arch" value="i386"/>
-    <property name="surefire.real.class.path" value="/home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefirebooter887264712500043243.jar"/>
+    <property name="surefire.real.class.path" value="/home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefirebooter5336292255915983901.jar"/>
     <property name="java.io.tmpdir" value="/tmp"/>
     <property name="line.separator" value="
 "/>
@@ -42,7 +42,7 @@
     <property name="java.vm.specification.version" value="1.0"/>
     <property name="sun.arch.data.model" value="32"/>
     <property name="java.home" value="/usr/lib/jvm/java-6-openjdk/jre"/>
-    <property name="sun.java.command" value="/home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefirebooter887264712500043243.jar /home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefire1177420045989778122tmp /home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefire3794014822359111517tmp"/>
+    <property name="sun.java.command" value="/home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefirebooter5336292255915983901.jar /home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefire4082974931667817690tmp /home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefire2551187643885919981tmp"/>
     <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
     <property name="user.language" value="pt"/>
     <property name="java.vm.info" value="mixed mode"/>
@@ -59,7 +59,7 @@
     <property name="sun.desktop" value="gnome"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="2.866" classname="estradasolidaria.tests.USTest" name="testarEasyAcceptScript">
+  <testcase time="1.895" classname="estradasolidaria.tests.USTest" name="testarEasyAcceptScript">
     <failure message="null" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: null
 	at junit.framework.Assert.fail(Assert.java:47)
 	at junit.framework.Assert.assertTrue(Assert.java:20)
@@ -125,8 +125,39 @@ Test file: scripts/US06.txt | Passed Tests: 26 | Not Passed Tests: 0
 
 ======================== 
 
-Test file: scripts/US07.txt | Passed Tests: 62 | Not Passed Tests: 0
+Test file: scripts/US07.txt | Passed Tests: 32 | Not Passed Tests: 30
 
+FAILURES:
+   At line 70:Usuário inexistente
+   At line 71:Usuário inexistente
+   At line 74: Unexpected error: Usuário inexistente
+   At line 75: Unexpected error: Usuário inexistente
+   At line 76: Unexpected error: Usuário inexistente
+   At line 77: Unexpected error: Usuário inexistente
+   At line 80: exception = java.lang.NullPointerException)
+   At line 81: Unexpected error: Item inexistente
+   At line 82: Unexpected error: Item inexistente
+   At line 84: exception = java.lang.NullPointerException)
+   At line 85: Unexpected error: Item inexistente
+   At line 86: Unexpected error: Item inexistente
+   At line 88: exception = java.lang.NullPointerException)
+   At line 89: Unexpected error: Item inexistente
+   At line 90: Unexpected error: Item inexistente
+   At line 92: exception = java.lang.NullPointerException)
+   At line 93: Unexpected error: Item inexistente
+   At line 94: Unexpected error: Item inexistente
+   At line 96: exception = java.lang.NullPointerException)
+   At line 97: Unexpected error: Item inexistente
+   At line 98: Unexpected error: Item inexistente
+   At line 100: exception = java.lang.NullPointerException)
+   At line 101: Unexpected error: Item inexistente
+   At line 102: Unexpected error: Item inexistente
+   At line 105: Unexpected error: (no message: exception = java.lang.NullPointerException)
+   At line 106: Unexpected error: (no message: exception = java.lang.NullPointerException)
+   At line 109: Unexpected error: (no message: exception = java.lang.NullPointerException)
+   At line 110: Unexpected error: (no message: exception = java.lang.NullPointerException)
+   At line 111: Unexpected error: Carona Inexistente
+   At line 114: Unexpected error: Carona Inexistente
 ======================== 
 
 Test file: scripts/US08.txt | Passed Tests: 48 | Not Passed Tests: 0

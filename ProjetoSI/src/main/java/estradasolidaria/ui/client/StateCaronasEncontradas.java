@@ -4,23 +4,22 @@ import java.util.Map;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.widget.client.TextButton;
 
 public class StateCaronasEncontradas extends Composite {
 	private Map<String, Integer> mapaIdCaronaToString;
 	private EstradaSolidariaServiceAsync estradaSolidariaService;
 
-	public StateCaronasEncontradas(EstradaSolidariaServiceAsync estradaSolidariaService, Map<String, Integer> map) {
-		this.estradaSolidariaService = estradaSolidariaService;
+	public StateCaronasEncontradas(final EstradaSolidariaServiceAsync estradaService, Map<String, Integer> map) {
+		this.estradaSolidariaService = estradaService;
 		this.mapaIdCaronaToString = map;
 		Object[] arrayIdCaronaToString = mapaIdCaronaToString.keySet().toArray();
-		final Integer idSessao = EstradaSolidaria.getIdSessaoAberta();
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
@@ -45,27 +44,16 @@ public class StateCaronasEncontradas extends Composite {
 				if(listBoxCaronasEncontradas.isItemSelected(0) || listBoxCaronasEncontradas.isItemSelected(1) || 
 						listBoxCaronasEncontradas.isItemSelected(2)){
 					Integer idCarona = mapaIdCaronaToString.get(listBoxCaronasEncontradas.getItemText(listBoxCaronasEncontradas.getSelectedIndex()));
-					solicitarVagaGUI(idSessao, idCarona);
+					DialogBox newDialog = new DialogBoxPontoDeEncontro(estradaSolidariaService, mapaIdCaronaToString, idCarona);
+					Widget source = (Widget) arg0.getSource();
+		            int left = source.getAbsoluteLeft() + 10;
+		            int top = source.getAbsoluteTop() + 10;
+		            newDialog.setPopupPosition(left, top);
+					newDialog.show();
 				}
 			}
 
 		});
 		absolutePanel.add(txtbtnRequisitarVaga, 374, 24);
 	}
-
-	protected void solicitarVagaGUI(Integer idSessao, Integer idCarona) {
-		estradaSolidariaService.solicitarVaga(idSessao, idCarona, new AsyncCallback<String>(){ 
-			@Override
-			public void onFailure(Throwable caught) {
-				// Show the RPC error message to the user 
-				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
-			}
-
-			@Override
-			public void onSuccess(String result) {
-				Window.alert(result);
-			}
-		  });	
-	}
-
 }

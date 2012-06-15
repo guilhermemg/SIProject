@@ -407,4 +407,5 @@ public interface EstradaSolidariaService extends RemoteService {
 
 	public abstract List<List<String>> getTodasCaronasPegas(Integer idSessao);
 
+	public abstract void editarSenha(Integer idSessaoAberta, String novaSenha);
 }

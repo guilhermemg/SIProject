@@ -136,8 +136,7 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	public String solicitarVagaPontoEncontro(Integer idSessao, Integer idCarona,
 			String ponto) throws CaronaInvalidaException,
 			CaronaInexistenteException {
-		// TODO Auto-generated method stub
-		return null;
+		return controller.solicitarVagaPontoEncontro(idSessao, idCarona, ponto).toString();
 	}
 
 	@Override
@@ -227,13 +226,17 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		List<Carona> listaCaronas = controller.getTodasCaronasUsuario(idSessao);
 		for (Carona c : listaCaronas) {
 			List<String> caronaList = new LinkedList<String>();
+			
+			caronaList.add(c.getIdDonoDaCarona().toString());
 			caronaList.add(c.getOrigem());
 			caronaList.add(c.getDestino());
 			caronaList.add(c.getData());
 			caronaList.add(c.getHora());
 			caronaList.add(c.getVagas().toString());
 //			caronaList.add(c.getDonoReviewCaroneiros().toString()); //Será esse
-			caronaList.add("Review");
+			caronaList.add(new String("Review"));
+			caronaList.add(c.getPontoEncontro());
+			
 			result.add(caronaList);
 		}
 		return result;
@@ -310,16 +313,26 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		List<Carona> listaCaronas = controller.getTodasCaronasPegas(idSessao);
 		for (Carona c : listaCaronas) {
 			List<String> caronaList = new LinkedList<String>();
+			
+			caronaList.add(c.getIdDonoDaCarona().toString());
 			caronaList.add(c.getOrigem());
 			caronaList.add(c.getDestino());
 			caronaList.add(c.getData());
 			caronaList.add(c.getHora());
 			caronaList.add(c.getVagas().toString());
-//			caronaList.add(c.getDonoReviewCaroneiro().toString()); //Será esse
-			caronaList.add("Review");
+//			caronaList.add(c.getDonoReviewCaroneiros().toString()); //Será esse
+			caronaList.add(new String("Review"));
+			caronaList.add(c.getPontoEncontro());
+			
 			result.add(caronaList);
 		}
 		return result;
+	}
+
+	@Override
+	public void editarSenha(Integer idSessaoAberta, String novaSenha) {
+		controller.setSenha(idSessaoAberta, novaSenha);
+		
 	}
 	
 	

@@ -33,7 +33,7 @@ public class StatePerfil2 extends Composite {
 		
 		AbsolutePanel leftSideBarPanel = new AbsolutePanel();
 		mainPanel.add(leftSideBarPanel, 10, 215);
-		leftSideBarPanel.setSize("140px", "202px");
+		leftSideBarPanel.setSize("140px", "256px");
 		
 		Button txtbtnCadastrarCarona = new Button("Cadastrar Carona");
 		leftSideBarPanel.add(txtbtnCadastrarCarona, 10, 66);
@@ -50,6 +50,15 @@ public class StatePerfil2 extends Composite {
 		Button btnInicio = new Button("Inicio");
 		leftSideBarPanel.add(btnInicio, 10, 21);
 		btnInicio.setSize("122px", "24px");
+		
+		Button btnMeusInteresses = new Button("Meus Interesses");
+		btnMeusInteresses.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				
+			}
+		});
+		leftSideBarPanel.add(btnMeusInteresses, 10, 196);
+		btnMeusInteresses.setSize("122px", "25px");
 		
 		AbsolutePanel rightSidebarPanel = new AbsolutePanel();
 		mainPanel.add(rightSidebarPanel, 748, 215);
@@ -162,7 +171,7 @@ public class StatePerfil2 extends Composite {
 
 	protected void editarPerfilGUI() {
 		bodyPanel.clear();
-		Widget editarPerfil= new StateEditarPerfil();
+		Widget editarPerfil= new StateEditarPerfil(estradaSolidariaService);
 		bodyPanel.add(editarPerfil);
 		editarPerfil.setSize("100%", "100%");
 		

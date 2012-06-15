@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="2" time="0.137" errors="0" skipped="0" tests="4" name="estradasolidaria.unittest.InteresseTest">
+<testsuite failures="2" time="0.105" errors="0" skipped="0" tests="4" name="estradasolidaria.unittest.InteresseTest">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-6-openjdk/jre/lib/i386"/>
@@ -19,7 +19,7 @@
     <property name="basedir" value="/home/guilhermemg/git/SIProject/ProjetoSI"/>
     <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-6-openjdk/jre/lib/endorsed"/>
     <property name="os.arch" value="i386"/>
-    <property name="surefire.real.class.path" value="/home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefirebooter887264712500043243.jar"/>
+    <property name="surefire.real.class.path" value="/home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefirebooter5336292255915983901.jar"/>
     <property name="java.io.tmpdir" value="/tmp"/>
     <property name="line.separator" value="
 "/>
@@ -42,7 +42,7 @@
     <property name="java.vm.specification.version" value="1.0"/>
     <property name="sun.arch.data.model" value="32"/>
     <property name="java.home" value="/usr/lib/jvm/java-6-openjdk/jre"/>
-    <property name="sun.java.command" value="/home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefirebooter887264712500043243.jar /home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefire1177420045989778122tmp /home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefire3794014822359111517tmp"/>
+    <property name="sun.java.command" value="/home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefirebooter5336292255915983901.jar /home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefire4082974931667817690tmp /home/guilhermemg/git/SIProject/ProjetoSI/target/surefire/surefire2551187643885919981tmp"/>
     <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
     <property name="user.language" value="pt"/>
     <property name="java.vm.info" value="mixed mode"/>
@@ -58,7 +58,7 @@
     <property name="sun.desktop" value="gnome"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="0.042" classname="estradasolidaria.unittest.InteresseTest" name="testConstrutorData">
+  <testcase time="0.022" classname="estradasolidaria.unittest.InteresseTest" name="testConstrutorData">
     <failure message="" type="java.lang.AssertionError">java.lang.AssertionError: 
 	at org.junit.Assert.fail(Assert.java:91)
 	at org.junit.Assert.fail(Assert.java:98)
@@ -101,7 +101,7 @@
 @SLRunning estradasolidaria.unittest.InteresseTest
 </system-out>
   </testcase>
-  <testcase time="0.005" classname="estradasolidaria.unittest.InteresseTest" name="testConstrutorHora">
+  <testcase time="0.004" classname="estradasolidaria.unittest.InteresseTest" name="testConstrutorHora">
     <failure message="expected:&lt;[Hor]a inválida&gt; but was:&lt;[Dat]a inválida&gt;" type="org.junit.ComparisonFailure">org.junit.ComparisonFailure: expected:&lt;[Hor]a inválida&gt; but was:&lt;[Dat]a inválida&gt;
 	at org.junit.Assert.assertEquals(Assert.java:123)
 	at org.junit.Assert.assertEquals(Assert.java:145)
@@ -138,6 +138,6 @@
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:69)
 </failure>
   </testcase>
-  <testcase time="0" classname="estradasolidaria.unittest.InteresseTest" name="testConstrutorOrigem"/>
+  <testcase time="0.001" classname="estradasolidaria.unittest.InteresseTest" name="testConstrutorOrigem"/>
   <testcase time="0.001" classname="estradasolidaria.unittest.InteresseTest" name="testConstrutorDestino"/>
 </testsuite>
