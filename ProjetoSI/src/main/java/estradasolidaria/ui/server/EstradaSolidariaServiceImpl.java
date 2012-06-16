@@ -84,8 +84,8 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public String getTrajeto(Integer idCarona)
 			throws TrajetoInexistenteException {
-		// TODO Auto-generated method stub
-		return null;
+		String[] trajetoString = controller.getTrajeto(idCarona);
+		return "De " + trajetoString[0] + " para " + trajetoString[1];
 	}
 
 	@Override
