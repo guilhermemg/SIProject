@@ -126,7 +126,7 @@ public class Interesse implements Serializable {
 			throw new IllegalArgumentException("Data inválida");
 		else if(data.equals(""))
 			this.data = data;
-		else if(dateUtil.validaData(data))
+		else if(dateUtil.validaData(data) && dateUtil.validaDataJaPassou())
 			this.data = data;
 		else
 			throw new IllegalArgumentException("Data inválida");

@@ -310,22 +310,23 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		System.out.println("id solicitacao: " + idSolicitacao2);
 
 		// Iterator Pattern
-		Iterator<Usuario> iteratorIdUsuario = sistema.getMapIdUsuario()
+		Iterator<Usuario> itUsuarios = sistema.getMapIdUsuario()
 				.values().iterator();
-		while (iteratorIdUsuario.hasNext()) {
-			Usuario u = iteratorIdUsuario.next();
-			Iterator<Carona> it = u.getMapIdCaronasOferecidas().values()
-					.iterator();
-			while (it.hasNext()) {
-				Carona c = it.next();
+		while (itUsuarios.hasNext()) {
+			Usuario u = itUsuarios.next();
+			Iterator<Carona> itCaronas = u.getMapIdCaronasOferecidas().values().iterator();
+			while (itCaronas.hasNext()) {
+				Carona c = itCaronas.next();
 				if (c.getMapIdSolicitacao().containsKey(idSolicitacao2)) {
 					return getAtributoSolicitacao(c, idSolicitacao2, atributo);
 				}
 			}
 		}
-		throw new IllegalArgumentException("Atributo inexistente");
+		throw new IllegalArgumentException("Atributo inexistente aqui");
 	}
 
 	/**

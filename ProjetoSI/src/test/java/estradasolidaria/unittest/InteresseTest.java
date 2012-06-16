@@ -52,11 +52,10 @@ public class InteresseTest {
 		}
 
 		try {
-			new Interesse("Campina Grande", "João Pessoa", "30/02/2012",
+			new Interesse("Campina Grande", "João Pessoa", "30/11/2012",
 					"11:00", "12:00");
-			fail();
 		} catch (IllegalArgumentException iae) {
-			assertEquals(iae.getMessage(), "Data inválida");
+			fail("Data e hora válidos");
 		} catch (Exception e) {
 			fail("Expected DataInvalida Exceptions");
 		}
@@ -109,11 +108,40 @@ public class InteresseTest {
 		assertEquals("Hora de Inicio esta errada.Espected \" \"",
 				i2.getHoraInicio(), "");
 		try {
-			new Interesse("Campina Grande", "João Pessoa", "28/02/2016",
+			new Interesse("Campina Grande", "João Pessoa", "29/02/2016", // proximo ano bissexto
+					"", "");
+		} catch (IllegalArgumentException iae) {
+			fail("Hora válida");
+		} catch (Exception e) {
+			fail("Expected HoraInvalida Exceptions");
+		}
+		
+		try {
+			new Interesse("Campina Grande", "João Pessoa", "29/02/2016", // proximo ano bissexto
+					null, "");
+			fail();
+		} catch (IllegalArgumentException iae) {
+			assertEquals(iae.getMessage(), "Hora inválida");
+		} catch (Exception e) {
+			fail("Expected HoraInvalida Exceptions");
+		}
+		
+		try {
+			new Interesse("Campina Grande", "João Pessoa", "29/02/2016", // proximo ano bissexto
+					"", null);
+			fail();
+		} catch (IllegalArgumentException iae) {
+			assertEquals(iae.getMessage(), "Hora inválida");
+		} catch (Exception e) {
+			fail("Expected HoraInvalida Exceptions");
+		}
+		
+		try {
+			new Interesse("Campina Grande", "João Pessoa", "29/02/2016",
 					"11:60", "");
 			fail();
 		} catch (IllegalArgumentException iae) {
-			assertEquals(iae.getMessage(), "Data inválida");
+			assertEquals(iae.getMessage(), "Hora inválida");
 		} catch (Exception e) {
 			fail("Expected HoraInvalida Exceptions");
 		}
@@ -121,7 +149,7 @@ public class InteresseTest {
 		assertEquals("Hora de Inicio esta errada.Espected \" \"",
 				i2.getHoraInicio(), "");
 		try {
-			new Interesse("Campina Grande", "João Pessoa", "30/11/2012",
+			new Interesse("Campina Grande", "João Pessoa", "29/02/2016",
 					"11:60", "");
 			fail();
 		} catch (IllegalArgumentException iae) {
