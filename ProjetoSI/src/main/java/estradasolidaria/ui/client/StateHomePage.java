@@ -4,16 +4,20 @@ package estradasolidaria.ui.client;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
 public class StateHomePage extends AbsolutePanel {
 	StatePanel state;
@@ -22,6 +26,14 @@ public class StateHomePage extends AbsolutePanel {
 	Image imagem;
 	
 	EstradaSolidariaServiceAsync estradaSolidariaService;
+	private DockPanel dockPanel;
+	private AbsolutePanel absolutePanel_1;
+	private AbsolutePanel absolutePanel_3;
+	private AbsolutePanel absolutePanel;
+	private AbsolutePanel absolutePanel_2;
+	private AbsolutePanel panelCadastro;
+	private Button btnCadastro;
+	private CheckBox chckbxLembrarme;
 	
 	public StateHomePage(EstradaSolidaria estradaSolidaria, EstradaSolidariaServiceAsync estradaSolidariaService) {
 		estrada = estradaSolidaria;
@@ -32,32 +44,66 @@ public class StateHomePage extends AbsolutePanel {
 		
 		setStylePrimaryName("dialogVPanel");
 		
-		setSize("838px", "657px");
+		//Redimensiona o painel
+		Window.addResizeHandler(new ResizeHandler() {
+			
+			@Override
+			public void onResize(ResizeEvent event) {
+				String comprimentoDaTela = event.getWidth() + "px";
+				String alturaDaTela = event.getHeight() + "px";
+				setSize(comprimentoDaTela, alturaDaTela);
+				
+				dockPanel.setSize(comprimentoDaTela, alturaDaTela);
+				
+			}
+		});
+		dockPanel = new DockPanel();
+		add(dockPanel, 30, 25);
+		dockPanel.setSize("100%", "100%");
 		
-		AbsolutePanel absPanelLogin = new AbsolutePanel();
-		absPanelLogin.setStylePrimaryName("gwt-LoginPanel");
-		add(absPanelLogin, 494, 151);
-		absPanelLogin.setSize("268px", "214px");
+		absolutePanel_1 = new AbsolutePanel();
+		dockPanel.add(absolutePanel_1, DockPanel.NORTH);
+		absolutePanel_1.setStyleName("gwt-LabelEstradaSolidaria2");
+		absolutePanel_1.setSize("100%", "100%");
+		
+		absolutePanel_3 = new AbsolutePanel();
+		absolutePanel_1.add(absolutePanel_3, 428, 95);
+		absolutePanel_3.setSize("314px", "109px");
+		
+		Label lblBemvindoAoEstrada = new Label("Bem-vindo ao Estrada Solidária!");
+		absolutePanel_3.add(lblBemvindoAoEstrada, 49, 40);
+		lblBemvindoAoEstrada.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		lblBemvindoAoEstrada.setStyleName("gwt-LabelHomePage2");
+		lblBemvindoAoEstrada.setSize("216px", "29px");
+		
+		absolutePanel = new AbsolutePanel();
+		dockPanel.add(absolutePanel, DockPanel.CENTER);
+		absolutePanel.setSize("100%", "100%");
+		
+		AbsolutePanel panelLogin = new AbsolutePanel();
+		absolutePanel.add(panelLogin, 624, 19);
+		panelLogin.setStylePrimaryName("gwt-LoginPanel");
+		panelLogin.setSize("318px", "218px");
 		
 		Label lblL = new Label("Já é usuário? Faça Login.");
 		lblL.setStyleName("gwt-LabelEstradaSolidaria");
-		absPanelLogin.add(lblL, 23, 10);
+		panelLogin.add(lblL, 23, 10);
 		
 		Label lblUsurio = new Label("Usuário:");
 		lblUsurio.setStyleName("gwt-LabelEstradaSolidaria4");
-		absPanelLogin.add(lblUsurio, 10, 51);
+		panelLogin.add(lblUsurio, 10, 51);
 		lblUsurio.setSize("58px", "15px");
 		
 		final TextBox txtboxNome = new TextBox();
-		absPanelLogin.add(txtboxNome, 74, 51);
+		panelLogin.add(txtboxNome, 74, 51);
 		txtboxNome.setSize("180px", "13px");
 		
 		Label lblSenha = new Label("Senha:");
 		lblSenha.setStyleName("gwt-LabelEstradaSolidaria4");
-		absPanelLogin.add(lblSenha, 10, 78);
+		panelLogin.add(lblSenha, 10, 78);
 		
 		final PasswordTextBox textBoxPassword = new PasswordTextBox();
-		absPanelLogin.add(textBoxPassword, 74, 78);
+		panelLogin.add(textBoxPassword, 74, 78);
 		textBoxPassword.setSize("180px", "17px");
 		
 		Button btnLogin = new Button("Login");
@@ -72,25 +118,25 @@ public class StateHomePage extends AbsolutePanel {
 		});
 		
 		
-		absPanelLogin.add(btnLogin, 170, 128);
+		panelLogin.add(btnLogin, 170, 128);
 		btnLogin.setSize("81px", "24px");
 		
-		CheckBox chckbxLembrarme = new CheckBox("lembrar-me");
+		chckbxLembrarme = new CheckBox("lembrar-me");
 		chckbxLembrarme.setHTML("Lembrar-me");
-		absPanelLogin.add(chckbxLembrarme, 170, 168);
+		panelLogin.add(chckbxLembrarme, 170, 168);
 		
-		AbsolutePanel absolutePanel = new AbsolutePanel();
-		absolutePanel.setStyleName("gwt-LoginPanel");
-		absolutePanel.setStylePrimaryName("gwt-LoginPanel");
-		add(absolutePanel, 212, 151);
-		absolutePanel.setSize("245px", "214px");
+		panelCadastro = new AbsolutePanel();
+		absolutePanel.add(panelCadastro, 213, 19);
+		panelCadastro.setStyleName("gwt-LoginPanel");
+		panelCadastro.setStylePrimaryName("gwt-LoginPanel");
+		panelCadastro.setSize("346px", "218px");
 		
 		Label lblNaoCadastrado = new Label("Ainda não é Usuário? ");
 		lblNaoCadastrado.setStyleName("gwt-LabelEstradaSolidaria");
-		absolutePanel.add(lblNaoCadastrado, 27, 10);
+		panelCadastro.add(lblNaoCadastrado, 27, 10);
 		lblNaoCadastrado.setSize("193px", "31px");
 		
-		Button btnCadastro = new Button("Cadastre-se Aqui!");
+		btnCadastro = new Button("Cadastre-se Aqui!");
 		
 		btnCadastro.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -98,20 +144,15 @@ public class StateHomePage extends AbsolutePanel {
 			}
 		});
 		btnCadastro.setStyleName("gwt-LabelEstradaSolidaria4");
-		absolutePanel.add(btnCadastro, 27, 92);
+		panelCadastro.add(btnCadastro, 27, 92);
 		btnCadastro.setSize("182px", "40px");
 		
-		AbsolutePanel absolutePanel_1 = new AbsolutePanel();
-		absolutePanel_1.setStyleName("gwt-LabelEstradaSolidaria2");
-		add(absolutePanel_1, 212, 20);
-		absolutePanel_1.setSize("550px", "100px");
-		
-		Label lblBemvindoAoEstrada = new Label("Bem-vindo ao Estrada Solidária!");
-		lblBemvindoAoEstrada.setStyleName("gwt-LabelHomePage2");
-		absolutePanel_1.add(lblBemvindoAoEstrada, 85, 38);
+		absolutePanel_2 = new AbsolutePanel();
+		dockPanel.add(absolutePanel_2, DockPanel.SOUTH);
+		absolutePanel_2.setSize("100%", "100%");
 		imagem = new Image(resources.home());
-		add(imagem, 151, 412);
-		imagem.setSize("368px", "222px");
+		absolutePanel_2.add(imagem, 408, 41);
+		imagem.setSize("353px", "217px");
 	}
 
 	protected void cadastraUsuarioGUI() {
@@ -134,10 +175,7 @@ public class StateHomePage extends AbsolutePanel {
 			@Override
 			public void onSuccess(Integer result) {
 				EstradaSolidaria.setIdSessaoAberta(result);
-				estrada.rootPanel.remove(panel);
-				Widget newPanel = new StatePerfil2(estrada, estradaSolidariaService);
-				newPanel.setSize("781px", "592px");
-				estrada.setStatePanel(newPanel);
+				estrada.setStatePanel(new StatePerfil2(estrada, estradaSolidariaService));
 			}
 		  });
 	}

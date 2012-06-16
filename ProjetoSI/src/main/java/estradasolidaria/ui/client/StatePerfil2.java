@@ -2,6 +2,8 @@ package estradasolidaria.ui.client;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -14,6 +16,7 @@ import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.MenuItemSeparator;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DatePicker;
+import com.google.gwt.user.client.ui.DockPanel;
 
 public class StatePerfil2 extends Composite {
 	
@@ -22,18 +25,71 @@ public class StatePerfil2 extends Composite {
 	private EstradaSolidariaServiceAsync estradaSolidariaService;
 	
 	final AbsolutePanel bodyPanel;
+	private DockPanel dockPanel;
+	private AbsolutePanel headerPanel;
+	private AbsolutePanel leftSideBarPanel;
+	private AbsolutePanel rightSidebarPanel;
+	private AbsolutePanel mainPanel;
 	public StatePerfil2(EstradaSolidaria estradaSolidaria, final EstradaSolidariaServiceAsync estradaSolidariaService) {
 		
 		estrada = estradaSolidaria;
 		this.estradaSolidariaService = estradaSolidariaService;
 		
-		AbsolutePanel mainPanel = new AbsolutePanel();
+		//Atualiza o tamanho do dockPanel para o tamanho redimensionado
+		Window.addResizeHandler(new ResizeHandler() {
+			
+			@Override
+			public void onResize(ResizeEvent event) {
+				String comprimentoDaTela = event.getWidth() + "px";
+				String alturaDaTela = event.getHeight() + "px";
+				setSize(comprimentoDaTela, alturaDaTela);
+				
+				dockPanel.setSize(comprimentoDaTela, alturaDaTela);
+			}
+		});
+		
+		mainPanel = new AbsolutePanel();
 		initWidget(mainPanel);
 		mainPanel.setSize("1000px", "710px");
 		
-		AbsolutePanel leftSideBarPanel = new AbsolutePanel();
-		mainPanel.add(leftSideBarPanel, 10, 215);
-		leftSideBarPanel.setSize("140px", "256px");
+		dockPanel = new DockPanel();
+		mainPanel.add(dockPanel, 10, 10);
+		dockPanel.setSize("100%", "100%");
+		
+		headerPanel = new AbsolutePanel();
+		dockPanel.add(headerPanel, DockPanel.NORTH);
+		headerPanel.setSize("100%", "100%");
+		
+		Label lblNomeDoUsuario = new Label("Nome do usuario");
+		headerPanel.add(lblNomeDoUsuario, 10, 10);
+		
+		MenuBar menuBar = new MenuBar(false);
+		headerPanel.add(menuBar, 730, 10);
+		menuBar.setSize("258px", "19px");
+		
+		MenuItem menuItemOpcoes = new MenuItem("Editar Perfil", false, new Command() {
+			public void execute() {
+				editarPerfilGUI();
+			}
+		});
+		menuBar.addItem(menuItemOpcoes);
+		
+		MenuItemSeparator separator = new MenuItemSeparator();
+		menuBar.addSeparator(separator);
+		
+		MenuItem menuItemSair = new MenuItem("Sair", false, new Command() {
+			public void execute() {
+				estrada.rootPanel.remove(panel);
+				Widget newPanel = new StateHomePage(estrada, estradaSolidariaService);
+				newPanel.setSize("600px", "417px");
+				estrada.setStatePanel(newPanel);
+			}
+		});
+		menuBar.addItem(menuItemSair);
+		
+		leftSideBarPanel = new AbsolutePanel();
+		dockPanel.add(leftSideBarPanel, DockPanel.WEST);
+		leftSideBarPanel.setSize("140px", "248px");
 		
 		Button txtbtnCadastrarCarona = new Button("Cadastrar Carona");
 		leftSideBarPanel.add(txtbtnCadastrarCarona, 10, 66);
@@ -60,9 +116,9 @@ public class StatePerfil2 extends Composite {
 		leftSideBarPanel.add(btnMeusInteresses, 10, 196);
 		btnMeusInteresses.setSize("122px", "25px");
 		
-		AbsolutePanel rightSidebarPanel = new AbsolutePanel();
-		mainPanel.add(rightSidebarPanel, 748, 215);
-		rightSidebarPanel.setSize("233px", "487px");
+		rightSidebarPanel = new AbsolutePanel();
+		dockPanel.add(rightSidebarPanel, DockPanel.EAST);
+		rightSidebarPanel.setSize((EstradaSolidaria.comprimentoDoBrowser * 0.2) + "px", "487px");
 		
 		Label lblAmigos = new Label("Amigos:");
 		rightSidebarPanel.add(lblAmigos, 91, 0);
@@ -72,28 +128,6 @@ public class StatePerfil2 extends Composite {
 		rightSidebarPanel.add(flexTable, 14, 21);
 		flexTable.setSize("212px", "213px");
 		
-//		Image image_1 = new Image((String) null);
-//		flexTable.setWidget(0, 0, image_1);
-//		
-//		Image image_2 = new Image((String) null);
-//		flexTable.setWidget(0, 1, image_2);
-//		
-//		Image image_3 = new Image((String) null);
-//		flexTable.setWidget(1, 0, image_3);
-//		
-//		Image image_4 = new Image((String) null);
-//		flexTable.setWidget(1, 1, image_4);
-//		
-//		Image image_5 = new Image((String) null);
-//		flexTable.setWidget(2, 0, image_5);
-//		
-//		Image image_6 = new Image((String) null);
-//		flexTable.setWidget(2, 1, image_6);
-		
-//		Button txtbtnVisualizarTodosOs = new Button("Ver Todos");
-//		absolutePanel_1.add(txtbtnVisualizarTodosOs, 51, 244);
-//		txtbtnVisualizarTodosOs.setSize("137px", "28px");
-		
 		DatePicker datePicker = new DatePicker();
 		rightSidebarPanel.add(datePicker, 14, 313);
 		datePicker.setSize("210px", "162px");
@@ -101,40 +135,9 @@ public class StatePerfil2 extends Composite {
 		Label lblProximasCaronas = new Label("Próximas Caronas");
 		rightSidebarPanel.add(lblProximasCaronas, 66, 292);
 		
-		AbsolutePanel headerPanel = new AbsolutePanel();
-		mainPanel.add(headerPanel, 10, 43);
-		headerPanel.setSize("971px", "140px");
-		
-		Label lblNomeDoUsuario = new Label("Nome do usuario");
-		headerPanel.add(lblNomeDoUsuario, 21, 115);
-		
-		MenuBar menuBar = new MenuBar(false);
-		headerPanel.add(menuBar, 701, 10);
-		menuBar.setSize("258px", "19px");
-		
-		MenuItem menuItemOpcoes = new MenuItem("Editar Perfil", false, new Command() {
-			public void execute() {
-				editarPerfilGUI();
-			}
-		});
-		menuBar.addItem(menuItemOpcoes);
-		
-		MenuItemSeparator separator = new MenuItemSeparator();
-		menuBar.addSeparator(separator);
-		
-		MenuItem menuItemSair = new MenuItem("Sair", false, new Command() {
-			public void execute() {
-				estrada.rootPanel.remove(panel);
-				Widget newPanel = new StateHomePage(estrada, estradaSolidariaService);
-				newPanel.setSize("600px", "417px");
-				estrada.setStatePanel(newPanel);
-			}
-		});
-		menuBar.addItem(menuItemSair);
-		
 		bodyPanel = new AbsolutePanel();
-		mainPanel.add(bodyPanel, 156, 215);
-		bodyPanel.setSize("586px", "487px");
+		dockPanel.add(bodyPanel, DockPanel.CENTER);
+		bodyPanel.setSize((EstradaSolidaria.comprimentoDoBrowser * 0.6) + "px", "487px");
 
 		btnInicio.addClickHandler(new ClickHandler() {
 			@Override
@@ -185,8 +188,8 @@ public class StatePerfil2 extends Composite {
 	protected void visualizarCaronaGUI() {
 		bodyPanel.clear();
 		Widget visualizarCarona= new StateVisualizarCaronas(estrada, estradaSolidariaService);
-		bodyPanel.add(visualizarCarona);
 		visualizarCarona.setSize("100%", "100%");
+		bodyPanel.add(visualizarCarona);
 		
 	}
 

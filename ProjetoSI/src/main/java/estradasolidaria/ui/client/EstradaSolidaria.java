@@ -1,7 +1,9 @@
 	package estradasolidaria.ui.client;
 
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -10,8 +12,10 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class EstradaSolidaria implements EntryPoint {
 	private static Integer idSessaoAberta;
-	Widget statepanel;
+	Widget statePanel;
 	final RootPanel rootPanel = RootPanel.get();
+	public static Integer alturaDoBrowser = Window.getClientHeight();
+	public static Integer comprimentoDoBrowser = Window.getClientWidth();
 	
 	private final EstradaSolidariaServiceAsync estradaSolidariaService = 
 			(EstradaSolidariaServiceAsync) GWT.create(EstradaSolidariaService.class);
@@ -20,16 +24,17 @@ public class EstradaSolidaria implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		rootPanel.setSize("1000px", "1000px");
-		statepanel = new StateHomePage(this, estradaSolidariaService);
-		rootPanel.add(statepanel, 300, 45);
-		statepanel.setSize("100%", "100%");
+		statePanel = new StateHomePage(this, estradaSolidariaService);
+		statePanel.setSize(comprimentoDoBrowser + "px", alturaDoBrowser + "px");
+		rootPanel.setSize(comprimentoDoBrowser +"px", alturaDoBrowser + "px");
+		rootPanel.add(statePanel);
 	}
 
 	public void setStatePanel(Widget statePanel) {
-		this.statepanel = statePanel;
-		rootPanel.add(statepanel, 150, 45);
-		this.statepanel.setSize("1000px", "1000px");
+		rootPanel.remove(this.statePanel);
+		this.statePanel = statePanel;
+		this.statePanel.setSize("100%", "100%");
+		rootPanel.add(statePanel);
 	}
 
 	public static Integer getIdSessaoAberta() {

@@ -26,11 +26,11 @@ public class StateCadastroUsuario extends AbsolutePanel implements StatePanel {
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		absolutePanel.setStyleName("h2");
-		add(absolutePanel, 109, 83);
-		absolutePanel.setSize("530px", "301px");
+		add(absolutePanel, 10, 10);
+		absolutePanel.setSize("100%", "100%");
 		
 		Label lblNome = new Label("Nome:");
-		absolutePanel.add(lblNome, 60, 10);
+		absolutePanel.add(lblNome, 37, 60);
 		lblNome.setStyleName("gwt-LabelEstradaSolidaria4");
 		lblNome.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		lblNome.setDirectionEstimator(true);
@@ -38,54 +38,54 @@ public class StateCadastroUsuario extends AbsolutePanel implements StatePanel {
 		
 		Label lblLogin = new Label("Login:");
 		lblLogin.setStyleName("gwt-LabelEstradaSolidaria4");
-		absolutePanel.add(lblLogin, 60, 44);
+		absolutePanel.add(lblLogin, 37, 94);
 		lblLogin.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		lblLogin.setSize("104px", "15px");
 		
 		Label lblSenha = new Label("Senha:");
 		lblSenha.setStyleName("gwt-LabelEstradaSolidaria4");
-		absolutePanel.add(lblSenha, 60, 72);
+		absolutePanel.add(lblSenha, 37, 122);
 		lblSenha.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		lblSenha.setSize("104px", "15px");
 		
 		Label lblComfirmaASenha = new Label("Confirme a senha:");
 		lblComfirmaASenha.setStyleName("gwt-LabelEstradaSolidaria4");
-		absolutePanel.add(lblComfirmaASenha, 60, 102);
+		absolutePanel.add(lblComfirmaASenha, 37, 152);
 		
 		final TextBox textBbxNome = new TextBox();
-		absolutePanel.add(textBbxNome, 206, 0);
+		absolutePanel.add(textBbxNome, 183, 50);
 		textBbxNome.setName("Digite seu nome");
 		textBbxNome.setSize("262px", "17px");
 		
 		final TextBox textBoxLogin = new TextBox();
-		absolutePanel.add(textBoxLogin, 206, 31);
+		absolutePanel.add(textBoxLogin, 183, 81);
 		textBoxLogin.setName("Digite seu nome");
 		textBoxLogin.setSize("262px", "17px");
 		
 		final PasswordTextBox textBoxPassword = new PasswordTextBox();
-		absolutePanel.add(textBoxPassword, 206, 62);
+		absolutePanel.add(textBoxPassword, 183, 112);
 		textBoxPassword.setSize("262px", "17px");
 		
 		Label lblEndereo = new Label("Endereço:");
 		lblEndereo.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		lblEndereo.setDirectionEstimator(false);
-		absolutePanel.add(lblEndereo, 60, 129);
+		absolutePanel.add(lblEndereo, 37, 179);
 		lblEndereo.setStyleName("gwt-LabelEstradaSolidaria4");
 		lblEndereo.setSize("104px", "15px");
 		
 		Label lblEmail = new Label("Email:");
 		lblEmail.setStyleName("gwt-LabelEstradaSolidaria4");
-		absolutePanel.add(lblEmail, 60, 161);
+		absolutePanel.add(lblEmail, 37, 211);
 		lblEmail.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		lblEmail.setSize("104px", "15px");
 		
 		final TextBox textBoxEndereco = new TextBox();
-		absolutePanel.add(textBoxEndereco, 206, 130);
+		absolutePanel.add(textBoxEndereco, 183, 180);
 		textBoxEndereco.setName("Digite seu nome");
 		textBoxEndereco.setSize("262px", "17px");
 		
 		final TextBox textBoxEmail = new TextBox();
-		absolutePanel.add(textBoxEmail, 206, 161);
+		absolutePanel.add(textBoxEmail, 183, 211);
 		textBoxEmail.setName("Digite seu nome");
 		textBoxEmail.setSize("262px", "17px");
 		
@@ -100,7 +100,7 @@ public class StateCadastroUsuario extends AbsolutePanel implements StatePanel {
 				}
 			}
 		});
-		absolutePanel.add(btnConfirmar, 395, 232);
+		absolutePanel.add(btnConfirmar, 372, 282);
 		btnConfirmar.setText("Criar");
 		btnConfirmar.setSize("81px", "24px");
 		
@@ -114,12 +114,16 @@ public class StateCadastroUsuario extends AbsolutePanel implements StatePanel {
 				estrada.setStatePanel(newPanel);
 			}
 		});
-		absolutePanel.add(btnVoltar, 206, 232);
+		absolutePanel.add(btnVoltar, 183, 282);
 		btnVoltar.setSize("81px", "24px");
 		
 		Label lblCadastroDeUsurio = new Label("Cadastro de Usuário");
+		absolutePanel.add(lblCadastroDeUsurio, 188, 0);
 		lblCadastroDeUsurio.setStyleName("gwt-LabelEstradaSolidaria2");
-		add(lblCadastroDeUsurio, 301, 10);
+		
+		PasswordTextBox passwordTextBox = new PasswordTextBox();
+		absolutePanel.add(passwordTextBox, 183, 143);
+		passwordTextBox.setSize("262px", "17px");
 		
 	}
 
