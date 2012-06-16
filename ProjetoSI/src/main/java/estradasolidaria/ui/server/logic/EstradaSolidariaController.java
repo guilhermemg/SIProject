@@ -426,9 +426,10 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param idSessao
 	 *            : id da sessao do usuario dono da carona
 	 * @param idSolicitacao
+	 * @throws CaronaInexistenteException 
 	 */
 	public void aceitarSolicitacaoPontoEncontro(Integer idSessao,
-			Integer idSolicitacao) {
+			Integer idSolicitacao) throws CaronaInexistenteException {
 		if (idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 		
@@ -448,6 +449,7 @@ public class EstradaSolidariaController implements Serializable {
 
 		Carona carona = this.mapIdUsuario.get(idUsuarioDonoDaCarona)
 				.getMapIdCaronasOferecidas().get(solicitacao.getIdCarona());
+		
 		this.mapIdUsuario.get(idUsuarioDonoDaSolicitacao)
 				.adicionarIdCaronaPega(idCarona, carona);
 	}
@@ -458,8 +460,10 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param idSessao
 	 *            : id da sessao do usuario dono da carona
 	 * @param idSolicitacao
+	 * @throws CaronaInexistenteException 
+	 * @throws IllegalArgumentException 
 	 */
-	public void aceitarSolicitacao(Integer idSessao, Integer idSolicitacao) {
+	public void aceitarSolicitacao(Integer idSessao, Integer idSolicitacao) throws IllegalArgumentException, CaronaInexistenteException {
 		if (idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 		if(idSolicitacao == null)
@@ -562,9 +566,10 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param idCarona
 	 * @param idSolicitacao
 	 * @throws CaronaInvalidaException
+	 * @throws CaronaInexistenteException 
 	 */
 	public void desistirRequisicao(Integer idSessao, Integer idCarona,
-			Integer idSolicitacao) throws CaronaInvalidaException {
+			Integer idSolicitacao) throws CaronaInvalidaException, CaronaInexistenteException {
 		if (idSessao == null )
 			throw new IllegalArgumentException("Sessão inválida");
 		if (idCarona == null )

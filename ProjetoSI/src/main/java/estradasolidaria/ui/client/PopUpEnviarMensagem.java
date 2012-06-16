@@ -5,6 +5,8 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.widget.client.TextButton;
 import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
 
 public class PopUpEnviarMensagem extends PopupPanel {
 
@@ -19,6 +21,11 @@ public class PopUpEnviarMensagem extends PopupPanel {
 		absolutePanel.add(lblEnviarMensagem, 10, 10);
 		
 		TextButton txtbtnEnviar = new TextButton("Enviar");
+		txtbtnEnviar.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				hide();
+			}
+		});
 		absolutePanel.add(txtbtnEnviar, 381, 183);
 		
 		TextArea textArea = new TextArea();

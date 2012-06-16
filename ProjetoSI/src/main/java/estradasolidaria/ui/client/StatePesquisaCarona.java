@@ -75,7 +75,7 @@ public class StatePesquisaCarona extends Composite {
 			@Override
 			public void onSuccess(Map<String, Integer> result) {
 				bodyPanel.clear();
-				Widget caronasEncontradas = new StateCaronasEncontradas(estradaSolidariaService, result);
+				Widget caronasEncontradas = new StateCaronasEncontradas(estradaSolidariaService, estrada, result);
 				bodyPanel.add(caronasEncontradas);
 				caronasEncontradas.setSize("100%", "100%");
 			}

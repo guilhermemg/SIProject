@@ -311,8 +311,6 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 			e.printStackTrace();
 		}
 		
-		System.out.println("id solicitacao: " + idSolicitacao2);
-
 		// Iterator Pattern
 		Iterator<Usuario> itUsuarios = sistema.getMapIdUsuario()
 				.values().iterator();
@@ -326,7 +324,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 				}
 			}
 		}
-		throw new IllegalArgumentException("Atributo inexistente aqui");
+		throw new IllegalArgumentException("Atributo inexistente");
 	}
 
 	/**
@@ -453,7 +451,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	 */
 	@Override
 	public void aceitarSolicitacaoPontoEncontro(String idSessao,
-			String idSolicitacao) {
+			String idSolicitacao) throws CaronaInexistenteException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 
@@ -475,7 +473,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	 * @see estradasolidaria.ui.server.logic.AdapterInterface#aceitarSolicitacao(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public void aceitarSolicitacao(String idSessao, String idSolicitacao) {
+	public void aceitarSolicitacao(String idSessao, String idSolicitacao) throws IllegalArgumentException, CaronaInexistenteException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 		if (idSolicitacao == null || idSolicitacao.equals(""))
@@ -541,7 +539,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	 */
 	@Override
 	public void desistirRequisicao(String idSessao, String idCarona,
-			String idSolicitacao) throws CaronaInvalidaException {
+			String idSolicitacao) throws CaronaInvalidaException, CaronaInexistenteException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 		if (idCarona == null || idCarona.equals(""))
