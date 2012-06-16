@@ -41,7 +41,6 @@ public class Carona implements Comparable<Carona>, Serializable {
 
 	// as solicitacoes sao apagadas apos aceitas pelo dono da carona
 	private Map<Integer, Solicitacao> mapIdSolicitacoes = new TreeMap<Integer, Solicitacao>();
-	private Map<Integer, Solicitacao> mapIdSolicitacoesComPontoEncontro = new TreeMap<Integer, Solicitacao>();
 	private Iterator<Solicitacao> iteratorIdSolicitacoes = this.mapIdSolicitacoes
 			.values().iterator();
 
@@ -469,6 +468,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @return true: não fez, false: já fez.
 	 */
 	private boolean validaPontoEncontro(Usuario donoDaSolicitacao, String ponto) {
+		
 		if (ponto == null || ponto.equals("")
 				|| ponto.equals(this.pontoEncontro))
 			throw new IllegalArgumentException("Ponto Inválido");
@@ -478,8 +478,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 			Solicitacao s = iteratorIdSolicitacoes.next();
 			if (s.getPontoEncontro().equals(ponto)
 					&& s.getDonoDaSolicitacao().equals(donoDaSolicitacao)) {
-				return false; // achou uma solicitacao identica já feita pelo
-								// mesmo usuario
+				return false; // achou uma solicitacao identica já feita pelo mesmo usuario
 			}
 		}
 		return true;
@@ -492,20 +491,6 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 */
 	public Map<Integer, Solicitacao> getMapIdSolicitacao() {
 		return this.mapIdSolicitacoes;
-	}
-
-	/**
-	 * Retorna o atributo de uma solicitação.
-	 * 
-	 * @param idSolicitacao
-	 * @param atributo
-	 * @return atributoSolicitacao @
-	 */
-	public Object getAtributoSolicitacao(Integer idSolicitacao, String atributo) {
-		Solicitacao s = this.mapIdSolicitacoes.get(idSolicitacao);
-		if (s == null)
-			throw new IllegalArgumentException("Solicitação inexistente");
-		return s.getAtributo(atributo);
 	}
 
 	/**
@@ -546,7 +531,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 			Usuario donoDaCarona2, Usuario donoDaSolicitacao)
 			throws IllegalArgumentException {
 		Solicitacao s = new Solicitacao(this.getIdCarona(), origem2, destino2, donoDaCarona2,
-				donoDaSolicitacao);
+				donoDaSolicitacao, EnumTipoSolicitacao.SOLICITACAO_SEM_PONTO_ENCONTRO);
 		this.mapIdSolicitacoes.put(s.getIdSolicitacao(), s);
 		return s;
 	}
@@ -564,8 +549,8 @@ public class Carona implements Comparable<Carona>, Serializable {
 			Usuario donoDaCarona, Usuario donoDaSolicitacao, String ponto) {
 		if (validaPontoEncontro(donoDaSolicitacao, ponto)) {
 			Solicitacao s = new Solicitacao(getIdCarona(), origem, destino, donoDaCarona,
-					donoDaSolicitacao, ponto);
-			this.mapIdSolicitacoesComPontoEncontro .put(s.getIdSolicitacao(), s);
+					donoDaSolicitacao, ponto, EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
+			this.mapIdSolicitacoes.put(s.getIdSolicitacao(), s);
 			return s;
 		} else {
 			throw new IllegalArgumentException("Ponto Inválido");
@@ -717,6 +702,8 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @param idSolicitacao
 	 */
 	public void desistirRequisicao(Integer idSolicitacao) {
+		if(idSolicitacao == null)
+			throw new IllegalArgumentException("Id solicitacao inválido");
 		this.mapIdSolicitacoes.get(idSolicitacao).cancelar();
 	}
 
@@ -749,9 +736,10 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @param s
 	 *            : solicitacao
+	 * @throws CaronaInexistenteException 
 	 * @throws Exception
 	 */
-	public void aceitarSolicitacao(Solicitacao s) throws IllegalArgumentException {
+	public void aceitarSolicitacao(Solicitacao s) throws IllegalArgumentException, CaronaInexistenteException {
 		s.aceitar(this);
 	}
 
@@ -804,16 +792,6 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 */
 	public Map<Integer, Sugestao> getMapSugestoesPontoDeEncontro() {
 		return mapSugestoesPontoDeEncontro;
-	}
-	
-	/**
-	 * Retorna mapa de solicitacoes com ponto encontro
-	 * pertencentes a essa carona.
-	 * 
-	 * @return mapa de solicitacoes com ponto encontro
-	 */
-	public Map<Integer, Solicitacao> getMapIdSolicitacaoComPontoEncontro() {
-		return this.mapIdSolicitacoesComPontoEncontro;
 	}
 
 	public Integer getDonoReviewCaroneiro(Integer idCaroneiro) {

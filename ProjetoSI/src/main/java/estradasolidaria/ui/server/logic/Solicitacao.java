@@ -28,6 +28,8 @@ public class Solicitacao implements Serializable {
 	
 	private EstadoSolicitacaoInterface estado;
 	private Integer idCarona;
+
+	private EnumTipoSolicitacao tipoSolicitacao;
 	
 	/**
 	 * Construtor 1 da classe Solicitacao.
@@ -36,9 +38,10 @@ public class Solicitacao implements Serializable {
 	 * @param donoDaCarona
 	 * @param donoDaSolicitacao
 	 * @param ponto
+	 * @param solicitacaoComPontoEncontro 
 	 */
 	public Solicitacao(Integer idCarona, String origem, String destino, Usuario donoDaCarona, 
-			Usuario donoDaSolicitacao, String ponto) {
+			Usuario donoDaSolicitacao, String ponto, EnumTipoSolicitacao solicitacaoComPontoEncontro) {
 		setIdCarona(idCarona);
 		setOrigemCaronaSolicitacao(origem); // id da sess�o do usuario requerente
 		setDestinoCaronaSolicitacao(destino);
@@ -46,30 +49,52 @@ public class Solicitacao implements Serializable {
 		setDonoDaSolicitacao(donoDaSolicitacao);
 		setPontoEncontroCaronaSolicitacao(ponto);
 		setEstado(new EstadoSolicitacaoPendente());
+		setTipoSolicitacao(solicitacaoComPontoEncontro);
 		
 		setIdSolicitacao(this.hashCode());
 	}
-
+	
 	// NOTE: pontoEncontroCaronaSolicitacao = null
 	/**
 	 * Construtor 2 da classe Solicitacao.
 	 * @param origem2
 	 * @param destino2
 	 * @param donoDaCarona2
+	 * @param solicitacaoSemPontoEncontro 
 	 * @param idDonoDaSolicitacao2
 	 * @param estado 
 	 * @param ponto 
 	 */
 	public Solicitacao(Integer idCarona, String origem2, String destino2, Usuario donoDaCarona2,
-			Usuario donoDaSolicitacao2) { 
+			Usuario donoDaSolicitacao2, EnumTipoSolicitacao solicitacaoSemPontoEncontro) { 
 		setIdCarona(idCarona);
 		setOrigemCaronaSolicitacao(origem2); // id da sessao do usuario requerente
 		setDestinoCaronaSolicitacao(destino2);
 		setDonoDaCarona(donoDaCarona2);
 		setDonoDaSolicitacao(donoDaSolicitacao2);
 		setEstado(new EstadoSolicitacaoPendente());
+		setTipoSolicitacao(solicitacaoSemPontoEncontro);
 		
 		setIdSolicitacao(this.hashCode());
+	}
+	
+	/**
+	 * Configura o tipo de solicitacao.
+	 * 
+	 * @param solicitacaoComPontoEncontro
+	 */
+	private void setTipoSolicitacao(
+			EnumTipoSolicitacao solicitacaoComPontoEncontro) {
+		this.tipoSolicitacao = solicitacaoComPontoEncontro;
+	}
+	
+	/**
+	 * Retorna o tipo da solicitacao.
+	 * 
+	 * @return tipo da solicitacao
+	 */
+	public EnumTipoSolicitacao getTipoSolicitacao() {
+		return this.tipoSolicitacao;
 	}
 	
 	private void setIdCarona(Integer idCarona2) {
@@ -133,35 +158,9 @@ public class Solicitacao implements Serializable {
 		return this.donoDaCaronaSolicitacao;
 	}
 
-	/**
-	 * Retorna valor de atributo de solicitacao de acordo com par�metro fornecido.
-	 * 
-	 * @param atributo
-	 * @return atributo
-	 * @
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
 	 */
-	public Object getAtributo(String atributo)  {
-		if(atributo == null || atributo.equals(""))
-			throw new IllegalArgumentException("Atributo inexistente");
-		
-		if(atributo.equals(EnumSolicitacao.ORIGEM.getNomeAtributo()))
-			return this.getOrigem();
-		else if(atributo.equals(EnumSolicitacao.DESTINO.getNomeAtributo()))
-			return this.getDestino();
-		else if(atributo.equals(EnumSolicitacao.DONO_CARONA.getNomeAtributo()))
-			return this.getDonoDaCarona();
-		else if(atributo.equals(EnumSolicitacao.DONO_SOLICITACAO.getNomeAtributo()))
-			return this.getDonoDaSolicitacao();
-		else if(atributo.equals(EnumSolicitacao.PONTO_ENCONTRO.getNomeAtributo()))
-			return this.getPontoEncontro();
-		else if(atributo.equals(EnumSolicitacao.ESTADO_SOLICITACAO.getNomeAtributo()))
-			return this.getEstado();
-		else
-			throw new IllegalArgumentException("Atributo inexistente");
-	}
-
-	
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -170,7 +169,6 @@ public class Solicitacao implements Serializable {
 				* result
 				+ ((destinoCaronaSolicitacao == null) ? 0
 						: destinoCaronaSolicitacao.hashCode());
-		result = prime * result + ((estado == null) ? 0 : estado.hashCode());
 		result = prime
 				* result
 				+ ((donoDaCaronaSolicitacao == null) ? 0
@@ -179,6 +177,9 @@ public class Solicitacao implements Serializable {
 				* result
 				+ ((donoDaSolicitacao == null) ? 0 : donoDaSolicitacao
 						.hashCode());
+		result = prime * result + ((estado == null) ? 0 : estado.hashCode());
+		result = prime * result
+				+ ((idCarona == null) ? 0 : idCarona.hashCode());
 		result = prime * result
 				+ ((idSolicitacao == null) ? 0 : idSolicitacao.hashCode());
 		result = prime
@@ -189,9 +190,18 @@ public class Solicitacao implements Serializable {
 				* result
 				+ ((pontoEncontroCaronaSolicitacao == null) ? 0
 						: pontoEncontroCaronaSolicitacao.hashCode());
+		result = prime
+				* result
+				+ ((respostaPontoEncontro == null) ? 0 : respostaPontoEncontro
+						.hashCode());
+		result = prime * result
+				+ ((tipoSolicitacao == null) ? 0 : tipoSolicitacao.hashCode());
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -207,11 +217,6 @@ public class Solicitacao implements Serializable {
 		} else if (!destinoCaronaSolicitacao
 				.equals(other.destinoCaronaSolicitacao))
 			return false;
-		if (estado == null) {
-			if (other.estado != null)
-				return false;
-		} else if (!estado.equals(other.estado))
-			return false;
 		if (donoDaCaronaSolicitacao == null) {
 			if (other.donoDaCaronaSolicitacao != null)
 				return false;
@@ -222,6 +227,16 @@ public class Solicitacao implements Serializable {
 			if (other.donoDaSolicitacao != null)
 				return false;
 		} else if (!donoDaSolicitacao.equals(other.donoDaSolicitacao))
+			return false;
+		if (estado == null) {
+			if (other.estado != null)
+				return false;
+		} else if (!estado.equals(other.estado))
+			return false;
+		if (idCarona == null) {
+			if (other.idCarona != null)
+				return false;
+		} else if (!idCarona.equals(other.idCarona))
 			return false;
 		if (idSolicitacao == null) {
 			if (other.idSolicitacao != null)
@@ -239,6 +254,13 @@ public class Solicitacao implements Serializable {
 				return false;
 		} else if (!pontoEncontroCaronaSolicitacao
 				.equals(other.pontoEncontroCaronaSolicitacao))
+			return false;
+		if (respostaPontoEncontro == null) {
+			if (other.respostaPontoEncontro != null)
+				return false;
+		} else if (!respostaPontoEncontro.equals(other.respostaPontoEncontro))
+			return false;
+		if (tipoSolicitacao != other.tipoSolicitacao)
 			return false;
 		return true;
 	}
@@ -322,8 +344,9 @@ public class Solicitacao implements Serializable {
 	 * Muda estado da solicitacao para aceita.
 	 * 
 	 * @param c: carona a qual a solicitacao pertence
+	 * @throws CaronaInexistenteException 
 	 */
-	public void aceitar(Carona c) {
+	public void aceitar(Carona c) throws CaronaInexistenteException {
 		estado.aceitar(this, c);
 	}
 	

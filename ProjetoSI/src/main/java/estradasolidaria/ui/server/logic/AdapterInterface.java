@@ -168,9 +168,10 @@ public interface AdapterInterface {
 	 * @param idSessao
 	 *            : id da sessao do usuario dono da carona
 	 * @param idSolicitacao
+	 * @throws CaronaInexistenteException 
 	 */
 	public abstract void aceitarSolicitacaoPontoEncontro(String idSessao,
-			String idSolicitacao);
+			String idSolicitacao) throws CaronaInexistenteException;
 
 	/**
 	 * Aceita solicitacao
@@ -178,9 +179,11 @@ public interface AdapterInterface {
 	 * @param idSessao
 	 *            : id da sessao do usuario dono da carona
 	 * @param idSolicitacao
+	 * @throws CaronaInexistenteException 
+	 * @throws IllegalArgumentException 
 	 */
 	public abstract void aceitarSolicitacao(String idSessao,
-			String idSolicitacao);
+			String idSolicitacao) throws IllegalArgumentException, CaronaInexistenteException;
 
 	/**
 	 * Adiciona solicitacao a lista de solicitacoes associadas a uma carona,
@@ -214,9 +217,10 @@ public interface AdapterInterface {
 	 * @param idCarona
 	 * @param idSolicitacao
 	 * @throws CaronaInvalidaException
+	 * @throws CaronaInexistenteException 
 	 */
 	public abstract void desistirRequisicao(String idSessao, String idCarona,
-			String idSolicitacao) throws CaronaInvalidaException;
+			String idSolicitacao) throws CaronaInvalidaException, CaronaInexistenteException;
 
 	/**
 	 * Pega usuario associado a sessao indicada por idSessao e pega o perfil

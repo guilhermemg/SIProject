@@ -386,11 +386,11 @@ public class Usuario implements Serializable {
 		while (iteratorIdCaronasOferecidas.hasNext()) {
 			Carona c = iteratorIdCaronasOferecidas.next();
 			// Iterator Pattern
-			Iterator<Solicitacao> it = c.getMapIdSolicitacaoComPontoEncontro().values()
+			Iterator<Solicitacao> it = c.getMapIdSolicitacao().values()
 					.iterator();
 			while (it.hasNext()) {
 				Solicitacao s = it.next();
-				if (s.getIdSolicitacao().equals(idSolicitacao)) {
+				if (s.getIdSolicitacao().equals(idSolicitacao) && s.getTipoSolicitacao().equals(EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO)) {
 					c.setPontoEncontro(s.getPontoEncontro()); // seta ponto de encontro para carona apos aceitar ponto encontro
 					c.decrementaNumeroDeVagas();
 					return s;
@@ -409,8 +409,13 @@ public class Usuario implements Serializable {
 	 * 
 	 * @param idCarona
 	 * @param carona
+	 * @throws CaronaInexistenteException 
 	 */
-	public void adicionarIdCaronaPega(Integer idCarona, Carona c) {
+	public void adicionarIdCaronaPega(Integer idCarona, Carona c) throws CaronaInexistenteException {
+		if(idCarona == null)
+			throw new IllegalArgumentException("IdCarona inválido");
+		if(c == null)
+			throw new CaronaInexistenteException();
 		this.mapIdCaronasPegas.put(idCarona, c);
 	}
 
@@ -419,9 +424,10 @@ public class Usuario implements Serializable {
 	 * 
 	 * @param idSolicitacao
 	 * @return solicitacao
+	 * @throws CaronaInexistenteException 
 	 * 
 	 */
-	public Solicitacao aceitarSolicitacao(Integer idSolicitacao) throws IllegalArgumentException {
+	public Solicitacao aceitarSolicitacao(Integer idSolicitacao) throws IllegalArgumentException, CaronaInexistenteException {
 		// Iterator Pattern
 		iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas.values()
 				.iterator();
@@ -431,7 +437,7 @@ public class Usuario implements Serializable {
 					.iterator();
 			while (it.hasNext()) {
 				Solicitacao s = it.next();
-				if (s.getIdSolicitacao().equals(idSolicitacao)) {
+				if (s.getIdSolicitacao().equals(idSolicitacao) && s.getTipoSolicitacao().equals(EnumTipoSolicitacao.SOLICITACAO_SEM_PONTO_ENCONTRO)) {
 					// nao seta pontoEncontro da carona ==> fica null
 					c.aceitarSolicitacao(s);
 					return s;
@@ -988,8 +994,11 @@ public class Usuario implements Serializable {
 	 * 
 	 * @param idCarona
 	 * @param idSolicitacao
+	 * @throws CaronaInexistenteException 
 	 */
-	public void desistirRequisicao(Integer idCarona, Integer idSolicitacao) {
+	public void desistirRequisicao(Integer idCarona, Integer idSolicitacao) throws CaronaInexistenteException {
+		if(idCarona == null)
+			throw new CaronaInexistenteException();
 		Carona c = this.mapIdCaronasPegas.get(idCarona);
 		c.desistirRequisicao(idSolicitacao);
 	}
