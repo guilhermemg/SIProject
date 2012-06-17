@@ -9,38 +9,60 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.widget.client.TextButton;
 
 public class PopUpEditarReview extends PopupPanel {
+//	private Image image;
+	private ListBox comboBoxCaroneiros;
+	private ListBox comboBoxTiposDeReview;
+	private TextButton txtbtnOk;
+	private TextButton txtbtnCancelar;
+	private final EstradaSolidariaServiceAsync estradaService;
+	private final EstradaSolidaria estrada;
+	private final boolean isDono;
 
-	public PopUpEditarReview() {
+	public PopUpEditarReview(EstradaSolidaria estrada, EstradaSolidariaServiceAsync estradaService, boolean isDono, String idCarona) {
 		super(true);
+		this.estrada = estrada;
+		this.estradaService = estradaService;
+		this.isDono = isDono;
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		setWidget(absolutePanel);
 		absolutePanel.setSize("348px", "278px");
 		
-		Image image = new Image((String) null);
-		absolutePanel.add(image, 88, 26);
-		image.setSize("172px", "139px");
+//		image = new Image("gwt/standard/images/splitPanelThumb.png");
+//		image.setStyleName("PopupEditarReviewImage");
+//		absolutePanel.add(image, 88, 26);
+//		image.setSize("172px", "139px");
 		
 		FlexTable flexTable = new FlexTable();
 		absolutePanel.add(flexTable, 22, 188);
-		flexTable.setSize("129px", "80px");
+		flexTable.setSize("172px", "80px");
 		
 		Label lblNewLabel = new Label("Usuário:");
 		flexTable.setWidget(0, 0, lblNewLabel);
 		
-		ListBox comboBox = new ListBox();
-		flexTable.setWidget(0, 1, comboBox);
+		comboBoxCaroneiros = new ListBox();
+		flexTable.setWidget(0, 1, comboBoxCaroneiros);
+		comboBoxCaroneiros.setSize("100%", "100%");
 		
 		Label lblReview = new Label("Review:");
 		flexTable.setWidget(1, 0, lblReview);
 		
-		ListBox comboBox_1 = new ListBox();
-		flexTable.setWidget(1, 1, comboBox_1);
+		comboBoxTiposDeReview = new ListBox();
+		flexTable.setWidget(1, 1, comboBoxTiposDeReview);
+		if (isDono) {
+			comboBoxTiposDeReview.addItem("Não Faltou");
+			comboBoxTiposDeReview.addItem("Faltou");
+		} else {
+			comboBoxTiposDeReview.addItem("Segura e tranquila");
+			comboBoxTiposDeReview.addItem("Não funcionou");
+		}
 		
-		TextButton txtbtnOk = new TextButton("OK");
-		absolutePanel.add(txtbtnOk, 288, 240);
+		comboBoxTiposDeReview.setSize("100%", "100%");
 		
-		TextButton txtbtnCancelar = new TextButton("Cancelar");
-		absolutePanel.add(txtbtnCancelar, 255, 206);
+		txtbtnOk = new TextButton("OK");
+		absolutePanel.add(txtbtnOk, 214, 239);
+		
+		txtbtnCancelar = new TextButton("Cancelar");
+		absolutePanel.add(txtbtnCancelar, 262, 239);
 	}
 }

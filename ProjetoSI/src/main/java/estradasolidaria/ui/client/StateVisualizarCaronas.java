@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
@@ -48,27 +49,10 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 	private HasHorizontalAlignment pontoDeEncontroColumn;
 	private Integer idSessao;
 	private FlexTable flexTablePegas;
-	private FlexTable flexTableSolicitadas;
 	private TabPanel tabPanel;
-
-	class GWTCarona {
-		protected String dono;
-		protected String idDono;
-		protected String origem;
-		protected String destino;
-		protected String data;
-		protected String hora;
-		protected String vagas;
-		protected String review;
-		protected String pontoEncontro;
-		protected String idCarona;
-
-		@Override
-		public String toString() {
-			return dono +", "+origem+", " + destino + ", " + data +", " +vagas +", "+ review +", "+pontoEncontro;
-		}
-	}
-
+	private FlexTable flexTableSolicitadas;
+	private boolean isOferecida;
+	
 	public StateVisualizarCaronas(EstradaSolidaria estrada, EstradaSolidariaServiceAsync estradaSolidariaService) {
 		this.estrada = estrada;
 		this.estradaSolidariaService = estradaSolidariaService;
@@ -85,14 +69,13 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 							@Override
 							public void onSelection(SelectionEvent<Integer> event) {
 								if (event.getSelectedItem().equals(0)) {
-									try {
-										processarTabOferecidas();
-									} catch (Exception e) {
-										e.printStackTrace();
-									}
+									isOferecida = true;
+									processarTabOferecidas();
 								} else if (event.getSelectedItem().equals(1)) {
+									isOferecida = false;
 									processarTabPegas();
 								} else if (event.getSelectedItem().equals(2)) {
+									isOferecida = false;
 				//					processarSolicitadas();
 								}
 							}
@@ -310,8 +293,9 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 		reviewColumn.setFieldUpdater(new FieldUpdater<GWTCarona, String>() {
 			
 			@Override
-			public void update(int index, GWTCarona object, String value) {
-				Window.alert("Bitton Review was clicked!");
+			public void update(int index, GWTCarona carona, String value) {
+				
+				RootPanel.get().add(new PopUpEditarReview(estrada, estradaSolidariaService, isOferecida, carona.idCarona));
 				
 			}
 		});
