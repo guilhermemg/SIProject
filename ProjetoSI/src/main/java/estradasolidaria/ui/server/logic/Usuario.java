@@ -45,6 +45,8 @@ public class Usuario implements Serializable {
 
 	private Map<Integer, Interesse> mapIdInteresse = new TreeMap<Integer, Interesse>();
 
+	private Map<Integer, Solicitacao> mapIdSolicitacoesFeitas = new TreeMap<Integer, Solicitacao>();
+
 	/**
 	 * Construtor da classe Usuario.
 	 * 
@@ -1048,9 +1050,14 @@ public class Usuario implements Serializable {
 	 * do usuario (this).
 	 * 
 	 * @param interesse
+	 * @return interesse registrado
 	 */
-	public void addInteresse(Interesse interesse) {
+	public Interesse cadastrarInteresseUsuario(String origem, String destino, String data,
+			String horaInicio, String horaFim) {
+		Interesse interesse = new Interesse(origem, destino, data, horaInicio,
+				horaFim);
 		mapIdInteresse.put(interesse.getIdInteresse(), interesse);
+		return interesse;
 	}
 
 	/**
@@ -1090,5 +1097,24 @@ public class Usuario implements Serializable {
 			throws MessagingException {
 		SenderMail.sendMail(getEmail(), destino, message);
 		return true;
+	}
+	
+	/**
+	 * Adiciona solicitacao ao mapa de solicitacoes feitas por
+	 * este usuario.
+	 * 
+	 * @param solicitacaoFeita
+	 */
+	public void addSolicitacaoFeita(Solicitacao solicitacaoFeita) {
+		this.mapIdSolicitacoesFeitas .put(solicitacaoFeita.getIdSolicitacao(), solicitacaoFeita);
+	}
+	
+	/**
+	 * Retorna mapa de solicitacoes feitas por este usuario.
+	 * 
+	 * @return mapa de solicitacoes feitas
+	 */
+	public Map<Integer, Solicitacao> getMapIdSolicitacoesFeitas() {
+		return this.mapIdSolicitacoesFeitas;
 	}
 }

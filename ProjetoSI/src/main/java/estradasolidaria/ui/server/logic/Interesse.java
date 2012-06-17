@@ -253,14 +253,27 @@ public class Interesse implements Serializable {
 	 * @param c: carona
 	 * @return true se carona corresponde a este interesse
 	 */
-	public boolean verificaCorrespondencia(Carona c) {
+	public boolean verificaCorrespondencia(Carona carona) {
+		System.out.println("carona.origem: " + carona.getOrigem());
+		System.out.println("carona.destino: " + carona.getDestino());
+		System.out.println("carona.data: " + carona.getData());
+		System.out.println("carona.hora: " + carona.getHora());
+		System.out.println("carona.vagas: " + carona.getVagas());
+		System.out.println("");
+		System.out.println("interesse.origem: " + origem);
+		System.out.println("interesse.destino: " + destino);
+		System.out.println("interesse.data: " + data);
+		System.out.println("interesse.horaInicio: " + horaInicio);
+		System.out.println("interesse.horaFim: " + horaFim);
+		System.out.println("");
+		
 		if(this.getData().equals("")) { // retorna todas que ainda vao acontecer e tem origem e destino semelhantes ao do interesse
-			if(c.getOrigem().equals(this.getOrigem()) && c.getDestino().equals(this.getDestino()))
+			if(carona.getOrigem().equals(this.getOrigem()) && carona.getDestino().equals(this.getDestino()))
 				return true; // nao precisa especificar hora
 		} 
 		else {
-			if(c.getOrigem().equals(this.getOrigem()) && c.getDestino().equals(this.getDestino()) 
-				&& c.getData().equals(this.getData())) {
+			if(carona.getOrigem().equals(this.getOrigem()) && carona.getDestino().equals(this.getDestino()) 
+				&& carona.getData().equals(this.getData())) {
 				return true;
 			}
 		}

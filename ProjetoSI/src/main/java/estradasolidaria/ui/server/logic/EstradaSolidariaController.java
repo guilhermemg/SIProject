@@ -416,8 +416,12 @@ public class EstradaSolidariaController implements Serializable {
 		if (donoDaCarona == null)
 			throw new IllegalArgumentException("Usuário inexistente");
 
-		return donoDaCarona.solicitarVagaPontoEncontro(idCarona, donoDaCarona,
+		Solicitacao solicitacaoFeita = donoDaCarona.solicitarVagaPontoEncontro(idCarona, donoDaCarona,
 				solicitante, ponto);
+		
+		solicitante.addSolicitacaoFeita(solicitacaoFeita);
+		
+		return solicitacaoFeita;
 	}
 
 	/**
@@ -945,18 +949,17 @@ public class EstradaSolidariaController implements Serializable {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 
-		Interesse interesse = new Interesse(origem, destino, data, horaInicio,
-				horaFim);
 		Usuario donoDoInteresse = this.mapIdUsuario.get(this.mapIdSessao.get(
 				idSessao).getIdUser());
 
-		donoDoInteresse.addInteresse(interesse);
-
-		Iterator<Carona> it = buscaCaronasCorrespondentes(interesse).iterator();
-		while (it.hasNext()) {
-			Carona c = it.next();
-			donoDoInteresse.atualizaPerfilUsuarioInteressado(c,
-					getEmailDonoDeCarona(c));
+		Interesse interesse = donoDoInteresse.cadastrarInteresseUsuario(origem, destino,
+				data, horaInicio, horaFim);
+		
+		Iterator<Carona> itCaronas = buscaCaronasCorrespondentes(interesse).iterator();
+		while (itCaronas.hasNext()) {
+			Carona carona = itCaronas.next();
+			donoDoInteresse.atualizaPerfilUsuarioInteressado(carona,
+					getEmailDonoDeCarona(carona));
 		}
 		return interesse;
 	}
@@ -997,6 +1000,7 @@ public class EstradaSolidariaController implements Serializable {
 	 *            : id da nova carona cadastrada no sistema
 	 */
 	private void atualizaMensagensEmPerfis(Carona novaCarona) {
+		System.out.println("Atualizando mensagens em perfis");
 		// Iterator Pattern
 		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
 		while (iteratorIdUsuario.hasNext()) {
@@ -1005,6 +1009,7 @@ public class EstradaSolidariaController implements Serializable {
 			while (itInteresses.hasNext()) {
 				Interesse interesse = itInteresses.next();
 				if (interesse.verificaCorrespondencia(novaCarona))
+					System.out.println("verificou correspondencia");
 					u.atualizaPerfilUsuarioInteressado(novaCarona,
 							getEmailDonoDeCarona(novaCarona));
 			}
@@ -1026,6 +1031,7 @@ public class EstradaSolidariaController implements Serializable {
 	 */
 	private List<Carona> buscaCaronasCorrespondentes(Interesse interesse) {
 		List<Carona> listaCaronas = new LinkedList<Carona>();
+		System.out.println("Buscando caronas correspondentes");
 		// Iterator Pattern
 		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
 		while (iteratorIdUsuario.hasNext()) {
@@ -1035,6 +1041,7 @@ public class EstradaSolidariaController implements Serializable {
 			while (itCaronas.hasNext()) {
 				Carona c = itCaronas.next();
 				if (interesse.verificaCorrespondencia(c)) {
+					System.out.println("Verificou correspondencia em busca caronas");
 					listaCaronas.add(c);
 				}
 			}
@@ -1144,5 +1151,27 @@ public class EstradaSolidariaController implements Serializable {
 		Usuario u = getMapIdUsuario().get(s.getIdUser());
 		u.setSenha(novaSenha);
 		
+	}
+	
+	/**
+	 * Retorna mapa de solicitacoes feitas pelo
+	 * usuario identificado a partir de idSessao
+	 * 
+	 * @param idSessao
+	 * @return mapa de solicitacoes feitas
+	 */
+	public Map<Integer, Solicitacao> getMapaSolicitacoesFeitas(Integer idSessao) {
+		Usuario u = this.mapIdUsuario.get(this.mapIdSessao.get(idSessao).getIdUser());
+		return u.getMapIdSolicitacoesFeitas();
+	}
+	
+	/**
+	 * Retorna usuario identificado a partir de idSessao
+	 * 
+	 * @param idSessao
+	 * @return usuario
+	 */
+	public Usuario getUsuario(Integer idSessao) {
+		return this.mapIdUsuario.get(this.mapIdSessao.get(idSessao).getIdUser());
 	}
 }
