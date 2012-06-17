@@ -5,6 +5,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -34,7 +35,7 @@ public class StatePerfil2 extends Composite {
 		estrada = estradaSolidaria;
 		this.estradaSolidariaService = estradaSolidariaService;
 		
-		//Atualiza o tamanho do dockPanel para o tamanho redimensionado
+		//Atualiza o tamanho do dockPanel para o tamanho redimensionado	
 		Window.addResizeHandler(new ResizeHandler() {
 			
 			@Override
