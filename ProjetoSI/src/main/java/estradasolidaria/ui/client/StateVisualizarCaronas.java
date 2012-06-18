@@ -1,5 +1,6 @@
 package estradasolidaria.ui.client;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,11 +17,10 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
@@ -205,15 +205,16 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 		//ADICIONA AS CARONAS GWT
 		for (List<String> carona : result) {
 			GWTCarona gwt_c = new GWTCarona();
-
-			gwt_c.dono = carona.get(0);
+			
+			gwt_c.idDono = carona.get(0);
 			gwt_c.origem = carona.get(1);
 			gwt_c.destino = carona.get(2);
 			gwt_c.data = carona.get(3);
 			gwt_c.hora = carona.get(4);
 			gwt_c.vagas = carona.get(5);
-			gwt_c.review = carona.get(6);
-			gwt_c.pontoEncontro = carona.get(7);
+			gwt_c.pontoEncontro = carona.get(6);
+			gwt_c.nomeDono = carona.get(7);
+			gwt_c.idCarona = carona.get(8);
 
 			caronasGWT.add(gwt_c);
 		}
@@ -233,7 +234,7 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 		donoDaCaronaColumn = new TextColumn<GWTCarona>() {
 			@Override
 			public String getValue(GWTCarona carona) {
-				return carona.dono;
+				return carona.nomeDono;
 			}
 		};
 		donoDaCaronaColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -287,16 +288,15 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 		reviewColumn = new Column<GWTCarona, String>(new ButtonCell()) {
 			@Override
 			public String getValue(GWTCarona carona) {
-				return carona.review;
+				return "Review";
 			}
 		};
 		reviewColumn.setFieldUpdater(new FieldUpdater<GWTCarona, String>() {
 			
 			@Override
 			public void update(int index, GWTCarona carona, String value) {
-				
-				RootPanel.get().add(new PopUpEditarReview(estrada, estradaSolidariaService, isOferecida, carona.idCarona));
-				
+				PopupPanel popupPanelEditarReview = new PopUpEditarReview(estrada, estradaSolidariaService, isOferecida, carona.idCarona); 
+				popupPanelEditarReview.show();
 			}
 		});
 		reviewColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);

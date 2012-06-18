@@ -103,7 +103,6 @@ public class StateCadastroCaronas extends Composite {
 	}
 	private void cadastraCaronaGUI(TextBox textBoxOrigem, TextBox textBoxDestino, DateBox dateBox, TextBox textBoxHora, TextBox textBoxVagas) {
 		Integer idSessao = EstradaSolidaria.getIdSessaoAberta();
-		System.out.println("IdSessao:" + idSessao);
 		AsyncCallback<String> callback = new AsyncCallback<String>() {
 
 			@Override

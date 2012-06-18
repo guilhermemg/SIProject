@@ -109,4 +109,8 @@ public interface EstradaSolidariaServiceAsync {
 
 	void editarSenha(Integer idSessaoAberta, String novaSenha,
 			AsyncCallback<Void> asyncCallback);
+
+	void getCaroneiros(Integer idSessaoAberta,
+			String idCarona,
+			AsyncCallback<List<List<String>>> asyncCallback);
 }

@@ -1,7 +1,7 @@
 package estradasolidaria.ui.client;
 
 public class GWTCarona {
-	protected String dono;
+	protected String nomeDono;
 	protected String idDono;
 	protected String origem;
 	protected String destino;
@@ -14,6 +14,6 @@ public class GWTCarona {
 
 	@Override
 	public String toString() {
-		return dono +", "+origem+", " + destino + ", " + data +", " +vagas +", "+ review +", "+pontoEncontro;
+		return nomeDono +", "+origem+", " + destino + ", " + data +", " +vagas +", "+ review +", "+pontoEncontro;
 	}
 }

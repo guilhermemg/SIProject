@@ -7,6 +7,8 @@ import java.util.TreeMap;
 
 import javax.mail.MessagingException;
 
+import org.apache.jasper.tagplugins.jstl.ForEach;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import estradasolidaria.ui.client.EstradaSolidariaService;
@@ -15,6 +17,7 @@ import estradasolidaria.ui.server.logic.Carona;
 import estradasolidaria.ui.server.logic.CaronaInexistenteException;
 import estradasolidaria.ui.server.logic.CaronaInvalidaException;
 import estradasolidaria.ui.server.logic.EstradaSolidariaController;
+import estradasolidaria.ui.server.logic.Sessao;
 import estradasolidaria.ui.server.logic.Solicitacao;
 import estradasolidaria.ui.server.logic.TrajetoInexistenteException;
 import estradasolidaria.ui.server.logic.Usuario;
@@ -224,8 +227,12 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	public List<List<String>> getTodasCaronasUsuario(Integer idSessao) {
 		List<List<String>> result = new LinkedList<List<String>>();
 		List<Carona> listaCaronas = controller.getTodasCaronasUsuario(idSessao);
+		
 		for (Carona c : listaCaronas) {
+			System.out.println(c);
 			List<String> caronaList = new LinkedList<String>();
+			
+			Usuario donoDaCarona = controller.getMapIdUsuario().get(c.getIdDonoDaCarona());
 			
 			caronaList.add(c.getIdDonoDaCarona().toString());
 			caronaList.add(c.getOrigem());
@@ -233,9 +240,14 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 			caronaList.add(c.getData());
 			caronaList.add(c.getHora());
 			caronaList.add(c.getVagas().toString());
-//			caronaList.add(c.getDonoReviewCaroneiros().toString()); //Será esse
-			caronaList.add(new String("Review"));
-			caronaList.add(c.getPontoEncontro());
+			if (c.getPontoEncontro() == null) {
+				System.out.println("este é o ponto de encontro:" + c.getPontoEncontro());
+				caronaList.add(c.getPontoEncontro());
+			}else {
+				caronaList.add(new String(""));
+			}
+			caronaList.add(donoDaCarona.getNome());
+			caronaList.add(c.getIdCarona().toString());
 			
 			result.add(caronaList);
 		}
@@ -314,15 +326,16 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		for (Carona c : listaCaronas) {
 			List<String> caronaList = new LinkedList<String>();
 			
+			Usuario donoDaCarona = controller.getMapIdUsuario().get(c.getIdDonoDaCarona());
+			
 			caronaList.add(c.getIdDonoDaCarona().toString());
 			caronaList.add(c.getOrigem());
 			caronaList.add(c.getDestino());
 			caronaList.add(c.getData());
 			caronaList.add(c.getHora());
 			caronaList.add(c.getVagas().toString());
-//			caronaList.add(c.getDonoReviewCaroneiros().toString()); //Será esse
-			caronaList.add(new String("Review"));
 			caronaList.add(c.getPontoEncontro());
+			caronaList.add(donoDaCarona.getNome());
 			
 			result.add(caronaList);
 		}
@@ -333,6 +346,36 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	public void editarSenha(Integer idSessaoAberta, String novaSenha) {
 		controller.setSenha(idSessaoAberta, novaSenha);
 		
+	}
+
+	@Override
+	public List<List<String>> getCaroneiros(Integer idSessao, String idCarona) {
+		List<List<String>> result = new LinkedList<List<String>>();
+		Integer idCaronaInt = Integer.parseInt(idCarona);
+		
+		Usuario donoDaCarona = controller.getUsuario(idSessao);
+		Carona c = donoDaCarona.getMapIdCaronasOferecidas().get(idCaronaInt);
+		
+		List<Solicitacao> solicitacoesConfirmadas = controller.getSolicitacoesConfirmadas(idSessao, idCaronaInt);
+		
+		if (solicitacoesConfirmadas.size() > 0) {
+			for (Solicitacao s : solicitacoesConfirmadas) {
+				List<String> infCaroneiro = new LinkedList<String>();
+				
+				Usuario donoSolicitacao = s.getDonoDaSolicitacao();
+				
+				infCaroneiro.add(donoSolicitacao.getIdUsuario().toString());
+				infCaroneiro.add(donoSolicitacao.getNome());
+				if (c.getDonoReviewCaroneiro(donoSolicitacao.getIdUsuario()) == 0) {
+					infCaroneiro.add("1");
+				} else {
+					infCaroneiro.add("0");
+				}
+				//Review
+			}
+		}
+		
+		return result;
 	}
 	
 	
