@@ -159,11 +159,24 @@ public class StateCadastroUsuario extends AbsolutePanel implements StatePanel {
 			@Override
 			public void onSuccess(Integer result) {
 				EstradaSolidaria.setIdSessaoAberta(result);
-				estrada.rootPanel.remove(panel);
-				Widget newPanel = new StatePerfil2(estrada, estradaSolidariaService);
-				newPanel.setSize("781px", "592px");
-				estrada.setStatePanel(newPanel);
+				getUsuarioGUI();
 			}
 		  });
+	}
+	
+	protected void getUsuarioGUI() {
+		Integer idSessao = EstradaSolidaria.getIdSessaoAberta();
+		estradaSolidariaService.getUsuario(idSessao, new AsyncCallback<String[]>(){ 
+			@Override
+			public void onFailure(Throwable caught) {
+				// Show the RPC error message to the user 
+				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(String[] result) {
+				estrada.setStatePanel(new StatePerfil2(estrada, estradaSolidariaService, result));
+			}
+		});
 	}
 }

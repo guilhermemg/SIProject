@@ -34,6 +34,7 @@ public class StateHomePage extends AbsolutePanel {
 	private AbsolutePanel panelCadastro;
 	private Button btnCadastro;
 	private CheckBox chckbxLembrarme;
+	private Integer idSessao; 
 	
 	public StateHomePage(EstradaSolidaria estradaSolidaria, EstradaSolidariaServiceAsync estradaSolidariaService) {
 		estrada = estradaSolidaria;
@@ -175,8 +176,24 @@ public class StateHomePage extends AbsolutePanel {
 			@Override
 			public void onSuccess(Integer result) {
 				EstradaSolidaria.setIdSessaoAberta(result);
-				estrada.setStatePanel(new StatePerfil2(estrada, estradaSolidariaService));
+				getUsuarioGUI();
 			}
 		  });
+	}
+	
+	protected void getUsuarioGUI() {
+		idSessao = EstradaSolidaria.getIdSessaoAberta();
+		estradaSolidariaService.getUsuario(idSessao, new AsyncCallback<String[]>(){ 
+			@Override
+			public void onFailure(Throwable caught) {
+				// Show the RPC error message to the user 
+				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(String[] result) {
+				estrada.setStatePanel(new StatePerfil2(estrada, estradaSolidariaService, result));
+			}
+		});
 	}
 }

@@ -6,10 +6,10 @@ import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
@@ -17,7 +17,6 @@ import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.MenuItemSeparator;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DatePicker;
-import com.google.gwt.user.client.ui.DockPanel;
 
 public class StatePerfil2 extends Composite {
 	
@@ -31,13 +30,13 @@ public class StatePerfil2 extends Composite {
 	private AbsolutePanel leftSideBarPanel;
 	private AbsolutePanel rightSidebarPanel;
 	private AbsolutePanel mainPanel;
-	private Integer idSessao;
+	private String[] dadosUsuario;
 	
-	public StatePerfil2(EstradaSolidaria estradaSolidaria, final EstradaSolidariaServiceAsync estradaSolidariaService) {
+	public StatePerfil2(EstradaSolidaria estradaSolidaria, final EstradaSolidariaServiceAsync estradaSolidariaService, String[] result) {
 		
 		estrada = estradaSolidaria;
 		this.estradaSolidariaService = estradaSolidariaService;
-		this.idSessao = estrada.getIdSessaoAberta();
+		this.dadosUsuario = result;
 		
 		//Atualiza o tamanho do dockPanel para o tamanho redimensionado	
 		Window.addResizeHandler(new ResizeHandler() {
@@ -64,7 +63,7 @@ public class StatePerfil2 extends Composite {
 		dockPanel.add(headerPanel, DockPanel.NORTH);
 		headerPanel.setSize("100%", "100%");
 		
-		Label lblNomeDoUsuario = new Label("Nome do usuario");
+		Label lblNomeDoUsuario = new Label("Olá " + dadosUsuario[2] + "!");
 		headerPanel.add(lblNomeDoUsuario, 10, 10);
 		
 		MenuBar menuBar = new MenuBar(false);
@@ -73,7 +72,10 @@ public class StatePerfil2 extends Composite {
 		
 		MenuItem menuItemOpcoes = new MenuItem("Editar Perfil", false, new Command() {
 			public void execute() {
-				editarPerfilGUI();
+				bodyPanel.clear();
+				Widget editarPerfil= new StateEditarPerfil(estradaSolidariaService, dadosUsuario);
+				bodyPanel.add(editarPerfil);
+				editarPerfil.setSize("100%", "100%");
 			}
 		});
 		menuBar.addItem(menuItemOpcoes);
@@ -176,23 +178,23 @@ public class StatePerfil2 extends Composite {
 		});
 	}
 
-	protected void editarPerfilGUI() {
-		estradaSolidariaService.getUsuario(idSessao, new AsyncCallback<String[]>(){ 
-			@Override
-			public void onFailure(Throwable caught) {
-				// Show the RPC error message to the user 
-				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
-			}
-
-			@Override
-			public void onSuccess(String[] result) {
-				bodyPanel.clear();
-				Widget editarPerfil= new StateEditarPerfil(estradaSolidariaService, result);
-				bodyPanel.add(editarPerfil);
-				editarPerfil.setSize("100%", "100%");
-			}
-		});
-	}
+//	protected void editarPerfilGUI() {
+//		estradaSolidariaService.getUsuario(idSessao, new AsyncCallback<String[]>(){ 
+//			@Override
+//			public void onFailure(Throwable caught) {
+//				// Show the RPC error message to the user 
+//				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
+//			}
+//
+//			@Override
+//			public void onSuccess(String[] result) {
+//				bodyPanel.clear();
+//				Widget editarPerfil= new StateEditarPerfil(estradaSolidariaService, result);
+//				bodyPanel.add(editarPerfil);
+//				editarPerfil.setSize("100%", "100%");
+//			}
+//		});
+//	}
 
 	protected void inicio() {
 		
