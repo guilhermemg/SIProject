@@ -1,19 +1,19 @@
 package estradasolidaria.ui.client;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.widget.client.TextButton;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
 
 public class DialogBoxAlterarSenha extends DialogBox {
 	
-	private TextBox textBoxSenha;
-	private TextBox textBoxSenha2;
+	private PasswordTextBox textBoxSenha;
+	private PasswordTextBox textBoxSenha2;
 	private Integer idSessao;
 	private EstradaSolidariaServiceAsync estradaService;
 
@@ -34,10 +34,10 @@ public class DialogBoxAlterarSenha extends DialogBox {
 		Label lblConfirmeASenh = new Label("Confirme a senha:");
 		absolutePanel.add(lblConfirmeASenh, 10, 53);
 		
-		textBoxSenha = new TextBox();
+		textBoxSenha = new PasswordTextBox();
 		absolutePanel.add(textBoxSenha, 165, 20);
 		
-		textBoxSenha2 = new TextBox();
+		textBoxSenha2 = new PasswordTextBox();
 		absolutePanel.add(textBoxSenha2, 165, 53);
 		
 		TextButton txtbtnEnviar = new TextButton("Enviar");

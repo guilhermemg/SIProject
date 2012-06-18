@@ -95,10 +95,7 @@ public class StateEditarPerfil extends Composite {
 		txtbtnAlterarSenha.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				DialogBox newDialog = new DialogBoxAlterarSenha(estradaService);
-				Widget source = (Widget) event.getSource();
-	            int left = source.getAbsoluteLeft() - 300;
-	            int top = source.getAbsoluteTop() - 150;
-	            newDialog.setPopupPosition(left, top);
+				newDialog.center();
 				newDialog.show();
 			}
 		});
