@@ -156,6 +156,7 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	public String solicitarVaga(Integer idSessao, Integer idCarona)
 			throws CaronaInvalidaException {
 		Solicitacao s = controller.solicitarVaga(idSessao, idCarona);
+		System.out.println(s);
 		return s.toString();
 	}
 
@@ -226,7 +227,6 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		List<Carona> listaCaronas = controller.getTodasCaronasUsuario(idSessao);
 		
 		for (Carona c : listaCaronas) {
-			System.out.println(c);
 			List<String> caronaList = new LinkedList<String>();
 			
 			Usuario donoDaCarona = controller.getMapIdUsuario().get(c.getIdDonoDaCarona());
@@ -238,7 +238,6 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 			caronaList.add(c.getHora());
 			caronaList.add(c.getVagas().toString());
 			if (c.getPontoEncontro() == null) {
-				System.out.println("este é o ponto de encontro:" + c.getPontoEncontro());
 				caronaList.add(c.getPontoEncontro());
 			}else {
 				caronaList.add(new String(""));
@@ -252,35 +251,63 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public List<List<String>> getSolicitacoesConfirmadas(Integer idSessao, Integer idCarona) {
+	public List<List<String>> getSolicitacoesFeitasConfirmadas(Integer idSessao) {
 		List<List<String>> result = new LinkedList<List<String>>();
-		List<Solicitacao> listaCaronas = controller.getSolicitacoesConfirmadas(idSessao, idCarona);
-		for (Solicitacao s : listaCaronas) {
-			Usuario dono = s.getDonoDaCarona();
-			Carona carona = null;
-			for (Carona c : dono.getTodasCaronasUsuario()) {
-				if (c.getIdCarona().equals(idCarona)) {
-					carona = c;
+		for (Solicitacao s : controller.getMapaSolicitacoesFeitas(idSessao).values()) {
+			if (s.isAceita()) {
+				List<String> solicitacaoList = new LinkedList<String>();
+				
+				Usuario donoDaCarona = s.getDonoDaCarona();
+				Carona c = donoDaCarona.getMapIdCaronasOferecidas().get(s.getIdCarona());
+				
+				solicitacaoList.add(c.getIdDonoDaCarona().toString());
+				solicitacaoList.add(c.getOrigem());
+				solicitacaoList.add(c.getDestino());
+				solicitacaoList.add(c.getData());
+				solicitacaoList.add(c.getHora());
+				solicitacaoList.add(c.getVagas().toString());
+				if (c.getPontoEncontro() != null) {
+					solicitacaoList.add(c.getPontoEncontro());
+				}else {
+					solicitacaoList.add(new String(""));
 				}
+				solicitacaoList.add(donoDaCarona.getNome());
+				solicitacaoList.add(c.getIdCarona().toString());
+				
+				result.add(solicitacaoList);
 			}
-			List<String> caronaList = new LinkedList<String>();
-			caronaList.add(carona.getOrigem());
-			caronaList.add(carona.getDestino());
-			caronaList.add(carona.getData());
-			caronaList.add(carona.getHora());
-			caronaList.add(carona.getVagas().toString());
-//			caronaList.add(c.getDonoReviewCaroneiros().toString()); //Será esse
-			caronaList.add("Review");
-			result.add(caronaList);
 		}
 		return result;
 	}
 
 	@Override
-	public List<List<String>> getSolicitacoesPendentes(Integer idSessao, Integer idCarona)
-			throws CaronaInvalidaException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<List<String>> getSolicitacoesFeitasPendentes(Integer idSessao) throws Exception {
+		List<List<String>> result = new LinkedList<List<String>>();
+		for (Solicitacao s : controller.getMapaSolicitacoesFeitas(idSessao).values()) {
+			if (s.isPendente()) {
+				List<String> solicitacaoList = new LinkedList<String>();
+				
+				Usuario donoDaCarona = s.getDonoDaCarona();
+				Carona c = donoDaCarona.getMapIdCaronasOferecidas().get(s.getIdCarona());
+				
+				solicitacaoList.add(c.getIdDonoDaCarona().toString());
+				solicitacaoList.add(c.getOrigem());
+				solicitacaoList.add(c.getDestino());
+				solicitacaoList.add(c.getData());
+				solicitacaoList.add(c.getHora());
+				solicitacaoList.add(c.getVagas().toString());
+				if (c.getPontoEncontro() != null) {
+					solicitacaoList.add(c.getPontoEncontro());
+				}else {
+					solicitacaoList.add(new String(""));
+				}
+				solicitacaoList.add(donoDaCarona.getNome());
+				solicitacaoList.add(c.getIdCarona().toString());
+				
+				result.add(solicitacaoList);
+			}
+		}
+		return result;
 	}
 
 	@Override

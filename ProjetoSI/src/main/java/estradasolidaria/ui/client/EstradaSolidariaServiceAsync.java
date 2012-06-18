@@ -54,10 +54,9 @@ public interface EstradaSolidariaServiceAsync {
 	void getPontosSugeridos(Integer idSessao, Integer idCarona,
 			AsyncCallback<String> callback);
 
-	void getSolicitacoesConfirmadas(Integer idSessao, Integer idCarona,
-			AsyncCallback<List<List<String>>> callback);
+	void getSolicitacoesFeitasConfirmadas(Integer idSessao, AsyncCallback<List<List<String>>> callback);
 
-	void getSolicitacoesPendentes(Integer idSessao, Integer idCarona,
+	void getSolicitacoesFeitasPendentes(Integer idSessao,
 			AsyncCallback<List<List<String>>> callback);
 
 	void getTodasCaronasUsuario(Integer idSessao, AsyncCallback<List<List<String>>> callback);

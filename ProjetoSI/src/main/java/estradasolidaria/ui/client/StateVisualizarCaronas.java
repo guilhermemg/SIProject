@@ -26,15 +26,19 @@ import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ChangeEvent;
 
 public class StateVisualizarCaronas extends AbsolutePanel {
 	final EstradaSolidaria estrada;
-	final Widget panel= this;
+	final Widget panel = this;
 	private EstradaSolidariaServiceAsync estradaSolidariaService;
 
 	private CellTable<GWTCarona> caronasCellTable;
 
-	private LinkedList<GWTCarona> caronasGWT; //Lista de Caronas transformadas para a classe GWTCarona
+	private LinkedList<GWTCarona> caronasGWT; // Lista de Caronas transformadas
+												// para a classe GWTCarona
 	private FlexTable flexTableOferecidas;
 	private SelectionModel<GWTCarona> selectionModel;
 	private Column<GWTCarona, String> donoDaCaronaColumn;
@@ -47,164 +51,190 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 	private Column<GWTCarona, String> reviewColumn;
 	private HasHorizontalAlignment pontoDeEncontroColumn;
 	private Integer idSessao;
-	private FlexTable flexTablePegas;
+	private AbsolutePanel flexTablePegas;
 	private TabPanel tabPanel;
-	private FlexTable flexTableSolicitadas;
+	private AbsolutePanel flexTableSolicitadas;
 	private boolean isOferecida;
+	private ListBox comboBoxTipoDeSolicitacao;
+	private boolean isSolicitacaoAceita = true;
 	
-	public StateVisualizarCaronas(EstradaSolidaria estrada, EstradaSolidariaServiceAsync estradaSolidariaService) {
+
+	public StateVisualizarCaronas(EstradaSolidaria estrada,
+			EstradaSolidariaServiceAsync estradaSolidariaService) {
 		this.estrada = estrada;
 		this.estradaSolidariaService = estradaSolidariaService;
 		idSessao = EstradaSolidaria.getIdSessaoAberta();
-		
+
 		setSize("586px", "487px");
+
+		//Inicia o tabPanel para visualizar as caronas
+		iniciarTabPanel();
 		
-				tabPanel = new TabPanel();
-				add(tabPanel);
-				tabPanel.setSize("100%", "100%");
-				
-						tabPanel.getTabBar().addSelectionHandler(new SelectionHandler<Integer>() {
-				
-							@Override
-							public void onSelection(SelectionEvent<Integer> event) {
-								if (event.getSelectedItem().equals(0)) {
-									isOferecida = true;
-									processarTabOferecidas();
-								} else if (event.getSelectedItem().equals(1)) {
-									isOferecida = false;
-									processarTabPegas();
-								} else if (event.getSelectedItem().equals(2)) {
-									isOferecida = false;
-				//					processarSolicitadas();
-								}
-							}
-						});
-						flexTableOferecidas = new FlexTable();
-						tabPanel.add(flexTableOferecidas, "Oferecidas", false);
-						flexTableOferecidas.setSize("100%", "100%");
-						flexTableOferecidas.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
-						flexTablePegas = new FlexTable();
-						tabPanel.add(flexTablePegas, "Pegas", false);
-						flexTablePegas.setSize("549px", "426px");
-						flexTablePegas.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
-						flexTableSolicitadas = new FlexTable();
-						flexTableSolicitadas.addClickHandler(new ClickHandler() {
-							public void onClick(ClickEvent event) {
-								gerarListaDeCaronasSolicitadas(idSessao);
-								zerarCaronasCellTable();
-								iniciarColunas();
-								colocarColunasEmCaronasCellTableSolicitadas();
-							}
+		//Inicia as tabs do tabPanel -----
+		iniciarTabOferecidas();
+		iniciarTabPegas();
+		iniciarTabSolicitadas();
+		//--------------------------------
 
-							private void colocarColunasEmCaronasCellTableSolicitadas() {
-								// TODO Auto-generated method stub
-
-							}
-						});
-						tabPanel.add(flexTableSolicitadas, "Solicitadas", false);
-						flexTableSolicitadas.setSize("549px", "426px");
-						flexTableSolicitadas.setWidget(0, 0, caronasCellTable);
-						flexTableSolicitadas.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
-						caronasCellTable = new CellTable<GWTCarona>();
-						caronasCellTable.setSelectionModel(selectionModel, DefaultSelectionEventManager.<GWTCarona> createCheckboxManager());
-						caronasCellTable.setHeight("145px");
-						caronasCellTable.setWidth("100%", true);
-
-
+		//Inicia a tabela onde serão exibidas as caronas e solicitações
 		iniciarColunas();
-
 		iniciarCaronasCellTable();
 
-		iniciarFlexTableOferecidas();
-
-		iniciarFlexTablePegas();
-
-		iniciarFlexTableSolicitadas();
 	}
 
+	private void iniciarTabPanel() {
+		tabPanel = new TabPanel();
+		add(tabPanel);
+		tabPanel.setSize("100%", "100%");
 
-	private void iniciarFlexTableOferecidas() {
+		tabPanel.getTabBar().addSelectionHandler(
+				new SelectionHandler<Integer>() {
+
+					@Override
+					public void onSelection(SelectionEvent<Integer> event) {
+						if (event.getSelectedItem().equals(0)) {
+							isOferecida = true;
+							processarTabOferecidas();
+						} else if (event.getSelectedItem().equals(1)) {
+							 isOferecida = false;
+							 processarTabPegas();
+						} else if (event.getSelectedItem().equals(2)) {
+							isOferecida = false;
+							isSolicitacaoAceita = true;
+							processarTabSolicitadas();
+						}
+					}
+				});
 	}
 
-	private void iniciarFlexTablePegas() {
+	private void iniciarTabOferecidas() {
+		flexTableOferecidas = new FlexTable();
+		tabPanel.add(flexTableOferecidas, "Oferecidas", false);
+		flexTableOferecidas.setSize("100%", "100%");
+		flexTableOferecidas.getCellFormatter().setVerticalAlignment(0, 0,
+				HasVerticalAlignment.ALIGN_TOP);
 	}
 
-	private void iniciarFlexTableSolicitadas() {
+	private void iniciarTabPegas() {
+		flexTablePegas = new AbsolutePanel();
+		tabPanel.add(flexTablePegas, "Pegas", false);
+		flexTablePegas.setSize("100%", "100%");
+	}
+
+	private void iniciarTabSolicitadas() {
+		flexTableSolicitadas = new AbsolutePanel();
+		tabPanel.add(flexTableSolicitadas, "Solicitadas", false);
+		flexTableSolicitadas.setSize("100%", "100%");
 	}
 
 	private void iniciarCaronasCellTable() {
-		selectionModel = new MultiSelectionModel<GWTCarona>( new ProvidesKey<GWTCarona>() {
-			@Override
-			public Object getKey(GWTCarona item) {
-				return item;
-			}
-		});
+		selectionModel = new MultiSelectionModel<GWTCarona>(
+				new ProvidesKey<GWTCarona>() {
+					@Override
+					public Object getKey(GWTCarona item) {
+						return item;
+					}
+				});
 		zerarCaronasCellTable();
 	}
 
 	private void zerarCaronasCellTable() {
+		caronasCellTable = new CellTable<GWTCarona>();
+		caronasCellTable.setSelectionModel(selectionModel,
+				DefaultSelectionEventManager
+						.<GWTCarona> createCheckboxManager());
+		caronasCellTable.setSize("100%", "100%");
+		caronasCellTable.setWidth("100%", true);
 	}
 
 	private void gerarListaDeCaronasOferecidas(Integer idSessao) {
 		caronasGWT = new LinkedList<GWTCarona>();
-		this.estradaSolidariaService.getTodasCaronasUsuario(idSessao, new AsyncCallback<List<List<String>>>() {
+		this.estradaSolidariaService.getTodasCaronasUsuario(idSessao,
+				new AsyncCallback<List<List<String>>>() {
 
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
-			}
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("Remote Procedure Call - Failure: "
+								+ caught.getMessage());
+					}
 
-			@Override
-			public void onSuccess(List<List<String>> result) {
-				atualizaListaGWTCaronas(result);
+					@Override
+					public void onSuccess(List<List<String>> result) {
+						atualizaListaGWTCaronas(result);
 
-				caronasCellTable.setRowCount(caronasGWT.size(), true);
-				caronasCellTable.setRowData(0, caronasGWT);
-			}
-		});
+						caronasCellTable.setRowCount(caronasGWT.size(), true);
+						caronasCellTable.setRowData(0, caronasGWT);
+					}
+				});
 	}
 
 	private void gerarListaDeCaronasPegas(Integer idSessao) {
-		this.estradaSolidariaService.getTodasCaronasPegas(idSessao, new AsyncCallback<List<List<String>>>() {
+		this.estradaSolidariaService.getTodasCaronasPegas(idSessao,
+				new AsyncCallback<List<List<String>>>() {
 
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
-			}
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("Remote Procedure Call - Failure: "
+								+ caught.getMessage());
+					}
 
-			@Override
-			public void onSuccess(List<List<String>> result) {
-				atualizaListaGWTCaronas(result);
-				caronasCellTable.setRowCount(caronasGWT.size(), true);
-				caronasCellTable.setRowData(0, caronasGWT);
-			}
-		});
+					@Override
+					public void onSuccess(List<List<String>> result) {
+						atualizaListaGWTCaronas(result);
+						caronasCellTable.setRowCount(caronasGWT.size(), true);
+						caronasCellTable.setRowData(0, caronasGWT);
+					}
+				});
 	}
 
 	private void gerarListaDeCaronasSolicitadas(Integer idSessao) {
-//		this.estradaSolidariaService.getSolicitacoesConfirmadas(idSessao, new AsyncCallback<List<List<String>>>() {
-//
-//			@Override
-//			public void onFailure(Throwable caught) {
-//				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
-//			}
-//
-//			@Override
-//			public void onSuccess(List<List<String>> result) {
-//				atualizaListaGWTCaronas(result);
-//				solicitadas_cellTable.setRowCount(caronasGWT.size(), true);
-//				solicitadas_cellTable.setRowData(0, caronasGWT);
-//			}
-//		});
+		if (isSolicitacaoAceita) {
+			this.estradaSolidariaService.getSolicitacoesFeitasConfirmadas(idSessao, new AsyncCallback<List<List<String>>>() {
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("Remote Procedure Call - Failure: "
+							+ caught.getMessage());
+				}
+				
+				@Override
+				public void onSuccess(List<List<String>> result) {
+					atualizaListaGWTCaronas(result);
+					caronasCellTable.setRowCount(caronasGWT.size(),
+							true);
+					caronasCellTable.setRowData(0, caronasGWT);
+					
+					
+				}
+			});
+		} else {
+			this.estradaSolidariaService.getSolicitacoesFeitasPendentes(
+					idSessao, new AsyncCallback<List<List<String>>>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							Window.alert("Remote Procedure Call - Failure: "
+									+ caught.getMessage());
+						}
+
+						@Override
+						public void onSuccess(List<List<String>> result) {
+							atualizaListaGWTCaronas(result);
+							caronasCellTable.setRowCount(caronasGWT.size(),
+									true);
+							caronasCellTable.setRowData(0, caronasGWT);
+						}
+					});
+		}
 	}
 
 	private void atualizaListaGWTCaronas(List<List<String>> result) {
-		//ZERA LISTA
+		// ZERA LISTA
 		caronasGWT = new LinkedList<GWTCarona>();
-		//ADICIONA AS CARONAS GWT
+		// ADICIONA AS CARONAS GWT
 		for (List<String> carona : result) {
 			GWTCarona gwt_c = new GWTCarona();
-			
+
 			gwt_c.idDono = carona.get(0);
 			gwt_c.origem = carona.get(1);
 			gwt_c.destino = carona.get(2);
@@ -220,43 +250,47 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 	}
 
 	private void iniciarColunas() {
-		//Coluna de checkBox das Caronas
+		// Coluna de checkBox das Caronas
 		checkBoxColumn = new Column<GWTCarona, Boolean>(new CheckboxCell()) {
 			@Override
 			public Boolean getValue(GWTCarona carona) {
 				return selectionModel.isSelected(carona);
 			}
 		};
-		checkBoxColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		checkBoxColumn
+				.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
-		//Coluna de Donos das Caronas
+		// Coluna de Donos das Caronas
 		donoDaCaronaColumn = new TextColumn<GWTCarona>() {
 			@Override
 			public String getValue(GWTCarona carona) {
 				return carona.nomeDono;
 			}
 		};
-		donoDaCaronaColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		donoDaCaronaColumn
+				.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
-		//Coluna de origens das Caronas
+		// Coluna de origens das Caronas
 		origemColumn = new TextColumn<GWTCarona>() {
 			@Override
 			public String getValue(GWTCarona carona) {
 				return carona.origem;
 			}
 		};
-		origemColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		origemColumn
+				.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
-		//Coluna de destinos das Caronas
+		// Coluna de destinos das Caronas
 		destinoColumn = new TextColumn<GWTCarona>() {
 			@Override
 			public String getValue(GWTCarona carona) {
 				return carona.destino;
 			}
 		};
-		destinoColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		destinoColumn
+				.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
-		//Coluna de datas das Caronas
+		// Coluna de datas das Caronas
 		dataColumn = new TextColumn<GWTCarona>() {
 			@Override
 			public String getValue(GWTCarona carona) {
@@ -265,7 +299,7 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 		};
 		dataColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
-		//Coluna de horas de saida da Caronas
+		// Coluna de horas de saida da Caronas
 		horaColumn = new TextColumn<GWTCarona>() {
 			@Override
 			public String getValue(GWTCarona carona) {
@@ -274,7 +308,7 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 		};
 		horaColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
-		//Coluna de vagas das Caronas
+		// Coluna de vagas das Caronas
 		vagasColumn = new TextColumn<GWTCarona>() {
 			@Override
 			public String getValue(GWTCarona carona) {
@@ -283,7 +317,7 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 		};
 		vagasColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
-		//Coluna de reviews das Caronas
+		// Coluna de reviews das Caronas
 		reviewColumn = new Column<GWTCarona, String>(new ButtonCell()) {
 			@Override
 			public String getValue(GWTCarona carona) {
@@ -291,24 +325,27 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 			}
 		};
 		reviewColumn.setFieldUpdater(new FieldUpdater<GWTCarona, String>() {
-			
+
 			@Override
 			public void update(int index, GWTCarona carona, String value) {
-				PopupPanel popupPanelEditarReview = new PopUpEditarReview(estrada, estradaSolidariaService, isOferecida, carona.idCarona);
+				PopupPanel popupPanelEditarReview = new PopUpEditarReview(
+						estrada, estradaSolidariaService, isOferecida,
+						carona.idCarona);
 				popupPanelEditarReview.center();
 				popupPanelEditarReview.show();
 			}
 		});
 		reviewColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
 
-		//Coluna de pontos de encontro das Caronas
+		// Coluna de pontos de encontro das Caronas
 		pontoDeEncontroColumn = new TextColumn<GWTCarona>() {
 			@Override
 			public String getValue(GWTCarona carona) {
 				return carona.pontoEncontro;
 			}
 		};
-		pontoDeEncontroColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		pontoDeEncontroColumn
+				.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
 	}
 
@@ -336,13 +373,14 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 		caronasCellTable.addColumn(reviewColumn, "Review");
 		caronasCellTable.setColumnWidth(reviewColumn, "100%");
 
-		//COLOCA caronasCellTable em flexTableOferecidas
+		// COLOCA caronasCellTable em flexTableOferecidas
 		flexTableOferecidas.setWidget(0, 0, caronasCellTable);
 	}
 
 	private void colocarColunasEmCaronasCellTablePegas() {
 		zerarCaronasCellTable();
-
+		flexTablePegas.clear();
+		
 		caronasCellTable.addColumn(checkBoxColumn);
 		caronasCellTable.setColumnWidth(checkBoxColumn, "100%");
 
@@ -367,8 +405,56 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 		caronasCellTable.addColumn(reviewColumn, "Review");
 		caronasCellTable.setColumnWidth(reviewColumn, "100%");
 
-		//COLOCA caronasCellTable em flexTablePegas
-		flexTablePegas.setWidget(0, 0, caronasCellTable);
+		// COLOCA caronasCellTable em flexTablePegas
+		flexTablePegas.add(caronasCellTable);
+
+	}
+
+	private void colocarColunasEmCaronasCellTableSolicitadas() {
+		zerarCaronasCellTable();
+		flexTableSolicitadas.clear();
+		
+		comboBoxTipoDeSolicitacao = new ListBox();
+		comboBoxTipoDeSolicitacao.addChangeHandler(new ChangeHandler() {
+			public void onChange(ChangeEvent event) {
+				zerarCaronasCellTable();
+				if (comboBoxTipoDeSolicitacao.getSelectedIndex() == 0) {
+					isSolicitacaoAceita = true;
+				} else {
+					isSolicitacaoAceita = false;
+				}
+				processarTabSolicitadas();
+			}
+		});
+		comboBoxTipoDeSolicitacao.addItem("Aceitas");
+		comboBoxTipoDeSolicitacao.addItem("Pendentes");
+		flexTableSolicitadas.add(comboBoxTipoDeSolicitacao);
+		
+		comboBoxTipoDeSolicitacao.setWidth("128px");
+
+		caronasCellTable.addColumn(checkBoxColumn);
+		caronasCellTable.setColumnWidth(checkBoxColumn, "100%");
+
+		caronasCellTable.addColumn(donoDaCaronaColumn, "Dono");
+		caronasCellTable.setColumnWidth(donoDaCaronaColumn, "100%");
+
+		caronasCellTable.addColumn(origemColumn, "Origem");
+		caronasCellTable.setColumnWidth(origemColumn, "100%");
+
+		caronasCellTable.addColumn(destinoColumn, "Destino");
+		caronasCellTable.setColumnWidth(destinoColumn, "100%");
+
+		caronasCellTable.addColumn(dataColumn, "Data");
+		caronasCellTable.setColumnWidth(dataColumn, "100%");
+
+		caronasCellTable.addColumn(horaColumn, "Hora-Saída");
+		caronasCellTable.setColumnWidth(horaColumn, "100%");
+
+		caronasCellTable.addColumn(vagasColumn, "Vagas");
+		caronasCellTable.setColumnWidth(vagasColumn, "100%");
+
+		// COLOCA caronasCellTable em flexTableSolicitadas
+		flexTableSolicitadas.add(caronasCellTable);
 
 	}
 
@@ -384,6 +470,6 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 
 	private void processarTabSolicitadas() {
 		gerarListaDeCaronasSolicitadas(idSessao);
-//		colocarColunasEmCaronasCellTableSolicitadas();
+		colocarColunasEmCaronasCellTableSolicitadas();
 	}
 }
