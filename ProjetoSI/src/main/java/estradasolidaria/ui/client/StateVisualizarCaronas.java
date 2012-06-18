@@ -1,6 +1,5 @@
 package estradasolidaria.ui.client;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -295,7 +294,8 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 			
 			@Override
 			public void update(int index, GWTCarona carona, String value) {
-				PopupPanel popupPanelEditarReview = new PopUpEditarReview(estrada, estradaSolidariaService, isOferecida, carona.idCarona); 
+				PopupPanel popupPanelEditarReview = new PopUpEditarReview(estrada, estradaSolidariaService, isOferecida, carona.idCarona);
+				popupPanelEditarReview.center();
 				popupPanelEditarReview.show();
 			}
 		});

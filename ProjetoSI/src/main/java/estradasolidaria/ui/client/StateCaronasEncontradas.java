@@ -11,9 +11,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.widget.client.TextButton;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.widget.client.TextButton;
 
 public class StateCaronasEncontradas extends Composite {
 	private Map<String, Integer> mapaIdCaronaToString;
@@ -66,10 +65,7 @@ public class StateCaronasEncontradas extends Composite {
 				if(textBox.getText().equals("")){
 					solicitarVagaGUI(idSessao, idCarona);
 					DialogBox newDialog = new DialogBoxNovaSolicitacao(estradaService, idCarona);
-					Widget source = (Widget) arg0.getSource();
-		            int left = source.getAbsoluteLeft() - 300;
-		            int top = source.getAbsoluteTop() - 150;
-		            newDialog.setPopupPosition(left, top);
+					newDialog.center();
 					newDialog.show();
 				} else {
 					solicitarVagaComPontoDeEncontroGUI(idSessao, idCarona, textBox.getText());

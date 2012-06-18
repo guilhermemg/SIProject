@@ -11,12 +11,8 @@ import com.google.gwt.user.client.ui.MenuItemSeparator;
 import com.google.gwt.user.client.ui.PopupPanel;
 
 public class DialogBoxVerCarona extends DialogBox {
-	private int left;
-	private int top;
 
-	public DialogBoxVerCarona(int esq, int topo) {
-		this.left = esq;
-		this.top = topo;
+	public DialogBoxVerCarona() {
 		
 		setHTML("Nova carona solicitada");
 		
@@ -32,7 +28,8 @@ public class DialogBoxVerCarona extends DialogBox {
 			public void execute() {
 				hide();
 				PopupPanel newDialog = new PopUpEnviarMensagem();
-	            newDialog.setPopupPosition(left, top);
+//	            newDialog.setPopupPosition(left, top);
+				newDialog.center();
 				newDialog.show();
 			}
 		});

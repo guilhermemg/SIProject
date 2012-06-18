@@ -7,7 +7,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.widget.client.TextButton;
 
 public class DialogBoxNovaSolicitacao extends DialogBox {
@@ -35,11 +34,8 @@ public class DialogBoxNovaSolicitacao extends DialogBox {
 		txtbtnVerCarona.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				hide();
-				Widget source = (Widget) event.getSource();
-	            int left = source.getAbsoluteLeft() + 350;
-	            int top = source.getAbsoluteTop() + 100;
-				DialogBox newDialog = new DialogBoxVerCarona(left, top);
-	            newDialog.setPopupPosition(left, top);
+				DialogBox newDialog = new DialogBoxVerCarona();
+				newDialog.center();
 				newDialog.show();
 			}
 		});

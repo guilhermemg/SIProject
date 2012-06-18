@@ -48,7 +48,7 @@ public class PopUpEditarReview extends PopupPanel {
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		setWidget(absolutePanel);
-		absolutePanel.setSize("348px", "278px");
+		absolutePanel.setSize("306px", "106px");
 		
 //		image = new Image("gwt/standard/images/splitPanelThumb.png");
 //		image.setStyleName("PopupEditarReviewImage");
@@ -56,7 +56,7 @@ public class PopUpEditarReview extends PopupPanel {
 //		image.setSize("172px", "139px");
 		
 		FlexTable flexTable = new FlexTable();
-		absolutePanel.add(flexTable, 88, 188);
+		absolutePanel.add(flexTable, 10, 10);
 		flexTable.setSize("172px", "80px");
 		
 		Label lblNewLabel = new Label("Usuário:");
@@ -89,7 +89,7 @@ public class PopUpEditarReview extends PopupPanel {
 		comboBoxCaroneiros.setSize("100%", "100%");
 		
 		txtbtnEditar = new TextButton("Editar");
-		absolutePanel.add(txtbtnEditar, 281, 204);
+		absolutePanel.add(txtbtnEditar, 211, 10);
 		
 		txtbtnSair = new TextButton("Sair");
 		txtbtnSair.addClickHandler(new ClickHandler() {
@@ -97,7 +97,7 @@ public class PopUpEditarReview extends PopupPanel {
 				hide();
 			}
 		});
-		absolutePanel.add(txtbtnSair, 281, 239);
+		absolutePanel.add(txtbtnSair, 208, 61);
 		txtbtnSair.setSize("57px", "29px");
 		
 		if (isDono) {
