@@ -1,133 +1,279 @@
 package estradasolidaria.ui.client;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FileUpload;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.widget.client.TextButton;
 
 public class StateEditarPerfil extends Composite {
-	
-	private Image imagem;
-	private EstradaSolidariaServiceAsync estradaSolidariaService;
+	private EstradaSolidariaServiceAsync estradaService;
 	private Integer idSessaoAberta;
-	private TextBox textBoxNovaSenha;
+	private TextBox textBoxNovoLogin;
+	private TextBox textBoxNovoNome;
+	private TextBox textBoxNovoEmail;
+	private TextBox textBoxNovoEndereco;
+	private TextButton txtbtnLoginOk;
+	private TextButton txtbtnNomeOk;
+	private TextButton txtbtnEmailOk;
+	private TextButton txtbtnEnderecoOk;
+	private Label lblLogindousuario;
+	private Label lblNomeusuario;
+	private Label lblEnderecodousuario;
+	private Label lblEmaildousuario;
+	private String[] dadosUsuario;
 
-	public StateEditarPerfil(EstradaSolidariaServiceAsync estradaSolidariaService) {
-		this.estradaSolidariaService = estradaSolidariaService;
+	public StateEditarPerfil(EstradaSolidariaServiceAsync estradaSolidariaService, String[] result) {
+		this.estradaService = estradaSolidariaService;
 		this.idSessaoAberta = EstradaSolidaria.getIdSessaoAberta();
+		this.dadosUsuario = result;
 		
 		Resources resources = GWT.create(Resources.class);
 		
 		AbsolutePanel absolutePanel_EditarPerfil = new AbsolutePanel();
 		initWidget(absolutePanel_EditarPerfil);
-		absolutePanel_EditarPerfil.setSize("713px", "512px");
+		absolutePanel_EditarPerfil.setSize("713px", "644px");
 		
 		Label lblEditarPerfil = new Label("Editar Perfil");
 		absolutePanel_EditarPerfil.add(lblEditarPerfil, 10, 10);
 		
-		FlexTable flexTable = new FlexTable();
-		absolutePanel_EditarPerfil.add(flexTable, 43, 69);
-		flexTable.setSize("214px", "191px");
-		
-		Label lblNewLabel = new Label("Login:");
-		flexTable.setWidget(0, 0, lblNewLabel);
-		
-		Label lblLogindousuario = new Label("login_do_usuario");
-		flexTable.setWidget(0, 1, lblLogindousuario);
-		
-		Button btnEditarLogin = new Button("Editar");
-		btnEditarLogin.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				editarLogin();
-			}
-		});
-		flexTable.setWidget(0, 2, btnEditarLogin);
-		
-		Label lblSenha = new Label("Senha:");
-		flexTable.setWidget(1, 0, lblSenha);
-		
-		textBoxNovaSenha = new TextBox();
-		flexTable.setWidget(1, 1, textBoxNovaSenha);
-		
-		Button btnEditar_1 = new Button("Editar");
-		btnEditar_1.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				editarSenha();
-			}
-		});
-		flexTable.setWidget(1, 2, btnEditar_1);
-		
-		Label lblNome = new Label("Nome:");
-		flexTable.setWidget(2, 0, lblNome);
-		
-		TextBox textBoxNovoNome = new TextBox();
-		flexTable.setWidget(2, 1, textBoxNovoNome);
-		
-		Button btnEditar_2 = new Button("Editar");
-		flexTable.setWidget(2, 2, btnEditar_2);
-		
-		Label lblEmail = new Label("Email:");
-		flexTable.setWidget(3, 0, lblEmail);
-		
-		Label lblEmaildousuario = new Label("email_do_usuario");
-		flexTable.setWidget(3, 1, lblEmaildousuario);
-		
-		Button btnEditar_3 = new Button("Editar");
-		flexTable.setWidget(3, 2, btnEditar_3);
-		
-		Label lblEndereo = new Label("Endereço:");
-		flexTable.setWidget(4, 0, lblEndereo);
-		
-		Label lblEnderecodousuario = new Label("endereco_do_usuario");
-		flexTable.setWidget(4, 1, lblEnderecodousuario);
-		
-		Button btnEditar_4 = new Button("Editar");
-		flexTable.setWidget(4, 2, btnEditar_4);
-		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
-		absolutePanel_EditarPerfil.add(absolutePanel, 43, 295);
+		absolutePanel_EditarPerfil.add(absolutePanel, 41, 313);
 		absolutePanel.setSize("423px", "191px");
 		
-		imagem= new Image(resources.editar());
-		absolutePanel.add(imagem, 10, 10);
-		imagem.setSize("181px", "160px");
-		
-		Button btnEditar_5 = new Button("Editar");
-		absolutePanel.add(btnEditar_5, 197, 10);
+		Image image = new Image(resources.editar());
+		absolutePanel.add(image, 10, 10);
+		image.setSize("181px", "160px");
 		
 		FileUpload fileUpload = new FileUpload();
 		absolutePanel.add(fileUpload, 206, 144);
 		fileUpload.setSize("189px", "22px");
 		
+		TextButton txtbtnEditar = new TextButton("Editar");
+		absolutePanel.add(txtbtnEditar, 206, 110);
 		
-	}
-	private void editarLogin() {
+		AbsolutePanel absolutePanel_1 = new AbsolutePanel();
+		absolutePanel_EditarPerfil.add(absolutePanel_1, 41, 57);
+		absolutePanel_1.setSize("552px", "250px");
+		
+		Label lblNewLabel = new Label("Login:");
+		absolutePanel_1.add(lblNewLabel, 10, 10);
+		
+		lblLogindousuario = new Label(dadosUsuario[0]);
+		absolutePanel_1.add(lblLogindousuario, 74, 10);
+		
+		Button btnEditarLogin = new Button("Editar");
+		absolutePanel_1.add(btnEditarLogin, 74, 32);
+		
+		textBoxNovoLogin = new TextBox();
+		absolutePanel_1.add(textBoxNovoLogin, 127, 28);
+		textBoxNovoLogin.setVisible(false);
+		
+		txtbtnLoginOk = new TextButton("OK");
+		txtbtnLoginOk.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				editarLoginGUI(idSessaoAberta, textBoxNovoLogin.getText());
+			}
+		});
+		absolutePanel_1.add(txtbtnLoginOk, 294, 28);
+		txtbtnLoginOk.setVisible(false);
+		
+		Label lblSenha = new Label("Senha:");
+		absolutePanel_1.add(lblSenha, 417, 28);
+		
+		TextButton txtbtnAlterarSenha = new TextButton("Alterar senha");
+		txtbtnAlterarSenha.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				DialogBox newDialog = new DialogBoxAlterarSenha(estradaService);
+				Widget source = (Widget) event.getSource();
+	            int left = source.getAbsoluteLeft() - 300;
+	            int top = source.getAbsoluteTop() - 150;
+	            newDialog.setPopupPosition(left, top);
+				newDialog.show();
+			}
+		});
+		absolutePanel_1.add(txtbtnAlterarSenha, 417, 53);
+		
+		Label lblNome = new Label("Nome:");
+		absolutePanel_1.add(lblNome, 10, 65);
+		
+		lblNomeusuario = new Label(dadosUsuario[2]);
+		absolutePanel_1.add(lblNomeusuario, 74, 65);
+		
+		Button btnEditarNome = new Button("Editar");
+		absolutePanel_1.add(btnEditarNome, 74, 87);
+		
+		textBoxNovoNome = new TextBox();
+		absolutePanel_1.add(textBoxNovoNome, 127, 87);
+		textBoxNovoNome.setVisible(false);
+		
+		txtbtnNomeOk = new TextButton("OK");
+		txtbtnNomeOk.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				editarNomeGUI(idSessaoAberta, textBoxNovoNome.getText());
+			}
+		});
+		absolutePanel_1.add(txtbtnNomeOk, 294, 87);
+		txtbtnNomeOk.setVisible(false);
+		
+		Label lblEmail = new Label("Email:");
+		absolutePanel_1.add(lblEmail, 10, 124);
+		
+		lblEmaildousuario = new Label(dadosUsuario[4]);
+		absolutePanel_1.add(lblEmaildousuario, 74, 124);
+		
+		Button btnEditarEmail = new Button("Editar");
+		absolutePanel_1.add(btnEditarEmail, 74, 146);
+		
+		textBoxNovoEmail = new TextBox();
+		absolutePanel_1.add(textBoxNovoEmail, 127, 146);
+		textBoxNovoEmail.setVisible(false);
+		
+		txtbtnEmailOk = new TextButton("OK");
+		txtbtnEmailOk.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				editarEmailGUI(idSessaoAberta, textBoxNovoEmail.getText());
+			}
+		});
+		absolutePanel_1.add(txtbtnEmailOk, 294, 146);
+		txtbtnEmailOk.setVisible(false);
+		
+		Label lblEndereo = new Label("Endereço:");
+		absolutePanel_1.add(lblEndereo, 10, 182);
+		
+		lblEnderecodousuario = new Label(dadosUsuario[3]);
+		absolutePanel_1.add(lblEnderecodousuario, 74, 182);
+		
+		Button btnEditarEndereco = new Button("Editar");
+		absolutePanel_1.add(btnEditarEndereco, 74, 204);
+		
+		textBoxNovoEndereco = new TextBox();
+		absolutePanel_1.add(textBoxNovoEndereco, 127, 204);
+		textBoxNovoEndereco.setVisible(false);
+		
+		txtbtnEnderecoOk = new TextButton("OK");
+		txtbtnEnderecoOk.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				editarEnderecoGUI(idSessaoAberta, textBoxNovoEndereco.getText());
+			}
+		});
+		absolutePanel_1.add(txtbtnEnderecoOk, 294, 204);
+		txtbtnEnderecoOk.setVisible(false);
+		
+		btnEditarEndereco.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				textBoxNovoEndereco.setVisible(true);
+				txtbtnEnderecoOk.setVisible(true);
+			}
+		});
+		
+		btnEditarEmail.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				textBoxNovoEmail.setVisible(true);
+				txtbtnEmailOk.setVisible(true);
+			}
+		});
+		
+		btnEditarNome.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				textBoxNovoNome.setVisible(true);
+				txtbtnNomeOk.setVisible(true);
+			}
+		});
+		
+		btnEditarLogin.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				textBoxNovoLogin.setVisible(true);
+				txtbtnLoginOk.setVisible(true);
+				//editarLogin();
+			}
+		});
 		
 	}
 	
-	private void editarSenha() {
-		String novaSenha = textBoxNovaSenha.getText();
-		estradaSolidariaService.editarSenha(idSessaoAberta, novaSenha, new AsyncCallback<Void>() {
-
+	protected void editarNomeGUI(Integer idSessao, String text) {
+		estradaService.editarNome(idSessao, text, new AsyncCallback<Void>(){ 
 			@Override
 			public void onFailure(Throwable caught) {
+				// Show the RPC error message to the user 
 				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
 			}
 
 			@Override
 			public void onSuccess(Void result) {
-				Window.alert("Senha alterada com sucesso!");
+				lblNomeusuario.setText(textBoxNovoNome.getText());
+				textBoxNovoNome.setText("");
+				textBoxNovoNome.setVisible(false);
+				txtbtnNomeOk.setVisible(false);
+				//hide();
 			}
-		
-		});
+		  });
+	}
+
+	private void editarLoginGUI(Integer idSessao, String novoLogin) {
+		estradaService.editarLogin(idSessao, novoLogin, new AsyncCallback<Void>(){ 
+			@Override
+			public void onFailure(Throwable caught) {
+				// Show the RPC error message to the user 
+				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				lblLogindousuario.setText(textBoxNovoLogin.getText());
+				textBoxNovoLogin.setText("");
+				textBoxNovoLogin.setVisible(false);
+				txtbtnLoginOk.setVisible(false);
+				//hide();
+			}
+		  });	
+	}
+	
+	protected void editarEmailGUI(Integer idSessao, String text) {
+		estradaService.editarEmail(idSessao, text, new AsyncCallback<Void>(){ 
+			@Override
+			public void onFailure(Throwable caught) {
+				// Show the RPC error message to the user 
+				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				lblEmaildousuario.setText(textBoxNovoEmail.getText());
+				textBoxNovoEmail.setText("");
+				textBoxNovoEmail.setVisible(false);
+				txtbtnEmailOk.setVisible(false);
+				//hide();
+			}
+		  });
+	}
+	
+	protected void editarEnderecoGUI(Integer idSessao, String text) {
+		estradaService.editarEndereco(idSessao, text, new AsyncCallback<Void>(){ 
+			@Override
+			public void onFailure(Throwable caught) {
+				// Show the RPC error message to the user 
+				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				lblEnderecodousuario.setText(textBoxNovoEndereco.getText());
+				textBoxNovoEndereco.setText("");
+				textBoxNovoEndereco.setVisible(false);
+				txtbtnEnderecoOk.setVisible(false);
+				//hide();
+			}
+		  });
 	}
 }

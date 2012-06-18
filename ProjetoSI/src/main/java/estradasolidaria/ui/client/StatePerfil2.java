@@ -6,6 +6,7 @@ import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -30,10 +31,13 @@ public class StatePerfil2 extends Composite {
 	private AbsolutePanel leftSideBarPanel;
 	private AbsolutePanel rightSidebarPanel;
 	private AbsolutePanel mainPanel;
+	private Integer idSessao;
+	
 	public StatePerfil2(EstradaSolidaria estradaSolidaria, final EstradaSolidariaServiceAsync estradaSolidariaService) {
 		
 		estrada = estradaSolidaria;
 		this.estradaSolidariaService = estradaSolidariaService;
+		this.idSessao = estrada.getIdSessaoAberta();
 		
 		//Atualiza o tamanho do dockPanel para o tamanho redimensionado	
 		Window.addResizeHandler(new ResizeHandler() {
@@ -173,11 +177,21 @@ public class StatePerfil2 extends Composite {
 	}
 
 	protected void editarPerfilGUI() {
-		bodyPanel.clear();
-		Widget editarPerfil= new StateEditarPerfil(estradaSolidariaService);
-		bodyPanel.add(editarPerfil);
-		editarPerfil.setSize("100%", "100%");
-		
+		estradaSolidariaService.getUsuario(idSessao, new AsyncCallback<String[]>(){ 
+			@Override
+			public void onFailure(Throwable caught) {
+				// Show the RPC error message to the user 
+				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(String[] result) {
+				bodyPanel.clear();
+				Widget editarPerfil= new StateEditarPerfil(estradaSolidariaService, result);
+				bodyPanel.add(editarPerfil);
+				editarPerfil.setSize("100%", "100%");
+			}
+		});
 	}
 
 	protected void inicio() {

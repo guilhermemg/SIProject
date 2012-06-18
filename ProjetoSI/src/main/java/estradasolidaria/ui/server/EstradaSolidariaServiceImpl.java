@@ -7,8 +7,6 @@ import java.util.TreeMap;
 
 import javax.mail.MessagingException;
 
-import org.apache.jasper.tagplugins.jstl.ForEach;
-
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import estradasolidaria.ui.client.EstradaSolidariaService;
@@ -17,7 +15,6 @@ import estradasolidaria.ui.server.logic.Carona;
 import estradasolidaria.ui.server.logic.CaronaInexistenteException;
 import estradasolidaria.ui.server.logic.CaronaInvalidaException;
 import estradasolidaria.ui.server.logic.EstradaSolidariaController;
-import estradasolidaria.ui.server.logic.Sessao;
 import estradasolidaria.ui.server.logic.Solicitacao;
 import estradasolidaria.ui.server.logic.TrajetoInexistenteException;
 import estradasolidaria.ui.server.logic.Usuario;
@@ -376,6 +373,34 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		}
 		
 		return result;
+	}
+	
+	@Override
+	public void editarLogin(Integer idSessaoAberta, String novoLogin) {
+		controller.setLogin(idSessaoAberta, novoLogin);
+	}
+	
+	@Override
+	public void editarNome(Integer idSessaoAberta, String novoNome) {
+		controller.setNome(idSessaoAberta, novoNome);
+	}
+	
+	@Override
+	public void editarEmail(Integer idSessaoAberta, String novoEmail) {
+		controller.setEmail(idSessaoAberta, novoEmail);
+	}
+	
+	@Override
+	public void editarEndereco(Integer idSessaoAberta, String novoEndereco) {
+		controller.setEndereco(idSessaoAberta, novoEndereco);
+	}
+	
+	
+	@Override
+	public String[] getUsuario(Integer idSessao){
+		Usuario u = controller.getUsuario(idSessao);
+		String[] dadosUsuario = {u.getLogin(), u.getSenha(), u.getNome(), u.getEndereco(), u.getEmail()};
+		return dadosUsuario;
 	}
 	
 	

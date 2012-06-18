@@ -113,4 +113,18 @@ public interface EstradaSolidariaServiceAsync {
 	void getCaroneiros(Integer idSessaoAberta,
 			String idCarona,
 			AsyncCallback<List<List<String>>> asyncCallback);
+	
+	void editarLogin(Integer idSessaoAberta, String novoLogin, 
+			AsyncCallback<Void> asyncCallback);
+	
+	void editarNome(Integer idSessaoAberta, String novoNome, 
+			AsyncCallback<Void> asyncCallback);
+	
+	void editarEmail(Integer idSessaoAberta, String novoEmail, 
+			AsyncCallback<Void> asyncCallback);
+	
+	void editarEndereco(Integer idSessaoAberta, String novoEndereco, 
+			AsyncCallback<Void> asyncCallback);
+	
+	void getUsuario(Integer idSessao, AsyncCallback<String[]> asyncCallback);
 }

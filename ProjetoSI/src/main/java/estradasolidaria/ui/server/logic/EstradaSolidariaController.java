@@ -1195,4 +1195,56 @@ public class EstradaSolidariaController implements Serializable {
 		Usuario u = this.mapIdUsuario.get(this.mapIdSessao.get(idSessao).getIdUser());
 		return u.getMapIdSugestoesFeitas();
 	}
+	
+	/**
+	 * Modifica o nome de um usuario.
+	 * 
+	 * @param idSessao
+	 * @param novoNome
+	 */
+	public void setNome(Integer idSessao, String novoNome) {
+		Sessao s = getMapIdSessao().get(idSessao);
+		Usuario u = getMapIdUsuario().get(s.getIdUser());
+		u.setNome(novoNome);
+		
+	}
+	
+	/**
+	 * Modifica o email de um usuario.
+	 * 
+	 * @param idSessao
+	 * @param novoEmail
+	 */
+	public void setEmail(Integer idSessao, String novoEmail) {
+		Sessao s = getMapIdSessao().get(idSessao);
+		Usuario u = getMapIdUsuario().get(s.getIdUser());
+		u.setEmail(novoEmail);
+		
+	}
+	
+	/**
+	 * Modifica o endereco de um usuario.
+	 * 
+	 * @param idSessao
+	 * @param novoEndereco
+	 */
+	public void setEndereco(Integer idSessao, String novoEndereco) {
+		Sessao s = getMapIdSessao().get(idSessao);
+		Usuario u = getMapIdUsuario().get(s.getIdUser());
+		u.setEndereco(novoEndereco);
+		
+	}
+	
+	/**
+	 * Modifica o login de um usuario.
+	 * 
+	 * @param idSessao
+	 * @param novoLogin
+	 */
+	public void setLogin(Integer idSessao, String novoLogin) {
+		Sessao s = getMapIdSessao().get(idSessao);
+		Usuario u = getMapIdUsuario().get(s.getIdUser());
+		u.setLogin(novoLogin);
+		
+	}
 }

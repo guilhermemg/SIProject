@@ -410,4 +410,14 @@ public interface EstradaSolidariaService extends RemoteService {
 	public abstract void editarSenha(Integer idSessaoAberta, String novaSenha);
 
 	public abstract List<List<String>> getCaroneiros(Integer idSessao, String idCarona);
+	
+	public abstract void editarLogin(Integer idSessaoAberta, String novoLogin);
+
+	public abstract void editarNome(Integer idSessaoAberta, String novoNome);
+
+	public abstract void editarEmail(Integer idSessaoAberta, String novoEmail);
+
+	public abstract void editarEndereco(Integer idSessaoAberta, String novoEndereco);
+	
+	public abstract String[] getUsuario(Integer idSessao);
 }
