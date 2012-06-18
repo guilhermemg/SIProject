@@ -47,6 +47,8 @@ public class Usuario implements Serializable {
 
 	private Map<Integer, Solicitacao> mapIdSolicitacoesFeitas = new TreeMap<Integer, Solicitacao>();
 
+	private Map<Integer, Sugestao> mapIdSugestoesFeitas = new TreeMap<Integer, Sugestao>();
+
 	/**
 	 * Construtor da classe Usuario.
 	 * 
@@ -1037,15 +1039,6 @@ public class Usuario implements Serializable {
 	}
 
 	/**
-	 * Retorna lista de mensagens do perfil do usuario.
-	 * 
-	 * @return lista de mensagens
-	 */
-	public List<String> getMensagens() {
-		return mensagensPerfil;
-	}
-
-	/**
 	 * Adiciona interesse ao mapa de interesses
 	 * do usuario (this).
 	 * 
@@ -1067,13 +1060,7 @@ public class Usuario implements Serializable {
 	 * @return string com mensagens
 	 */
 	public List<String> verificarMensagensPerfil() {
-		List<String> listaMensagens = new LinkedList<String>(); 
-		Iterator<String> it = getMensagens().iterator();
-		while (it.hasNext()) {
-			listaMensagens.add(it.next());
-			
-		}
-		return listaMensagens;
+		return this.mensagensPerfil;
 	}
 	
 	/**
@@ -1116,5 +1103,24 @@ public class Usuario implements Serializable {
 	 */
 	public Map<Integer, Solicitacao> getMapIdSolicitacoesFeitas() {
 		return this.mapIdSolicitacoesFeitas;
+	}
+	
+	/**
+	 * Adiciona sugestao feita ao mapa de sugestoes feitas
+	 * 
+	 * @param sugestaoFeita
+	 */
+	public void addSugestaoFeita(Sugestao sugestaoFeita) {
+		this.mapIdSugestoesFeitas .put(sugestaoFeita.getIdSugestao(), sugestaoFeita);
+	}
+	
+	/**
+	 * Retorna mapa de sugestoes feitas por este
+	 * usuario.
+	 * 
+	 * @return mapa de sugestoes feitas
+	 */
+	public Map<Integer, Sugestao> getMapIdSugestoesFeitas() {
+		return this.mapIdSugestoesFeitas;
 	}
 }

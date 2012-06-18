@@ -307,12 +307,16 @@ public class EstradaSolidariaController implements Serializable {
 		if (idCarona == null)
 			throw new IllegalArgumentException("IdCarona inválido");
 
-		Usuario solicitante = getMapIdUsuario().get(
+		Usuario donoDaSugestao = getMapIdUsuario().get(
 				getMapIdSessao().get(idSessao).getIdUser());
-		if (solicitante == null)
+		if (donoDaSugestao == null)
 			throw new IllegalArgumentException("Sessão inválida");
-
-		return procuraCarona(idCarona).addSugestaoPontoEncontro(pontos);
+		
+		Sugestao sugestaoFeita = procuraCarona(idCarona).addSugestaoPontoEncontro(pontos); 
+		
+		donoDaSugestao.addSugestaoFeita(sugestaoFeita);
+		
+		return sugestaoFeita;
 	}
 
 	/**
@@ -533,7 +537,12 @@ public class EstradaSolidariaController implements Serializable {
 		if (donoDaCarona == null)
 			throw new IllegalArgumentException("Usuário inexistente");
 
-		return donoDaCarona.solicitarVaga(idCarona, donoDaCarona, solicitante);
+		Solicitacao solicitacaoFeita =
+				donoDaCarona.solicitarVaga(idCarona, donoDaCarona, solicitante);
+		
+		solicitante.addSolicitacaoFeita(solicitacaoFeita);
+		
+		return solicitacaoFeita;
 	}
 
 	/**
@@ -1173,5 +1182,17 @@ public class EstradaSolidariaController implements Serializable {
 	 */
 	public Usuario getUsuario(Integer idSessao) {
 		return this.mapIdUsuario.get(this.mapIdSessao.get(idSessao).getIdUser());
+	}
+	
+	/**
+	 * Retorna mapa de sugestoes feitas do usuario
+	 * identificado por idSessao
+	 * 
+	 * @param idSessao
+	 * @return mapa de sugestoes
+	 */
+	public Map<Integer, Sugestao> getMapSugestoesFeitas(Integer idSessao) {
+		Usuario u = this.mapIdUsuario.get(this.mapIdSessao.get(idSessao).getIdUser());
+		return u.getMapIdSugestoesFeitas();
 	}
 }
