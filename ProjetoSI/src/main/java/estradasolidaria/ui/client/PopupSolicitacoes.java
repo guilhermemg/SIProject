@@ -84,6 +84,14 @@ public class PopupSolicitacoes extends PopupPanel {
 		btnAceitar.setSize("137px", "81px");
 		
 		btnRejeitar = new Button("Rejeitar");
+		btnRejeitar.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				rejeitarSolicitacao();
+				
+			}
+		});
 		btnRejeitar.setText("Rejeitar");
 		absolutePanel.add(btnRejeitar, 173, 183);
 		btnRejeitar.setSize("137px", "81px");
@@ -98,6 +106,56 @@ public class PopupSolicitacoes extends PopupPanel {
 		btnSair.setSize("34px", "25px");
 		
 		atualizaSolicitacoes();
+	}
+
+	private void rejeitarSolicitacao() {
+		Integer idSolicitacao = listSolicitantes.get(listBox.getSelectedIndex()).idSolicitacao;
+		
+		this.estradaSolidariaService.rejeitarSolicitacao(idSessao, idSolicitacao, new AsyncCallback<Void>() {
+
+			private DialogBox d;
+			private Button b;
+
+			@Override
+			public void onFailure(Throwable caught) {
+				d = new DialogBox();
+				d.setTitle("Erro");
+				d.setText("Erro: " + caught.getMessage());
+				
+				b = new Button();
+				b.setText("OK");
+				b.addClickHandler(new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+						d.hide();
+					}
+				});
+				
+				d.add(b);
+				d.show();
+				
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				d = new DialogBox();
+				d.setTitle("Sistema");
+				d.setText("Solicitação Rejeitada!");
+				b = new Button();
+				b.setText("OK");
+				b.addClickHandler(new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+						d.hide();
+					}
+				});
+				d.add(b);
+				d.show();
+			}
+		});
+		
 	}
 
 	private void aceitarSolicitacao() {

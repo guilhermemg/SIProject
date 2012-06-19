@@ -167,7 +167,7 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public void rejeitarSolicitacao(Integer idSessao, Integer idSolicitacao) {
-		// TODO Auto-generated method stub
+		controller.rejeitarSolicitacao(idSessao, idSolicitacao);
 		
 	}
 
