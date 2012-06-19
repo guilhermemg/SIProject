@@ -126,4 +126,7 @@ public interface EstradaSolidariaServiceAsync {
 			AsyncCallback<Void> asyncCallback);
 	
 	void getUsuario(Integer idSessao, AsyncCallback<String[]> asyncCallback);
+
+	void getSolicitacoes(Integer idSessao, Integer idCarona,
+			AsyncCallback<List<String[]>> asyncCallback);
 }

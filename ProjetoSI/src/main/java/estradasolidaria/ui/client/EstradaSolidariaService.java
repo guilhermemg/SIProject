@@ -164,9 +164,10 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param idSessao
 	 *            : id da sessao do usuario dono da carona
 	 * @param idSolicitacao
+	 * @throws GWTException 
 	 */
 	public abstract void aceitarSolicitacao(Integer idSessao,
-			Integer idSolicitacao);
+			Integer idSolicitacao) throws GWTException;
 
 	/**
 	 * Adiciona solicitacao a lista de solicitacoes associadas a uma carona,
@@ -418,4 +419,6 @@ public interface EstradaSolidariaService extends RemoteService {
 	public abstract void editarEndereco(Integer idSessaoAberta, String novoEndereco);
 	
 	public abstract String[] getUsuario(Integer idSessao);
+
+	public abstract List<String[]> getSolicitacoes(Integer idSessao, Integer idCarona) throws GWTException;
 }

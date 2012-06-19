@@ -29,6 +29,7 @@ import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.user.client.ui.Button;
 
 public class StateVisualizarCaronas extends AbsolutePanel {
 	final EstradaSolidaria estrada;
@@ -39,7 +40,7 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 
 	private LinkedList<GWTCarona> caronasGWT; // Lista de Caronas transformadas
 												// para a classe GWTCarona
-	private FlexTable flexTableOferecidas;
+	private FlexTable tabOferecidas;
 	private SelectionModel<GWTCarona> selectionModel;
 	private Column<GWTCarona, String> donoDaCaronaColumn;
 	private TextColumn<GWTCarona> origemColumn;
@@ -57,6 +58,8 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 	private boolean isOferecida;
 	private ListBox comboBoxTipoDeSolicitacao;
 	private boolean isSolicitacaoAceita = true;
+	private Button btnNewButton;
+	private Column<GWTCarona,String> buttomColumn;
 	
 
 	public StateVisualizarCaronas(EstradaSolidaria estrada,
@@ -80,6 +83,7 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 		iniciarColunas();
 		iniciarCaronasCellTable();
 
+//		colocarColunasEmCaronasCellTableOferecidas();
 	}
 
 	private void iniciarTabPanel() {
@@ -96,8 +100,8 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 							isOferecida = true;
 							processarTabOferecidas();
 						} else if (event.getSelectedItem().equals(1)) {
-							 isOferecida = false;
-							 processarTabPegas();
+							isOferecida = false;
+							processarTabPegas();
 						} else if (event.getSelectedItem().equals(2)) {
 							isOferecida = false;
 							isSolicitacaoAceita = true;
@@ -108,10 +112,10 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 	}
 
 	private void iniciarTabOferecidas() {
-		flexTableOferecidas = new FlexTable();
-		tabPanel.add(flexTableOferecidas, "Oferecidas", false);
-		flexTableOferecidas.setSize("100%", "100%");
-		flexTableOferecidas.getCellFormatter().setVerticalAlignment(0, 0,
+		tabOferecidas = new FlexTable();
+		tabPanel.add(tabOferecidas, "Oferecidas", false);
+		tabOferecidas.setSize("100%", "100%");
+		tabOferecidas.getCellFormatter().setVerticalAlignment(1, 0,
 				HasVerticalAlignment.ALIGN_TOP);
 	}
 
@@ -187,8 +191,8 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 				});
 	}
 
-	private void gerarListaDeCaronasSolicitadas(Integer idSessao) {
-		if (isSolicitacaoAceita) {
+	private void gerarListaDeCaronasSolicitadas() {
+		if (comboBoxTipoDeSolicitacao.getSelectedIndex() == 0) {
 			this.estradaSolidariaService.getSolicitacoesFeitasConfirmadas(idSessao, new AsyncCallback<List<List<String>>>() {
 				
 				@Override
@@ -251,15 +255,31 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 
 	private void iniciarColunas() {
 		// Coluna de checkBox das Caronas
-		checkBoxColumn = new Column<GWTCarona, Boolean>(new CheckboxCell()) {
+//		checkBoxColumn = new Column<GWTCarona, Boolean>(new CheckboxCell()) {
+//			@Override
+//			public Boolean getValue(GWTCarona carona) {
+//				return selectionModel.isSelected(carona);
+//			}
+//		};
+//		checkBoxColumn
+//				.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+
+		buttomColumn = new Column<GWTCarona, String>(new ButtonCell()) {
+
 			@Override
-			public Boolean getValue(GWTCarona carona) {
-				return selectionModel.isSelected(carona);
+			public String getValue(GWTCarona carona) {
+				return "Solicitações";
 			}
 		};
-		checkBoxColumn
-				.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-
+		buttomColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
+		buttomColumn.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+		buttomColumn.setFieldUpdater(new FieldUpdater<GWTCarona, String>() {
+			
+			@Override
+			public void update(int index, GWTCarona carona, String value) {
+				new PopupSolicitacoes(estrada, estradaSolidariaService, carona.idCarona).show();
+			}
+		});
 		// Coluna de Donos das Caronas
 		donoDaCaronaColumn = new TextColumn<GWTCarona>() {
 			@Override
@@ -352,8 +372,11 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 	private void colocarColunasEmCaronasCellTableOferecidas() {
 		zerarCaronasCellTable();
 
-		caronasCellTable.addColumn(checkBoxColumn);
-		caronasCellTable.setColumnWidth(checkBoxColumn, "100%");
+		caronasCellTable.addColumn(buttomColumn);
+		caronasCellTable.setColumnWidth(buttomColumn, "100%");
+		
+//		caronasCellTable.addColumn(checkBoxColumn);
+//		caronasCellTable.setColumnWidth(checkBoxColumn, "100%");
 
 		caronasCellTable.addColumn(origemColumn, "Origem");
 		caronasCellTable.setColumnWidth(origemColumn, "100%");
@@ -374,15 +397,15 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 		caronasCellTable.setColumnWidth(reviewColumn, "100%");
 
 		// COLOCA caronasCellTable em flexTableOferecidas
-		flexTableOferecidas.setWidget(0, 0, caronasCellTable);
+		tabOferecidas.setWidget(1, 0, caronasCellTable);
 	}
 
 	private void colocarColunasEmCaronasCellTablePegas() {
 		zerarCaronasCellTable();
 		flexTablePegas.clear();
 		
-		caronasCellTable.addColumn(checkBoxColumn);
-		caronasCellTable.setColumnWidth(checkBoxColumn, "100%");
+//		caronasCellTable.addColumn(checkBoxColumn);
+//		caronasCellTable.setColumnWidth(checkBoxColumn, "100%");
 
 		caronasCellTable.addColumn(donoDaCaronaColumn, "Dono");
 		caronasCellTable.setColumnWidth(donoDaCaronaColumn, "100%");
@@ -417,13 +440,7 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 		comboBoxTipoDeSolicitacao = new ListBox();
 		comboBoxTipoDeSolicitacao.addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
-				zerarCaronasCellTable();
-				if (comboBoxTipoDeSolicitacao.getSelectedIndex() == 0) {
-					isSolicitacaoAceita = true;
-				} else {
-					isSolicitacaoAceita = false;
-				}
-				processarTabSolicitadas();
+				gerarListaDeCaronasSolicitadas();
 			}
 		});
 		comboBoxTipoDeSolicitacao.addItem("Aceitas");
@@ -432,8 +449,8 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 		
 		comboBoxTipoDeSolicitacao.setWidth("128px");
 
-		caronasCellTable.addColumn(checkBoxColumn);
-		caronasCellTable.setColumnWidth(checkBoxColumn, "100%");
+//		caronasCellTable.addColumn(checkBoxColumn);
+//		caronasCellTable.setColumnWidth(checkBoxColumn, "100%");
 
 		caronasCellTable.addColumn(donoDaCaronaColumn, "Dono");
 		caronasCellTable.setColumnWidth(donoDaCaronaColumn, "100%");
@@ -469,7 +486,7 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 	}
 
 	private void processarTabSolicitadas() {
-		gerarListaDeCaronasSolicitadas(idSessao);
 		colocarColunasEmCaronasCellTableSolicitadas();
+		gerarListaDeCaronasSolicitadas();
 	}
 }

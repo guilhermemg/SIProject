@@ -1,5 +1,6 @@
 package estradasolidaria.ui.server;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,6 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		try {
 			Integer vagasInt = Integer.parseInt(vagas);
 			Carona c = controller.cadastrarCarona(idSessao, origem, destino, data, hora, vagasInt);
-			System.out.println("Carona cadastrada:" + c.toString());
 			return c.getIdCarona().toString();
 		} catch (NumberFormatException nfe) {
 			throw new GWTException("Formato de vagas inválido.");
@@ -147,8 +147,14 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public void aceitarSolicitacao(Integer idSessao, Integer idSolicitacao) {
-		// TODO Auto-generated method stub
+	public void aceitarSolicitacao(Integer idSessao, Integer idSolicitacao) throws GWTException {
+		try {
+			controller.aceitarSolicitacao(idSessao, idSolicitacao);
+		} catch (IllegalArgumentException e) {
+			throw new GWTException(e.getMessage());
+		} catch (CaronaInexistenteException e) {
+			throw new GWTException(e.getMessage());
+		}
 		
 	}
 
@@ -156,7 +162,6 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	public String solicitarVaga(Integer idSessao, Integer idCarona)
 			throws CaronaInvalidaException {
 		Solicitacao s = controller.solicitarVaga(idSessao, idCarona);
-		System.out.println(s);
 		return s.toString();
 	}
 
@@ -428,6 +433,18 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		Usuario u = controller.getUsuario(idSessao);
 		String[] dadosUsuario = {u.getLogin(), u.getSenha(), u.getNome(), u.getEndereco(), u.getEmail()};
 		return dadosUsuario;
+	}
+
+	@Override
+	public List<String[]> getSolicitacoes(Integer idSessao, Integer idCarona) throws GWTException {
+		Usuario donoDaCarona = controller.getUsuario(idSessao);
+		Collection<Solicitacao> solicitacoes = donoDaCarona.getMapIdCaronasOferecidas().get(idCarona).getMapIdSolicitacao().values();
+		List<String[]> result = new LinkedList<String[]>();
+		
+		for (Solicitacao s : solicitacoes) {
+			result.add(new String[] {s.getDonoDaSolicitacao().getIdUsuario().toString(), s.getDonoDaSolicitacao().getNome(), s.getIdSolicitacao().toString()});
+		}
+		return result;
 	}
 	
 	
