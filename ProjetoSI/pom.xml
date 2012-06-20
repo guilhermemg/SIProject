@@ -75,15 +75,18 @@
 			<version>2.4.0</version>
 			<executions>
 			  <execution>
-			    <configuration>
-			      <module>src/main/java/estradasolidaria/ui/client/EstradaSolidariaManager</module>
-			      <runTarget>ProjetoSI/EstradaSolidaria/src/main/webapp/EstradaSolidariaViewer.html</runTarget>
+			    <!-- <configuration>
+			      <module>src/main/java/estradasolidaria/ui/client/EstradaSolidaria</module>
+			      <runTarget>ProjetoSI/EstradaSolidaria/src/main/webapp/EstradaSolidaria.html</runTarget>
 			      <webappDirectory>ProjetoSI/EstradaSolidaria/src/main/webapp/</webappDirectory>
-			    </configuration>
+			    </configuration> -->
 			    <goals>
 			      <goal>compile</goal>
-			      <goal>run</goal>
 			    </goals>
+			    <configuration>
+			        <runTarget>EstradaSolidaria.html</runTarget>
+			    </configuration>
+			        
 			  </execution>
 			</executions>
 		</plugin>

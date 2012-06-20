@@ -1,7 +1,7 @@
 0 - deve-se criar um projeto GWT Java Project em GWT Designer/Model
 
 1 - tem que se mudar o output folder do projeto nas Properties dele: 
-   . o war do projeto deve ser redefinido para src/main/
+   . o war do projeto deve ser redefinido para ProjetoSI/EstradaSolidaria/src/main/webapp
    . output folder de src: EstradaSolidaria/src/main/WEB-INF/classes (diretorio classes deve ser criado)
    . output folder de test: EstradaSolidaria/src/main/WEB-INF/test-classes (diretorio test-classes deve ser criado)
    . output folder do projeto: EstradaSolidaria/src/main/WEB-INF/classes
@@ -12,9 +12,10 @@
   
 ==> MUITO IMPORTANTE:
 3 - o pom.xml desse projeto está configurado para jogar os .class que ele
-mandar criar com a compilação no /war, que no caso vai ser o /EstradaSolidaria/src/main/webapp/WEB-INF/classes/, mas os testes continuam sendo jogados em /test-classes em target, normalmente.
+mandar criar com a compilação no /war, que no caso vai ser o ProjetoSI/EstradaSolidaria/src/main/webapp/WEB-INF/classes/, 
+os testes vao para test-classes, ao lado de classes pelo mesmo caminho
 
-4 - is goals para executar o maven: gwt:eclipse clean compile war:inplace test
+4 - is goals para executar o maven: gwt:eclipse clean gwt:clean compile gwt:compile war:inplace package gwt:run gae:deploy
 
 5 - para fazer o aap-engine fazer do aplicativo threadsafe ou nao eh so alterar o componente:
 <!--    By default, App Engine sends requests serially to a given web server.

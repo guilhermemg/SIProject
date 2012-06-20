@@ -4,4 +4,6 @@
 	<entry-point
 		class="estradasolidaria.ui.client.EstradaSolidaria" />
 	<servlet class="estradasolidaria.ui.server.EstradaSolidariaServiceImpl" path="/estradaSolidariaService"/>
+	
+	<source path='client' />
 </module>

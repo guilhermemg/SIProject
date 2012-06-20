@@ -43,6 +43,8 @@ public class EstradaSolidariaController implements Serializable {
 	private static volatile EstradaSolidariaController uniqueInstance;
 
 	private EstradaSolidariaController() {
+		Adder adder = new Adder(EstradaSolidariaController.getInstance());
+		adder.addElements();
 	};
 
 	/**
