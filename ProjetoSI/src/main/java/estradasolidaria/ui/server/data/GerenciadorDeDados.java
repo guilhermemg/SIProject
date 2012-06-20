@@ -1,8 +1,10 @@
 package estradasolidaria.ui.server.data;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.Map;
@@ -61,8 +63,8 @@ public class GerenciadorDeDados {
 	
 	private void writeIntoFile(String x) {
 		try{
-			FileOutputStream file = new FileOutputStream(fname, false);
-			PrintWriter outputStream = new PrintWriter(new BufferedWriter(new OutputStreamWriter(file ,"UTF-8")));
+			File file = new File(fname);
+			PrintWriter outputStream = new PrintWriter(file ,"UTF-8");
 			outputStream.write(x);
 	        outputStream.close();
 		}
