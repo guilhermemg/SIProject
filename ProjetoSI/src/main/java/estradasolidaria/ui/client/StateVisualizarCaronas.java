@@ -277,7 +277,9 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 			
 			@Override
 			public void update(int index, GWTCarona carona, String value) {
-				new PopupSolicitacoes(estrada, estradaSolidariaService, carona.idCarona).show();
+				PopupPanel p = new PopupSolicitacoes(estrada, estradaSolidariaService, carona.idCarona);
+				p.center();
+				p.show();
 			}
 		});
 		// Coluna de Donos das Caronas
