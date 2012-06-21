@@ -22,7 +22,7 @@ public class PopupSolicitacoes extends PopupPanel {
 	private final EstradaSolidariaServiceAsync estradaSolidariaService;
 	private Button btnRejeitar;
 	private ListBox listBox;
-	private Image image;
+	private Image fotoSolicitante;
 	private Label lblNome;
 	private Button btnAceitar;
 	private AbsolutePanel absolutePanel;
@@ -30,6 +30,8 @@ public class PopupSolicitacoes extends PopupPanel {
 	private Integer idSessao;
 	private Integer idCarona;
 	private LinkedList<Solicitante> listSolicitantes;
+	private DialogBox dialogBox;
+	private Button buttonOK;
 	
 	class Solicitante {
 		String nomeUsuario;
@@ -105,6 +107,20 @@ public class PopupSolicitacoes extends PopupPanel {
 		absolutePanel.add(btnSair, 310, 277);
 		btnSair.setSize("34px", "25px");
 		
+		dialogBox = new DialogBox();
+		
+		dialogBox.center();
+		buttonOK = new Button();
+		buttonOK.setText("OK");
+		buttonOK.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				dialogBox.hide();
+			}
+		});
+		dialogBox.add(buttonOK);
+		dialogBox.hide();
 		atualizaSolicitacoes();
 	}
 
@@ -112,47 +128,19 @@ public class PopupSolicitacoes extends PopupPanel {
 		Integer idSolicitacao = listSolicitantes.get(listBox.getSelectedIndex()).idSolicitacao;
 		
 		this.estradaSolidariaService.rejeitarSolicitacao(idSessao, idSolicitacao, new AsyncCallback<Void>() {
-
-			private DialogBox d;
-			private Button b;
-
 			@Override
 			public void onFailure(Throwable caught) {
-				d = new DialogBox();
-				d.setTitle("Erro");
-				d.setText("Erro: " + caught.getMessage());
-				
-				b = new Button();
-				b.setText("OK");
-				b.addClickHandler(new ClickHandler() {
-					
-					@Override
-					public void onClick(ClickEvent event) {
-						d.hide();
-					}
-				});
-				
-				d.add(b);
-				d.show();
+				dialogBox.setTitle("Erro");
+				dialogBox.setText("Erro: " + caught.getMessage());
+				dialogBox.show();
 				
 			}
 
 			@Override
 			public void onSuccess(Void result) {
-				d = new DialogBox();
-				d.setTitle("Sistema");
-				d.setText("Solicitação Rejeitada!");
-				b = new Button();
-				b.setText("OK");
-				b.addClickHandler(new ClickHandler() {
-					
-					@Override
-					public void onClick(ClickEvent event) {
-						d.hide();
-					}
-				});
-				d.add(b);
-				d.show();
+				dialogBox.setTitle("Sistema");
+				dialogBox.setText("Solicitação Rejeitada!");
+				dialogBox.show();
 			}
 		});
 		
@@ -163,46 +151,19 @@ public class PopupSolicitacoes extends PopupPanel {
 		
 		this.estradaSolidariaService.aceitarSolicitacao(idSessao, idSolicitacao, new AsyncCallback<Void>() {
 
-			private DialogBox d;
-			private Button b;
-
 			@Override
 			public void onFailure(Throwable caught) {
-				d = new DialogBox();
-				d.setTitle("Erro");
-				d.setText("Erro: " + caught.getMessage());
-				
-				b = new Button();
-				b.setText("OK");
-				b.addClickHandler(new ClickHandler() {
-					
-					@Override
-					public void onClick(ClickEvent event) {
-						d.hide();
-					}
-				});
-				
-				d.add(b);
-				d.show();
+				dialogBox.setTitle("Erro");
+				dialogBox.setText("Erro: " + caught.getMessage());
+				dialogBox.show();
 				
 			}
 
 			@Override
 			public void onSuccess(Void result) {
-				d = new DialogBox();
-				d.setTitle("Sistema");
-				d.setText("Solicitação Aceita!");
-				b = new Button();
-				b.setText("OK");
-				b.addClickHandler(new ClickHandler() {
-					
-					@Override
-					public void onClick(ClickEvent event) {
-						d.hide();
-					}
-				});
-				d.add(b);
-				d.show();
+				dialogBox.setTitle("Sistema");
+				dialogBox.setText("Solicitação Aceita!");
+				dialogBox.show();
 				
 			}
 		});
