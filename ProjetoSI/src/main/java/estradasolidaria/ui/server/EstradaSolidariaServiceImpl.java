@@ -12,6 +12,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import estradasolidaria.ui.client.EstradaSolidariaService;
 import estradasolidaria.ui.client.GWTException;
+import estradasolidaria.ui.server.adder.Adder;
 import estradasolidaria.ui.server.logic.Carona;
 import estradasolidaria.ui.server.logic.CaronaInexistenteException;
 import estradasolidaria.ui.server.logic.CaronaInvalidaException;
@@ -28,7 +29,12 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		EstradaSolidariaService {
 	private static final long serialVersionUID = -1007968486871020509L;
 	private EstradaSolidariaController controller = EstradaSolidariaController.getInstance();
-
+	
+	public EstradaSolidariaServiceImpl() {
+		Adder adder = new Adder(controller);
+		adder.addElements();
+	}
+	
 	@Override
 	public void criarUsuario(String login, String senha, String nome,
 			String endereco, String email) throws GWTException {
