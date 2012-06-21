@@ -14,10 +14,10 @@ public class Adder {
 			sistema.criarUsuario("l"+i, "s"+i, "n"+i, "e"+i, "em"+i);
 		}
 		
-		Integer idSessao = sistema.getMapIdSessao().get(0).getIdSessao();
+		Integer idSessao = sistema.abrirSessao("l1", "s1").getIdSessao();
 		
 		for(int j = 1; j < 11; j++) {
-			sistema.cadastrarCarona(idSessao, "o"+j, "d"+j, "12/12/12", "12:12", j);
+			sistema.cadastrarCarona(idSessao, "o"+j, "d"+j, "12/12/2012", "12:12", j);
 		}
 		
 		sistema.criarUsuario("si1", "si1si1", "nn", "ee", "emem");

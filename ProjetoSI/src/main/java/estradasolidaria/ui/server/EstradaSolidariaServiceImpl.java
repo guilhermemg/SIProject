@@ -31,7 +31,7 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	private EstradaSolidariaController controller = EstradaSolidariaController.getInstance();
 	
 	public EstradaSolidariaServiceImpl() {
-		Adder adder = new Adder(controller);
+		Adder adder = new Adder(this.controller);
 		adder.addElements();
 	}
 	
