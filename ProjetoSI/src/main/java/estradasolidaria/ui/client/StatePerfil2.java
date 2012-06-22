@@ -105,7 +105,7 @@ public class StatePerfil2 extends Composite {
 		leftSideBarPanel.add(txtbtnVisualizarCaronas, 10, 111);
 		txtbtnVisualizarCaronas.setSize("122px", "24px");
 		
-		Button txtbtnPesquisarCarona = new Button("Pesquisar carona");
+		Button txtbtnPesquisarCarona = new Button("Pesquisar Carona");
 		leftSideBarPanel.add(txtbtnPesquisarCarona, 10, 156);
 		txtbtnPesquisarCarona.setSize("122px", "24px");
 		

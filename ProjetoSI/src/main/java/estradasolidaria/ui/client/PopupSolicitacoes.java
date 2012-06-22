@@ -26,7 +26,7 @@ public class PopupSolicitacoes extends PopupPanel {
 	private Label lblNome;
 	private Button btnAceitar;
 	private AbsolutePanel absolutePanel;
-	private Button btnSair;
+	private Button btnOK;
 	private Integer idSessao;
 	private Integer idCarona;
 	private LinkedList<Solicitante> listSolicitantes;
@@ -58,7 +58,7 @@ public class PopupSolicitacoes extends PopupPanel {
 		
 		absolutePanel = new AbsolutePanel();
 		setWidget(absolutePanel);
-		absolutePanel.setSize("344px", "302px");
+		absolutePanel.setSize("380px", "302px");
 		
 		listBox = new ListBox();
 		absolutePanel.add(listBox, 173, 10);
@@ -98,14 +98,14 @@ public class PopupSolicitacoes extends PopupPanel {
 		absolutePanel.add(btnRejeitar, 173, 183);
 		btnRejeitar.setSize("137px", "81px");
 		
-		btnSair = new Button("Sair");
-		btnSair.addClickHandler(new ClickHandler() {
+		btnOK = new Button("OK");
+		btnOK.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				hide();
 			}
 		});
-		absolutePanel.add(btnSair, 310, 277);
-		btnSair.setSize("34px", "25px");
+		absolutePanel.add(btnOK, 310, 277);
+		btnOK.setSize("34px", "25px");
 		
 		dialogBox = new DialogBox();
 		

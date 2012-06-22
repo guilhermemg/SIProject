@@ -1,25 +1,87 @@
 package estradasolidaria.ui.server.adder;
 
+import estradasolidaria.ui.server.logic.CaronaInexistenteException;
+import estradasolidaria.ui.server.logic.CaronaInvalidaException;
 import estradasolidaria.ui.server.logic.EstradaSolidariaController;
+import estradasolidaria.ui.server.logic.Solicitacao;
 
 public class Adder {
 	private EstradaSolidariaController sistema;
+	Integer idSessao1; 
+	Integer idSessao2; 
+	Integer idSessao3;
+	Integer idSessao4;
+	Integer idSessao5; 
 	
 	public Adder(EstradaSolidariaController uniqueInstance) {
 		this.sistema = uniqueInstance;
 	}
 
 	public void addElements() {
-		for(int i = 0; i < 5; i++) {
+		for(int i = 1; i < 6; i++) {
 			sistema.criarUsuario("l"+i, "s"+i, "n"+i, "e"+i, "em"+i);
 		}
 		
-		Integer idSessao = sistema.abrirSessao("l1", "s1").getIdSessao();
+		idSessao1 = sistema.abrirSessao("l1", "s1").getIdSessao();
+		idSessao2 = sistema.abrirSessao("l2", "s2").getIdSessao();
+		idSessao3 = sistema.abrirSessao("l3", "s3").getIdSessao();
+		idSessao4 = sistema.abrirSessao("l4", "s4").getIdSessao();
+		idSessao5 = sistema.abrirSessao("l5", "s5").getIdSessao();
 		
-		for(int j = 1; j < 11; j++) {
-			sistema.cadastrarCarona(idSessao, "o"+j, "d"+j, "12/12/2012", "12:12", j);
+		cadastraCaronas();
+		try {
+			solicitacaoDeVagas();
+			aceitacaoDeVagas();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
 		sistema.criarUsuario("si1", "si1si1", "nn", "ee", "emem");
+		encerrarSessoes();
+	}
+
+	private void encerrarSessoes() {
+		sistema.encerrarSessao("l1");
+		sistema.encerrarSessao("l2");
+		sistema.encerrarSessao("l3");
+		sistema.encerrarSessao("l4");
+		sistema.encerrarSessao("l5");
+	}
+
+	private void aceitacaoDeVagas() throws IllegalArgumentException, CaronaInexistenteException {
+		Solicitacao[] solicitacoesFeitasPorU2 = (Solicitacao[]) sistema.getUsuario(idSessao2).getMapIdSolicitacoesFeitas().values().toArray();
+		sistema.aceitarSolicitacao(idSessao1, solicitacoesFeitasPorU2[0].getIdSolicitacao());
+		
+		Solicitacao[] solicitacoesFeitasPorU5 = (Solicitacao[]) sistema.getUsuario(idSessao5).getMapIdSolicitacoesFeitas().values().toArray();
+		sistema.aceitarSolicitacao(idSessao4, solicitacoesFeitasPorU5[0].getIdSolicitacao());
+	}
+
+	private void solicitacaoDeVagas() throws CaronaInvalidaException {
+		sistema.solicitarVaga(idSessao2, sistema.getCaronaUsuario(idSessao1, 1).getIdCarona());
+		sistema.solicitarVagaPontoEncontro(idSessao3, (sistema.getCaronaUsuario(idSessao2, 1).getIdCarona()), "ponto1");
+		sistema.solicitarVagaPontoEncontro(idSessao4, (sistema.getCaronaUsuario(idSessao5, 2).getIdCarona()), "ponto2");
+		sistema.solicitarVaga(idSessao5, sistema.getCaronaUsuario(idSessao4, 1).getIdCarona());
+	}
+
+	private void cadastraCaronas() {
+		for(int j = 1; j < 3; j++) {
+			sistema.cadastrarCarona(idSessao1, "o"+j, "d"+j, "12/12/2012", "12:12", j);
+		}
+		
+		for(int j = 3; j < 5; j++) {
+			sistema.cadastrarCarona(idSessao2, "o"+j, "d"+j, "12/12/2012", "12:12", j);
+		}
+		
+		for(int j = 5; j < 7; j++) {
+			sistema.cadastrarCarona(idSessao3, "o"+j, "d"+j, "12/12/2012", "12:12", j);
+		}
+		
+		for(int j = 7; j < 9; j++) {
+			sistema.cadastrarCarona(idSessao4, "o"+j, "d"+j, "12/12/2012", "12:12", j);
+		}
+		
+		for(int j = 9; j < 11; j++) {
+			sistema.cadastrarCarona(idSessao5, "o"+j, "d"+j, "12/12/2012", "12:12", j);
+		}
 	}
 }
