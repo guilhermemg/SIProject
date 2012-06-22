@@ -101,9 +101,9 @@ public class StatePerfil2 extends Composite {
 		leftSideBarPanel.add(txtbtnCadastrarCarona, 10, 66);
 		txtbtnCadastrarCarona.setSize("122px", "24px");
 		
-		Button txtbtnVisualizarCaronas = new Button("Visualizar Caronas");
-		leftSideBarPanel.add(txtbtnVisualizarCaronas, 10, 111);
-		txtbtnVisualizarCaronas.setSize("122px", "24px");
+		Button txtbtnMinhasCaronas = new Button("Minhas Caronas");
+		leftSideBarPanel.add(txtbtnMinhasCaronas, 10, 111);
+		txtbtnMinhasCaronas.setSize("122px", "24px");
 		
 		Button txtbtnPesquisarCarona = new Button("Pesquisar Carona");
 		leftSideBarPanel.add(txtbtnPesquisarCarona, 10, 156);
@@ -168,7 +168,7 @@ public class StatePerfil2 extends Composite {
 			}
 		});
 		
-		txtbtnVisualizarCaronas.addClickHandler(new ClickHandler() {
+		txtbtnMinhasCaronas.addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
