@@ -22,7 +22,7 @@ public class CaronaTest {
 	@Test
 	public void idUsuarioTest(){
 		try {
-			carona1 = new Carona(null, "Campina Grande", "Jo�o Pessoa", "21/06/2012", "05:30", 4, 1);
+			carona1 = new Carona(null, "Campina Grande", "Jo�o Pessoa", "21/06/2013", "05:30", 4, 1);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "IdDonoDaCarona inválido");
 		}
@@ -31,7 +31,7 @@ public class CaronaTest {
 	@Test
 	public void idUsuarioTest2(){
 		try {
-			carona2 = new Carona(null, "Centen�rio", "Conjunto dos Professores", "21/06/2012", "05:30", 4, "Campina Grande", 1);
+			carona2 = new Carona(null, "Centen�rio", "Conjunto dos Professores", "21/06/2013", "05:30", 4, "Campina Grande", 1);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "IdDonoDaCarona inválido");
 		}
@@ -40,13 +40,13 @@ public class CaronaTest {
 	@Test
 	public void origemTest(){
 		try {
-			carona1 = new Carona(donoCaronas.getIdUsuario(), "", "Jo�o Pessoa", "21/06/2012", "05:30", 4, 1);
+			carona1 = new Carona(donoCaronas.getIdUsuario(), "", "Jo�o Pessoa", "21/06/2013", "05:30", 4, 1);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Origem inválida");
 		}
 		
 		try {
-			carona1 = new Carona(donoCaronas.getIdUsuario(), null, "Jo�o Pessoa", "21/06/2012", "05:30", 4, 1);
+			carona1 = new Carona(donoCaronas.getIdUsuario(), null, "Jo�o Pessoa", "21/06/2013", "05:30", 4, 1);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Origem inválida");
 		}
@@ -55,13 +55,13 @@ public class CaronaTest {
 	@Test
 	public void origemTest2(){
 		try {
-			carona2 = new Carona(donoCaronas.getIdUsuario(), "", "Conjunto dos Professores", "21/06/2012", "05:30", 4, "Campina Grande", 1);
+			carona2 = new Carona(donoCaronas.getIdUsuario(), "", "Conjunto dos Professores", "21/06/2013", "05:30", 4, "Campina Grande", 1);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Origem inválida");
 		}
 		
 		try {
-			carona2 = new Carona(donoCaronas.getIdUsuario(), null, "Conjunto dos Professores", "21/06/2012", "05:30", 4, "Campina Grande", 1);
+			carona2 = new Carona(donoCaronas.getIdUsuario(), null, "Conjunto dos Professores", "21/06/2013", "05:30", 4, "Campina Grande", 1);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Origem inválida");
 		}
@@ -70,13 +70,13 @@ public class CaronaTest {
 	@Test
 	public void destinoTest(){
 		try {
-			carona1 = new Carona(donoCaronas.getIdUsuario(), "Campina Grande", "", "21/06/2012", "05:30", 4, 1);
+			carona1 = new Carona(donoCaronas.getIdUsuario(), "Campina Grande", "", "21/06/2013", "05:30", 4, 1);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Destino inválido");
 		}
 		
 		try {
-			carona1 = new Carona(donoCaronas.getIdUsuario(), "Campina Grande", null, "21/06/2012", "05:30", 4, 1);
+			carona1 = new Carona(donoCaronas.getIdUsuario(), "Campina Grande", null, "21/06/2013", "05:30", 4, 1);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Destino inválido");
 		}
@@ -85,13 +85,13 @@ public class CaronaTest {
 	@Test
 	public void destinoTest2(){
 		try {
-			carona2 = new Carona(donoCaronas.getIdUsuario(), "Centen�rio", "", "21/06/2012", "05:30", 4, "Campina Grande", 1);
+			carona2 = new Carona(donoCaronas.getIdUsuario(), "Centen�rio", "", "21/06/2013", "05:30", 4, "Campina Grande", 1);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Destino inválido");
 		}
 		
 		try {
-			carona2 = new Carona(donoCaronas.getIdUsuario(), "Centen�rio", null, "21/06/2012", "05:30", 4, "Campina Grande", 1);
+			carona2 = new Carona(donoCaronas.getIdUsuario(), "Centen�rio", null, "21/06/2013", "05:30", 4, "Campina Grande", 1);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Destino inválido");
 		}
@@ -142,25 +142,25 @@ public class CaronaTest {
 	@Test
 	public void horaTest(){
 		try {
-			carona1 = new Carona(donoCaronas.getIdUsuario(), "Campina Grande", "Jo�o Pessoa", "21/06/2012", "", 4, 1);
+			carona1 = new Carona(donoCaronas.getIdUsuario(), "Campina Grande", "Jo�o Pessoa", "21/07/2013", "", 4, 1);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Hora inválida");
 		}
 		
 		try {
-			carona1 = new Carona(donoCaronas.getIdUsuario(), "Campina Grande", "Jo�o Pessoa", "21/06/2012", null, 4, 1);
+			carona1 = new Carona(donoCaronas.getIdUsuario(), "Campina Grande", "Jo�o Pessoa", "21/07/2013", null, 4, 1);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Hora inválida");
 		}
 		
 		try {
-			carona1 = new Carona(donoCaronas.getIdUsuario(), "Campina Grande", "Jo�o Pessoa", "21/06/2012", "24:00", 4, 1);
+			carona1 = new Carona(donoCaronas.getIdUsuario(), "Campina Grande", "Jo�o Pessoa", "21/07/2013", "24:00", 4, 1);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Hora inválida");
 		}
 		
 		try {
-			carona1 = new Carona(donoCaronas.getIdUsuario(), "Campina Grande", "Jo�o Pessoa", "21/06/2012", "13:78", 4, 1);
+			carona1 = new Carona(donoCaronas.getIdUsuario(), "Campina Grande", "Jo�o Pessoa", "21/06/2013", "13:78", 4, 1);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Hora inválida");
 		}
@@ -169,25 +169,25 @@ public class CaronaTest {
 	@Test
 	public void horaTest2(){
 		try {
-			carona1 = new Carona(donoCaronas.getIdUsuario(), "Centen�rio", "Conjunto dos Professores", "21/06/2012", "", 4, "Campina Grande", 1);
+			carona1 = new Carona(donoCaronas.getIdUsuario(), "Centen�rio", "Conjunto dos Professores", "21/06/2013", "", 4, "Campina Grande", 1);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Hora inválida");
 		}
 		
 		try {
-			carona1 = new Carona(donoCaronas.getIdUsuario(), "Centen�rio", "Conjunto dos Professores", "21/06/2012", null, 4, "Campina Grande", 1);
+			carona1 = new Carona(donoCaronas.getIdUsuario(), "Centen�rio", "Conjunto dos Professores", "21/06/2013", null, 4, "Campina Grande", 1);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Hora inválida");
 		}
 		
 		try {
-			carona1 = new Carona(donoCaronas.getIdUsuario(), "Centen�rio", "Conjunto dos Professores", "21/06/2012", "24:00", 4, "Campina Grande", 1);
+			carona1 = new Carona(donoCaronas.getIdUsuario(), "Centen�rio", "Conjunto dos Professores", "21/06/2013", "24:00", 4, "Campina Grande", 1);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Hora inválida");
 		}
 		
 		try {
-			carona1 = new Carona(donoCaronas.getIdUsuario(), "Centen�rio", "Conjunto dos Professores", "21/06/2012", "13:78", 4, "Campina Grande", 1);
+			carona1 = new Carona(donoCaronas.getIdUsuario(), "Centen�rio", "Conjunto dos Professores", "21/06/2013", "13:78", 4, "Campina Grande", 1);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Hora inválida");
 		}
@@ -196,19 +196,19 @@ public class CaronaTest {
 	@Test
 	public void vagasTest(){
 		try {
-			carona1 = new Carona(donoCaronas.getIdUsuario(), "Campina Grande", "Jo�o Pessoa", "21/06/2012", "05:30", -0, 1);
+			carona1 = new Carona(donoCaronas.getIdUsuario(), "Campina Grande", "Jo�o Pessoa", "21/06/2013", "05:30", -0, 1);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Vaga inválida");
 		}
 		
 		try {
-			carona1 = new Carona(donoCaronas.getIdUsuario(), "Campina Grande", "Jo�o Pessoa", "21/06/2012", "05:30", null, 1);
+			carona1 = new Carona(donoCaronas.getIdUsuario(), "Campina Grande", "Jo�o Pessoa", "21/06/2013", "05:30", null, 1);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Vaga inválida");
 		}
 		
 		try {
-			carona1 = new Carona(donoCaronas.getIdUsuario(), "Campina Grande", "Jo�o Pessoa", "21/06/2012", "05:30", -1, 1);
+			carona1 = new Carona(donoCaronas.getIdUsuario(), "Campina Grande", "Jo�o Pessoa", "21/06/2013", "05:30", -1, 1);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Vaga inválida");
 		}
@@ -217,19 +217,19 @@ public class CaronaTest {
 	@Test
 	public void vagasTest2(){
 		try {
-			carona1 = new Carona(donoCaronas.getIdUsuario(), "Centen�rio", "Conjunto dos Professores", "21/06/2012", "05:30", 0, "Campina Grande", 1);
+			carona1 = new Carona(donoCaronas.getIdUsuario(), "Centen�rio", "Conjunto dos Professores", "21/06/2013", "05:30", 0, "Campina Grande", 1);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Vaga inválida");
 		}
 		
 		try {
-			carona1 = new Carona(donoCaronas.getIdUsuario(), "Centen�rio", "Conjunto dos Professores", "21/06/2012", "05:30", null, "Campina Grande", 1);
+			carona1 = new Carona(donoCaronas.getIdUsuario(), "Centen�rio", "Conjunto dos Professores", "21/06/2013", "05:30", null, "Campina Grande", 1);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Vaga inválida");
 		}
 		
 		try {
-			carona1 = new Carona(donoCaronas.getIdUsuario(), "Centen�rio", "Conjunto dos Professores", "21/06/2012", "05:30", -1, "Campina Grande", 1);
+			carona1 = new Carona(donoCaronas.getIdUsuario(), "Centen�rio", "Conjunto dos Professores", "21/06/2013", "05:30", -1, "Campina Grande", 1);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Vaga inválida");
 		}

@@ -28,34 +28,39 @@ public class DateUtil {
 	 * @throws Exception
 	 */
 	public boolean validaData(String data) {
-		String[] dataSplited = data.split("/");
-		String d = dataSplited[0];
-		String m = dataSplited[1];
-		String a = dataSplited[2];
-
-		setDia(d);
-		setMes(m);
-		setAno(a);
+		try {
+			String[] dataSplited = data.split("/");
+			String d = dataSplited[0];
+			String m = dataSplited[1];
+			String a = dataSplited[2];
 	
-		final int MAIOR_ANO = Integer.MAX_VALUE, MENOR_ANO = 1970;
+			setDia(d);
+			setMes(m);
+			setAno(a);
 		
-		if ((ano < MENOR_ANO) || (ano > MAIOR_ANO)) {
-			return false;
-		} else if (dia < 1 || dia > 31) {
-			return false;
-		} else if ((mes > 12) || (mes < 1)) {
-			return false;
+			final int MAIOR_ANO = Integer.MAX_VALUE, MENOR_ANO = 1970;
+			
+			if ((ano < MENOR_ANO) || (ano > MAIOR_ANO)) {
+				return false;
+			} else if (dia < 1 || dia > 31) {
+				return false;
+			} else if ((mes > 12) || (mes < 1)) {
+				return false;
+			}
+			// 01 <= mes <= 12
+			calendar.set(GregorianCalendar.DAY_OF_MONTH, dia);
+			calendar.set(GregorianCalendar.MONTH, --mes); // 0=janeiro, 1=fevereiro, ...
+			calendar.set(GregorianCalendar.YEAR, ano);
+			
+			if (dia > calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
+				return false;
+			}
+			else {
+				return true;
+			}
 		}
-		// 01 <= mes <= 12
-		calendar.set(Calendar.DAY_OF_MONTH, dia);
-		calendar.set(Calendar.MONTH, --mes); // 0=janeiro, 1=fevereiro, ...
-		calendar.set(Calendar.YEAR, ano);
-		
-		if (dia > calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
-			return false;
-		}
-		else {
-			return true;
+		catch(Exception e) {
+			throw new IllegalArgumentException("Data inválida");
 		}
 	}
 	
@@ -155,5 +160,14 @@ public class DateUtil {
 			}
 		}
 		throw new IllegalArgumentException("Hora inválida");
+	}
+	
+	/**
+	 * Retorna data no formato Calendar.
+	 * 
+	 * @return data
+	 */
+	public Calendar getData() {
+		return this.calendar;
 	}
 }

@@ -10,6 +10,8 @@ import java.util.TreeMap;
 
 import javax.mail.MessagingException;
 
+import com.ibm.icu.text.SimpleDateFormat;
+
 import estradasolidaria.ui.server.util.SenderMail;
 
 
@@ -1032,8 +1034,9 @@ public class Usuario implements Serializable {
 	 * @param emailDonoDaCarona
 	 */
 	public void notificaPerfil(Carona carona, String emailDonoDaCarona) {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		mensagensPerfil.add(new String("Carona cadastrada no dia "
-				+ carona.getData() + ", " + "às " + carona.getHora()
+				+ formatter.format(carona.getData().getTime()) + ", " + "às " + carona.getHora()
 				+ " de acordo com os seus interesses registrados. "
 				+ "Entrar em contato com " + emailDonoDaCarona));
 	}

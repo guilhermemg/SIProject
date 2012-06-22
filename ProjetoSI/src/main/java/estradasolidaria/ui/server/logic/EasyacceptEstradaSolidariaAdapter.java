@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.mail.MessagingException;
 
+import com.ibm.icu.text.SimpleDateFormat;
+
 import estradasolidaria.ui.server.util.SpecialLinkedListBrackets;
 import estradasolidaria.ui.server.util.SpecialLinkedListKeys;
 
@@ -205,8 +207,10 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 			return c.getOrigem();
 		else if (nomeAtributo.equals(EnumCarona.DESTINO.getNomeAtributo()))
 			return c.getDestino();
-		else if (nomeAtributo.equals(EnumCarona.DATA.getNomeAtributo()))
-			return c.getData();
+		else if (nomeAtributo.equals(EnumCarona.DATA.getNomeAtributo())) {
+			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+			return formatter.format(c.getData().getTime());
+		}
 		else if (nomeAtributo.equals(EnumCarona.HORA.getNomeAtributo()))
 			return c.getHora();
 		else if (nomeAtributo.equals(EnumCarona.VAGA.getNomeAtributo()))

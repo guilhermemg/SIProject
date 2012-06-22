@@ -1,11 +1,14 @@
 package estradasolidaria.ui.server.logic;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import com.ibm.icu.text.SimpleDateFormat;
 
 import estradasolidaria.ui.server.util.DateUtil;
 
@@ -29,7 +32,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	private String origem;
 	private String destino;
 	private String hora;
-	private String data;
+	private Calendar data;
 	private Integer vagas;
 	private String pontoEncontro;
 	private int LIMITE_VAGAS;
@@ -175,7 +178,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 		if(data == null || data.equals(""))
 			throw new IllegalArgumentException("Data inválida");
 		else if(dateUtil.validaData(data) && dateUtil.validaDataJaPassou())
-			this.data = data;
+			this.data = dateUtil.getData();
 		else
 			throw new IllegalArgumentException("Data inválida");
 	}
@@ -238,7 +241,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return data
 	 */
-	public String getData() {
+	public Calendar getData() {
 		return this.data;
 	}
 
@@ -401,7 +404,8 @@ public class Carona implements Comparable<Carona>, Serializable {
 
 	@Override
 	public String toString() {
-		return this.origem + " para " + this.destino + ", no dia " + this.data
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		return this.origem + " para " + this.destino + ", no dia " + formatter.format(this.data.getTime())
 				+ ", as " + this.hora;
 	}
 
