@@ -169,9 +169,11 @@ public interface AdapterInterface {
 	 *            : id da sessao do usuario dono da carona
 	 * @param idSolicitacao
 	 * @throws CaronaInexistenteException 
+	 * @throws EstadoSolicitacaoException 
+	 * @throws IllegalArgumentException 
 	 */
 	public abstract void aceitarSolicitacaoPontoEncontro(String idSessao,
-			String idSolicitacao) throws CaronaInexistenteException;
+			String idSolicitacao) throws CaronaInexistenteException, IllegalArgumentException, EstadoSolicitacaoException;
 
 	/**
 	 * Aceita solicitacao
@@ -181,9 +183,10 @@ public interface AdapterInterface {
 	 * @param idSolicitacao
 	 * @throws CaronaInexistenteException 
 	 * @throws IllegalArgumentException 
+	 * @throws EstadoSolicitacaoException 
 	 */
 	public abstract void aceitarSolicitacao(String idSessao,
-			String idSolicitacao) throws IllegalArgumentException, CaronaInexistenteException;
+			String idSolicitacao) throws IllegalArgumentException, CaronaInexistenteException, EstadoSolicitacaoException;
 
 	/**
 	 * Adiciona solicitacao a lista de solicitacoes associadas a uma carona,
@@ -204,9 +207,11 @@ public interface AdapterInterface {
 	 * 
 	 * @param idSessao
 	 * @param idSolicitacao
+	 * @throws CaronaInexistenteException 
+	 * @throws EstadoSolicitacaoException 
 	 */
 	public abstract void rejeitarSolicitacao(String idSessao,
-			String idSolicitacao);
+			String idSolicitacao) throws CaronaInexistenteException, EstadoSolicitacaoException;
 
 	/**
 	 * Remove a solicitacao, indicada por idSolicitacao, da lista de
@@ -218,9 +223,10 @@ public interface AdapterInterface {
 	 * @param idSolicitacao
 	 * @throws CaronaInvalidaException
 	 * @throws CaronaInexistenteException 
+	 * @throws EstadoSolicitacaoException 
 	 */
 	public abstract void desistirRequisicao(String idSessao, String idCarona,
-			String idSolicitacao) throws CaronaInvalidaException, CaronaInexistenteException;
+			String idSolicitacao) throws CaronaInvalidaException, CaronaInexistenteException, EstadoSolicitacaoException;
 
 	/**
 	 * Pega usuario associado a sessao indicada por idSessao e pega o perfil

@@ -383,8 +383,11 @@ public class Usuario implements Serializable {
 	 * 
 	 * @param idSolicitacao
 	 * @return
+	 * @throws EstadoSolicitacaoException 
+	 * @throws CaronaInexistenteException 
+	 * @throws IllegalArgumentException 
 	 */
-	public Solicitacao aceitarSolicitacaoPontoEncontro(Integer idSolicitacao) {
+	public Solicitacao aceitarSolicitacaoPontoEncontro(Integer idSolicitacao) throws IllegalArgumentException, CaronaInexistenteException, EstadoSolicitacaoException {
 
 		// Iterator Pattern
 		iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas.values()
@@ -397,8 +400,8 @@ public class Usuario implements Serializable {
 			while (it.hasNext()) {
 				Solicitacao s = it.next();
 				if (s.getIdSolicitacao().equals(idSolicitacao) && s.getTipoSolicitacao().equals(EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO)) {
+					s.aceitar(c);
 					c.setPontoEncontro(s.getPontoEncontro()); // seta ponto de encontro para carona apos aceitar ponto encontro
-					c.decrementaNumeroDeVagas();
 					return s;
 				}
 			}
@@ -431,9 +434,10 @@ public class Usuario implements Serializable {
 	 * @param idSolicitacao
 	 * @return solicitacao
 	 * @throws CaronaInexistenteException 
+	 * @throws EstadoSolicitacaoException 
 	 * 
 	 */
-	public Solicitacao aceitarSolicitacao(Integer idSolicitacao) throws IllegalArgumentException, CaronaInexistenteException {
+	public Solicitacao aceitarSolicitacao(Integer idSolicitacao) throws IllegalArgumentException, CaronaInexistenteException, EstadoSolicitacaoException {
 		// Iterator Pattern
 		iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas.values()
 				.iterator();
@@ -532,9 +536,11 @@ public class Usuario implements Serializable {
 	 * eliminando-a do historico, apendas mudando o seu estado.
 	 * 
 	 * @param idSolicitacao
+	 * @throws CaronaInexistenteException 
+	 * @throws EstadoSolicitacaoException 
 	 * 
 	 */
-	public void rejeitarSolicitacao(Integer idSolicitacao) {
+	public void rejeitarSolicitacao(Integer idSolicitacao) throws CaronaInexistenteException, EstadoSolicitacaoException {
 		// Iterator Pattern
 		iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas.values()
 				.iterator();
@@ -1001,8 +1007,9 @@ public class Usuario implements Serializable {
 	 * @param idCarona
 	 * @param idSolicitacao
 	 * @throws CaronaInexistenteException 
+	 * @throws EstadoSolicitacaoException 
 	 */
-	public void desistirRequisicao(Integer idCarona, Integer idSolicitacao) throws CaronaInexistenteException {
+	public void desistirRequisicao(Integer idCarona, Integer idSolicitacao) throws CaronaInexistenteException, EstadoSolicitacaoException {
 		if(idCarona == null)
 			throw new CaronaInexistenteException();
 		Carona c = this.mapIdCaronasPegas.get(idCarona);

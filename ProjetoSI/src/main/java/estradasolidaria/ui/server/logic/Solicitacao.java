@@ -345,8 +345,10 @@ public class Solicitacao implements Serializable {
 	 * 
 	 * @param c: carona a qual a solicitacao pertence
 	 * @throws CaronaInexistenteException 
+	 * @throws EstadoSolicitacaoException 
+	 * @throws IllegalArgumentException 
 	 */
-	public void aceitar(Carona c) throws CaronaInexistenteException {
+	public void aceitar(Carona c) throws CaronaInexistenteException, IllegalArgumentException, EstadoSolicitacaoException {
 		estado.aceitar(this, c);
 	}
 	
@@ -354,16 +356,21 @@ public class Solicitacao implements Serializable {
 	 * Muda estado da solicitacao para rejeitada.
 	 * 
 	 * @param c: carona a qual a solicitacao pertence
+	 * @throws CaronaInexistenteException 
+	 * @throws EstadoSolicitacaoException 
 	 */
-	public void rejeitar(Carona c) {
+	public void rejeitar(Carona c) throws CaronaInexistenteException, EstadoSolicitacaoException {
 		estado.rejeitar(this, c);
 	}
 	
 	/**
 	 * Cancela solicitacao.
+	 * @param carona 
+	 * @throws EstadoSolicitacaoException 
+	 * @throws CaronaInexistenteException 
 	 */
-	public void cancelar() {
-		estado.cancelar(this);
+	public void cancelar(Carona carona) throws EstadoSolicitacaoException, CaronaInexistenteException {
+		estado.cancelar(this, carona);
 	}
 	
 	/**

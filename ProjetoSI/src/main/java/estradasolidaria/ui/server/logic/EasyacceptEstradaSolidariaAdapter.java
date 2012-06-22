@@ -455,7 +455,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	 */
 	@Override
 	public void aceitarSolicitacaoPontoEncontro(String idSessao,
-			String idSolicitacao) throws CaronaInexistenteException {
+			String idSolicitacao) throws CaronaInexistenteException, IllegalArgumentException, EstadoSolicitacaoException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 
@@ -477,7 +477,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	 * @see estradasolidaria.ui.server.logic.AdapterInterface#aceitarSolicitacao(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public void aceitarSolicitacao(String idSessao, String idSolicitacao) throws IllegalArgumentException, CaronaInexistenteException {
+	public void aceitarSolicitacao(String idSessao, String idSolicitacao) throws IllegalArgumentException, CaronaInexistenteException, EstadoSolicitacaoException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 		if (idSolicitacao == null || idSolicitacao.equals(""))
@@ -521,7 +521,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	 * @see estradasolidaria.ui.server.logic.AdapterInterface#rejeitarSolicitacao(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public void rejeitarSolicitacao(String idSessao, String idSolicitacao) {
+	public void rejeitarSolicitacao(String idSessao, String idSolicitacao) throws CaronaInexistenteException, EstadoSolicitacaoException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 		if (idSolicitacao == null || idSolicitacao.equals(""))
@@ -543,7 +543,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	 */
 	@Override
 	public void desistirRequisicao(String idSessao, String idCarona,
-			String idSolicitacao) throws CaronaInvalidaException, CaronaInexistenteException {
+			String idSolicitacao) throws CaronaInvalidaException, CaronaInexistenteException, EstadoSolicitacaoException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 		if (idCarona == null || idCarona.equals(""))

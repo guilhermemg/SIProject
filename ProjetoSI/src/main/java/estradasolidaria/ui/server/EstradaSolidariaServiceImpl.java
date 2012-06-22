@@ -161,6 +161,8 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 			throw new GWTException(e.getMessage());
 		} catch (CaronaInexistenteException e) {
 			throw new GWTException(e.getMessage());
+		} catch (Exception e) {
+			throw new GWTException(e.getMessage());
 		}
 		
 	}
@@ -173,8 +175,14 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public void rejeitarSolicitacao(Integer idSessao, Integer idSolicitacao) {
-		controller.rejeitarSolicitacao(idSessao, idSolicitacao);
+	public void rejeitarSolicitacao(Integer idSessao, Integer idSolicitacao) throws GWTException {
+		try {
+			controller.rejeitarSolicitacao(idSessao, idSolicitacao);
+		} catch (CaronaInexistenteException e) {
+			throw new GWTException(e.getMessage());
+		} catch (Exception e) {
+			throw new GWTException(e.getMessage());
+		}
 		
 	}
 

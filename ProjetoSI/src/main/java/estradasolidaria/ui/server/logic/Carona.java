@@ -705,11 +705,13 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * Muda estado da solicitacao para cancelada.
 	 * 
 	 * @param idSolicitacao
+	 * @throws EstadoSolicitacaoException 
+	 * @throws CaronaInexistenteException 
 	 */
-	public void desistirRequisicao(Integer idSolicitacao) {
+	public void desistirRequisicao(Integer idSolicitacao) throws EstadoSolicitacaoException, CaronaInexistenteException {
 		if(idSolicitacao == null)
 			throw new IllegalArgumentException("Id solicitacao inválido");
-		this.mapIdSolicitacoes.get(idSolicitacao).cancelar();
+		this.mapIdSolicitacoes.get(idSolicitacao).cancelar(this);
 	}
 
 	/**
@@ -729,7 +731,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @throws Exception
 	 */
-	public void aumentaVaga() throws IllegalArgumentException {
+	public void incrementaNumeroDeVagas() throws IllegalArgumentException {
 		if (getVagas() < LIMITE_VAGAS) {
 			setVagas(getVagas() + 1);
 		}
@@ -742,9 +744,10 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @param s
 	 *            : solicitacao
 	 * @throws CaronaInexistenteException 
+	 * @throws EstadoSolicitacaoException 
 	 * @throws Exception
 	 */
-	public void aceitarSolicitacao(Solicitacao s) throws IllegalArgumentException, CaronaInexistenteException {
+	public void aceitarSolicitacao(Solicitacao s) throws IllegalArgumentException, CaronaInexistenteException, EstadoSolicitacaoException {
 		s.aceitar(this);
 	}
 

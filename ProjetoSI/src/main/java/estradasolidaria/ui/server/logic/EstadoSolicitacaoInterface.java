@@ -11,7 +11,7 @@ package estradasolidaria.ui.server.logic;
  *
  */
 public interface EstadoSolicitacaoInterface {
-	public void aceitar(Solicitacao s, Carona c) throws CaronaInexistenteException;
-	public void cancelar(Solicitacao s);
-	public void rejeitar(Solicitacao s, Carona c);
+	public void aceitar(Solicitacao s, Carona c) throws CaronaInexistenteException, EstadoSolicitacaoException;
+	public void cancelar(Solicitacao s, Carona carona) throws CaronaInexistenteException, EstadoSolicitacaoException;
+	public void rejeitar(Solicitacao s, Carona c) throws CaronaInexistenteException, EstadoSolicitacaoException;
 }

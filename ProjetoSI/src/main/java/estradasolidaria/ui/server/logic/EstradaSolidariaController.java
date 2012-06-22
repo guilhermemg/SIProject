@@ -435,9 +435,11 @@ public class EstradaSolidariaController implements Serializable {
 	 *            : id da sessao do usuario dono da carona
 	 * @param idSolicitacao
 	 * @throws CaronaInexistenteException 
+	 * @throws EstadoSolicitacaoException 
+	 * @throws IllegalArgumentException 
 	 */
 	public void aceitarSolicitacaoPontoEncontro(Integer idSessao,
-			Integer idSolicitacao) throws CaronaInexistenteException {
+			Integer idSolicitacao) throws CaronaInexistenteException, IllegalArgumentException, EstadoSolicitacaoException {
 		if (idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 		
@@ -470,8 +472,9 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param idSolicitacao
 	 * @throws CaronaInexistenteException 
 	 * @throws IllegalArgumentException 
+	 * @throws EstadoSolicitacaoException 
 	 */
-	public void aceitarSolicitacao(Integer idSessao, Integer idSolicitacao) throws IllegalArgumentException, CaronaInexistenteException {
+	public void aceitarSolicitacao(Integer idSessao, Integer idSolicitacao) throws IllegalArgumentException, CaronaInexistenteException, EstadoSolicitacaoException {
 		if (idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 		if(idSolicitacao == null)
@@ -551,8 +554,10 @@ public class EstradaSolidariaController implements Serializable {
 	 * 
 	 * @param idSessao
 	 * @param idSolicitacao
+	 * @throws CaronaInexistenteException 
+	 * @throws EstadoSolicitacaoException 
 	 */
-	public void rejeitarSolicitacao(Integer idSessao, Integer idSolicitacao) {
+	public void rejeitarSolicitacao(Integer idSessao, Integer idSolicitacao) throws CaronaInexistenteException, EstadoSolicitacaoException {
 		if (idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 		if (idSolicitacao == null)
@@ -580,9 +585,10 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param idSolicitacao
 	 * @throws CaronaInvalidaException
 	 * @throws CaronaInexistenteException 
+	 * @throws EstadoSolicitacaoException 
 	 */
 	public void desistirRequisicao(Integer idSessao, Integer idCarona,
-			Integer idSolicitacao) throws CaronaInvalidaException, CaronaInexistenteException {
+			Integer idSolicitacao) throws CaronaInvalidaException, CaronaInexistenteException, EstadoSolicitacaoException {
 		if (idSessao == null )
 			throw new IllegalArgumentException("Sessão inválida");
 		if (idCarona == null )

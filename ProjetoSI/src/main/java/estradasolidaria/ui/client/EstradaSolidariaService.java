@@ -188,9 +188,10 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * 
 	 * @param idSessao
 	 * @param idSolicitacao
+	 * @throws GWTException 
 	 */
 	public abstract void rejeitarSolicitacao(Integer idSessao,
-			Integer idSolicitacao);
+			Integer idSolicitacao) throws GWTException;
 
 	/**
 	 * Remove a solicitacao, indicada por idSolicitacao, da lista de

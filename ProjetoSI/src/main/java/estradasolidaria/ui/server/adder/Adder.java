@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import estradasolidaria.ui.server.logic.CaronaInexistenteException;
 import estradasolidaria.ui.server.logic.CaronaInvalidaException;
+import estradasolidaria.ui.server.logic.EstadoSolicitacaoException;
 import estradasolidaria.ui.server.logic.EstradaSolidariaController;
 import estradasolidaria.ui.server.logic.Solicitacao;
 
@@ -51,7 +52,7 @@ public class Adder {
 		sistema.encerrarSessao("l5");
 	}
 
-	private void aceitacaoDeVagas() throws IllegalArgumentException, CaronaInexistenteException {
+	private void aceitacaoDeVagas() throws IllegalArgumentException, CaronaInexistenteException, EstadoSolicitacaoException {
 		Collection<Solicitacao> solicitacoesFeitasPorU2 = sistema.getUsuario(idSessao2).getMapIdSolicitacoesFeitas().values();
 		Iterator<Solicitacao> it = solicitacoesFeitasPorU2.iterator();
 		sistema.aceitarSolicitacao(idSessao1, it.next().getIdSolicitacao());
