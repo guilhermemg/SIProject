@@ -1,5 +1,8 @@
 package estradasolidaria.ui.server.adder;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import estradasolidaria.ui.server.logic.CaronaInexistenteException;
 import estradasolidaria.ui.server.logic.CaronaInvalidaException;
 import estradasolidaria.ui.server.logic.EstradaSolidariaController;
@@ -49,11 +52,13 @@ public class Adder {
 	}
 
 	private void aceitacaoDeVagas() throws IllegalArgumentException, CaronaInexistenteException {
-		Solicitacao[] solicitacoesFeitasPorU2 = (Solicitacao[]) sistema.getUsuario(idSessao2).getMapIdSolicitacoesFeitas().values().toArray();
-		sistema.aceitarSolicitacao(idSessao1, solicitacoesFeitasPorU2[0].getIdSolicitacao());
+		Collection<Solicitacao> solicitacoesFeitasPorU2 = sistema.getUsuario(idSessao2).getMapIdSolicitacoesFeitas().values();
+		Iterator<Solicitacao> it = solicitacoesFeitasPorU2.iterator();
+		sistema.aceitarSolicitacao(idSessao1, it.next().getIdSolicitacao());
 		
-		Solicitacao[] solicitacoesFeitasPorU5 = (Solicitacao[]) sistema.getUsuario(idSessao5).getMapIdSolicitacoesFeitas().values().toArray();
-		sistema.aceitarSolicitacao(idSessao4, solicitacoesFeitasPorU5[0].getIdSolicitacao());
+		Collection<Solicitacao> solicitacoesFeitasPorU5 = sistema.getUsuario(idSessao5).getMapIdSolicitacoesFeitas().values();
+		it = solicitacoesFeitasPorU5.iterator();
+		sistema.aceitarSolicitacao(idSessao4, it.next().getIdSolicitacao());
 	}
 
 	private void solicitacaoDeVagas() throws CaronaInvalidaException {
