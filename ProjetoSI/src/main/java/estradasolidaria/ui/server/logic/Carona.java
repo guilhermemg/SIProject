@@ -31,7 +31,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	private Integer idCarona;
 	private String origem;
 	private String destino;
-	private String hora;
+	private Calendar hora;
 	private Calendar data;
 	private Integer vagas;
 	private String pontoEncontro;
@@ -150,7 +150,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return hora
 	 */
-	public String getHora() {
+	public Calendar getHora() {
 		return this.hora;
 	}
 	
@@ -163,7 +163,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 		if(hora == null || hora.equals(""))
 			throw new IllegalArgumentException("Hora inválida");
 		else if(dateUtil.validaHora(hora))
-			this.hora = hora;
+			this.hora = dateUtil.getHora();
 		else
 			throw new IllegalArgumentException("Hora inválida");
 	}
@@ -404,9 +404,10 @@ public class Carona implements Comparable<Carona>, Serializable {
 
 	@Override
 	public String toString() {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-		return this.origem + " para " + this.destino + ", no dia " + formatter.format(this.data.getTime())
-				+ ", as " + this.hora;
+		SimpleDateFormat formatterData = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat formatterHora = new SimpleDateFormat("HH:mm");
+		return this.origem + " para " + this.destino + ", no dia " + formatterData.format(this.data.getTime())
+				+ ", as " + formatterHora.format(this.hora.getTime());
 	}
 
 	/**

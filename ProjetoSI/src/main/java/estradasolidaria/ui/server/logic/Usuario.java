@@ -1034,9 +1034,11 @@ public class Usuario implements Serializable {
 	 * @param emailDonoDaCarona
 	 */
 	public void notificaPerfil(Carona carona, String emailDonoDaCarona) {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat formatterData = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat formatterHora = new SimpleDateFormat("HH:mm");
 		mensagensPerfil.add(new String("Carona cadastrada no dia "
-				+ formatter.format(carona.getData().getTime()) + ", " + "às " + carona.getHora()
+				+ formatterData.format(carona.getData().getTime()) + ", " 
+				+ "às " + formatterHora.format(carona.getHora().getTime())
 				+ " de acordo com os seus interesses registrados. "
 				+ "Entrar em contato com " + emailDonoDaCarona));
 	}

@@ -18,7 +18,8 @@ public class DateUtil {
 	private int mes;
 	private int ano;
 	
-	GregorianCalendar calendar = new GregorianCalendar();
+	Calendar calendarData = new GregorianCalendar();
+	Calendar calendarHora = new GregorianCalendar();
 
 	/**
 	 * Valida formato da data.
@@ -48,11 +49,11 @@ public class DateUtil {
 				return false;
 			}
 			// 01 <= mes <= 12
-			calendar.set(GregorianCalendar.DAY_OF_MONTH, dia);
-			calendar.set(GregorianCalendar.MONTH, --mes); // 0=janeiro, 1=fevereiro, ...
-			calendar.set(GregorianCalendar.YEAR, ano);
+			calendarData.set(GregorianCalendar.DAY_OF_MONTH, dia);
+			calendarData.set(GregorianCalendar.MONTH, --mes); // 0=janeiro, 1=fevereiro, ...
+			calendarData.set(GregorianCalendar.YEAR, ano);
 			
-			if (dia > calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
+			if (dia > calendarData.getActualMaximum(Calendar.DAY_OF_MONTH)) {
 				return false;
 			}
 			else {
@@ -70,7 +71,7 @@ public class DateUtil {
 	 * @return true se data ainda nao passou
 	 */
 	public boolean validaDataJaPassou() {
-		if(calendar.getTimeInMillis() > Calendar.getInstance().getTimeInMillis()) {
+		if(calendarData.getTimeInMillis() > Calendar.getInstance().getTimeInMillis()) {
 			return true;
 		}
 		else {
@@ -138,28 +139,26 @@ public class DateUtil {
 		if (!hora.contains(":"))
 			throw new IllegalArgumentException("Hora inválida");
 		
-		if(hora.length() == 5)  { // date format == hh:mm
-			if( Character.isDigit(hora.charAt(0))
-				&& Character.isDigit(hora.charAt(1))
-				&& !Character.isDigit(hora.charAt(2))
-				&& hora.charAt(2) == ':' && Character.isDigit(hora.charAt(3))
-				&& Character.isDigit(hora.charAt(4))) {
-				int h = Character.digit(hora.charAt(0), 10)*10 + Character.digit(hora.charAt(1), 10);
-				int m = Character.digit(hora.charAt(3), 10)*10 + Character.digit(hora.charAt(4), 10);
-				return h >= 0 && h < 24 && m < 60 && m >= 0 ? true : false;
-			}
+		try {
+			String[] horaSplited = hora.split(":");
+			
+			int h = Integer.parseInt(horaSplited[0]);
+			int m = Integer.parseInt(horaSplited[1]);
+			
+			if(h < 0 || h > 23 || m < 0 || m > 59)
+				return false;
+		
+			calendarHora.set(Calendar.YEAR, calendarData.get(Calendar.YEAR));
+			calendarHora.set(Calendar.MONTH, calendarData.get(Calendar.MONTH));
+			calendarHora.set(Calendar.DAY_OF_MONTH,	calendarData.get(Calendar.DAY_OF_MONTH));
+			calendarHora.set(Calendar.HOUR_OF_DAY, h);
+			calendarHora.set(Calendar.MINUTE, m);
+			
+			return true;
 		}
-		else if(hora.length() == 4) { // date format == h:mm
-			if( Character.isDigit(hora.charAt(0)) 
-					&& !Character.isDigit(hora.charAt(1))
-					&& hora.charAt(1) == ':' && Character.isDigit(hora.charAt(2))
-					&& Character.isDigit(hora.charAt(3))) {
-				int h = Character.digit(hora.charAt(0), 10);
-				int m = Character.digit(hora.charAt(2), 10)*10 + Character.digit(hora.charAt(3), 10);
-				return h >= 0 && h < 24 && m < 60 && m >= 0 ? true : false;
-			}
+		catch(Exception e) {
+			throw new IllegalArgumentException("Hora inválida");
 		}
-		throw new IllegalArgumentException("Hora inválida");
 	}
 	
 	/**
@@ -168,6 +167,15 @@ public class DateUtil {
 	 * @return data
 	 */
 	public Calendar getData() {
-		return this.calendar;
+		return this.calendarData;
+	}
+	
+	/**
+	 * Retorna hora no formato Calendar.
+	 * 
+	 * @return hora
+	 */
+	public Calendar getHora() {
+		return this.calendarHora;
 	}
 }

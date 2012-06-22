@@ -33,14 +33,8 @@ public class InteresseTest {
 
 	@Test
 	public void testConstrutorData() {
-		/*
-		 * assertEquals("Hora de Inicio esta errada.Espected \" \"",i2.getHoraInicio
-		 * (), "");
-		 * assertEquals("Hora de fim esta errada.Espected \" \"",i3.getHoraFim
-		 * (), "");
-		 */
 		assertEquals("Data não é correspondente a esperada. Espected \" \" ",
-				i5.getData(), "");
+				i5.getData(), null);
 		try {
 			new Interesse("Campina Grande", "João Pessoa", null, "11:00",
 					"12:00");
@@ -106,7 +100,7 @@ public class InteresseTest {
 	@Test
 	public void testConstrutorHora() {
 		assertEquals("Hora de Inicio esta errada.Espected \" \"",
-				i2.getHoraInicio(), "");
+				i2.getHoraInicio(), null);
 		try {
 			new Interesse("Campina Grande", "João Pessoa", "29/02/2016", // proximo ano bissexto
 					"", "");
@@ -147,7 +141,7 @@ public class InteresseTest {
 		}
 
 		assertEquals("Hora de Inicio esta errada.Espected \" \"",
-				i2.getHoraInicio(), "");
+				i2.getHoraInicio(), null);
 		try {
 			new Interesse("Campina Grande", "João Pessoa", "29/02/2016",
 					"11:60", "");

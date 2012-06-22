@@ -237,7 +237,8 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	public List<List<String>> getTodasCaronasUsuario(Integer idSessao) {
 		List<List<String>> result = new LinkedList<List<String>>();
 		List<Carona> listaCaronas = controller.getTodasCaronasUsuario(idSessao);
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat formatterData = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat formatterHora = new SimpleDateFormat("HH:mm");
 		
 		for (Carona c : listaCaronas) {
 			List<String> caronaList = new LinkedList<String>();
@@ -247,8 +248,8 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 			caronaList.add(c.getIdDonoDaCarona().toString());
 			caronaList.add(c.getOrigem());
 			caronaList.add(c.getDestino());
-			caronaList.add(formatter.format(c.getData().getTime()));
-			caronaList.add(c.getHora());
+			caronaList.add(formatterData.format(c.getData().getTime()));
+			caronaList.add(formatterHora.format(c.getHora().getTime()));
 			caronaList.add(c.getVagas().toString());
 			if (c.getPontoEncontro() == null) {
 				caronaList.add(c.getPontoEncontro());
@@ -265,7 +266,8 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public List<List<String>> getSolicitacoesFeitasConfirmadas(Integer idSessao) {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat formatterData = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat formatterHora = new SimpleDateFormat("HH:mm");
 		List<List<String>> result = new LinkedList<List<String>>();
 		for (Solicitacao s : controller.getMapaSolicitacoesFeitas(idSessao).values()) {
 			if (s.isAceita()) {
@@ -277,8 +279,8 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 				solicitacaoList.add(c.getIdDonoDaCarona().toString());
 				solicitacaoList.add(c.getOrigem());
 				solicitacaoList.add(c.getDestino());
-				solicitacaoList.add(formatter.format(c.getData().getTime()));
-				solicitacaoList.add(c.getHora());
+				solicitacaoList.add(formatterData.format(c.getData().getTime()));
+				solicitacaoList.add(formatterHora.format(c.getHora().getTime()));
 				solicitacaoList.add(c.getVagas().toString());
 				if (c.getPontoEncontro() != null) {
 					solicitacaoList.add(c.getPontoEncontro());
@@ -296,7 +298,8 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public List<List<String>> getSolicitacoesFeitasPendentes(Integer idSessao) throws Exception {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat formatterData = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat formatterHora = new SimpleDateFormat("HH:mm");
 		List<List<String>> result = new LinkedList<List<String>>();
 		for (Solicitacao s : controller.getMapaSolicitacoesFeitas(idSessao).values()) {
 			if (s.isPendente()) {
@@ -308,8 +311,8 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 				solicitacaoList.add(c.getIdDonoDaCarona().toString());
 				solicitacaoList.add(c.getOrigem());
 				solicitacaoList.add(c.getDestino());
-				solicitacaoList.add(formatter.format(c.getData().getTime()));
-				solicitacaoList.add(c.getHora());
+				solicitacaoList.add(formatterData.format(c.getData().getTime()));
+				solicitacaoList.add(formatterHora.format(c.getHora().getTime()));
 				solicitacaoList.add(c.getVagas().toString());
 				if (c.getPontoEncontro() != null) {
 					solicitacaoList.add(c.getPontoEncontro());
@@ -360,7 +363,8 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public List<List<String>> getTodasCaronasPegas(Integer idSessao) {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat formatterData = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat formatterHora = new SimpleDateFormat("HH:mm");
 		List<List<String>> result = new LinkedList<List<String>>();
 		List<Carona> listaCaronas = controller.getTodasCaronasPegas(idSessao);
 		for (Carona c : listaCaronas) {
@@ -371,8 +375,8 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 			caronaList.add(c.getIdDonoDaCarona().toString());
 			caronaList.add(c.getOrigem());
 			caronaList.add(c.getDestino());
-			caronaList.add(formatter.format(c.getData().getTime()));
-			caronaList.add(c.getHora());
+			caronaList.add(formatterData.format(c.getData().getTime()));
+			caronaList.add(formatterHora.format(c.getHora().getTime()));
 			caronaList.add(c.getVagas().toString());
 			caronaList.add(c.getPontoEncontro());
 			caronaList.add(donoDaCarona.getNome());

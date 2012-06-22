@@ -1,6 +1,7 @@
 package estradasolidaria.ui.server.logic;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
 import estradasolidaria.ui.server.util.DateUtil;
 
@@ -23,9 +24,9 @@ public class Interesse implements Serializable {
 	private Integer idInteresse;
 	
 	private DateUtil dateUtil = new DateUtil();
-	private String horaFim;
-	private String horaInicio;
-	private String data;
+	private Calendar horaFim;
+	private Calendar horaInicio;
+	private Calendar data;
 	
 	/**
 	 * Construtor de interesse.
@@ -67,7 +68,7 @@ public class Interesse implements Serializable {
 	 * 
 	 * @return hora de inicio
 	 */
-	public String getHoraInicio() {
+	public Calendar getHoraInicio() {
 		return this.horaInicio;
 	}
 
@@ -76,7 +77,7 @@ public class Interesse implements Serializable {
 	 * 
 	 * @return data
 	 */
-	public String getData() {
+	public Calendar getData() {
 		return this.data;
 	}
 
@@ -85,7 +86,7 @@ public class Interesse implements Serializable {
 	 * 
 	 * @return hora de fim
 	 */
-	public String getHoraFim() {
+	public Calendar getHoraFim() {
 		return this.horaFim;
 	}
 
@@ -119,15 +120,18 @@ public class Interesse implements Serializable {
 	 * Modifica a data da carona que o usuario se interessa. Se o parametro for null
 	 * ou não for uma data no formato dd/mm/aaaa, é lançada uma exceção.
 	 * 
+	 * obs.: se data == "", o
+	 * atributo fica null
+	 * 
 	 * @param data
 	 */
 	public void setData(String data) {
 		if(data == null)
 			throw new IllegalArgumentException("Data inválida");
 		else if(data.equals(""))
-			this.data = data;
+			this.data = null;
 		else if(dateUtil.validaData(data) && dateUtil.validaDataJaPassou())
-			this.data = data;
+			this.data = dateUtil.getData();
 		else
 			throw new IllegalArgumentException("Data inválida");
 	}
@@ -161,15 +165,18 @@ public class Interesse implements Serializable {
 	/**
 	 * Configura hora de fim.
 	 * 
+	 * obs.: se horaFim == "", o
+	 * atributo fica null
+	 * 
 	 * @param horaFim
 	 */
 	private void setHoraFim(String horaFim) {
 		if(horaFim == null)
 			throw new IllegalArgumentException("Hora inválida");
 		else if(horaFim.equals(""))
-			this.horaFim = horaFim; 
+			this.horaFim = null; 
 		else if(dateUtil.validaHora(horaFim))
-			this.horaFim = horaFim;
+			this.horaFim = dateUtil.getHora();
 		else
 			throw new IllegalArgumentException("Hora inválida");
 	}
@@ -180,15 +187,18 @@ public class Interesse implements Serializable {
 	 * que o usuario se interessa
 	 * para uma carona.
 	 * 
+	 * obs.: se horaInicio == "", o
+	 * atributo fica null
+	 * 
 	 * @param horaInicio
 	 */
 	private void setHoraInicio(String horaInicio) {
 		if(horaInicio == null)
 			throw new IllegalArgumentException("Hora inválida");
 		else if(horaInicio.equals(""))
-			this.horaInicio = horaInicio;
+			this.horaInicio = null;
 		else if(dateUtil.validaHora(horaInicio))
-			this.horaInicio = horaInicio;
+			this.horaInicio = dateUtil.getHora();
 		else
 			throw new IllegalArgumentException("Hora inválida");
 	}
