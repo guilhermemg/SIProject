@@ -9,4 +9,7 @@ public interface Resources extends ClientBundle {
 
 	@Source("genericUserImage.jpg")
 	ImageResource getGenericUserImage();
+	
+	@Source("genericLittleUserImage.jpg")
+	ImageResource getGenericLittleUserImage();
 }

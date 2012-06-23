@@ -141,19 +141,36 @@ public class StatePerfil extends Composite {
 		rightSidebarPanel.add(lblAmigos, 91, 0);
 		lblAmigos.setSize("57px", "15px");
 		
-		Grid flexTable = new Grid();
-		flexTable.setCellSpacing(10);
-		flexTable.setCellPadding(50);
-		flexTable.resize(0, 0);
-		rightSidebarPanel.add(flexTable, 14, 21);
-		flexTable.setSize("210px", "254px");
-		
 		DatePicker datePicker = new DatePicker();
 		rightSidebarPanel.add(datePicker, 14, 313);
 		datePicker.setSize("210px", "162px");
 		
 		Label lblProximasCaronas = new Label("Próximas Caronas");
 		rightSidebarPanel.add(lblProximasCaronas, 66, 292);
+		
+		Image image = new Image(resources.getGenericLittleUserImage());
+		rightSidebarPanel.add(image, 25, 21);
+		image.setSize("76px", "74px");
+		
+		Image image_1 = new Image(resources.getGenericLittleUserImage());
+		rightSidebarPanel.add(image_1, 125, 21);
+		image_1.setSize("76px", "74px");
+		
+		Image image_2 = new Image(resources.getGenericLittleUserImage());
+		rightSidebarPanel.add(image_2, 25, 115);
+		image_2.setSize("76px", "74px");
+		
+		Image image_3 = new Image(resources.getGenericLittleUserImage());
+		rightSidebarPanel.add(image_3, 125, 115);
+		image_3.setSize("76px", "74px");
+		
+		Image image_4 = new Image(resources.getGenericLittleUserImage());
+		rightSidebarPanel.add(image_4, 25, 212);
+		image_4.setSize("76px", "74px");
+		
+		Image image_5 = new Image(resources.getGenericLittleUserImage());
+		rightSidebarPanel.add(image_5, 125, 212);
+		image_5.setSize("76px", "74px");
 		
 		bodyPanel = new AbsolutePanel();
 		dockPanel.add(bodyPanel, DockPanel.CENTER);
