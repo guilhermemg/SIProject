@@ -16,6 +16,8 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.widget.client.TextButton;
 
+import estradasolidaria.ui.resources.Resources;
+
 public class StateEditarPerfil extends Composite {
 	private EstradaSolidariaServiceAsync estradaService;
 	private Integer idSessaoAberta;

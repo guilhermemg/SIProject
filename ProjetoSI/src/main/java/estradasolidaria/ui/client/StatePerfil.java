@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.MenuItemSeparator;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DatePicker;
 
-public class StatePerfil2 extends Composite {
+public class StatePerfil extends Composite {
 	
 	final EstradaSolidaria estrada;
 	final Widget panel= this;
@@ -32,7 +32,7 @@ public class StatePerfil2 extends Composite {
 	private AbsolutePanel mainPanel;
 	private String[] dadosUsuario;
 	
-	public StatePerfil2(EstradaSolidaria estradaSolidaria, final EstradaSolidariaServiceAsync estradaSolidariaService, String[] result) {
+	public StatePerfil(EstradaSolidaria estradaSolidaria, final EstradaSolidariaServiceAsync estradaSolidariaService, String[] result) {
 		
 		estrada = estradaSolidaria;
 		this.estradaSolidariaService = estradaSolidariaService;
@@ -203,7 +203,7 @@ public class StatePerfil2 extends Composite {
 
 	protected void visualizarCaronaGUI() {
 		bodyPanel.clear();
-		Widget visualizarCarona= new StateVisualizarCaronas(estrada, estradaSolidariaService);
+		Widget visualizarCarona= new StateMinhasCaronas(estrada, estradaSolidariaService);
 		visualizarCarona.setSize("100%", "100%");
 		bodyPanel.add(visualizarCarona);
 		

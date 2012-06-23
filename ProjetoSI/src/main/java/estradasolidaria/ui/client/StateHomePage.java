@@ -19,6 +19,8 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
+import estradasolidaria.ui.resources.Resources;
+
 public class StateHomePage extends AbsolutePanel {
 	StatePanel state;
 	final EstradaSolidaria estrada;
@@ -192,7 +194,7 @@ public class StateHomePage extends AbsolutePanel {
 
 			@Override
 			public void onSuccess(String[] result) {
-				estrada.setStatePanel(new StatePerfil2(estrada, estradaSolidariaService, result));
+				estrada.setStatePanel(new StatePerfil(estrada, estradaSolidariaService, result));
 			}
 		});
 	}

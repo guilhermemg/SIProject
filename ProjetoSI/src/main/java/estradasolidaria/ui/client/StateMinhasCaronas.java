@@ -28,7 +28,7 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 
-public class StateVisualizarCaronas extends AbsolutePanel {
+public class StateMinhasCaronas extends AbsolutePanel {
 	final EstradaSolidaria estrada;
 	final Widget panel = this;
 	private EstradaSolidariaServiceAsync estradaSolidariaService;
@@ -59,7 +59,7 @@ public class StateVisualizarCaronas extends AbsolutePanel {
 	private Column<GWTCarona,String> buttomColumn;
 	
 
-	public StateVisualizarCaronas(EstradaSolidaria estrada,
+	public StateMinhasCaronas(EstradaSolidaria estrada,
 			EstradaSolidariaServiceAsync estradaSolidariaService) {
 		this.estrada = estrada;
 		this.estradaSolidariaService = estradaSolidariaService;

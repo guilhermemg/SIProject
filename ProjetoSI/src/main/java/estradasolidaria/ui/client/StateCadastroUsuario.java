@@ -175,7 +175,7 @@ public class StateCadastroUsuario extends AbsolutePanel implements StatePanel {
 
 			@Override
 			public void onSuccess(String[] result) {
-				estrada.setStatePanel(new StatePerfil2(estrada, estradaSolidariaService, result));
+				estrada.setStatePanel(new StatePerfil(estrada, estradaSolidariaService, result));
 			}
 		});
 	}
