@@ -66,21 +66,24 @@ public class StateHomePage extends AbsolutePanel {
 		absolutePanel_1 = new AbsolutePanel();
 		dockPanel.add(absolutePanel_1, DockPanel.NORTH);
 		absolutePanel_1.setStyleName("gwt-LabelEstradaSolidaria2");
-		absolutePanel_1.setSize("1006px", "100%");
+		absolutePanel_1.setSize("100%", "100%");
 		
 		absolutePanel_3 = new AbsolutePanel();
 		absolutePanel_1.add(absolutePanel_3, 392, 10);
-		absolutePanel_3.setSize("314px", "109px");
+		absolutePanel_3.setSize("330px", "111px");
 		
 		Label lblBemvindoAoEstrada = new Label("Bem-vindo ao Estrada Solidária!");
-		absolutePanel_3.add(lblBemvindoAoEstrada, 49, 40);
+		absolutePanel_3.add(lblBemvindoAoEstrada, 48, 24);
 		lblBemvindoAoEstrada.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		lblBemvindoAoEstrada.setStyleName("gwt-LabelHomePage2");
 		lblBemvindoAoEstrada.setSize("216px", "29px");
+		imagem = new Image(resources.home());
+		absolutePanel_1.add(imagem, 392, 127);
+		imagem.setSize("330px", "148px");
 		
 		absolutePanel = new AbsolutePanel();
 		dockPanel.add(absolutePanel, DockPanel.CENTER);
-		absolutePanel.setSize("1005px", "291px");
+		absolutePanel.setSize("100%", "100%");
 		
 		AbsolutePanel panelLogin = new AbsolutePanel();
 		absolutePanel.add(panelLogin, 624, 19);
@@ -151,10 +154,7 @@ public class StateHomePage extends AbsolutePanel {
 		
 		absolutePanel_2 = new AbsolutePanel();
 		absolutePanel.add(absolutePanel_2, 88, 290);
-		absolutePanel_2.setSize("878px", "132px");
-		imagem = new Image(resources.home());
-		absolutePanel_2.add(imagem, 408, 41);
-		imagem.setSize("353px", "217px");
+		absolutePanel_2.setSize("100%", "100%");
 	}
 
 	protected void cadastraUsuarioGUI() {
