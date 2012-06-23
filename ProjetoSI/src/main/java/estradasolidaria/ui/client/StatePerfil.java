@@ -59,7 +59,7 @@ public class StatePerfil extends Composite {
 		
 		mainPanel = new AbsolutePanel();
 		initWidget(mainPanel);
-		mainPanel.setSize("1063px", "710px");
+		mainPanel.setSize("1304px", "710px");
 		
 		dockPanel = new DockPanel();
 		mainPanel.add(dockPanel, 10, 10);
@@ -67,14 +67,14 @@ public class StatePerfil extends Composite {
 		
 		headerPanel = new AbsolutePanel();
 		dockPanel.add(headerPanel, DockPanel.NORTH);
-		headerPanel.setSize("984px", "210px");
+		headerPanel.setSize("1244px", "210px");
 		
 		Label lblNomeDoUsuario = new Label("Olá " + dadosUsuario[2] + "!");
 		headerPanel.add(lblNomeDoUsuario, 23, 183);
 		lblNomeDoUsuario.setSize("126px", "17px");
 		
 		MenuBar menuBar = new MenuBar(false);
-		headerPanel.add(menuBar, 762, 10);
+		headerPanel.add(menuBar, 966, 10);
 		menuBar.setSize("168px", "19px");
 		
 		MenuItem menuItemOpcoes = new MenuItem("Editar Perfil", false, new Command() {
@@ -135,7 +135,7 @@ public class StatePerfil extends Composite {
 		
 		rightSidebarPanel = new AbsolutePanel();
 		dockPanel.add(rightSidebarPanel, DockPanel.EAST);
-		rightSidebarPanel.setSize("241px", "487px");
+		rightSidebarPanel.setSize("309px", "487px");
 		
 		Label lblAmigos = new Label("Amigos:");
 		rightSidebarPanel.add(lblAmigos, 91, 0);
@@ -174,7 +174,7 @@ public class StatePerfil extends Composite {
 		
 		bodyPanel = new AbsolutePanel();
 		dockPanel.add(bodyPanel, DockPanel.CENTER);
-		bodyPanel.setSize("433px", "487px");
+		bodyPanel.setSize("775px", "487px");
 
 		btnInicio.addClickHandler(new ClickHandler() {
 			@Override

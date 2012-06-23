@@ -36,11 +36,11 @@ public class StateHomePage extends Composite {
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
-		absolutePanel.setSize("823px", "673px");
+		absolutePanel.setSize("1037px", "673px");
 		
 		AbsolutePanel absolutePanel_1 = new AbsolutePanel();
 		absolutePanel_1.setStylePrimaryName("gwt-LoginPanel");
-		absolutePanel.add(absolutePanel_1, 474, 223);
+		absolutePanel.add(absolutePanel_1, 687, 222);
 		absolutePanel_1.setSize("318px", "218px");
 		
 		Label label = new Label("Já é usuário? Faça Login.");
@@ -83,7 +83,7 @@ public class StateHomePage extends Composite {
 		
 		AbsolutePanel absolutePanel_2 = new AbsolutePanel();
 		absolutePanel_2.setStyleName("h2");
-		absolutePanel.add(absolutePanel_2, 23, 222);
+		absolutePanel.add(absolutePanel_2, 194, 222);
 		absolutePanel_2.setSize("445px", "328px");
 		
 		Label lblNome = new Label("Nome:");
@@ -167,7 +167,7 @@ public class StateHomePage extends Composite {
 		absolutePanel_2.add(lblCadastrese, 188, 0);
 		
 		AbsolutePanel absolutePanel_3 = new AbsolutePanel();
-		absolutePanel.add(absolutePanel_3, 23, 58);
+		absolutePanel.add(absolutePanel_3, 194, 59);
 		absolutePanel_3.setSize("330px", "111px");
 		
 		Label label_9 = new Label("Bem-vindo ao Estrada Solidária!");
@@ -177,7 +177,7 @@ public class StateHomePage extends Composite {
 		absolutePanel_3.add(label_9, 48, 24);
 		
 		Image homePageImage = new Image(resources.getHomePageImage());
-		absolutePanel.add(homePageImage, 401, 38);
+		absolutePanel.add(homePageImage, 598, 41);
 		homePageImage.setSize("225px", "129px");
 	}
 	
