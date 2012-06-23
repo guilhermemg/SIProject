@@ -1,5 +1,6 @@
 package estradasolidaria.ui.client;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
@@ -10,7 +11,8 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
-import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
@@ -61,14 +63,14 @@ public class StatePerfil extends Composite {
 		
 		headerPanel = new AbsolutePanel();
 		dockPanel.add(headerPanel, DockPanel.NORTH);
-		headerPanel.setSize("100%", "100%");
+		headerPanel.setSize("100%", "210px");
 		
 		Label lblNomeDoUsuario = new Label("Olá " + dadosUsuario[2] + "!");
-		headerPanel.add(lblNomeDoUsuario, 10, 10);
+		headerPanel.add(lblNomeDoUsuario, 30, 183);
 		
 		MenuBar menuBar = new MenuBar(false);
-		headerPanel.add(menuBar, 730, 10);
-		menuBar.setSize("258px", "19px");
+		headerPanel.add(menuBar, 805, 10);
+		menuBar.setSize("168px", "19px");
 		
 		MenuItem menuItemOpcoes = new MenuItem("Editar Perfil", false, new Command() {
 			public void execute() {
@@ -93,23 +95,24 @@ public class StatePerfil extends Composite {
 		});
 		menuBar.addItem(menuItemSair);
 		
+//		Image photoPerfil = new Image(result[0] + ".jpg");
+		Image photoPerfil = new Image(GWT.getModuleBaseURL() + ".ui.resources/" + result[0] + ".jpg");
+		headerPanel.add(photoPerfil, 23, 10);
+		photoPerfil.setSize("126px", "167px");
+		
 		leftSideBarPanel = new AbsolutePanel();
 		dockPanel.add(leftSideBarPanel, DockPanel.WEST);
-		leftSideBarPanel.setSize("140px", "248px");
+		leftSideBarPanel.setSize("140px", "240px");
 		
 		Button txtbtnCadastrarCarona = new Button("Cadastrar Carona");
 		leftSideBarPanel.add(txtbtnCadastrarCarona, 10, 66);
 		txtbtnCadastrarCarona.setSize("122px", "24px");
 		
-		Button txtbtnMinhasCaronas = new Button("Minhas Caronas");
-		leftSideBarPanel.add(txtbtnMinhasCaronas, 10, 111);
-		txtbtnMinhasCaronas.setSize("122px", "24px");
-		
 		Button txtbtnPesquisarCarona = new Button("Pesquisar Carona");
-		leftSideBarPanel.add(txtbtnPesquisarCarona, 10, 156);
+		leftSideBarPanel.add(txtbtnPesquisarCarona, 10, 149);
 		txtbtnPesquisarCarona.setSize("122px", "24px");
 		
-		Button btnInicio = new Button("Inicio");
+		Button btnInicio = new Button("Início");
 		leftSideBarPanel.add(btnInicio, 10, 21);
 		btnInicio.setSize("122px", "24px");
 		
@@ -119,20 +122,25 @@ public class StatePerfil extends Composite {
 				
 			}
 		});
-		leftSideBarPanel.add(btnMeusInteresses, 10, 196);
+		leftSideBarPanel.add(btnMeusInteresses, 10, 189);
 		btnMeusInteresses.setSize("122px", "25px");
+		
+		Button button = new Button("Minhas Caronas");
+		leftSideBarPanel.add(button, 10, 107);
+		button.setSize("122px", "24px");
 		
 		rightSidebarPanel = new AbsolutePanel();
 		dockPanel.add(rightSidebarPanel, DockPanel.EAST);
-		rightSidebarPanel.setSize((EstradaSolidaria.comprimentoDoBrowser * 0.2) + "px", "487px");
+		rightSidebarPanel.setSize("263px", "487px");
 		
 		Label lblAmigos = new Label("Amigos:");
 		rightSidebarPanel.add(lblAmigos, 91, 0);
 		lblAmigos.setSize("57px", "15px");
 		
-		FlexTable flexTable = new FlexTable();
+		Grid flexTable = new Grid();
+		flexTable.resize(0, 0);
 		rightSidebarPanel.add(flexTable, 14, 21);
-		flexTable.setSize("212px", "213px");
+		flexTable.setSize("197px", "253px");
 		
 		DatePicker datePicker = new DatePicker();
 		rightSidebarPanel.add(datePicker, 14, 313);
@@ -142,8 +150,8 @@ public class StatePerfil extends Composite {
 		rightSidebarPanel.add(lblProximasCaronas, 66, 292);
 		
 		bodyPanel = new AbsolutePanel();
-		dockPanel.add(bodyPanel, DockPanel.CENTER);
-		bodyPanel.setSize((EstradaSolidaria.comprimentoDoBrowser * 0.6) + "px", "487px");
+		dockPanel.add(bodyPanel, DockPanel.WEST);
+		bodyPanel.setSize("622px", "487px");
 
 		btnInicio.addClickHandler(new ClickHandler() {
 			@Override
@@ -165,15 +173,6 @@ public class StatePerfil extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				pesquisarCaronaGUI();
-			}
-		});
-		
-		txtbtnMinhasCaronas.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-		
-				visualizarCaronaGUI();
 			}
 		});
 	}
@@ -199,14 +198,6 @@ public class StatePerfil extends Composite {
 	protected void inicio() {
 		
 		bodyPanel.clear();	
-	}
-
-	protected void visualizarCaronaGUI() {
-		bodyPanel.clear();
-		Widget visualizarCarona= new StateMinhasCaronas(estrada, estradaSolidariaService);
-		visualizarCarona.setSize("100%", "100%");
-		bodyPanel.add(visualizarCarona);
-		
 	}
 
 	protected void cadastrarCaronaGUI() {

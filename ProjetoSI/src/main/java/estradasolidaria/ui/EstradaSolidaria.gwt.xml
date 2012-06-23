@@ -6,4 +6,5 @@
 	<servlet class="estradasolidaria.ui.server.EstradaSolidariaServiceImpl" path="/estradaSolidariaService"/>
 	
 	<source path='client' />
+	<source path='resources' />
 </module>

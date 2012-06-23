@@ -43,7 +43,6 @@ public class StateHomePage extends AbsolutePanel {
 		this.estradaSolidariaService = estradaSolidariaService;
 		
 		Resources resources = GWT.create(Resources.class);
-		//imagem = new Image("http://www.fhwa.dot.gov/policyinformation/motorfuel/hwytaxes/2008/index_clip_image002.jpg");
 		
 		setStylePrimaryName("dialogVPanel");
 		
@@ -67,10 +66,10 @@ public class StateHomePage extends AbsolutePanel {
 		absolutePanel_1 = new AbsolutePanel();
 		dockPanel.add(absolutePanel_1, DockPanel.NORTH);
 		absolutePanel_1.setStyleName("gwt-LabelEstradaSolidaria2");
-		absolutePanel_1.setSize("100%", "100%");
+		absolutePanel_1.setSize("1006px", "100%");
 		
 		absolutePanel_3 = new AbsolutePanel();
-		absolutePanel_1.add(absolutePanel_3, 428, 95);
+		absolutePanel_1.add(absolutePanel_3, 392, 10);
 		absolutePanel_3.setSize("314px", "109px");
 		
 		Label lblBemvindoAoEstrada = new Label("Bem-vindo ao Estrada Solidária!");
@@ -81,7 +80,7 @@ public class StateHomePage extends AbsolutePanel {
 		
 		absolutePanel = new AbsolutePanel();
 		dockPanel.add(absolutePanel, DockPanel.CENTER);
-		absolutePanel.setSize("100%", "100%");
+		absolutePanel.setSize("1005px", "291px");
 		
 		AbsolutePanel panelLogin = new AbsolutePanel();
 		absolutePanel.add(panelLogin, 624, 19);
@@ -151,8 +150,8 @@ public class StateHomePage extends AbsolutePanel {
 		btnCadastro.setSize("182px", "40px");
 		
 		absolutePanel_2 = new AbsolutePanel();
-		dockPanel.add(absolutePanel_2, DockPanel.SOUTH);
-		absolutePanel_2.setSize("100%", "100%");
+		absolutePanel.add(absolutePanel_2, 88, 290);
+		absolutePanel_2.setSize("878px", "132px");
 		imagem = new Image(resources.home());
 		absolutePanel_2.add(imagem, 408, 41);
 		imagem.setSize("353px", "217px");

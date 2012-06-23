@@ -13,7 +13,6 @@ import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.widget.client.TextButton;
 
 import estradasolidaria.ui.resources.Resources;
@@ -34,7 +33,7 @@ public class StateEditarPerfil extends Composite {
 	private Label lblEnderecodousuario;
 	private Label lblEmaildousuario;
 	private String[] dadosUsuario;
-
+	
 	public StateEditarPerfil(EstradaSolidariaServiceAsync estradaSolidariaService, String[] result) {
 		this.estradaService = estradaSolidariaService;
 		this.idSessaoAberta = EstradaSolidaria.getIdSessaoAberta();
@@ -53,16 +52,14 @@ public class StateEditarPerfil extends Composite {
 		absolutePanel_EditarPerfil.add(absolutePanel, 41, 313);
 		absolutePanel.setSize("423px", "191px");
 		
-		Image image = new Image(resources.editar());
+		//Image image = new Image(resources.editarPerfil());
+		Image image = new Image("genericPhoto.jpg");
 		absolutePanel.add(image, 10, 10);
 		image.setSize("181px", "160px");
 		
 		FileUpload fileUpload = new FileUpload();
 		absolutePanel.add(fileUpload, 206, 144);
 		fileUpload.setSize("189px", "22px");
-		
-		TextButton txtbtnEditar = new TextButton("Editar");
-		absolutePanel.add(txtbtnEditar, 206, 110);
 		
 		AbsolutePanel absolutePanel_1 = new AbsolutePanel();
 		absolutePanel_EditarPerfil.add(absolutePanel_1, 41, 57);

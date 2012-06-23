@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.widget.client.TextButton;
+import com.google.gwt.user.client.ui.Button;
 
 public class DialogBoxAlterarSenha extends DialogBox {
 	
@@ -26,7 +27,7 @@ public class DialogBoxAlterarSenha extends DialogBox {
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		setWidget(absolutePanel);
-		absolutePanel.setSize("329px", "154px");
+		absolutePanel.setSize("349px", "154px");
 		
 		Label lblSenha = new Label("Senha:");
 		absolutePanel.add(lblSenha, 10, 20);
@@ -49,7 +50,15 @@ public class DialogBoxAlterarSenha extends DialogBox {
 				editarSenhaGUI(idSessao, textBoxSenha2.getText());
 			}
 		});
-		absolutePanel.add(txtbtnEnviar, 235, 106);
+		absolutePanel.add(txtbtnEnviar, 181, 105);
+		
+		TextButton txtbtnCancelar = new TextButton("Cancelar");
+		txtbtnCancelar.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent arg0) {
+				hide();
+			}
+		});
+		absolutePanel.add(txtbtnCancelar, 249, 105);
 	}
 
 	protected void editarSenhaGUI(Integer idSessao2, String text) {
