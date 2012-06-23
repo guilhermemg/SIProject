@@ -24,7 +24,7 @@ public class EstradaSolidaria implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		statePanel = new StateHomePage(this, estradaSolidariaService);
+		statePanel = new StateHomePage2(this, estradaSolidariaService);
 		statePanel.setSize(comprimentoDoBrowser + "px", alturaDoBrowser + "px");
 		rootPanel.setSize(comprimentoDoBrowser +"px", alturaDoBrowser + "px");
 		rootPanel.add(statePanel);

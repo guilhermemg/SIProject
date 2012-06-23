@@ -89,7 +89,7 @@ public class StatePerfil extends Composite {
 		MenuItem menuItemSair = new MenuItem("Sair", false, new Command() {
 			public void execute() {
 				estrada.rootPanel.remove(panel);
-				Widget newPanel = new StateHomePage(estrada, estradaSolidariaService);
+				Widget newPanel = new StateHomePage2(estrada, estradaSolidariaService);
 				newPanel.setSize("600px", "417px");
 				estrada.setStatePanel(newPanel);
 			}
