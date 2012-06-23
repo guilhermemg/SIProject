@@ -1,5 +1,6 @@
 package estradasolidaria.ui.client;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -9,15 +10,15 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.widget.client.TextButton;
-import com.google.gwt.user.client.ui.Hyperlink;
-import com.google.gwt.event.logical.shared.AttachEvent.Handler;
-import com.google.gwt.event.logical.shared.AttachEvent;
 
-public class StateHomePage2 extends Composite {
+import estradasolidaria.ui.resources.Resources;
+
+public class StateHomePage extends Composite {
 	
 	private TextBox textBoxNome;
 	private TextBox textBoxLogin;
@@ -27,8 +28,9 @@ public class StateHomePage2 extends Composite {
 	private TextBox textBoxEmail;
 	private EstradaSolidaria estrada;
 	private EstradaSolidariaServiceAsync estradaService;
-
-	public StateHomePage2(EstradaSolidaria estradaSolidaria, EstradaSolidariaServiceAsync estradaSolidariaService) {
+	
+	public StateHomePage(EstradaSolidaria estradaSolidaria, EstradaSolidariaServiceAsync estradaSolidariaService) {
+		Resources resources = GWT.create(Resources.class);
 		this.estrada = estradaSolidaria;
 		this.estradaService = estradaSolidariaService;
 		
@@ -144,14 +146,14 @@ public class StateHomePage2 extends Composite {
 		absolutePanel_2.add(textBoxEmail, 183, 211);
 		textBoxEmail.setSize("208px", "17px");
 		
-		TextButton textButton = new TextButton("Criar");
+		TextButton textButton = new TextButton("Cadastrar");
 		textButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				if(textBoxNome.getText().length() == 0|| textBoxLogin.getText().length() == 0 || textBoxEndereco.getText().length() == 0 || 
 						textBoxEmail.getText().length() == 0 || TextBoxSenha.getText().length() == 0 || TextBoxSenha2.getText().length() == 0){
 					Window.alert("Digite todos os campos corretamente");
 				} else if(!TextBoxSenha.getText().equals(TextBoxSenha2.getText())){
-					Window.alert("Senha invalida");
+					Window.alert("Senha inválida");
 				} else {
 					cadastraUsuarioGUI(textBoxLogin, TextBoxSenha, textBoxNome, textBoxEndereco, textBoxEmail);
 				}
@@ -160,31 +162,23 @@ public class StateHomePage2 extends Composite {
 		absolutePanel_2.add(textButton, 249, 256);
 		textButton.setSize("145px", "47px");
 		
-		Label lblRegistrese = new Label("Registre-se!");
-		lblRegistrese.setStyleName("gwt-LabelEstradaSolidaria2");
-		absolutePanel_2.add(lblRegistrese, 188, 0);
+		Label lblCadastrese = new Label("Faça seu cadastro!");
+		lblCadastrese.setStyleName("gwt-LabelEstradaSolidaria2");
+		absolutePanel_2.add(lblCadastrese, 188, 0);
 		
 		AbsolutePanel absolutePanel_3 = new AbsolutePanel();
-		absolutePanel.add(absolutePanel_3, 283, 60);
+		absolutePanel.add(absolutePanel_3, 23, 58);
 		absolutePanel_3.setSize("330px", "111px");
 		
 		Label label_9 = new Label("Bem-vindo ao Estrada Solidária!");
-		label_9.setStyleName("gwt-LabelHomePage2");
+		label_9.setStyleName("gwt-LabelEstradaSolidaria2");
 		label_9.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		absolutePanel_3.add(label_9, 48, 24);
 		label_9.setSize("216px", "29px");
+		absolutePanel_3.add(label_9, 48, 24);
 		
-		AbsolutePanel absolutePanel_4 = new AbsolutePanel();
-		absolutePanel.add(absolutePanel_4, 569, 549);
-		absolutePanel_4.setSize("173px", "50px");
-		
-		Hyperlink hprlnkNewHyperlink = new Hyperlink("teste", false, "newHistoryToken");
-		hprlnkNewHyperlink.setHTML("http://www.ogame.com.br/");
-		hprlnkNewHyperlink.addAttachHandler(new Handler() {
-			public void onAttachOrDetach(AttachEvent event) {
-			}
-		});
-		absolutePanel_4.add(hprlnkNewHyperlink, 10, 22);
+		Image homePageImage = new Image(resources.getHomePageImage());
+		absolutePanel.add(homePageImage, 401, 38);
+		homePageImage.setSize("225px", "129px");
 	}
 	
 	protected void cadastraUsuarioGUI(final TextBox textBoxLogin, final PasswordTextBox textBoxPassword, TextBox textBbxNome, TextBox textBoxEndereco, TextBox textBoxEmail) {

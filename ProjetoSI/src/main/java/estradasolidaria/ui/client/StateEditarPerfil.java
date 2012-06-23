@@ -52,8 +52,7 @@ public class StateEditarPerfil extends Composite {
 		absolutePanel_EditarPerfil.add(absolutePanel, 41, 313);
 		absolutePanel.setSize("423px", "191px");
 		
-		//Image image = new Image(resources.editarPerfil());
-		Image image = new Image("genericPhoto.jpg");
+		Image image = new Image(resources.getGenericUserImage());
 		absolutePanel.add(image, 10, 10);
 		image.setSize("181px", "160px");
 		

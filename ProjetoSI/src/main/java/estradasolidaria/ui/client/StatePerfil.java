@@ -20,6 +20,10 @@ import com.google.gwt.user.client.ui.MenuItemSeparator;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DatePicker;
 
+import estradasolidaria.ui.resources.*;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+
 public class StatePerfil extends Composite {
 	
 	final EstradaSolidaria estrada;
@@ -35,7 +39,7 @@ public class StatePerfil extends Composite {
 	private String[] dadosUsuario;
 	
 	public StatePerfil(EstradaSolidaria estradaSolidaria, final EstradaSolidariaServiceAsync estradaSolidariaService, String[] result) {
-		
+		Resources resources = GWT.create(Resources.class);
 		estrada = estradaSolidaria;
 		this.estradaSolidariaService = estradaSolidariaService;
 		this.dadosUsuario = result;
@@ -55,11 +59,11 @@ public class StatePerfil extends Composite {
 		
 		mainPanel = new AbsolutePanel();
 		initWidget(mainPanel);
-		mainPanel.setSize("1000px", "710px");
+		mainPanel.setSize("1063px", "710px");
 		
 		dockPanel = new DockPanel();
 		mainPanel.add(dockPanel, 10, 10);
-		dockPanel.setSize("100%", "100%");
+		dockPanel.setSize("1056px", "710px");
 		
 		headerPanel = new AbsolutePanel();
 		dockPanel.add(headerPanel, DockPanel.NORTH);
@@ -70,7 +74,7 @@ public class StatePerfil extends Composite {
 		lblNomeDoUsuario.setSize("126px", "17px");
 		
 		MenuBar menuBar = new MenuBar(false);
-		headerPanel.add(menuBar, 805, 10);
+		headerPanel.add(menuBar, 762, 10);
 		menuBar.setSize("168px", "19px");
 		
 		MenuItem menuItemOpcoes = new MenuItem("Editar Perfil", false, new Command() {
@@ -89,14 +93,14 @@ public class StatePerfil extends Composite {
 		MenuItem menuItemSair = new MenuItem("Sair", false, new Command() {
 			public void execute() {
 				estrada.rootPanel.remove(panel);
-				Widget newPanel = new StateHomePage2(estrada, estradaSolidariaService);
+				Widget newPanel = new StateHomePage(estrada, estradaSolidariaService);
 				newPanel.setSize("600px", "417px");
 				estrada.setStatePanel(newPanel);
 			}
 		});
 		menuBar.addItem(menuItemSair);
 		
-		Image photoPerfil = new Image(result[0] + ".jpg");
+		Image photoPerfil = new Image(resources.getGenericUserImage());
 		headerPanel.add(photoPerfil, 23, 10);
 		photoPerfil.setSize("126px", "167px");
 		
@@ -131,16 +135,18 @@ public class StatePerfil extends Composite {
 		
 		rightSidebarPanel = new AbsolutePanel();
 		dockPanel.add(rightSidebarPanel, DockPanel.EAST);
-		rightSidebarPanel.setSize((EstradaSolidaria.comprimentoDoBrowser * 0.2) + "px", "487px");
+		rightSidebarPanel.setSize("241px", "487px");
 		
 		Label lblAmigos = new Label("Amigos:");
 		rightSidebarPanel.add(lblAmigos, 91, 0);
 		lblAmigos.setSize("57px", "15px");
 		
 		Grid flexTable = new Grid();
+		flexTable.setCellSpacing(10);
+		flexTable.setCellPadding(50);
 		flexTable.resize(0, 0);
 		rightSidebarPanel.add(flexTable, 14, 21);
-		flexTable.setSize("197px", "253px");
+		flexTable.setSize("210px", "254px");
 		
 		DatePicker datePicker = new DatePicker();
 		rightSidebarPanel.add(datePicker, 14, 313);
@@ -150,8 +156,8 @@ public class StatePerfil extends Composite {
 		rightSidebarPanel.add(lblProximasCaronas, 66, 292);
 		
 		bodyPanel = new AbsolutePanel();
-		dockPanel.add(bodyPanel, DockPanel.WEST);
-		bodyPanel.setSize((EstradaSolidaria.comprimentoDoBrowser * 0.6) + "px", "487px");
+		dockPanel.add(bodyPanel, DockPanel.CENTER);
+		bodyPanel.setSize("433px", "487px");
 
 		btnInicio.addClickHandler(new ClickHandler() {
 			@Override

@@ -5,8 +5,8 @@ import com.google.gwt.resources.client.ImageResource;
 
 public interface Resources extends ClientBundle {
 	@Source("homePageImage.jpg")
-	ImageResource home();
+	ImageResource getHomePageImage();
 
-	@Source("genericPhoto.jpg")
-	ImageResource editarPerfil();
+	@Source("genericUserImage.jpg")
+	ImageResource getGenericUserImage();
 }
