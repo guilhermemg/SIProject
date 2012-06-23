@@ -169,7 +169,7 @@ public class StateHomePage extends Composite {
 		absolutePanel_2.add(lblCadastrese, 188, 0);
 		
 		lblMesagemDeErro = new Label("mensagem de erro");
-		lblMesagemDeErro.setStyleName(".gwt-LabelEstradaSolidaria5");
+		lblMesagemDeErro.setStyleName("gwt-LabelEstradaSolidaria5");
 		absolutePanel_2.add(lblMesagemDeErro, 37, 266);
 		lblMesagemDeErro.setVisible(false);
 		
