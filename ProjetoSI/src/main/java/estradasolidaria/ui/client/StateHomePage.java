@@ -28,6 +28,7 @@ public class StateHomePage extends Composite {
 	private TextBox textBoxEmail;
 	private EstradaSolidaria estrada;
 	private EstradaSolidariaServiceAsync estradaService;
+	private Label lblMesagemDeErro;
 	
 	public StateHomePage(EstradaSolidaria estradaSolidaria, EstradaSolidariaServiceAsync estradaSolidariaService) {
 		Resources resources = GWT.create(Resources.class);
@@ -151,7 +152,8 @@ public class StateHomePage extends Composite {
 			public void onClick(ClickEvent event) {
 				if(textBoxNome.getText().length() == 0|| textBoxLogin.getText().length() == 0 || textBoxEndereco.getText().length() == 0 || 
 						textBoxEmail.getText().length() == 0 || TextBoxSenha.getText().length() == 0 || TextBoxSenha2.getText().length() == 0){
-					Window.alert("Digite todos os campos corretamente");
+					//Window.alert("Digite todos os campos corretamente");
+					lblMesagemDeErro.setVisible(true);
 				} else if(!TextBoxSenha.getText().equals(TextBoxSenha2.getText())){
 					Window.alert("Senha inválida");
 				} else {
@@ -165,6 +167,11 @@ public class StateHomePage extends Composite {
 		Label lblCadastrese = new Label("Faça seu cadastro!");
 		lblCadastrese.setStyleName("gwt-LabelEstradaSolidaria2");
 		absolutePanel_2.add(lblCadastrese, 188, 0);
+		
+		lblMesagemDeErro = new Label("mensagem de erro");
+		lblMesagemDeErro.setStyleName(".gwt-LabelEstradaSolidaria5");
+		absolutePanel_2.add(lblMesagemDeErro, 37, 266);
+		lblMesagemDeErro.setVisible(false);
 		
 		AbsolutePanel absolutePanel_3 = new AbsolutePanel();
 		absolutePanel.add(absolutePanel_3, 194, 59);
