@@ -8,7 +8,6 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.Grid;
@@ -23,6 +22,7 @@ import com.google.gwt.user.datepicker.client.DatePicker;
 import estradasolidaria.ui.resources.*;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.widget.client.TextButton;
 
 public class StatePerfil extends Composite {
 	
@@ -108,19 +108,19 @@ public class StatePerfil extends Composite {
 		dockPanel.add(leftSideBarPanel, DockPanel.WEST);
 		leftSideBarPanel.setSize("140px", "240px");
 		
-		Button txtbtnCadastrarCarona = new Button("Cadastrar Carona");
+		TextButton txtbtnCadastrarCarona = new TextButton("Cadastrar Carona");
 		leftSideBarPanel.add(txtbtnCadastrarCarona, 10, 66);
 		txtbtnCadastrarCarona.setSize("122px", "24px");
 		
-		Button txtbtnPesquisarCarona = new Button("Pesquisar Carona");
+		TextButton txtbtnPesquisarCarona = new TextButton("Pesquisar Carona");
 		leftSideBarPanel.add(txtbtnPesquisarCarona, 10, 149);
 		txtbtnPesquisarCarona.setSize("122px", "24px");
 		
-		Button btnInicio = new Button("Início");
+		TextButton btnInicio = new TextButton("Início");
 		leftSideBarPanel.add(btnInicio, 10, 21);
 		btnInicio.setSize("122px", "24px");
 		
-		Button btnMeusInteresses = new Button("Meus Interesses");
+		TextButton btnMeusInteresses = new TextButton("Meus Interesses");
 		btnMeusInteresses.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				//TODO fazer MeusInteresses
@@ -129,7 +129,7 @@ public class StatePerfil extends Composite {
 		leftSideBarPanel.add(btnMeusInteresses, 10, 189);
 		btnMeusInteresses.setSize("122px", "25px");
 		
-		Button buttonMinhasCaronas = new Button("Minhas Caronas");
+		TextButton buttonMinhasCaronas = new TextButton("Minhas Caronas");
 		leftSideBarPanel.add(buttonMinhasCaronas, 10, 107);
 		buttonMinhasCaronas.setSize("122px", "24px");
 		

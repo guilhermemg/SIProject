@@ -3,7 +3,7 @@ package estradasolidaria.ui.client;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.google.gwt.cell.client.ButtonCell;
+import com.google.gwt.cell.client.TextButtonCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -15,7 +15,6 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -42,7 +41,6 @@ public class StateMinhasCaronas extends AbsolutePanel {
 	private Column<GWTCarona, String> donoDaCaronaColumn;
 	private TextColumn<GWTCarona> origemColumn;
 	private TextColumn<GWTCarona> destinoColumn;
-	private Column<GWTCarona, Boolean> checkBoxColumn;
 	private TextColumn<GWTCarona> dataColumn;
 	private TextColumn<GWTCarona> horaColumn;
 	private TextColumn<GWTCarona> vagasColumn;
@@ -54,10 +52,8 @@ public class StateMinhasCaronas extends AbsolutePanel {
 	private AbsolutePanel flexTableSolicitadas;
 	private boolean isOferecida;
 	private ListBox comboBoxTipoDeSolicitacao;
-	private boolean isSolicitacaoAceita = true;
-	private Button btnNewButton;
 	private Column<GWTCarona,String> buttomColumn;
-	
+	private boolean isSolicitacaoAceita;
 
 	public StateMinhasCaronas(EstradaSolidaria estrada,
 			EstradaSolidariaServiceAsync estradaSolidariaService) {
@@ -261,7 +257,7 @@ public class StateMinhasCaronas extends AbsolutePanel {
 //		checkBoxColumn
 //				.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
-		buttomColumn = new Column<GWTCarona, String>(new ButtonCell()) {
+		buttomColumn = new Column<GWTCarona, String>(new TextButtonCell()) {
 
 			@Override
 			public String getValue(GWTCarona carona) {
@@ -337,7 +333,7 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		vagasColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
 		// Coluna de reviews das Caronas
-		reviewColumn = new Column<GWTCarona, String>(new ButtonCell()) {
+		reviewColumn = new Column<GWTCarona, String>(new TextButtonCell()) {
 			@Override
 			public String getValue(GWTCarona carona) {
 				return "Review";

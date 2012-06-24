@@ -6,7 +6,6 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -14,6 +13,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
+import com.google.gwt.widget.client.TextButton;
 
 public class StateCadastroCaronas extends Composite {
 
@@ -75,7 +75,7 @@ public class StateCadastroCaronas extends Composite {
 		final TextBox textBoxVagas = new TextBox();
 		flexTable.setWidget(4, 1, textBoxVagas);
 		
-		Button btnEnviar = new Button("Enviar");
+		TextButton btnEnviar = new TextButton("Enviar");
 		btnEnviar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				// verifica todos os campos

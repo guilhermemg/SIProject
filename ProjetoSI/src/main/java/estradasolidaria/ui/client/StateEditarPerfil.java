@@ -6,7 +6,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FileUpload;
@@ -70,8 +69,8 @@ public class StateEditarPerfil extends Composite {
 		lblLogindousuario = new Label(dadosUsuario[0]);
 		absolutePanel_1.add(lblLogindousuario, 74, 10);
 		
-		Button btnEditarLogin = new Button("Editar");
-		absolutePanel_1.add(btnEditarLogin, 74, 32);
+		TextButton txtBtnEditarLogin = new TextButton("Editar");
+		absolutePanel_1.add(txtBtnEditarLogin, 74, 32);
 		
 		textBoxNovoLogin = new TextBox();
 		absolutePanel_1.add(textBoxNovoLogin, 127, 28);
@@ -105,7 +104,7 @@ public class StateEditarPerfil extends Composite {
 		lblNomeusuario = new Label(dadosUsuario[2]);
 		absolutePanel_1.add(lblNomeusuario, 74, 65);
 		
-		Button btnEditarNome = new Button("Editar");
+		TextButton btnEditarNome = new TextButton("Editar");
 		absolutePanel_1.add(btnEditarNome, 74, 87);
 		
 		textBoxNovoNome = new TextBox();
@@ -127,7 +126,7 @@ public class StateEditarPerfil extends Composite {
 		lblEmaildousuario = new Label(dadosUsuario[4]);
 		absolutePanel_1.add(lblEmaildousuario, 74, 124);
 		
-		Button btnEditarEmail = new Button("Editar");
+		TextButton btnEditarEmail = new TextButton("Editar");
 		absolutePanel_1.add(btnEditarEmail, 74, 146);
 		
 		textBoxNovoEmail = new TextBox();
@@ -149,7 +148,7 @@ public class StateEditarPerfil extends Composite {
 		lblEnderecodousuario = new Label(dadosUsuario[3]);
 		absolutePanel_1.add(lblEnderecodousuario, 74, 182);
 		
-		Button btnEditarEndereco = new Button("Editar");
+		TextButton btnEditarEndereco = new TextButton("Editar");
 		absolutePanel_1.add(btnEditarEndereco, 74, 204);
 		
 		textBoxNovoEndereco = new TextBox();
@@ -186,7 +185,7 @@ public class StateEditarPerfil extends Composite {
 			}
 		});
 		
-		btnEditarLogin.addClickHandler(new ClickHandler() {
+		txtBtnEditarLogin.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				textBoxNovoLogin.setVisible(true);
 				txtbtnLoginOk.setVisible(true);

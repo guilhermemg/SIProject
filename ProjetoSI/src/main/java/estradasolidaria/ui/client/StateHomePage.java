@@ -6,7 +6,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -92,7 +91,7 @@ public class StateHomePage extends Composite {
 		absolutePanel_1.add(lblErroSenhaUser, 257, 87);
 		lblErroSenhaUser.setVisible(false);
 		
-		Button button = new Button("Login");
+		TextButton button = new TextButton("Login");
 		button.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				if(textBoxUser.getText().length() == 0|| passwordTextBox.getText().length() == 0){

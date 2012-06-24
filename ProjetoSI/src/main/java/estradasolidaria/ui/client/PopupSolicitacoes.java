@@ -1,37 +1,36 @@
 package estradasolidaria.ui.client;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.widget.client.TextButton;
 
 public class PopupSolicitacoes extends PopupPanel {
 
 	private final EstradaSolidaria estrada;
 	private final EstradaSolidariaServiceAsync estradaSolidariaService;
-	private Button btnRejeitar;
+	private TextButton btnRejeitar;
 	private ListBox listBox;
 	private Image fotoSolicitante;
 	private Label lblNome;
-	private Button btnAceitar;
+	private TextButton btnAceitar;
 	private AbsolutePanel absolutePanel;
-	private Button btnOK;
+	private TextButton btnOK;
 	private Integer idSessao;
 	private Integer idCarona;
 	private LinkedList<Solicitante> listSolicitantes;
 	private DialogBox dialogBox;
-	private Button buttonOK;
+	private TextButton buttonOK;
 	
 	class Solicitante {
 		String nomeUsuario;
@@ -72,7 +71,7 @@ public class PopupSolicitacoes extends PopupPanel {
 		lblNome = new Label("Nome:");
 		absolutePanel.add(lblNome, 30, 160);
 		
-		btnAceitar = new Button("Aceitar");
+		btnAceitar = new TextButton("Aceitar");
 		btnAceitar.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -85,7 +84,7 @@ public class PopupSolicitacoes extends PopupPanel {
 		absolutePanel.add(btnAceitar, 30, 183);
 		btnAceitar.setSize("137px", "81px");
 		
-		btnRejeitar = new Button("Rejeitar");
+		btnRejeitar = new TextButton("Rejeitar");
 		btnRejeitar.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -98,7 +97,7 @@ public class PopupSolicitacoes extends PopupPanel {
 		absolutePanel.add(btnRejeitar, 173, 183);
 		btnRejeitar.setSize("137px", "81px");
 		
-		btnOK = new Button("OK");
+		btnOK = new TextButton("OK");
 		btnOK.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				hide();
@@ -110,7 +109,7 @@ public class PopupSolicitacoes extends PopupPanel {
 		dialogBox = new DialogBox();
 		
 		dialogBox.center();
-		buttonOK = new Button();
+		buttonOK = new TextButton();
 		buttonOK.setText("OK");
 		buttonOK.addClickHandler(new ClickHandler() {
 			

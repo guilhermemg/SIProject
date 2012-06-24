@@ -1,11 +1,11 @@
 package estradasolidaria.ui.client;
 
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.datepicker.client.DateBox;
-import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.widget.client.TextButton;
 
 public class StateCadastrarInteresse extends Composite {
 	public StateCadastrarInteresse() {
@@ -44,10 +44,10 @@ public class StateCadastrarInteresse extends Composite {
 		TextBox textBox_3 = new TextBox();
 		absolutePanel.add(textBox_3, 103, 121);
 		
-		Button btnCadastrar = new Button("Cadastrar");
+		TextButton btnCadastrar = new TextButton("Cadastrar");
 		absolutePanel.add(btnCadastrar, 10, 174);
 		
-		Button btnCancelar = new Button("Cancelar");
+		TextButton btnCancelar = new TextButton("Cancelar");
 		absolutePanel.add(btnCancelar, 106, 174);
 		// TODO Auto-generated constructor stub
 	}

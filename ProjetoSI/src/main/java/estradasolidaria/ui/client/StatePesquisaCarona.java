@@ -7,12 +7,12 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.widget.client.TextButton;
 
 public class StatePesquisaCarona extends Composite {
 	
@@ -54,7 +54,7 @@ public class StatePesquisaCarona extends Composite {
 		lblPesquiseUmaCarona.setStyleName("gwt-LabelHomePage2");
 		absolutePanel.add(lblPesquiseUmaCarona, 28, 10);
 		
-		Button btnPesquisa = new Button("New button");
+		TextButton btnPesquisa = new TextButton("New button");
 		absolutePanel.add(btnPesquisa, 278, 132);
 		btnPesquisa.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {

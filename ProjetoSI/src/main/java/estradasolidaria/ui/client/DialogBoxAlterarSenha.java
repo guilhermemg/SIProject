@@ -9,7 +9,6 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.widget.client.TextButton;
-import com.google.gwt.user.client.ui.Button;
 
 public class DialogBoxAlterarSenha extends DialogBox {
 	
