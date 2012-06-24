@@ -10,7 +10,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
-import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
@@ -19,12 +18,9 @@ import com.google.gwt.user.client.ui.MenuItemSeparator;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DatePicker;
-
-import estradasolidaria.ui.resources.*;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.widget.client.TextButton;
-import com.google.gwt.resources.client.ImageResource;
+
+import estradasolidaria.ui.resources.Resources;
 
 public class StatePerfil extends Composite {
 	
@@ -86,8 +82,10 @@ public class StatePerfil extends Composite {
 		MenuItem menuItemOpcoes = new MenuItem("Editar Perfil", false, new Command() {
 			public void execute() {
 				scrollPanel.clear();
+				scrollPanel.setVisible(false);
 				Widget editarPerfil= new StateEditarPerfil(estradaSolidariaService, dadosUsuario);
-				scrollPanel.add(editarPerfil);
+				bodyPanel.add(editarPerfil);
+				bodyPanel.setVisible(true);
 				editarPerfil.setSize("100%", "100%");
 			}
 		});
@@ -146,18 +144,21 @@ public class StatePerfil extends Composite {
 				//TODO fazer Minhas Sugestões
 			}
 		});
+		
 		leftSideBarPanel.add(txtbtnMinhasSugestoes, 10, 361);
 		txtbtnMinhasSugestoes.setSize("122px", "63px");
-		
-		scrollPanel = new ScrollPanel();
-		scrollPanel.setStyleName("painelCentralPerfil");
-		dockPanel.add(scrollPanel, DockPanel.WEST);
-		scrollPanel.setSize("950px", "493px");
 		
 		bodyPanel = new AbsolutePanel();
 		bodyPanel.setStyleName("painelCentralPerfil");
 		dockPanel.add(bodyPanel, DockPanel.WEST);
 		bodyPanel.setSize("950px", "493px");
+		
+		scrollPanel = new ScrollPanel();
+		scrollPanel.setTouchScrollingDisabled(false);
+		scrollPanel.setStyleName("painelCentralPerfil");
+		dockPanel.add(scrollPanel, DockPanel.WEST);
+		scrollPanel.setSize("950px", "493px");
+		scrollPanel.setVisible(false);
 		
 		rightSidebarPanel = new AbsolutePanel();
 		rightSidebarPanel.setStylePrimaryName("painelPerfil1");
@@ -234,6 +235,7 @@ public class StatePerfil extends Composite {
 
 	protected void inicio() {
 		scrollPanel.clear();	
+		bodyPanel.clear();
 		//TODO fazer Inicio
 	}
 
@@ -253,17 +255,18 @@ public class StatePerfil extends Composite {
 		scrollPanel.setVisible(false);
 		Widget pesquisarCarona = new StatePesquisaCarona(estrada, estradaSolidariaService, bodyPanel);
 		bodyPanel.add(pesquisarCarona);
-		pesquisarCarona.setSize("100%", "100%");
 		bodyPanel.setVisible(true);
+		pesquisarCarona.setSize("100%", "100%");
+		
 	}
 	
 	protected void minhasCaronasGUI() {
 		scrollPanel.clear();
 		bodyPanel.clear();
-		scrollPanel.setVisible(true);
 		bodyPanel.setVisible(false);
 		Widget minhasCarona= new StateMinhasCaronas(estrada, estradaSolidariaService);
-		minhasCarona.setSize("100%", "100%");
 		scrollPanel.add(minhasCarona);
+		scrollPanel.setVisible(true);
+		minhasCarona.setSize("100%", "100%");
 	}
 }

@@ -7,10 +7,10 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
@@ -348,7 +348,13 @@ public class StateHomePage extends Composite {
 		Label lblRepositrioDeDesenvolvimento = new Label("Repositório de desenvolvimento:");
 		absolutePanel_4.add(lblRepositrioDeDesenvolvimento, 437, 37);
 		
-		Hyperlink hprlnkRepositrioDeDesenvolvimento = new Hyperlink("https://github.com/guilhermemg/SIProject", false, "newHistoryToken");
+		Anchor hprlnkRepositrioDeDesenvolvimento = new Anchor("https://github.com/guilhermemg/SIProject", false, "newHistoryToken");
+		hprlnkRepositrioDeDesenvolvimento.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent arg0) {
+				//TODO fazer acao de hyperlink
+			}
+		});
+		
 		absolutePanel_4.add(hprlnkRepositrioDeDesenvolvimento, 664, 37);
 		
 		Label lblAssinaturaDoSistema = new Label("Estrada Solidária foi desenvolvido por Guilherme Gadelha, Hemã Vidal, Ítalo Silva e Leonardo Santos.");
