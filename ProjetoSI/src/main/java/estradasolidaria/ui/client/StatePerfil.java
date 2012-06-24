@@ -70,6 +70,7 @@ public class StatePerfil extends Composite {
 		headerPanel.setSize("1244px", "210px");
 		
 		Label lblNomeDoUsuario = new Label("Olá " + dadosUsuario[2] + "!");
+		lblNomeDoUsuario.setStyleName("gwt-LabelEstradaSolidaria7");
 		headerPanel.add(lblNomeDoUsuario, 23, 183);
 		lblNomeDoUsuario.setSize("126px", "17px");
 		
@@ -138,6 +139,7 @@ public class StatePerfil extends Composite {
 		rightSidebarPanel.setSize("309px", "487px");
 		
 		Label lblAmigos = new Label("Amigos:");
+		lblAmigos.setStyleName("gwt-LabelEstradaSolidaria8");
 		rightSidebarPanel.add(lblAmigos, 91, 0);
 		lblAmigos.setSize("57px", "15px");
 		
@@ -146,6 +148,7 @@ public class StatePerfil extends Composite {
 		datePicker.setSize("210px", "162px");
 		
 		Label lblProximasCaronas = new Label("Próximas Caronas");
+		lblProximasCaronas.setStyleName("gwt-LabelEstradaSolidaria8");
 		rightSidebarPanel.add(lblProximasCaronas, 66, 292);
 		
 		Image image = new Image(resources.getGenericLittleUserImage());

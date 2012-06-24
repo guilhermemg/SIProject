@@ -30,11 +30,11 @@ public class DialogBoxNovaSolicitacao extends DialogBox {
 		Label lblCarona = new Label("Percurso:");
 		absolutePanel.add(lblCarona, 10, 40);
 		
-		TextButton txtbtnVerCarona = new TextButton("Ver carona");
+		TextButton txtbtnVerCarona = new TextButton("Enviar mensagem ao motorista");
 		txtbtnVerCarona.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				hide();
-				DialogBox newDialog = new DialogBoxVerCarona();
+				DialogBox newDialog = new DialogBoxEnviarMensagem();
 				newDialog.center();
 				newDialog.show();
 			}

@@ -1,17 +1,17 @@
 package estradasolidaria.ui.client;
 
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.widget.client.TextButton;
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.widget.client.TextButton;
 
-public class PopUpEnviarMensagem extends PopupPanel {
+public class DialogBoxEnviarMensagem extends DialogBox {
 
-	public PopUpEnviarMensagem() {
-		super(true);
+	public DialogBoxEnviarMensagem() {
+		setHTML("Enviar mensagem");
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		setWidget(absolutePanel);
@@ -32,4 +32,5 @@ public class PopUpEnviarMensagem extends PopupPanel {
 		absolutePanel.add(textArea, 10, 44);
 		textArea.setSize("418px", "127px");
 	}
+
 }
