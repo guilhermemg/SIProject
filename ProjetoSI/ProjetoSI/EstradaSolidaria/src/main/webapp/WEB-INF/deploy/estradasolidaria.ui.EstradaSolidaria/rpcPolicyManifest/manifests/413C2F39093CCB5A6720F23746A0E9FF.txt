@@ -1,2 +1,0 @@
-serviceClass: estradasolidaria.ui.client.GreetingService
-path: 9F50642ACA2EA5232B6C4BEE9272D89B.gwt.rpc

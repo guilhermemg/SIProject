@@ -130,3 +130,18 @@ h2 {
 	font-size: 10px ;
 	font-family: @Dotum;
 }
+.gwt-LabelEstradaSolidaria7 {
+	color: Black;
+	font-size: 14px;
+	font-family: @Dotum;
+	font-weight: bold;
+}
+.gwt-LabelEstradaSolidaria8 {
+	color: Black;
+	font-weight: bold;
+}
+.gwt-LabelEstradaSolidaria9 {
+	color: blue;
+	font-size: 16px ;
+	font-family: @Dotum;
+}

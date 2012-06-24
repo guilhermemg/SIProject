@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.widget.client.TextButton;
@@ -20,6 +21,12 @@ public class StateCadastroCaronas extends Composite {
 	final EstradaSolidaria estrada;
 	final Widget panel= this;
 	private EstradaSolidariaServiceAsync estradaSolidariaService;
+	private Label lblMensagemDeErro;
+	private Label lblErroorige;
+	private Label lblErrodestino;
+	private Label lblErrohora;
+	private Label lblErrodata;
+	private Label lblErrovagas;
 
 	public StateCadastroCaronas(EstradaSolidaria estradaSolidaria, EstradaSolidariaServiceAsync estradaSolidariaService) {
 		this.estrada = estradaSolidaria;
@@ -28,15 +35,17 @@ public class StateCadastroCaronas extends Composite {
 		
 		AbsolutePanel absPanelCadastroCarona = new AbsolutePanel();
 		initWidget(absPanelCadastroCarona);
+		absPanelCadastroCarona.setSize("494px", "334px");
 		
 		Label lblCadastreUmaN = new Label("Cadastre uma nova carona");
 		lblCadastreUmaN.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		lblCadastreUmaN.setStyleName("gwt-LabelEstradaSolidaria2");
-		absPanelCadastroCarona.add(lblCadastreUmaN);
+		lblCadastreUmaN.setStyleName("gwt-LabelEstradaSolidaria9");
+		absPanelCadastroCarona.add(lblCadastreUmaN, 83, 34);
+		lblCadastreUmaN.setSize("209px", "16px");
 		
 		FlexTable flexTable = new FlexTable();
 		absPanelCadastroCarona.add(flexTable, 84, 73);
-		flexTable.setSize("288px", "174px");
+		flexTable.setSize("235px", "174px");
 		
 		Label lblOrigem = new Label("Origem:");
 		lblOrigem.setStyleName("gwt-LabelEstradaSolidaria4");
@@ -76,12 +85,67 @@ public class StateCadastroCaronas extends Composite {
 		flexTable.setWidget(4, 1, textBoxVagas);
 		
 		TextButton btnEnviar = new TextButton("Enviar");
+
+		absPanelCadastroCarona.add(btnEnviar, 234, 284);
+		btnEnviar.setSize("77px", "40px");
+		
+		lblMensagemDeErro = new Label("Campo(s) origatório(s)");
+		lblMensagemDeErro.setStyleName("gwt-LabelEstradaSolidaria5");
+		absPanelCadastroCarona.add(lblMensagemDeErro, 197, 253);
+		lblMensagemDeErro.setVisible(false);
+		
+		VerticalPanel verticalPanel = new VerticalPanel();
+		absPanelCadastroCarona.add(verticalPanel, 325, 73);
+		verticalPanel.setSize("35px", "174px");
+		
+		lblErroorige = new Label("*");
+		lblErroorige.setStyleName("gwt-LabelEstradaSolidaria6");
+		verticalPanel.add(lblErroorige);
+		lblErroorige.setVisible(false);
+		
+		lblErrodestino = new Label("*");
+		lblErrodestino.setStyleName("gwt-LabelEstradaSolidaria6");
+		verticalPanel.add(lblErrodestino);
+		lblErrodestino.setWidth("19px");
+		lblErrodestino.setVisible(false);
+		
+		lblErrohora = new Label("*");
+		lblErrohora.setStyleName("gwt-LabelEstradaSolidaria6");
+		verticalPanel.add(lblErrohora);
+		lblErrohora.setVisible(false);
+		
+		lblErrodata = new Label("*");
+		lblErrodata.setStyleName("gwt-LabelEstradaSolidaria6");
+		verticalPanel.add(lblErrodata);
+		lblErrodata.setVisible(false);
+		
+		lblErrovagas = new Label("*");
+		lblErrovagas.setStyleName("gwt-LabelEstradaSolidaria6");
+		verticalPanel.add(lblErrovagas);
+		lblErrovagas.setVisible(false);
+		
 		btnEnviar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				// verifica todos os campos
 				if(textBoxOrigem.getText().length() == 0 || textBoxDestino.getText().length() == 0 
-						|| textBoxHora.getText().length() == 0 ||  dateBox.getTextBox().getText().length() == 0){
-					Window.alert("Todos os campos devem ser preenchidos corretamente.");
+						|| textBoxHora.getText().length() == 0 ||  dateBox.getTextBox().getText().length() == 0 
+						|| textBoxVagas.getText().length() == 0){
+					if(textBoxOrigem.getText().length() == 0){
+						lblErroorige.setVisible(true);
+					}
+					if(textBoxDestino.getText().length() == 0){
+						lblErrodestino.setVisible(true);
+					}
+					if(textBoxHora.getText().length() == 0){
+						lblErrohora.setVisible(true);
+					}
+					if(dateBox.getTextBox().getText().length() == 0){
+						lblErrodata.setVisible(true);
+					}
+					if(textBoxVagas.getText().length() == 0){
+						lblErrovagas.setVisible(true);
+					}
+					lblMensagemDeErro.setVisible(true);
 				} else {
 					cadastraCaronaGUI(textBoxOrigem, textBoxDestino, dateBox, textBoxHora, textBoxVagas);
 					
@@ -97,7 +161,6 @@ public class StateCadastroCaronas extends Composite {
 				
 			}
 		});
-		flexTable.setWidget(5, 1, btnEnviar);
 		
 		
 	}
@@ -126,5 +189,4 @@ public class StateCadastroCaronas extends Composite {
 												callback);
 		
 	}
-
 }
