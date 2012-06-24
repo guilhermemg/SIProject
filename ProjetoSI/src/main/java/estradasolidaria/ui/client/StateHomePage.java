@@ -17,6 +17,8 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.widget.client.TextButton;
 
 import estradasolidaria.ui.resources.Resources;
+import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
 
 public class StateHomePage extends Composite {
 	
@@ -29,6 +31,14 @@ public class StateHomePage extends Composite {
 	private EstradaSolidaria estrada;
 	private EstradaSolidariaServiceAsync estradaService;
 	private Label lblMesagemDeErro;
+	private Label lblErroLoginUser;
+	private Label lblErroSenhaUser;
+	private Label lblErrosenha;
+	private Label lblErrosenha_1; 
+	private Label lblErronome;
+	private Label lblErrologin;
+	private Label lblErroendereco;
+	private Label lblErroemail;
 	
 	public StateHomePage(EstradaSolidaria estradaSolidaria, EstradaSolidariaServiceAsync estradaSolidariaService) {
 		Resources resources = GWT.create(Resources.class);
@@ -37,12 +47,12 @@ public class StateHomePage extends Composite {
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
-		absolutePanel.setSize("1037px", "673px");
+		absolutePanel.setSize("1078px", "673px");
 		
 		AbsolutePanel absolutePanel_1 = new AbsolutePanel();
 		absolutePanel_1.setStylePrimaryName("gwt-LoginPanel");
 		absolutePanel.add(absolutePanel_1, 687, 222);
-		absolutePanel_1.setSize("318px", "218px");
+		absolutePanel_1.setSize("313px", "218px");
 		
 		Label label = new Label("Já é usuário? Faça Login.");
 		label.setStyleName("gwt-LabelEstradaSolidaria");
@@ -54,8 +64,14 @@ public class StateHomePage extends Composite {
 		lblUser.setSize("58px", "15px");
 		
 		final TextBox textBoxUser = new TextBox();
+		textBoxUser.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				lblErroLoginUser.setVisible(false);
+				lblErroSenhaUser.setVisible(false);
+			}
+		});
 		absolutePanel_1.add(textBoxUser, 74, 51);
-		textBoxUser.setSize("180px", "13px");
+		textBoxUser.setSize("169px", "13px");
 		
 		Label lblPassword = new Label("Senha:");
 		lblPassword.setStyleName("gwt-LabelEstradaSolidaria4");
@@ -63,13 +79,28 @@ public class StateHomePage extends Composite {
 		
 		final PasswordTextBox passwordTextBox = new PasswordTextBox();
 		absolutePanel_1.add(passwordTextBox, 74, 78);
-		passwordTextBox.setSize("180px", "17px");
+		passwordTextBox.setSize("169px", "17px");
+		
+		
+		lblErroLoginUser = new Label("");
+		lblErroLoginUser.setStyleName("gwt-LabelEstradaSolidaria5");
+		absolutePanel_1.add(lblErroLoginUser, 257, 56);
+		lblErroLoginUser.setVisible(false);
+		
+		lblErroSenhaUser = new Label("");
+		lblErroSenhaUser.setStyleName("gwt-LabelEstradaSolidaria5");
+		absolutePanel_1.add(lblErroSenhaUser, 257, 87);
+		lblErroSenhaUser.setVisible(false);
 		
 		Button button = new Button("Login");
 		button.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				if(textBoxUser.getText().length() == 0|| passwordTextBox.getText().length() == 0){
-					Window.alert("Digite todos os campos corretamente");
+					//Window.alert("Digite todos os campos corretamente");
+					lblErroLoginUser.setText("*");
+					lblErroSenhaUser.setText("*");
+					lblErroLoginUser.setVisible(true);
+					lblErroSenhaUser.setVisible(true);
 				} else {
 					 abrirSessaoGUI(textBoxUser, passwordTextBox);
 				}
@@ -81,11 +112,11 @@ public class StateHomePage extends Composite {
 		CheckBox checkBox = new CheckBox("lembrar-me");
 		checkBox.setHTML("Lembrar-me");
 		absolutePanel_1.add(checkBox, 170, 168);
-		
+
 		AbsolutePanel absolutePanel_2 = new AbsolutePanel();
 		absolutePanel_2.setStyleName("h2");
 		absolutePanel.add(absolutePanel_2, 194, 222);
-		absolutePanel_2.setSize("445px", "328px");
+		absolutePanel_2.setSize("465px", "353px");
 		
 		Label lblNome = new Label("Nome:");
 		lblNome.setStyleName("gwt-LabelEstradaSolidaria4");
@@ -124,26 +155,62 @@ public class StateHomePage extends Composite {
 		lblEmail.setSize("104px", "15px");
 		
 		textBoxNome = new TextBox();
+		textBoxNome.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				lblErronome.setVisible(false);
+				lblMesagemDeErro.setVisible(false);
+			}
+		});
 		absolutePanel_2.add(textBoxNome, 183, 50);
 		textBoxNome.setSize("208px", "17px");
 		
 		textBoxLogin = new TextBox();
+		textBoxLogin.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				lblErrologin.setVisible(false);
+				lblMesagemDeErro.setVisible(false);
+			}
+		});
 		absolutePanel_2.add(textBoxLogin, 183, 81);
 		textBoxLogin.setSize("208px", "17px");
 		
 		TextBoxSenha = new PasswordTextBox();
+		TextBoxSenha.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				lblErrosenha.setVisible(false);
+				lblMesagemDeErro.setVisible(false);
+			}
+		});
 		absolutePanel_2.add(TextBoxSenha, 183, 112);
 		TextBoxSenha.setSize("208px", "17px");
 		
 		TextBoxSenha2 = new PasswordTextBox();
+		TextBoxSenha2.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				lblErrosenha_1.setVisible(false);
+				lblMesagemDeErro.setVisible(false);
+			}
+		});
 		absolutePanel_2.add(TextBoxSenha2, 183, 143);
 		TextBoxSenha2.setSize("208px", "17px");
 		
 		textBoxEndereco = new TextBox();
+		textBoxEndereco.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				lblErroendereco.setVisible(false);
+				lblMesagemDeErro.setVisible(false);
+			}
+		});
 		absolutePanel_2.add(textBoxEndereco, 183, 180);
 		textBoxEndereco.setSize("208px", "17px");
 		
 		textBoxEmail = new TextBox();
+		textBoxEmail.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				lblErroemail.setVisible(false);
+				lblMesagemDeErro.setVisible(false);
+			}
+		});
 		absolutePanel_2.add(textBoxEmail, 183, 211);
 		textBoxEmail.setSize("208px", "17px");
 		
@@ -153,15 +220,46 @@ public class StateHomePage extends Composite {
 				if(textBoxNome.getText().length() == 0|| textBoxLogin.getText().length() == 0 || textBoxEndereco.getText().length() == 0 || 
 						textBoxEmail.getText().length() == 0 || TextBoxSenha.getText().length() == 0 || TextBoxSenha2.getText().length() == 0){
 					//Window.alert("Digite todos os campos corretamente");
+					if(textBoxNome.getText().length() == 0){
+						lblErronome.setText("*");
+						lblErronome.setVisible(true);
+					}
+					if(textBoxLogin.getText().length() == 0){
+						lblErrologin.setText("*");
+						lblErrologin.setVisible(true);
+					}
+					if(textBoxEndereco.getText().length() == 0){
+						lblErroendereco.setText("*");
+						lblErroendereco.setVisible(true);
+					}
+					if(textBoxEmail.getText().length() == 0){
+						lblErroemail.setText("*");
+						lblErroemail.setVisible(true);
+					}
+					if(TextBoxSenha.getText().length() == 0){
+						lblErrosenha.setText("*");
+						lblErrosenha.setVisible(true);
+					}
+					if(TextBoxSenha2.getText().length() == 0){
+						lblErrosenha_1.setText("*");
+						lblErrosenha_1.setVisible(true);
+					}
+					lblMesagemDeErro.setText("Campo(s) obrigatório(s)!");
 					lblMesagemDeErro.setVisible(true);
 				} else if(!TextBoxSenha.getText().equals(TextBoxSenha2.getText())){
-					Window.alert("Senha inválida");
+					//Window.alert("Senha inválida");
+					lblErrosenha.setText("*");
+					lblErrosenha_1.setText("*");
+					lblErrosenha.setVisible(true);
+					lblErrosenha_1.setVisible(true);
+					lblMesagemDeErro.setText("Senha incorreta!");
+					lblMesagemDeErro.setVisible(true);
 				} else {
 					cadastraUsuarioGUI(textBoxLogin, TextBoxSenha, textBoxNome, textBoxEndereco, textBoxEmail);
 				}
 			}
 		});
-		absolutePanel_2.add(textButton, 249, 256);
+		absolutePanel_2.add(textButton, 254, 279);
 		textButton.setSize("145px", "47px");
 		
 		Label lblCadastrese = new Label("Faça seu cadastro!");
@@ -170,8 +268,39 @@ public class StateHomePage extends Composite {
 		
 		lblMesagemDeErro = new Label("mensagem de erro");
 		lblMesagemDeErro.setStyleName("gwt-LabelEstradaSolidaria5");
-		absolutePanel_2.add(lblMesagemDeErro, 37, 266);
+		absolutePanel_2.add(lblMesagemDeErro, 193, 242);
+		lblMesagemDeErro.setSize("213px", "31px");
 		lblMesagemDeErro.setVisible(false);
+		
+		lblErrosenha = new Label("ErroSenha");
+		lblErrosenha.setStyleName("gwt-LabelEstradaSolidaria6");
+		absolutePanel_2.add(lblErrosenha, 405, 112);
+		lblErrosenha.setVisible(false);
+		
+		lblErrosenha_1 = new Label("ErroSenha2");
+		lblErrosenha_1.setStyleName("gwt-LabelEstradaSolidaria6");
+		absolutePanel_2.add(lblErrosenha_1, 405, 143);
+		lblErrosenha_1.setVisible(false);
+		
+		lblErronome = new Label("ErroNome");
+		lblErronome.setStyleName("gwt-LabelEstradaSolidaria6");
+		absolutePanel_2.add(lblErronome, 405, 50);
+		lblErronome.setVisible(false);
+		
+		lblErrologin = new Label("ErroLogin");
+		lblErrologin.setStyleName("gwt-LabelEstradaSolidaria6");
+		absolutePanel_2.add(lblErrologin, 405, 81);
+		lblErrologin.setVisible(false);
+		
+		lblErroendereco = new Label("ErroEndereco");
+		lblErroendereco.setStyleName("gwt-LabelEstradaSolidaria6");
+		absolutePanel_2.add(lblErroendereco, 404, 179);
+		lblErroendereco.setVisible(false);
+		
+		lblErroemail = new Label("ErroEmail");
+		lblErroemail.setStyleName("gwt-LabelEstradaSolidaria6");
+		absolutePanel_2.add(lblErroemail, 404, 211);
+		lblErroemail.setVisible(false);
 		
 		AbsolutePanel absolutePanel_3 = new AbsolutePanel();
 		absolutePanel.add(absolutePanel_3, 194, 59);

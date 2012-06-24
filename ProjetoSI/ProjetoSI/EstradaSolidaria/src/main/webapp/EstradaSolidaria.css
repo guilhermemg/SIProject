@@ -97,5 +97,12 @@ font-color: #ffffff;
 }
 .gwt-LabelEstradaSolidaria5 {
 	color: red;
+	font-size: 16px ;
+	font-family: @Dotum;
+	font-weight: bold;
+}
+.gwt-LabelEstradaSolidaria6 {
+	color: red;
+	font-size: 14px ;
 	font-family: @Dotum;
 }
