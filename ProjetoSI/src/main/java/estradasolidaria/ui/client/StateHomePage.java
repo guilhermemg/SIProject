@@ -18,6 +18,8 @@ import com.google.gwt.widget.client.TextButton;
 import estradasolidaria.ui.resources.Resources;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.SimplePanel;
 
 public class StateHomePage extends Composite {
 	
@@ -46,7 +48,7 @@ public class StateHomePage extends Composite {
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
-		absolutePanel.setSize("1078px", "673px");
+		absolutePanel.setSize("1384px", "686px");
 		
 		AbsolutePanel absolutePanel_1 = new AbsolutePanel();
 		absolutePanel_1.setStylePrimaryName("gwt-LoginPanel");
@@ -299,6 +301,11 @@ public class StateHomePage extends Composite {
 		lblErroemail = new Label("ErroEmail");
 		lblErroemail.setStyleName("gwt-LabelEstradaSolidaria6");
 		absolutePanel_2.add(lblErroemail, 404, 211);
+		
+		SimplePanel simplePanelAssinatura = new SimplePanel();
+		simplePanelAssinatura.setStylePrimaryName("gwt-AssinaturaPanel");
+		absolutePanel_2.add(simplePanelAssinatura, 150, 365);
+		simplePanelAssinatura.setSize("706px", "78px");
 		lblErroemail.setVisible(false);
 		
 		AbsolutePanel absolutePanel_3 = new AbsolutePanel();
@@ -314,6 +321,22 @@ public class StateHomePage extends Composite {
 		Image homePageImage = new Image(resources.getHomePageImage());
 		absolutePanel.add(homePageImage, 598, 41);
 		homePageImage.setSize("225px", "129px");
+		
+		AbsolutePanel absolutePanel_4 = new AbsolutePanel();
+		absolutePanel_4.setStyleName("gwt-AssinaturaPanel");
+		absolutePanel.add(absolutePanel_4, 0, 615);
+		absolutePanel_4.setSize("1384px", "69px");
+		
+		Label lblRepositrioDeDesenvolvimento = new Label("Repositório de desenvolvimento:");
+		absolutePanel_4.add(lblRepositrioDeDesenvolvimento, 437, 37);
+		
+		Hyperlink hprlnkRepositrioDeDesenvolvimento = new Hyperlink("https://github.com/guilhermemg/SIProject", false, "newHistoryToken");
+		absolutePanel_4.add(hprlnkRepositrioDeDesenvolvimento, 664, 37);
+		
+		Label lblAssinaturaDoSistema = new Label("Estrada Solidária foi desenvolvido por Guilherme Gadelha, Hemã Vidal, Ítalo Silva e Leonardo Santos.");
+		absolutePanel_4.add(lblAssinaturaDoSistema, 381, 10);
+		lblAssinaturaDoSistema.setSize("706px", "24px");
+		
 	}
 	
 	protected void cadastraUsuarioGUI(final TextBox textBoxLogin, final PasswordTextBox textBoxPassword, TextBox textBbxNome, TextBox textBoxEndereco, TextBox textBoxEmail) {

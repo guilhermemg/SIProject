@@ -43,8 +43,12 @@ font-weight: bold;
 }
 .gwt-ButtonDestaque {
 font-size: 18px
-
 }
+.gwt-AssinaturaPanel {
+	border: 10px #005522;
+	background-color: #cccccc;
+}
+
 h2 {
 	font-size: 19px;
 }
