@@ -67,7 +67,7 @@ public class StatePerfil extends Composite {
 		dockPanel.setSize("1344px", "782px");
 		
 		headerPanel = new AbsolutePanel();
-		headerPanel.setStyleName("painelPerfil1");
+		headerPanel.setStyleName("headerPainelPerfil");
 		dockPanel.add(headerPanel, DockPanel.NORTH);
 		headerPanel.setSize("1338px", "181px");
 		

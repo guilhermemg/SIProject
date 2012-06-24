@@ -68,12 +68,24 @@ h2 {
 	font-color: #ffffff;
 }
 
+.headerPainelPerfil {
+	background-color: aliceblue;
+	border: 1px;
+	border-style: solid;
+}
+
 .painelPerfil1 {
 	background-color: aliceblue;
 }
 
 .painelPerfil2 {
 	background-color: #CCCCFF;
+}
+
+.painelPerfil3 {
+	background-color: #FFFFFF;
+	border: 1px;
+	border-style: solid
 }
 
 .feedPanel {

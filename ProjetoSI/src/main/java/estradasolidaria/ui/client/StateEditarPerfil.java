@@ -41,8 +41,9 @@ public class StateEditarPerfil extends Composite {
 		Resources resources = GWT.create(Resources.class);
 		
 		AbsolutePanel absolutePanel_EditarPerfil = new AbsolutePanel();
+		absolutePanel_EditarPerfil.setStylePrimaryName("painelPerfil3");
 		initWidget(absolutePanel_EditarPerfil);
-		absolutePanel_EditarPerfil.setSize("713px", "644px");
+		absolutePanel_EditarPerfil.setSize("653px", "433px");
 		
 		Label lblEditarPerfil = new Label("Editar Perfil");
 		lblEditarPerfil.setStyleName("gwt-LabelEstradaSolidaria2");
@@ -50,7 +51,7 @@ public class StateEditarPerfil extends Composite {
 		
 		AbsolutePanel absolutePanel_1 = new AbsolutePanel();
 		absolutePanel_EditarPerfil.add(absolutePanel_1, 41, 57);
-		absolutePanel_1.setSize("662px", "401px");
+		absolutePanel_1.setSize("599px", "375px");
 		
 		Label lblNewLabel = new Label("Login:");
 		absolutePanel_1.add(lblNewLabel, 10, 10);
@@ -153,11 +154,11 @@ public class StateEditarPerfil extends Composite {
 		absolutePanel_1.add(txtbtnEnderecoOk, 294, 204);
 		
 		FileUpload fileUpload = new FileUpload();
-		absolutePanel_1.add(fileUpload, 374, 337);
-		fileUpload.setSize("278px", "22px");
+		absolutePanel_1.add(fileUpload, 322, 337);
+		fileUpload.setSize("330px", "22px");
 		
 		Image image = new Image(resources.getGenericUserImage());
-		absolutePanel_1.add(image, 435, 170);
+		absolutePanel_1.add(image, 417, 174);
 		image.setSize("126px", "139px");
 		txtbtnEnderecoOk.setVisible(false);
 		
