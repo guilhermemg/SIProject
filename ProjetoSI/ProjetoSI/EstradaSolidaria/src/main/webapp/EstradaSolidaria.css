@@ -68,13 +68,13 @@ h2 {
 	font-color: #ffffff;
 }
 
-.painelPerfil {
+.painelPerfil1 {
 	background-color: aliceblue;
 }
 
-/* .leftPainelPerfil {
-	background-color: #3399FF;
-} */
+.painelPerfil2 {
+	background-color: #CCCCFF;
+}
 
 .feedPanel {
 	background-color: honeydew;

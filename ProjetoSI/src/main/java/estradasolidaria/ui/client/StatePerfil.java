@@ -60,20 +60,21 @@ public class StatePerfil extends Composite {
 		
 		mainPanel = new AbsolutePanel();
 		initWidget(mainPanel);
-		mainPanel.setSize("1343px", "710px");
+		mainPanel.setSize("1398px", "814px");
 		
 		dockPanel = new DockPanel();
 		mainPanel.add(dockPanel, 10, 10);
-		dockPanel.setSize("1333px", "690px");
+		dockPanel.setSize("1344px", "782px");
 		
 		headerPanel = new AbsolutePanel();
+		headerPanel.setStyleName("painelPerfil1");
 		dockPanel.add(headerPanel, DockPanel.NORTH);
-		headerPanel.setSize("1327px", "180px");
+		headerPanel.setSize("1338px", "181px");
 		
 		Label lblNomeDoUsuario = new Label("Olá " + dadosUsuario[2] + "!");
-		headerPanel.add(lblNomeDoUsuario, 33, 153);
+		headerPanel.add(lblNomeDoUsuario, 33, 155);
 		lblNomeDoUsuario.setStyleName("gwt-LabelEstradaSolidaria7");
-		headerPanel.add(lblNomeDoUsuario, 23, 183);
+		headerPanel.add(lblNomeDoUsuario, 33, 155);
 		lblNomeDoUsuario.setSize("126px", "17px");
 		
 		MenuBar menuBar = new MenuBar(false);
@@ -108,9 +109,9 @@ public class StatePerfil extends Composite {
 		photoPerfil.setSize("126px", "139px");
 		
 		leftSideBarPanel = new AbsolutePanel();
-		leftSideBarPanel.setStylePrimaryName("painelPerfil");
+		leftSideBarPanel.setStylePrimaryName("painelPerfil2");
 		dockPanel.add(leftSideBarPanel, DockPanel.WEST);
-		leftSideBarPanel.setSize("152px", "444px");
+		leftSideBarPanel.setSize("141px", "444px");
 		
 		TextButton txtbtnCadastrarCarona = new TextButton("Cadastrar Carona");
 		leftSideBarPanel.add(txtbtnCadastrarCarona, 10, 91);
@@ -145,22 +146,28 @@ public class StatePerfil extends Composite {
 		});
 		leftSideBarPanel.add(txtbtnMinhasSugestoes, 10, 361);
 		txtbtnMinhasSugestoes.setSize("122px", "63px");
+		
+		bodyPanel = new AbsolutePanel();
+		bodyPanel.setStyleName("painelCentralPerfil");
+		dockPanel.add(bodyPanel, DockPanel.WEST);
+		bodyPanel.setSize("950px", "559px");
 		rightSidebarPanel = new AbsolutePanel();
+		rightSidebarPanel.setStylePrimaryName("painelPerfil1");
 		dockPanel.add(rightSidebarPanel, DockPanel.EAST);
-		rightSidebarPanel.setSize("309px", "487px");
+		rightSidebarPanel.setSize("220px", "494px");
 		
 		Label lblAmigos = new Label("Amigos:");
 		lblAmigos.setStyleName("gwt-LabelEstradaSolidaria8");
-		rightSidebarPanel.add(lblAmigos, 91, 0);
+		rightSidebarPanel.add(lblAmigos, 78, 0);
 		lblAmigos.setSize("57px", "15px");
 		
 		DatePicker datePicker = new DatePicker();
-		rightSidebarPanel.add(datePicker, 14, 313);
-		datePicker.setSize("210px", "162px");
+		rightSidebarPanel.add(datePicker, 23, 320);
+		datePicker.setSize("170px", "145px");
 		
 		Label lblProximasCaronas = new Label("Próximas Caronas");
 		lblProximasCaronas.setStyleName("gwt-LabelEstradaSolidaria8");
-		rightSidebarPanel.add(lblProximasCaronas, 66, 292);
+		rightSidebarPanel.add(lblProximasCaronas, 35, 297);
 		
 		Image image = new Image(resources.getGenericLittleUserImage());
 		rightSidebarPanel.add(image, 25, 21);
@@ -185,15 +192,6 @@ public class StatePerfil extends Composite {
 		Image image_5 = new Image(resources.getGenericLittleUserImage());
 		rightSidebarPanel.add(image_5, 125, 212);
 		image_5.setSize("76px", "74px");
-		
-		bodyPanel = new AbsolutePanel();
-		dockPanel.add(bodyPanel, DockPanel.CENTER);
-		bodyPanel.setSize("934px", "487px");
-		
-		AbsolutePanel absolutePanel = new AbsolutePanel();
-		absolutePanel.setStylePrimaryName("painelPerfil");
-		dockPanel.add(absolutePanel, DockPanel.EAST);
-		absolutePanel.setSize("220px", "488px");
 		
 		btnInicio.addClickHandler(new ClickHandler() {
 			@Override
