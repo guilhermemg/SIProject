@@ -1,17 +1,20 @@
 package estradasolidaria.ui.client;
 
+import java.util.Date;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.widget.client.TextButton;
@@ -35,94 +38,123 @@ public class StateCadastroCaronas extends Composite {
 		
 		AbsolutePanel absPanelCadastroCarona = new AbsolutePanel();
 		initWidget(absPanelCadastroCarona);
-		absPanelCadastroCarona.setSize("494px", "334px");
+		absPanelCadastroCarona.setSize("413px", "334px");
 		
 		Label lblCadastreUmaN = new Label("Cadastre uma nova carona");
 		lblCadastreUmaN.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		lblCadastreUmaN.setStyleName("gwt-LabelEstradaSolidaria9");
 		absPanelCadastroCarona.add(lblCadastreUmaN, 83, 34);
 		lblCadastreUmaN.setSize("209px", "16px");
-		
-		FlexTable flexTable = new FlexTable();
-		absPanelCadastroCarona.add(flexTable, 84, 73);
-		flexTable.setSize("235px", "174px");
-		
-		Label lblOrigem = new Label("Origem:");
-		lblOrigem.setStyleName("gwt-LabelEstradaSolidaria4");
-		flexTable.setWidget(0, 0, lblOrigem);
-		
-		final TextBox textBoxOrigem = new TextBox();
-		flexTable.setWidget(0, 1, textBoxOrigem);
-		
-		Label lblDestino = new Label("Destino:");
-		lblDestino.setStyleName("gwt-LabelEstradaSolidaria4");
-		flexTable.setWidget(1, 0, lblDestino);
-		
-		final TextBox textBoxDestino = new TextBox();
-		flexTable.setWidget(1, 1, textBoxDestino);
-		
-		Label lblHora = new Label("Hora:");
-		lblHora.setStyleName("gwt-LabelEstradaSolidaria4");
-		flexTable.setWidget(2, 0, lblHora);
-		
-		final TextBox textBoxHora = new TextBox();
-		flexTable.setWidget(2, 1, textBoxHora);
-		
-		Label lblData = new Label("Data:");
-		lblData.setStyleName("gwt-LabelEstradaSolidaria4");
-		flexTable.setWidget(3, 0, lblData);
-		
-		final DateBox dateBox = new DateBox();
 		DateTimeFormat dateFormat = DateTimeFormat.getFormat("dd/MM/yyyy");
-	    dateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
-		flexTable.setWidget(3, 1, dateBox);
-		
-		Label lblVagas = new Label("Vagas:");
-		lblVagas.setStyleName("gwt-LabelEstradaSolidaria4");
-		flexTable.setWidget(4, 0, lblVagas);
-		
-		final TextBox textBoxVagas = new TextBox();
-		flexTable.setWidget(4, 1, textBoxVagas);
 		
 		TextButton btnEnviar = new TextButton("Enviar");
 
-		absPanelCadastroCarona.add(btnEnviar, 234, 284);
+		absPanelCadastroCarona.add(btnEnviar, 217, 284);
 		btnEnviar.setSize("77px", "40px");
 		
 		lblMensagemDeErro = new Label("Campo(s) origatório(s)");
 		lblMensagemDeErro.setStyleName("gwt-LabelEstradaSolidaria5");
-		absPanelCadastroCarona.add(lblMensagemDeErro, 197, 253);
+		absPanelCadastroCarona.add(lblMensagemDeErro, 178, 253);
 		lblMensagemDeErro.setVisible(false);
 		
-		VerticalPanel verticalPanel = new VerticalPanel();
-		absPanelCadastroCarona.add(verticalPanel, 325, 73);
-		verticalPanel.setSize("35px", "174px");
+		AbsolutePanel absolutePanel = new AbsolutePanel();
+		absPanelCadastroCarona.add(absolutePanel, 83, 73);
+		absolutePanel.setSize("242px", "174px");
+		
+		Label lblOrigem = new Label("Origem:");
+		absolutePanel.add(lblOrigem, 2, 10);
+		lblOrigem.setStyleName("gwt-LabelEstradaSolidaria4");
+		
+		Label lblDestino = new Label("Destino:");
+		absolutePanel.add(lblDestino, 0, 43);
+		lblDestino.setStyleName("gwt-LabelEstradaSolidaria4");
+		
+		Label lblHora = new Label("Hora:");
+		absolutePanel.add(lblHora, 2, 77);
+		lblHora.setStyleName("gwt-LabelEstradaSolidaria4");
+		
+		Label lblData = new Label("Data:");
+		absolutePanel.add(lblData, 2, 109);
+		lblData.setStyleName("gwt-LabelEstradaSolidaria4");
+		
+		Label lblVagas = new Label("Vagas:");
+		absolutePanel.add(lblVagas, 2, 143);
+		lblVagas.setStyleName("gwt-LabelEstradaSolidaria4");
+		
+		final TextBox textBoxOrigem = new TextBox();
+		textBoxOrigem.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				lblErroorige.setVisible(false);
+				lblMensagemDeErro.setVisible(false);
+			}
+		});
+		absolutePanel.add(textBoxOrigem, 52, -2);
+		
+		final TextBox textBoxDestino = new TextBox();
+		textBoxDestino.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				lblErrodestino.setVisible(false);
+				lblMensagemDeErro.setVisible(false);
+			}
+		});
+		absolutePanel.add(textBoxDestino, 52, 32);
+		
+		final TextBox textBoxHora = new TextBox();
+		textBoxHora.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				lblErrohora.setVisible(false);
+				lblMensagemDeErro.setVisible(false);
+			}
+		});
+		absolutePanel.add(textBoxHora, 52, 65);
+		
+		final DateBox dateBox = new DateBox();
+		dateBox.addValueChangeHandler(new ValueChangeHandler<Date>() {
+			public void onValueChange(ValueChangeEvent<Date> event) {
+				lblErrodata.setVisible(false);
+				lblMensagemDeErro.setVisible(false);
+			}
+		});
+		absolutePanel.add(dateBox, 52, 99);
+		dateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
+		
+		final TextBox textBoxVagas = new TextBox();
+		textBoxVagas.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				lblErrovagas.setVisible(false);
+				lblMensagemDeErro.setVisible(false);
+			}
+		});
+		absolutePanel.add(textBoxVagas, 52, 131);
 		
 		lblErroorige = new Label("*");
+		absolutePanel.add(lblErroorige, 227, -2);
 		lblErroorige.setStyleName("gwt-LabelEstradaSolidaria6");
-		verticalPanel.add(lblErroorige);
-		lblErroorige.setVisible(false);
 		
 		lblErrodestino = new Label("*");
+		absolutePanel.add(lblErrodestino, 227, 32);
 		lblErrodestino.setStyleName("gwt-LabelEstradaSolidaria6");
-		verticalPanel.add(lblErrodestino);
-		lblErrodestino.setWidth("19px");
-		lblErrodestino.setVisible(false);
-		
-		lblErrohora = new Label("*");
-		lblErrohora.setStyleName("gwt-LabelEstradaSolidaria6");
-		verticalPanel.add(lblErrohora);
-		lblErrohora.setVisible(false);
+		lblErrodestino.setSize("9px", "16px");
 		
 		lblErrodata = new Label("*");
+		absolutePanel.add(lblErrodata, 227, 99);
+		lblErrodata.setSize("5px", "16px");
 		lblErrodata.setStyleName("gwt-LabelEstradaSolidaria6");
-		verticalPanel.add(lblErrodata);
-		lblErrodata.setVisible(false);
 		
 		lblErrovagas = new Label("*");
+		absolutePanel.add(lblErrovagas, 227, 131);
+		lblErrovagas.setSize("5px", "16px");
 		lblErrovagas.setStyleName("gwt-LabelEstradaSolidaria6");
-		verticalPanel.add(lblErrovagas);
+		
+		lblErrohora = new Label("*");
+		absolutePanel.add(lblErrohora, 227, 64);
+		lblErrohora.setSize("15px", "16px");
+		lblErrohora.setStyleName("gwt-LabelEstradaSolidaria6");
+		lblErrohora.setVisible(false);
 		lblErrovagas.setVisible(false);
+		lblErrodata.setVisible(false);
+		lblErrodestino.setVisible(false);
+		lblErroorige.setVisible(false);
 		
 		btnEnviar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -145,6 +177,8 @@ public class StateCadastroCaronas extends Composite {
 					if(textBoxVagas.getText().length() == 0){
 						lblErrovagas.setVisible(true);
 					}
+					lblMensagemDeErro.setText("Campo(s) origatório(s)");
+					lblMensagemDeErro.setStyleName("gwt-LabelEstradaSolidaria5");
 					lblMensagemDeErro.setVisible(true);
 				} else {
 					cadastraCaronaGUI(textBoxOrigem, textBoxDestino, dateBox, textBoxHora, textBoxVagas);
@@ -170,14 +204,16 @@ public class StateCadastroCaronas extends Composite {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
-				
+				lblMensagemDeErro.setText("Remote Procedure Call - Failure: " + caught.getMessage());
+				lblMensagemDeErro.setStyleName("gwt-LabelEstradaSolidaria5");
+				lblMensagemDeErro.setVisible(true);
 			}
 
 			@Override
 			public void onSuccess(String result) {
-				Window.alert("Carona cadastrada com sucesso.");
-				
+				lblMensagemDeErro.setText("Carona cadastrada com sucesso.");
+				lblMensagemDeErro.setStyleName("gwt-LabelEstradaSolidaria10");
+				lblMensagemDeErro.setVisible(true);
 			}
 		};
 		estradaSolidariaService.cadastrarCarona(idSessao, 

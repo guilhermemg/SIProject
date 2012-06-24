@@ -157,3 +157,9 @@ h2 {
 	font-size: 16px ;
 	font-family: @Dotum;
 }
+.gwt-LabelEstradaSolidaria10 {
+	color: green;
+	font-size: 10px ;
+	font-family: @Dotum;
+	font-weight: bold;
+}
