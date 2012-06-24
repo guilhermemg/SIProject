@@ -3,32 +3,35 @@ package estradasolidaria.ui.client;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.widget.client.TextButton;
-import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
+
+import estradasolidaria.ui.resources.Resources;
 
 public class PopUpEditarReview extends PopupPanel {
 //	private Image image;
 	private ListBox comboBoxCaroneiros;
 	private ListBox comboBoxTiposDeReview;
-	private TextButton txtbtnEditar;
-	private TextButton txtbtnSair;
+	private TextButton txtbtnConfirmar;
+	private TextButton txtBtnCancelar;
 	private final EstradaSolidariaServiceAsync estradaService;
 	private final EstradaSolidaria estrada;
 	private final boolean isDono;
 	private Integer idSessaoAberta;
 	private List<InfReviewCaroneiros> listInfReviewCaroneiros;
+	private Resources resources;
 	
 	private class InfReviewCaroneiros {
 		String idCaroneiro;
@@ -42,13 +45,14 @@ public class PopUpEditarReview extends PopupPanel {
 		this.estradaService = estradaSolidariaService;
 		this.isDono = isDono;
 		this.idSessaoAberta = EstradaSolidaria.getIdSessaoAberta();
+		this.resources = GWT.create(Resources.class);
 		
-		setWidth((Window.getClientWidth() * 0.5) + "px");
-		setHeight((Window.getClientHeight() * 0.5) + "px");
+		setWidth("401px");
+		setHeight("118px");
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		setWidget(absolutePanel);
-		absolutePanel.setSize("306px", "106px");
+		absolutePanel.setSize("389px", "106px");
 		
 //		image = new Image("gwt/standard/images/splitPanelThumb.png");
 //		image.setStyleName("PopupEditarReviewImage");
@@ -56,7 +60,7 @@ public class PopUpEditarReview extends PopupPanel {
 //		image.setSize("172px", "139px");
 		
 		FlexTable flexTable = new FlexTable();
-		absolutePanel.add(flexTable, 10, 10);
+		absolutePanel.add(flexTable, 113, 10);
 		flexTable.setSize("172px", "80px");
 		
 		Label lblNewLabel = new Label("Usuário:");
@@ -88,17 +92,22 @@ public class PopUpEditarReview extends PopupPanel {
 		flexTable.setWidget(0, 1, comboBoxCaroneiros);
 		comboBoxCaroneiros.setSize("100%", "100%");
 		
-		txtbtnEditar = new TextButton("Editar");
-		absolutePanel.add(txtbtnEditar, 211, 10);
+		txtbtnConfirmar = new TextButton("Confirmar");
+		absolutePanel.add(txtbtnConfirmar, 302, 10);
+		txtbtnConfirmar.setSize("77px", "28px");
 		
-		txtbtnSair = new TextButton("Sair");
-		txtbtnSair.addClickHandler(new ClickHandler() {
+		txtBtnCancelar = new TextButton("Cancelar");
+		txtBtnCancelar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				hide();
 			}
 		});
-		absolutePanel.add(txtbtnSair, 208, 61);
-		txtbtnSair.setSize("57px", "29px");
+		absolutePanel.add(txtBtnCancelar, 302, 61);
+		txtBtnCancelar.setSize("77px", "29px");
+		
+		Image littleImageUserPerfil = new Image(resources.getGenericLittleUserImage());
+		absolutePanel.add(littleImageUserPerfil, 10, 10);
+		littleImageUserPerfil.setSize("85px", "80px");
 		
 		if (isDono) {
 			estradaSolidariaService.getCaroneiros(idSessaoAberta, idCarona, new AsyncCallback<List<List<String>>>() {

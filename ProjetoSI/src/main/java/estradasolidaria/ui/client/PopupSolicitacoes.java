@@ -3,6 +3,7 @@ package estradasolidaria.ui.client;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -14,6 +15,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.widget.client.TextButton;
+
+import estradasolidaria.ui.resources.Resources;
 
 public class PopupSolicitacoes extends PopupPanel {
 
@@ -31,6 +34,7 @@ public class PopupSolicitacoes extends PopupPanel {
 	private LinkedList<Solicitante> listSolicitantes;
 	private DialogBox dialogBox;
 	private TextButton buttonOK;
+	private Resources resources;
 	
 	class Solicitante {
 		String nomeUsuario;
@@ -47,6 +51,7 @@ public class PopupSolicitacoes extends PopupPanel {
 			EstradaSolidariaServiceAsync estradaSolidariaService, String idCaronaString) {
 		this.estrada = estrada;
 		this.estradaSolidariaService = estradaSolidariaService;
+		this.resources = GWT.create(Resources.class);
 		
 		try {
 			this.idCarona = Integer.parseInt(idCaronaString);
@@ -81,8 +86,8 @@ public class PopupSolicitacoes extends PopupPanel {
 			}
 		});
 		btnAceitar.setText("Aceitar");
-		absolutePanel.add(btnAceitar, 30, 183);
-		btnAceitar.setSize("137px", "81px");
+		absolutePanel.add(btnAceitar, 40, 183);
+		btnAceitar.setSize("123px", "74px");
 		
 		btnRejeitar = new TextButton("Rejeitar");
 		btnRejeitar.addClickHandler(new ClickHandler() {
@@ -94,8 +99,8 @@ public class PopupSolicitacoes extends PopupPanel {
 			}
 		});
 		btnRejeitar.setText("Rejeitar");
-		absolutePanel.add(btnRejeitar, 173, 183);
-		btnRejeitar.setSize("137px", "81px");
+		absolutePanel.add(btnRejeitar, 190, 183);
+		btnRejeitar.setSize("109px", "74px");
 		
 		btnOK = new TextButton("OK");
 		btnOK.addClickHandler(new ClickHandler() {
@@ -103,8 +108,12 @@ public class PopupSolicitacoes extends PopupPanel {
 				hide();
 			}
 		});
-		absolutePanel.add(btnOK, 310, 277);
-		btnOK.setSize("34px", "25px");
+		absolutePanel.add(btnOK, 324, 267);
+		btnOK.setSize("46px", "25px");
+		
+		Image littlePhotoUser = new Image(resources.getGenericLittleUserImage());
+		absolutePanel.add(littlePhotoUser, 30, 28);
+		littlePhotoUser.setSize("74px", "74px");
 		
 		dialogBox = new DialogBox();
 		

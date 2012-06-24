@@ -23,6 +23,7 @@ import estradasolidaria.ui.resources.*;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.widget.client.TextButton;
+import com.google.gwt.resources.client.ImageResource;
 
 public class StatePerfil extends Composite {
 	
@@ -34,7 +35,6 @@ public class StatePerfil extends Composite {
 	private DockPanel dockPanel;
 	private AbsolutePanel headerPanel;
 	private AbsolutePanel leftSideBarPanel;
-	private AbsolutePanel rightSidebarPanel;
 	private AbsolutePanel mainPanel;
 	private String[] dadosUsuario;
 	
@@ -59,22 +59,22 @@ public class StatePerfil extends Composite {
 		
 		mainPanel = new AbsolutePanel();
 		initWidget(mainPanel);
-		mainPanel.setSize("1304px", "710px");
+		mainPanel.setSize("1343px", "710px");
 		
 		dockPanel = new DockPanel();
 		mainPanel.add(dockPanel, 10, 10);
-		dockPanel.setSize("1056px", "710px");
+		dockPanel.setSize("1333px", "690px");
 		
 		headerPanel = new AbsolutePanel();
 		dockPanel.add(headerPanel, DockPanel.NORTH);
-		headerPanel.setSize("1244px", "210px");
+		headerPanel.setSize("1327px", "180px");
 		
 		Label lblNomeDoUsuario = new Label("Olá " + dadosUsuario[2] + "!");
-		headerPanel.add(lblNomeDoUsuario, 23, 183);
+		headerPanel.add(lblNomeDoUsuario, 33, 153);
 		lblNomeDoUsuario.setSize("126px", "17px");
 		
 		MenuBar menuBar = new MenuBar(false);
-		headerPanel.add(menuBar, 966, 10);
+		headerPanel.add(menuBar, 1127, 10);
 		menuBar.setSize("168px", "19px");
 		
 		MenuItem menuItemOpcoes = new MenuItem("Editar Perfil", false, new Command() {
@@ -102,23 +102,24 @@ public class StatePerfil extends Composite {
 		
 		Image photoPerfil = new Image(resources.getGenericUserImage());
 		headerPanel.add(photoPerfil, 23, 10);
-		photoPerfil.setSize("126px", "167px");
+		photoPerfil.setSize("126px", "139px");
 		
 		leftSideBarPanel = new AbsolutePanel();
+		leftSideBarPanel.setStylePrimaryName("painelPerfil");
 		dockPanel.add(leftSideBarPanel, DockPanel.WEST);
-		leftSideBarPanel.setSize("140px", "240px");
+		leftSideBarPanel.setSize("152px", "444px");
 		
 		TextButton txtbtnCadastrarCarona = new TextButton("Cadastrar Carona");
-		leftSideBarPanel.add(txtbtnCadastrarCarona, 10, 66);
-		txtbtnCadastrarCarona.setSize("122px", "24px");
+		leftSideBarPanel.add(txtbtnCadastrarCarona, 10, 91);
+		txtbtnCadastrarCarona.setSize("122px", "64px");
 		
 		TextButton txtbtnPesquisarCarona = new TextButton("Pesquisar Carona");
-		leftSideBarPanel.add(txtbtnPesquisarCarona, 10, 149);
-		txtbtnPesquisarCarona.setSize("122px", "24px");
+		leftSideBarPanel.add(txtbtnPesquisarCarona, 10, 230);
+		txtbtnPesquisarCarona.setSize("122px", "63px");
 		
 		TextButton btnInicio = new TextButton("Início");
 		leftSideBarPanel.add(btnInicio, 10, 21);
-		btnInicio.setSize("122px", "24px");
+		btnInicio.setSize("122px", "64px");
 		
 		TextButton btnMeusInteresses = new TextButton("Meus Interesses");
 		btnMeusInteresses.addClickHandler(new ClickHandler() {
@@ -126,55 +127,65 @@ public class StatePerfil extends Composite {
 				//TODO fazer MeusInteresses
 			}
 		});
-		leftSideBarPanel.add(btnMeusInteresses, 10, 189);
-		btnMeusInteresses.setSize("122px", "25px");
+		leftSideBarPanel.add(btnMeusInteresses, 10, 299);
+		btnMeusInteresses.setSize("122px", "56px");
 		
 		TextButton buttonMinhasCaronas = new TextButton("Minhas Caronas");
-		leftSideBarPanel.add(buttonMinhasCaronas, 10, 107);
-		buttonMinhasCaronas.setSize("122px", "24px");
+		leftSideBarPanel.add(buttonMinhasCaronas, 10, 161);
+		buttonMinhasCaronas.setSize("122px", "63px");
 		
-		rightSidebarPanel = new AbsolutePanel();
-		dockPanel.add(rightSidebarPanel, DockPanel.EAST);
-		rightSidebarPanel.setSize("309px", "487px");
-		
-		Label lblAmigos = new Label("Amigos:");
-		rightSidebarPanel.add(lblAmigos, 91, 0);
-		lblAmigos.setSize("57px", "15px");
-		
-		DatePicker datePicker = new DatePicker();
-		rightSidebarPanel.add(datePicker, 14, 313);
-		datePicker.setSize("210px", "162px");
-		
-		Label lblProximasCaronas = new Label("Próximas Caronas");
-		rightSidebarPanel.add(lblProximasCaronas, 66, 292);
-		
-		Image image = new Image(resources.getGenericLittleUserImage());
-		rightSidebarPanel.add(image, 25, 21);
-		image.setSize("76px", "74px");
-		
-		Image image_1 = new Image(resources.getGenericLittleUserImage());
-		rightSidebarPanel.add(image_1, 125, 21);
-		image_1.setSize("76px", "74px");
-		
-		Image image_2 = new Image(resources.getGenericLittleUserImage());
-		rightSidebarPanel.add(image_2, 25, 115);
-		image_2.setSize("76px", "74px");
-		
-		Image image_3 = new Image(resources.getGenericLittleUserImage());
-		rightSidebarPanel.add(image_3, 125, 115);
-		image_3.setSize("76px", "74px");
-		
-		Image image_4 = new Image(resources.getGenericLittleUserImage());
-		rightSidebarPanel.add(image_4, 25, 212);
-		image_4.setSize("76px", "74px");
-		
-		Image image_5 = new Image(resources.getGenericLittleUserImage());
-		rightSidebarPanel.add(image_5, 125, 212);
-		image_5.setSize("76px", "74px");
+		TextButton txtbtnMinhasSugestoes = new TextButton("Minhas Sugestões\n");
+		txtbtnMinhasSugestoes.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent arg0) {
+				//TODO fazer Minhas Sugestões
+			}
+		});
+		leftSideBarPanel.add(txtbtnMinhasSugestoes, 10, 361);
+		txtbtnMinhasSugestoes.setSize("122px", "63px");
 		
 		bodyPanel = new AbsolutePanel();
 		dockPanel.add(bodyPanel, DockPanel.CENTER);
-		bodyPanel.setSize("775px", "487px");
+		bodyPanel.setSize("934px", "487px");
+		
+		AbsolutePanel absolutePanel = new AbsolutePanel();
+		absolutePanel.setStylePrimaryName("painelPerfil");
+		dockPanel.add(absolutePanel, DockPanel.EAST);
+		absolutePanel.setSize("220px", "488px");
+		
+		Label label = new Label("Amigos:");
+		absolutePanel.add(label, 91, 0);
+		label.setSize("57px", "15px");
+		
+		DatePicker datePicker = new DatePicker();
+		absolutePanel.add(datePicker, 10, 315);
+		datePicker.setSize("210px", "162px");
+		
+		Label label_1 = new Label("Próximas Caronas");
+		absolutePanel.add(label_1, 66, 292);
+		
+		Image image = new Image(resources.getGenericLittleUserImage());
+		absolutePanel.add(image, 25, 21);
+		image.setSize("76px", "74px");
+		
+		Image image_1 = new Image(resources.getGenericLittleUserImage());
+		absolutePanel.add(image_1, 125, 21);
+		image_1.setSize("76px", "74px");
+		
+		Image image_2 = new Image(resources.getGenericLittleUserImage());
+		absolutePanel.add(image_2, 25, 115);
+		image_2.setSize("76px", "74px");
+		
+		Image image_3 = new Image(resources.getGenericLittleUserImage());
+		absolutePanel.add(image_3, 125, 115);
+		image_3.setSize("76px", "74px");
+		
+		Image image_4 = new Image(resources.getGenericLittleUserImage());
+		absolutePanel.add(image_4, 25, 212);
+		image_4.setSize("76px", "74px");
+		
+		Image image_5 = new Image(resources.getGenericLittleUserImage());
+		absolutePanel.add(image_5, 125, 212);
+		image_5.setSize("76px", "74px");
 
 		btnInicio.addClickHandler(new ClickHandler() {
 			@Override

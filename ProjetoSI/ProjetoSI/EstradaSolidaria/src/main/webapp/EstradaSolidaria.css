@@ -30,20 +30,25 @@ h1 {
 }
 
 /** Set ids using widget.getElement().setId("idOfElement") */
+
 #closeButton {
   margin: 15px 6px 6px;
 }
+
 .gwt-LabelDestaque {
-font-size: 18px ;
-font-weight: bold;
+	font-size: 18px ;
+	font-weight: bold;
 }
+
 .gwt-LoginPanel {
 	border: 10px #005522;
 	background-color: #cccccc;
 }
+
 .gwt-ButtonDestaque {
-font-size: 18px
+	font-size: 18px
 }
+
 .gwt-AssinaturaPanel {
 	border: 10px #005522;
 	background-color: #cccccc;
@@ -52,59 +57,74 @@ font-size: 18px
 h2 {
 	font-size: 19px;
 }
-.menu {
-aligner: center;	
 
+.menu {
+	aligner: center;	
 }
+
 .gwt-LabelDestaqueWhilte{
-font-size: 18px ;
-font-weight: bold;
-font-color: #ffffff;
+	font-size: 18px ;
+	font-weight: bold;
+	font-color: #ffffff;
 }
+
 .painelPerfil {
 	background-color: aliceblue;
 }
+
+/* .leftPainelPerfil {
+	background-color: #3399FF;
+} */
+
 .feedPanel {
 	background-color: honeydew;
 }
+
 .gwt-MenuBar gwt-MenuBar-horizontal1 {
 	border-top: ridge;
 	background-color: #cccccc;
 	table-layout: auto;
 }
+
 .gwt-StateCadastroUsuarioAceitoLabel {
 	color: Black;
 	font-size: 18px;
 	font-family: @Dotum;
 	font-weight: bold;
 }
+
 .gwt-LabelEstradaSolidaria {
 	color: Blue;
 	font-family: @Dotum;
 	font-weight: bold;
 }
+
 .gwt-LabelEstradaSolidaria2 {
 	color: Navy;
 	font-size: 24px;
 	font-family: @Dotum;
 	font-weight: bold;
 }
+
 .gwt-LabelEstradaSolidaria3 {
 	color: Green;
 	font-size: 18px;
 	font-family: @Dotum;
 	font-weight: bolder;
 }
+
 .gwt-LabelEstradaSolidaria4 {
 	color: blue;
 	font-family: @Dotum;
 }
+
 .gwt-LabelEstradaSolidaria5 {
 	color: red;
 	font-size: 10px ;
 	font-family: @Dotum;
 	font-weight: bold;
 }
+
 .gwt-LabelEstradaSolidaria6 {
 	color: red;
 	font-size: 10px ;

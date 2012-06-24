@@ -45,23 +45,12 @@ public class StateEditarPerfil extends Composite {
 		absolutePanel_EditarPerfil.setSize("713px", "644px");
 		
 		Label lblEditarPerfil = new Label("Editar Perfil");
-		absolutePanel_EditarPerfil.add(lblEditarPerfil, 10, 10);
-		
-		AbsolutePanel absolutePanel = new AbsolutePanel();
-		absolutePanel_EditarPerfil.add(absolutePanel, 41, 313);
-		absolutePanel.setSize("423px", "191px");
-		
-		Image image = new Image(resources.getGenericUserImage());
-		absolutePanel.add(image, 10, 10);
-		image.setSize("181px", "160px");
-		
-		FileUpload fileUpload = new FileUpload();
-		absolutePanel.add(fileUpload, 206, 144);
-		fileUpload.setSize("189px", "22px");
+		lblEditarPerfil.setStyleName("gwt-LabelEstradaSolidaria2");
+		absolutePanel_EditarPerfil.add(lblEditarPerfil, 183, 10);
 		
 		AbsolutePanel absolutePanel_1 = new AbsolutePanel();
 		absolutePanel_EditarPerfil.add(absolutePanel_1, 41, 57);
-		absolutePanel_1.setSize("552px", "250px");
+		absolutePanel_1.setSize("662px", "401px");
 		
 		Label lblNewLabel = new Label("Login:");
 		absolutePanel_1.add(lblNewLabel, 10, 10);
@@ -162,6 +151,14 @@ public class StateEditarPerfil extends Composite {
 			}
 		});
 		absolutePanel_1.add(txtbtnEnderecoOk, 294, 204);
+		
+		FileUpload fileUpload = new FileUpload();
+		absolutePanel_1.add(fileUpload, 374, 337);
+		fileUpload.setSize("278px", "22px");
+		
+		Image image = new Image(resources.getGenericUserImage());
+		absolutePanel_1.add(image, 435, 170);
+		image.setSize("126px", "139px");
 		txtbtnEnderecoOk.setVisible(false);
 		
 		btnEditarEndereco.addClickHandler(new ClickHandler() {
