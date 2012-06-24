@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.MenuItemSeparator;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DatePicker;
 
@@ -31,11 +32,12 @@ public class StatePerfil extends Composite {
 	final Widget panel= this;
 	private EstradaSolidariaServiceAsync estradaSolidariaService;
 	
-	final AbsolutePanel bodyPanel;
+	final ScrollPanel scrollPanel;
 	private DockPanel dockPanel;
 	private AbsolutePanel headerPanel;
 	private AbsolutePanel leftSideBarPanel;
 	private AbsolutePanel rightSidebarPanel;
+	private AbsolutePanel bodyPanel;
 	private AbsolutePanel mainPanel;
 	private String[] dadosUsuario;
 	
@@ -64,17 +66,17 @@ public class StatePerfil extends Composite {
 		
 		dockPanel = new DockPanel();
 		mainPanel.add(dockPanel, 10, 10);
-		dockPanel.setSize("1344px", "782px");
+		dockPanel.setSize("1344px", "693px");
 		
 		headerPanel = new AbsolutePanel();
 		headerPanel.setStyleName("headerPainelPerfil");
 		dockPanel.add(headerPanel, DockPanel.NORTH);
-		headerPanel.setSize("1338px", "181px");
+		headerPanel.setSize("1338px", "172px");
 		
 		Label lblNomeDoUsuario = new Label("Olá " + dadosUsuario[2] + "!");
-		headerPanel.add(lblNomeDoUsuario, 33, 155);
+		headerPanel.add(lblNomeDoUsuario, 33, 145);
 		lblNomeDoUsuario.setStyleName("gwt-LabelEstradaSolidaria7");
-		headerPanel.add(lblNomeDoUsuario, 33, 155);
+		headerPanel.add(lblNomeDoUsuario, 33, 145);
 		lblNomeDoUsuario.setSize("126px", "17px");
 		
 		MenuBar menuBar = new MenuBar(false);
@@ -83,9 +85,9 @@ public class StatePerfil extends Composite {
 		
 		MenuItem menuItemOpcoes = new MenuItem("Editar Perfil", false, new Command() {
 			public void execute() {
-				bodyPanel.clear();
+				scrollPanel.clear();
 				Widget editarPerfil= new StateEditarPerfil(estradaSolidariaService, dadosUsuario);
-				bodyPanel.add(editarPerfil);
+				scrollPanel.add(editarPerfil);
 				editarPerfil.setSize("100%", "100%");
 			}
 		});
@@ -106,12 +108,12 @@ public class StatePerfil extends Composite {
 		
 		Image photoPerfil = new Image(resources.getGenericUserImage());
 		headerPanel.add(photoPerfil, 23, 10);
-		photoPerfil.setSize("126px", "139px");
+		photoPerfil.setSize("126px", "132px");
 		
 		leftSideBarPanel = new AbsolutePanel();
 		leftSideBarPanel.setStylePrimaryName("painelPerfil2");
 		dockPanel.add(leftSideBarPanel, DockPanel.WEST);
-		leftSideBarPanel.setSize("141px", "444px");
+		leftSideBarPanel.setSize("141px", "491px");
 		
 		TextButton txtbtnCadastrarCarona = new TextButton("Cadastrar Carona");
 		leftSideBarPanel.add(txtbtnCadastrarCarona, 10, 91);
@@ -147,10 +149,16 @@ public class StatePerfil extends Composite {
 		leftSideBarPanel.add(txtbtnMinhasSugestoes, 10, 361);
 		txtbtnMinhasSugestoes.setSize("122px", "63px");
 		
+		scrollPanel = new ScrollPanel();
+		scrollPanel.setStyleName("painelCentralPerfil");
+		dockPanel.add(scrollPanel, DockPanel.WEST);
+		scrollPanel.setSize("950px", "493px");
+		
 		bodyPanel = new AbsolutePanel();
 		bodyPanel.setStyleName("painelCentralPerfil");
 		dockPanel.add(bodyPanel, DockPanel.WEST);
-		bodyPanel.setSize("950px", "559px");
+		bodyPanel.setSize("950px", "493px");
+		
 		rightSidebarPanel = new AbsolutePanel();
 		rightSidebarPanel.setStylePrimaryName("painelPerfil1");
 		dockPanel.add(rightSidebarPanel, DockPanel.EAST);
@@ -225,27 +233,37 @@ public class StatePerfil extends Composite {
 	}
 
 	protected void inicio() {
-		bodyPanel.clear();	
+		scrollPanel.clear();	
+		//TODO fazer Inicio
 	}
 
 	protected void cadastrarCaronaGUI() {
+		scrollPanel.clear();
 		bodyPanel.clear();
+		scrollPanel.setVisible(false);
 		Widget cadastrarCarona = new StateCadastroCaronas(estrada, estradaSolidariaService);
 		bodyPanel.add(cadastrarCarona);
+		bodyPanel.setVisible(true);
 		cadastrarCarona.setSize("100%", "100%");
 	}
 
 	protected void pesquisarCaronaGUI() {
+		scrollPanel.clear();
 		bodyPanel.clear();
+		scrollPanel.setVisible(false);
 		Widget pesquisarCarona = new StatePesquisaCarona(estrada, estradaSolidariaService, bodyPanel);
 		bodyPanel.add(pesquisarCarona);
 		pesquisarCarona.setSize("100%", "100%");
+		bodyPanel.setVisible(true);
 	}
 	
 	protected void minhasCaronasGUI() {
+		scrollPanel.clear();
 		bodyPanel.clear();
-		Widget visualizarCarona= new StateMinhasCaronas(estrada, estradaSolidariaService);
-		visualizarCarona.setSize("100%", "100%");
-		bodyPanel.add(visualizarCarona);
+		scrollPanel.setVisible(true);
+		bodyPanel.setVisible(false);
+		Widget minhasCarona= new StateMinhasCaronas(estrada, estradaSolidariaService);
+		minhasCarona.setSize("100%", "100%");
+		scrollPanel.add(minhasCarona);
 	}
 }

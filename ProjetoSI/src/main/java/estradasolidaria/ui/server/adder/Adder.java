@@ -70,7 +70,7 @@ public class Adder {
 	}
 
 	private void cadastraCaronas() {
-		for(int j = 1; j < 3; j++) {
+		for(int j = 11; j < 50; j++) {
 			sistema.cadastrarCarona(idSessao1, "o"+j, "d"+j, "12/12/2012", "12:12", j);
 		}
 		
