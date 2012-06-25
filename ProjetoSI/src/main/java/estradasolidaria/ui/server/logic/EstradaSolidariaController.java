@@ -1253,4 +1253,114 @@ public class EstradaSolidariaController implements Serializable {
 		u.setLogin(novoLogin);
 		
 	}
+	
+	/**
+	 * Cadastra uma carona relampago, a qual
+	 * so acontece se o minimo de caroneiros for
+	 * alcancado até 48h antes da saída da carona.
+	 * 
+	 * @param idSessao
+	 * @param origem
+	 * @param destino
+	 * @param data
+	 * @param hora
+	 * @param minimoCaroneiros
+	 * @return idCarona
+	 */
+	public Integer cadastrarCaronaRelampago(Integer idSessao, String origem, String destino, String data, 
+			String hora, Integer minimoCaroneiros) {
+		//TODO fazer cadastrarCaronaRelampago
+		return -1;
+	}
+	
+	/**
+	 * Retorna minimo de caroneiros para a carona
+	 * identificada por idCarona.
+	 * 
+	 * @param idCarona
+	 * @return minimo de caroneiros
+	 */
+	public Integer getMinimoCaroneiros(Integer idCarona) {
+		//TODO fazer getMinimoCaroneiros
+		return -1;
+	}
+	
+	/**
+	 * Retorna carona relampago identificada por idCarona
+	 * 
+	 * @param idCarona
+	 * @return carona
+	 */
+	public Carona getCaronaRelampago(Integer idCarona) {
+		//TODO fazer getCaronaRelampago
+		return null;
+	}
+	
+	/**
+	 * Define uma carona como preferencial.
+	 * 
+	 * @param idCarona
+	 */
+	public void definirCaronaPreferencial(Integer idCarona) {
+		//TODO fazer definirCaronaPrefencial
+	}
+	
+	/**
+	 * Retorna se uma carona identificada por idCarona eh preferencial.
+	 * 
+	 * @param idCarona
+	 * @return true se carona eh preferencial
+	 */
+	public boolean isCaronaPreferencial(Integer idCarona) {
+		//TODO
+		return false;
+	}
+	
+	/**
+	 * Retorna lista de usuarios preferenciais.
+	 * 
+	 * @param idCarona
+	 * @return lista de usuarios
+	 */
+	public List<Usuario> getUsuariosPreferenciaisCarona(Integer idCarona) {
+		//TODO
+		return null;
+	}
+	
+	/**
+	 * Retorna id de uma lista de caroneiros que
+	 * estão geograficamente proximos do caroneiro
+	 * identificado por idSessao.
+	 * 
+	 * @param idSessao
+	 * @return id de lista de caroneiros
+	 */
+	public Integer listarCaroneirosProximos(Integer idSessao) {
+		//TODO
+		return null;
+	}
+	
+	/**
+	 * Retorna lista de caroneiros proximos
+	 * ao usuario.
+	 * 
+	 * @return lista de usuarios
+	 */
+	public List<Usuario> getListaID() {
+		//TODO
+		return null;
+	}
+	
+	/**
+	 * Retorna lista de usuarios ranqueados segundo
+	 * avaliacoes feitas por outros usuario e registradas
+	 * no sistema.
+	 * 
+	 * @param ordem
+	 * @return lista de usuarios
+	 */
+	public List<Usuario> getRankingUsuarios(String ordem) {
+		//TODO
+		return null;
+	}
 }

@@ -1024,4 +1024,116 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 
 		return sistema.enviarEmail(idSessao2, destino, message);
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getAtibutoCaronaRelampago(java.lang.Integer, java.lang.String)
+	 */
+	@Override
+	public Object getAtibutoCaronaRelampago(Integer idCarona, String atributo) {
+		// TODO fazer getAtributoCaronaRelampago
+		return null;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getMinimoCaroneiros(java.lang.Integer)
+	 */
+	@Override
+	public Integer getMinimoCaroneiros(Integer idCarona) {
+		// TODO fazer getMinimoCaroneiros
+		return null;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getAtributoExpired(java.lang.Integer, java.lang.String)
+	 */
+	@Override
+	public String getAtributoExpired(Integer idExpired, String atributo) {
+		// TODO fazer getAtributoExpired
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getCaronaRelampago(java.lang.Integer)
+	 */
+	@Override
+	public Carona getCaronaRelampago(Integer idCarona) {
+		// TODO fazer getCaronaRelampago
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#setCaronaRelampagoExpired(java.lang.Integer)
+	 */
+	@Override
+	public void setCaronaRelampagoExpired(Integer idCarona) {
+		// TODO fazer setCaronaRelampago
+		
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#definirCaronaPreferencial(java.lang.Integer)
+	 */
+	@Override
+	public void definirCaronaPreferencial(Integer idCarona) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#isCaronaPreferencial(java.lang.Integer)
+	 */
+	@Override
+	public boolean isCaronaPreferencial(Integer idCarona) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getUsuariosPreferenciaisCarona(java.lang.Integer)
+	 */
+	@Override
+	public List<Usuario> getUsuariosPreferenciaisCarona(Integer idCarona) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#listarCaroneirosProximos(java.lang.Integer)
+	 */
+	@Override
+	public Integer listarCaroneirosProximos(Integer idSessao) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getListaID()
+	 */
+	@Override
+	public List<Usuario> getListaID() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getRankingUsuarios(java.lang.String)
+	 */
+	@Override
+	public List<Usuario> getRankingUsuarios(String ordem) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 }

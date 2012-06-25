@@ -440,4 +440,95 @@ public interface AdapterInterface {
 	public abstract boolean enviarEmail(String idSessao, String destino,
 			String message) throws MessagingException;
 
+	/**
+	 * Retorna atributo de carona relampago.
+	 * 
+	 * @param atributo
+	 * @return atributo de carona
+	 */
+	public Object getAtibutoCaronaRelampago(Integer idCarona, String atributo);
+	
+	/**
+	 * Retorna minimo de caroneiros para a carona
+	 * identificada por idCarona.
+	 * 
+	 * @param idCarona
+	 * @return minimo de caroneiros
+	 */
+	public Integer getMinimoCaroneiros(Integer idCarona);
+	
+	/**
+	 * Retorna atributo de 
+	 * 
+	 * @return
+	 */
+	public String getAtributoExpired(Integer idExpired, String atributo);
+	
+	/**
+	 * Retorna carona relampago identificada por idCarona
+	 * 
+	 * @param idCarona
+	 * @return carona
+	 */
+	public Carona getCaronaRelampago(Integer idCarona);
+
+	/**
+	 * Configures uma nova carona expirada (para testes)
+	 * 
+	 * @param idCarona
+	 */
+	public void setCaronaRelampagoExpired(Integer idCarona);
+	
+	
+	
+	/**
+	 * Define uma carona como preferencial.
+	 * 
+	 * @param idCarona
+	 */
+	public void definirCaronaPreferencial(Integer idCarona); 
+	
+	/**
+	 * Retorna se uma carona identificada por idCarona eh preferencial.
+	 * 
+	 * @param idCarona
+	 * @return true se carona eh preferencial
+	 */
+	public boolean isCaronaPreferencial(Integer idCarona); 
+	
+	/**
+	 * Retorna lista de usuarios preferenciais.
+	 * 
+	 * @param idCarona
+	 * @return lista de usuarios
+	 */
+	public List<Usuario> getUsuariosPreferenciaisCarona(Integer idCarona);
+	
+	/**
+	 * Retorna id de uma lista de caroneiros que
+	 * estão geograficamente proximos do caroneiro
+	 * identificado por idSessao.
+	 * 
+	 * @param idSessao
+	 * @return id de lista de caroneiros
+	 */
+	public Integer listarCaroneirosProximos(Integer idSessao);
+	
+	/**
+	 * Retorna lista de caroneiros proximos
+	 * ao usuario.
+	 * 
+	 * @return lista de usuarios
+	 */
+	public List<Usuario> getListaID();
+	
+	/**
+	 * Retorna lista de usuarios ranqueados segundo
+	 * avaliacoes feitas por outros usuario e registradas
+	 * no sistema.
+	 * 
+	 * @param ordem
+	 * @return lista de usuarios
+	 */
+	public List<Usuario> getRankingUsuarios(String ordem);
 }
