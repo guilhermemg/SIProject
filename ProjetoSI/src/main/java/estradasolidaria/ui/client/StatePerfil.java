@@ -70,10 +70,19 @@ public class StatePerfil extends Composite {
 		headerPanel.setSize("1338px", "172px");
 		
 		Label lblNomeDoUsuario = new Label("Olá " + dadosUsuario[2] + "!");
-		headerPanel.add(lblNomeDoUsuario, 33, 145);
+		headerPanel.add(lblNomeDoUsuario, 155, 10);
 		lblNomeDoUsuario.setStyleName("gwt-LabelEstradaSolidaria7");
-		headerPanel.add(lblNomeDoUsuario, 33, 145);
+		headerPanel.add(lblNomeDoUsuario, 155, 10);
 		lblNomeDoUsuario.setSize("126px", "17px");
+		
+		
+		Label lblEndereco = new Label("Endereco: " + dadosUsuario[3]);
+		lblEndereco.setStyleName("gwt-LabelEstradaSolidaria7");
+		headerPanel.add(lblEndereco, 155, 33);
+		
+		Label lblEmail = new Label("Email: " + dadosUsuario[4]);
+		lblEmail.setStyleName("gwt-LabelEstradaSolidaria7");
+		headerPanel.add(lblEmail, 155, 55);
 		
 		MenuBar menuBar = new MenuBar(false);
 		headerPanel.add(menuBar, 1127, 10);
