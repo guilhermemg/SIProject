@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.widget.client.TextButton;
 
 import estradasolidaria.ui.resources.Resources;
+import com.google.gwt.user.client.ui.Hyperlink;
 
 public class StateHomePage extends Composite {
 	
@@ -53,15 +54,15 @@ public class StateHomePage extends Composite {
 		AbsolutePanel absolutePanel_1 = new AbsolutePanel();
 		absolutePanel_1.setStylePrimaryName("gwt-LoginPanel");
 		absolutePanel.add(absolutePanel_1, 687, 222);
-		absolutePanel_1.setSize("313px", "218px");
+		absolutePanel_1.setSize("313px", "256px");
 		
 		Label label = new Label("Já é usuário? Faça Login.");
 		label.setStyleName("gwt-LabelEstradaSolidaria");
-		absolutePanel_1.add(label, 23, 10);
+		absolutePanel_1.add(label, 23, 58);
 		
 		Label lblUser = new Label("Usuário:");
 		lblUser.setStyleName("gwt-LabelEstradaSolidaria4");
-		absolutePanel_1.add(lblUser, 10, 51);
+		absolutePanel_1.add(lblUser, 10, 99);
 		lblUser.setSize("58px", "15px");
 		
 		final TextBox textBoxUser = new TextBox();
@@ -71,12 +72,12 @@ public class StateHomePage extends Composite {
 				lblMensagemErroLogin.setVisible(false);
 			}
 		});
-		absolutePanel_1.add(textBoxUser, 74, 51);
+		absolutePanel_1.add(textBoxUser, 74, 99);
 		textBoxUser.setSize("169px", "13px");
 		
 		Label lblPassword = new Label("Senha:");
 		lblPassword.setStyleName("gwt-LabelEstradaSolidaria4");
-		absolutePanel_1.add(lblPassword, 10, 78);
+		absolutePanel_1.add(lblPassword, 10, 126);
 		
 		final PasswordTextBox passwordTextBox = new PasswordTextBox();
 		passwordTextBox.addKeyPressHandler(new KeyPressHandler() {
@@ -85,7 +86,7 @@ public class StateHomePage extends Composite {
 				lblMensagemErroLogin.setVisible(false);
 			}
 		});
-		absolutePanel_1.add(passwordTextBox, 74, 78);
+		absolutePanel_1.add(passwordTextBox, 74, 126);
 		passwordTextBox.setSize("169px", "17px");
 		
 		
@@ -119,17 +120,20 @@ public class StateHomePage extends Composite {
 				}
 			}
 		});
-		absolutePanel_1.add(button, 168, 145);
+		absolutePanel_1.add(button, 168, 193);
 		button.setSize("81px", "24px");
 		
 		CheckBox checkBox = new CheckBox("lembrar-me");
 		checkBox.setHTML("Lembrar-me");
-		absolutePanel_1.add(checkBox, 168, 178);
+		absolutePanel_1.add(checkBox, 168, 226);
 		
 		lblMensagemErroLogin = new Label("Mensagem de erro");
 		lblMensagemErroLogin.setStyleName("gwt-LabelEstradaSolidaria5");
-		absolutePanel_1.add(lblMensagemErroLogin, 84, 109);
+		absolutePanel_1.add(lblMensagemErroLogin, 84, 157);
 		lblMensagemErroLogin.setSize("169px", "16px");
+		
+		Hyperlink hprlnkLoginViaFacebook = new Hyperlink("Login Via Facebook", false, "newHistoryToken");
+		absolutePanel_1.add(hprlnkLoginViaFacebook, 135, 10);
 		lblMensagemErroLogin.setVisible(false);
 
 		AbsolutePanel absolutePanel_2 = new AbsolutePanel();

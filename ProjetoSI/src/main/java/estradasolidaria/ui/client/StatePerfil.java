@@ -202,6 +202,8 @@ public class StatePerfil extends Composite {
 		rightSidebarPanel.add(image_5, 125, 212);
 		image_5.setSize("76px", "74px");
 		
+		//inicio(); TODO inicio eh chamado assim q se abre o perfil
+		
 		btnInicio.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
