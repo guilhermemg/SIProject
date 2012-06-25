@@ -3,23 +3,22 @@ package estradasolidaria.ui.client;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.widget.client.TextButton;
 
 import estradasolidaria.ui.resources.Resources;
-import com.google.gwt.event.dom.client.KeyPressHandler;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.user.client.ui.Hyperlink;
-import com.google.gwt.user.client.ui.SimplePanel;
 
 public class StateHomePage extends Composite {
 	
@@ -31,7 +30,7 @@ public class StateHomePage extends Composite {
 	private TextBox textBoxEmail;
 	private EstradaSolidaria estrada;
 	private EstradaSolidariaServiceAsync estradaService;
-	private Label lblMesagemDeErro;
+	private Label lblMensagemDeErro;
 	private Label lblErroLoginUser;
 	private Label lblErroSenhaUser;
 	private Label lblErrosenha;
@@ -40,6 +39,7 @@ public class StateHomePage extends Composite {
 	private Label lblErrologin;
 	private Label lblErroendereco;
 	private Label lblErroemail;
+	private Label lblMensagemErroLogin;
 	
 	public StateHomePage(EstradaSolidaria estradaSolidaria, EstradaSolidariaServiceAsync estradaSolidariaService) {
 		Resources resources = GWT.create(Resources.class);
@@ -68,7 +68,7 @@ public class StateHomePage extends Composite {
 		textBoxUser.addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent event) {
 				lblErroLoginUser.setVisible(false);
-				lblErroSenhaUser.setVisible(false);
+				lblMensagemErroLogin.setVisible(false);
 			}
 		});
 		absolutePanel_1.add(textBoxUser, 74, 51);
@@ -79,6 +79,12 @@ public class StateHomePage extends Composite {
 		absolutePanel_1.add(lblPassword, 10, 78);
 		
 		final PasswordTextBox passwordTextBox = new PasswordTextBox();
+		passwordTextBox.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				lblErroSenhaUser.setVisible(false);
+				lblMensagemErroLogin.setVisible(false);
+			}
+		});
 		absolutePanel_1.add(passwordTextBox, 74, 78);
 		passwordTextBox.setSize("169px", "17px");
 		
@@ -98,21 +104,33 @@ public class StateHomePage extends Composite {
 			public void onClick(ClickEvent event) {
 				if(textBoxUser.getText().length() == 0|| passwordTextBox.getText().length() == 0){
 					//Window.alert("Digite todos os campos corretamente");
-					lblErroLoginUser.setText("*");
-					lblErroSenhaUser.setText("*");
-					lblErroLoginUser.setVisible(true);
-					lblErroSenhaUser.setVisible(true);
+					if(textBoxUser.getText().length() == 0){
+						lblErroLoginUser.setText("*");
+						lblErroLoginUser.setVisible(true);
+					}
+					if(passwordTextBox.getText().length() == 0){
+						lblErroSenhaUser.setText("*");
+						lblErroSenhaUser.setVisible(true);
+					}
+					lblMensagemErroLogin.setText("Preencha o(s) campo(s) corretamente");
+					lblMensagemErroLogin.setVisible(true);
 				} else {
 					 abrirSessaoGUI(textBoxUser, passwordTextBox);
 				}
 			}
 		});
-		absolutePanel_1.add(button, 170, 128);
+		absolutePanel_1.add(button, 168, 145);
 		button.setSize("81px", "24px");
 		
 		CheckBox checkBox = new CheckBox("lembrar-me");
 		checkBox.setHTML("Lembrar-me");
-		absolutePanel_1.add(checkBox, 170, 168);
+		absolutePanel_1.add(checkBox, 168, 178);
+		
+		lblMensagemErroLogin = new Label("Mensagem de erro");
+		lblMensagemErroLogin.setStyleName("gwt-LabelEstradaSolidaria5");
+		absolutePanel_1.add(lblMensagemErroLogin, 84, 109);
+		lblMensagemErroLogin.setSize("169px", "16px");
+		lblMensagemErroLogin.setVisible(false);
 
 		AbsolutePanel absolutePanel_2 = new AbsolutePanel();
 		absolutePanel_2.setStyleName("h2");
@@ -159,7 +177,7 @@ public class StateHomePage extends Composite {
 		textBoxNome.addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent event) {
 				lblErronome.setVisible(false);
-				lblMesagemDeErro.setVisible(false);
+				lblMensagemDeErro.setVisible(false);
 			}
 		});
 		absolutePanel_2.add(textBoxNome, 183, 50);
@@ -169,7 +187,7 @@ public class StateHomePage extends Composite {
 		textBoxLogin.addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent event) {
 				lblErrologin.setVisible(false);
-				lblMesagemDeErro.setVisible(false);
+				lblMensagemDeErro.setVisible(false);
 			}
 		});
 		absolutePanel_2.add(textBoxLogin, 183, 81);
@@ -179,7 +197,7 @@ public class StateHomePage extends Composite {
 		TextBoxSenha.addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent event) {
 				lblErrosenha.setVisible(false);
-				lblMesagemDeErro.setVisible(false);
+				lblMensagemDeErro.setVisible(false);
 			}
 		});
 		absolutePanel_2.add(TextBoxSenha, 183, 112);
@@ -189,7 +207,7 @@ public class StateHomePage extends Composite {
 		TextBoxSenha2.addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent event) {
 				lblErrosenha_1.setVisible(false);
-				lblMesagemDeErro.setVisible(false);
+				lblMensagemDeErro.setVisible(false);
 			}
 		});
 		absolutePanel_2.add(TextBoxSenha2, 183, 143);
@@ -199,7 +217,7 @@ public class StateHomePage extends Composite {
 		textBoxEndereco.addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent event) {
 				lblErroendereco.setVisible(false);
-				lblMesagemDeErro.setVisible(false);
+				lblMensagemDeErro.setVisible(false);
 			}
 		});
 		absolutePanel_2.add(textBoxEndereco, 183, 180);
@@ -209,7 +227,7 @@ public class StateHomePage extends Composite {
 		textBoxEmail.addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent event) {
 				lblErroemail.setVisible(false);
-				lblMesagemDeErro.setVisible(false);
+				lblMensagemDeErro.setVisible(false);
 			}
 		});
 		absolutePanel_2.add(textBoxEmail, 183, 211);
@@ -245,16 +263,16 @@ public class StateHomePage extends Composite {
 						lblErrosenha_1.setText("*");
 						lblErrosenha_1.setVisible(true);
 					}
-					lblMesagemDeErro.setText("Campo(s) obrigatório(s)!");
-					lblMesagemDeErro.setVisible(true);
+					lblMensagemDeErro.setText("Campo(s) obrigatório(s)!");
+					lblMensagemDeErro.setVisible(true);
 				} else if(!TextBoxSenha.getText().equals(TextBoxSenha2.getText())){
 					//Window.alert("Senha inválida");
 					lblErrosenha.setText("*");
 					lblErrosenha_1.setText("*");
 					lblErrosenha.setVisible(true);
 					lblErrosenha_1.setVisible(true);
-					lblMesagemDeErro.setText("Senha incorreta!");
-					lblMesagemDeErro.setVisible(true);
+					lblMensagemDeErro.setText("Senha incorreta!");
+					lblMensagemDeErro.setVisible(true);
 				} else {
 					cadastraUsuarioGUI(textBoxLogin, TextBoxSenha, textBoxNome, textBoxEndereco, textBoxEmail);
 				}
@@ -267,11 +285,11 @@ public class StateHomePage extends Composite {
 		lblCadastrese.setStyleName("gwt-LabelEstradaSolidaria2");
 		absolutePanel_2.add(lblCadastrese, 188, 0);
 		
-		lblMesagemDeErro = new Label("mensagem de erro");
-		lblMesagemDeErro.setStyleName("gwt-LabelEstradaSolidaria5");
-		absolutePanel_2.add(lblMesagemDeErro, 193, 242);
-		lblMesagemDeErro.setSize("213px", "31px");
-		lblMesagemDeErro.setVisible(false);
+		lblMensagemDeErro = new Label("mensagem de erro");
+		lblMensagemDeErro.setStyleName("gwt-LabelEstradaSolidaria5");
+		absolutePanel_2.add(lblMensagemDeErro, 193, 242);
+		lblMensagemDeErro.setSize("213px", "31px");
+		lblMensagemDeErro.setVisible(false);
 		
 		lblErrosenha = new Label("ErroSenha");
 		lblErrosenha.setStyleName("gwt-LabelEstradaSolidaria6");
@@ -330,7 +348,13 @@ public class StateHomePage extends Composite {
 		Label lblRepositrioDeDesenvolvimento = new Label("Repositório de desenvolvimento:");
 		absolutePanel_4.add(lblRepositrioDeDesenvolvimento, 437, 37);
 		
-		Hyperlink hprlnkRepositrioDeDesenvolvimento = new Hyperlink("https://github.com/guilhermemg/SIProject", false, "newHistoryToken");
+		Anchor hprlnkRepositrioDeDesenvolvimento = new Anchor("https://github.com/guilhermemg/SIProject", false, "newHistoryToken");
+		hprlnkRepositrioDeDesenvolvimento.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent arg0) {
+				//TODO fazer acao de hyperlink
+			}
+		});
+		
 		absolutePanel_4.add(hprlnkRepositrioDeDesenvolvimento, 664, 37);
 		
 		Label lblAssinaturaDoSistema = new Label("Estrada Solidária foi desenvolvido por Guilherme Gadelha, Hemã Vidal, Ítalo Silva e Leonardo Santos.");
@@ -339,21 +363,28 @@ public class StateHomePage extends Composite {
 		
 	}
 	
-	protected void cadastraUsuarioGUI(final TextBox textBoxLogin, final PasswordTextBox textBoxPassword, TextBox textBbxNome, TextBox textBoxEndereco, TextBox textBoxEmail) {
-		String login = textBoxLogin.getText(), senha = textBoxPassword.getText(),
-				nome = textBbxNome.getText(), endereco = textBoxEndereco.getText(), email = textBoxEmail.getText();
+	protected void cadastraUsuarioGUI(final TextBox txtBoxLogin, final PasswordTextBox txtBoxPassword, TextBox txtBbxNome, TextBox txtBoxEndereco, TextBox txtBoxEmail) {
+		String login = txtBoxLogin.getText(), senha = txtBoxPassword.getText(),
+				nome = txtBbxNome.getText(), endereco = txtBoxEndereco.getText(), email = txtBoxEmail.getText();
 		
 		estradaService.criarUsuario(login, senha, nome, endereco, email, new AsyncCallback<Void>() {
 			@Override
 			public void onFailure(Throwable caught) {
 				// Show the RPC error message to the user
-				Window.alert("Remote Procedure Call - Failure: " + this.toString());
+				lblMensagemDeErro.setText("Remote Procedure Call - Failure: " + this.toString());
+				lblMensagemDeErro.setVisible(true);
+				textBoxNome.setText("");
+				textBoxEmail.setText("");
+				textBoxEndereco.setText("");
+				textBoxLogin.setText("");
+				TextBoxSenha.setText("");
+				TextBoxSenha2.setText("");
+				
 			}
 
 			@Override
 			public void onSuccess(Void result) {
-				abrirSessaoGUI(textBoxLogin, textBoxPassword);
-				Window.alert("Usuário cadastrado!");
+				abrirSessaoGUI(txtBoxLogin, txtBoxPassword);
 			}
 		  });
 	}
@@ -365,7 +396,8 @@ public class StateHomePage extends Composite {
 			@Override
 			public void onFailure(Throwable caught) {
 				// Show the RPC error message to the user
-				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
+				lblMensagemErroLogin.setText("Remote Procedure Call - Failure: " + caught.getMessage());
+				lblMensagemErroLogin.setVisible(true);
 			}
 
 			@Override
@@ -382,7 +414,8 @@ public class StateHomePage extends Composite {
 			@Override
 			public void onFailure(Throwable caught) {
 				// Show the RPC error message to the user 
-				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
+				lblMensagemErroLogin.setText("Remote Procedure Call - Failure: " + caught.getMessage());
+				lblMensagemErroLogin.setVisible(true);
 			}
 
 			@Override
