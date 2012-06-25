@@ -35,6 +35,7 @@ public class PopupSolicitacoes extends PopupPanel {
 	private DialogBox dialogBox;
 	private TextButton buttonOK;
 	private Resources resources;
+	private Label lblMensagemDeErro;
 	
 	class Solicitante {
 		String nomeUsuario;
@@ -115,6 +116,10 @@ public class PopupSolicitacoes extends PopupPanel {
 		absolutePanel.add(littlePhotoUser, 30, 28);
 		littlePhotoUser.setSize("74px", "74px");
 		
+		lblMensagemDeErro = new Label("MensagemDeErro");
+		absolutePanel.add(lblMensagemDeErro, 30, 276);
+		lblMensagemDeErro.setVisible(false);
+		
 		dialogBox = new DialogBox();
 		
 		dialogBox.center();
@@ -138,17 +143,23 @@ public class PopupSolicitacoes extends PopupPanel {
 		this.estradaSolidariaService.rejeitarSolicitacao(idSessao, idSolicitacao, new AsyncCallback<Void>() {
 			@Override
 			public void onFailure(Throwable caught) {
-				dialogBox.setTitle("Erro");
-				dialogBox.setText("Erro: " + caught.getMessage());
-				dialogBox.show();
+				lblMensagemDeErro.setText("Erro: " + caught.getMessage());
+				lblMensagemDeErro.setStyleName("gwt-LabelEstradaSolidaria5");
+				lblMensagemDeErro.setVisible(true);
+//				dialogBox.setTitle("Erro");
+//				dialogBox.setText("Erro: " + caught.getMessage());
+//				dialogBox.show();
 				
 			}
 
 			@Override
 			public void onSuccess(Void result) {
-				dialogBox.setTitle("Sistema");
-				dialogBox.setText("Solicitação Rejeitada!");
-				dialogBox.show();
+				lblMensagemDeErro.setText("Solicitação Rejeitada!");
+				lblMensagemDeErro.setStyleName("gwt-LabelEstradaSolidaria10");
+				lblMensagemDeErro.setVisible(true);
+//				dialogBox.setTitle("Sistema");
+//				dialogBox.setText("Solicitação Rejeitada!");
+//				dialogBox.show();
 			}
 		});
 		
@@ -161,17 +172,23 @@ public class PopupSolicitacoes extends PopupPanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				dialogBox.setTitle("Erro");
-				dialogBox.setText("Erro: " + caught.getMessage());
-				dialogBox.show();
+				lblMensagemDeErro.setText("Erro: " + caught.getMessage());
+				lblMensagemDeErro.setStyleName("gwt-LabelEstradaSolidaria5");
+				lblMensagemDeErro.setVisible(true);
+//				dialogBox.setTitle("Erro");
+//				dialogBox.setText("Erro: " + caught.getMessage());
+//				dialogBox.show();
 				
 			}
 
 			@Override
 			public void onSuccess(Void result) {
-				dialogBox.setTitle("Sistema");
-				dialogBox.setText("Solicitação Aceita!");
-				dialogBox.show();
+				lblMensagemDeErro.setText("Solicitação Aceita!");
+				lblMensagemDeErro.setStyleName("gwt-LabelEstradaSolidaria10");
+				lblMensagemDeErro.setVisible(true);
+//				dialogBox.setTitle("Sistema");
+//				dialogBox.setText("Solicitação Aceita!");
+//				dialogBox.show();
 				
 			}
 		});
