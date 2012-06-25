@@ -354,8 +354,7 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public String cadastrarInteresse(Integer idSessao, String origem,
 			String destino, String data, String horaInicio, String horaFim) {
-		// TODO Auto-generated method stub
-		return null;
+		return controller.cadastrarInteresse(idSessao, origem, destino, data, horaInicio, horaFim).toString();
 	}
 
 	@Override
