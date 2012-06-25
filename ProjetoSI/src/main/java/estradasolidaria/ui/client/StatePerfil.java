@@ -137,7 +137,10 @@ public class StatePerfil extends Composite {
 		TextButton btnMeusInteresses = new TextButton("Meus Interesses");
 		btnMeusInteresses.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				//TODO fazer MeusInteresses
+				bodyPanel.clear();
+				StateMeusInteresses mi = new StateMeusInteresses(estrada, estradaSolidariaService);
+				mi.setSize("100%", "100%");
+				bodyPanel.add(mi);
 			}
 		});
 		leftSideBarPanel.add(btnMeusInteresses, 10, 299);

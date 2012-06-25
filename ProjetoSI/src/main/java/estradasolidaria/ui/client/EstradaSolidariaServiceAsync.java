@@ -129,4 +129,7 @@ public interface EstradaSolidariaServiceAsync {
 
 	void getSolicitacoes(Integer idSessao, Integer idCarona,
 			AsyncCallback<List<String[]>> asyncCallback);
+
+	void getInteresses(Integer idSessao,
+			AsyncCallback<List<GWTInteresse>> callback);
 }

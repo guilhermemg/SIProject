@@ -13,11 +13,13 @@ import com.ibm.icu.text.SimpleDateFormat;
 
 import estradasolidaria.ui.client.EstradaSolidariaService;
 import estradasolidaria.ui.client.GWTException;
+import estradasolidaria.ui.client.GWTInteresse;
 import estradasolidaria.ui.server.adder.Adder;
 import estradasolidaria.ui.server.logic.Carona;
 import estradasolidaria.ui.server.logic.CaronaInexistenteException;
 import estradasolidaria.ui.server.logic.CaronaInvalidaException;
 import estradasolidaria.ui.server.logic.EstradaSolidariaController;
+import estradasolidaria.ui.server.logic.Interesse;
 import estradasolidaria.ui.server.logic.Solicitacao;
 import estradasolidaria.ui.server.logic.TrajetoInexistenteException;
 import estradasolidaria.ui.server.logic.Usuario;
@@ -470,5 +472,20 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		return result;
 	}
 	
+	@Override
+	public List<GWTInteresse> getInteresses(Integer idSessao) {
+		List<GWTInteresse> result = new LinkedList<GWTInteresse>();
+		
+		Usuario u = controller.getUsuario(idSessao);
+		
+		for (Interesse i : u.getMapIdInteresses().values()) {
+			System.out.println("Here: " + i);
+			
+			GWTInteresse gwt_i = new GWTInteresse();
+			
+			result.add(gwt_i);
+		}
+		return result;
+	}
 	
 }
