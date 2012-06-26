@@ -26,11 +26,20 @@ public class DialogBoxEnviarMensagem extends DialogBox {
 				hide();
 			}
 		});
-		absolutePanel.add(txtbtnEnviar, 381, 183);
+		absolutePanel.add(txtbtnEnviar, 349, 183);
+		txtbtnEnviar.setSize("87px", "28px");
 		
 		TextArea textArea = new TextArea();
 		absolutePanel.add(textArea, 10, 44);
 		textArea.setSize("418px", "127px");
+		
+		TextButton txtbtnCancelar = new TextButton("Cancelar");
+		txtbtnCancelar.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				hide();
+			}
+		});
+		absolutePanel.add(txtbtnCancelar, 263, 183);
+		txtbtnCancelar.setSize("80px", "28px");
 	}
-
 }

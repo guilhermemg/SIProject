@@ -39,15 +39,25 @@ public class DialogBoxNovaSolicitacao extends DialogBox {
 				newDialog.show();
 			}
 		});
-		absolutePanel.add(txtbtnVerCarona, 117, 107);
+		absolutePanel.add(txtbtnVerCarona, 51, 107);
 		
-		Label lblLoginusuario = new Label("loginUsuario");
-		absolutePanel.add(lblLoginusuario, 168, 10);
+		Label lblLoginusuario = new Label("colocarLoginUsuario");
+		absolutePanel.add(lblLoginusuario, 174, 10);
 		
-		Label lblGettrajeto = new Label("");
+		Label lblGettrajeto = new Label("trajetoDaCarona");
 		absolutePanel.add(lblGettrajeto, 168, 40);
+		lblGettrajeto.setSize("0px", "0px");
 		
 		getTrajetoGUI(idDaCarona, lblGettrajeto);
+		
+		TextButton txtbtnOk = new TextButton("OK");
+		txtbtnOk.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				hide();
+			}
+		});
+		absolutePanel.add(txtbtnOk, 263, 107);
+		txtbtnOk.setSize("53px", "28px");
 	}
 
 	private void getTrajetoGUI(Integer idDaCarona2, final Label lblGettrajeto) {
