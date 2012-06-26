@@ -134,29 +134,15 @@ public class StatePerfil extends Composite {
 		leftSideBarPanel.add(btnInicio, 10, 21);
 		btnInicio.setSize("122px", "64px");
 		
-		TextButton btnMeusInteresses = new TextButton("Meus Interesses");
-		btnMeusInteresses.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				bodyPanel.clear();
-				StateMeusInteresses mi = new StateMeusInteresses(estrada, estradaSolidariaService);
-				mi.setSize("100%", "100%");
-				bodyPanel.add(mi);
-			}
-		});
-		leftSideBarPanel.add(btnMeusInteresses, 10, 299);
-		btnMeusInteresses.setSize("122px", "56px");
+		TextButton txtbtnMeusInteresses = new TextButton("Meus Interesses");
+		leftSideBarPanel.add(txtbtnMeusInteresses, 10, 299);
+		txtbtnMeusInteresses.setSize("122px", "56px");
 		
 		TextButton buttonMinhasCaronas = new TextButton("Minhas Caronas");
 		leftSideBarPanel.add(buttonMinhasCaronas, 10, 161);
 		buttonMinhasCaronas.setSize("122px", "63px");
 		
 		TextButton txtbtnMinhasSugestoes = new TextButton("Minhas Sugestões\n");
-		txtbtnMinhasSugestoes.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent arg0) {
-				//TODO fazer Minhas Sugestões
-			}
-		});
-		
 		leftSideBarPanel.add(txtbtnMinhasSugestoes, 10, 361);
 		txtbtnMinhasSugestoes.setSize("122px", "63px");
 		
@@ -245,6 +231,18 @@ public class StatePerfil extends Composite {
 				pesquisarCaronaGUI();
 			}
 		});
+		
+		txtbtnMinhasSugestoes.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent arg0) {
+				//TODO fazer Minhas Sugestões
+			}
+		});
+		
+		txtbtnMeusInteresses.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				meusInteressesGUI();
+			}
+		});
 	}
 
 	protected void inicio() {
@@ -282,5 +280,13 @@ public class StatePerfil extends Composite {
 		scrollPanel.add(minhasCarona);
 		scrollPanel.setVisible(true);
 		minhasCarona.setSize("100%", "100%");
+	}
+	
+	protected void meusInteressesGUI() {
+		bodyPanel.clear();
+		scrollPanel.clear();
+		StateMeusInteresses mi = new StateMeusInteresses(estrada, estradaSolidariaService);
+		bodyPanel.add(mi);
+		mi.setSize("100%", "100%");
 	}
 }

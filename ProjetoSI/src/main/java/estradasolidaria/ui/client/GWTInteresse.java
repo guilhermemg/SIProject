@@ -1,6 +1,8 @@
 package estradasolidaria.ui.client;
 
-public class GWTInteresse {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class GWTInteresse implements IsSerializable {
 	private String idInteresse;
 	private String origem;
 	private String destino;

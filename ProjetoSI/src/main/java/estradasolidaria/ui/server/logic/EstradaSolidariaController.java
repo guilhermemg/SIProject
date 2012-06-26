@@ -413,6 +413,8 @@ public class EstradaSolidariaController implements Serializable {
 			Usuario u = iteratorIdUsuario.next();
 			if (u.getMapIdCaronasOferecidas().containsKey(idCarona)) {
 				donoDaCarona = u;
+				if(u.getIdUsuario().equals(solicitante.getIdUsuario()))
+					throw new IllegalArgumentException("Você não pode solicitar uma vaga em sua própria carona.");
 				break;
 			}
 		}
@@ -534,6 +536,8 @@ public class EstradaSolidariaController implements Serializable {
 			Usuario u = iteratorIdUsuario.next();
 			if (u.getMapIdCaronasOferecidas().containsKey(idCarona)) {
 				donoDaCarona = u;
+				if(u.getIdUsuario().equals(solicitante.getIdUsuario()))
+					throw new IllegalArgumentException("Você não pode solicitar uma vaga em sua própria carona.");
 				break;
 			}
 		}
