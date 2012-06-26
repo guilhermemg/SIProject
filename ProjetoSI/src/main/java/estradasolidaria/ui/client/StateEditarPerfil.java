@@ -3,7 +3,8 @@ package estradasolidaria.ui.client;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
@@ -32,6 +33,10 @@ public class StateEditarPerfil extends Composite {
 	private Label lblEnderecodousuario;
 	private Label lblEmaildousuario;
 	private String[] dadosUsuario;
+	private Label lblMensagemDeErroLogin;
+	private Label lblMensagemDeErroNome;
+	private Label lblMensagemDeErroEmail;
+	private Label lblMensagemDeErroEndereco;
 	
 	public StateEditarPerfil(EstradaSolidariaServiceAsync estradaSolidariaService, String[] result) {
 		this.estradaService = estradaSolidariaService;
@@ -50,7 +55,7 @@ public class StateEditarPerfil extends Composite {
 		absolutePanel_EditarPerfil.add(lblEditarPerfil, 183, 10);
 		
 		AbsolutePanel absolutePanel_1 = new AbsolutePanel();
-		absolutePanel_EditarPerfil.add(absolutePanel_1, 41, 57);
+		absolutePanel_EditarPerfil.add(absolutePanel_1, 54, 48);
 		absolutePanel_1.setSize("599px", "375px");
 		
 		Label lblNewLabel = new Label("Login:");
@@ -63,6 +68,11 @@ public class StateEditarPerfil extends Composite {
 		absolutePanel_1.add(txtBtnEditarLogin, 74, 32);
 		
 		textBoxNovoLogin = new TextBox();
+		textBoxNovoLogin.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				lblMensagemDeErroLogin.setVisible(false);
+			}
+		});
 		absolutePanel_1.add(textBoxNovoLogin, 127, 28);
 		textBoxNovoLogin.setVisible(false);
 		
@@ -98,6 +108,11 @@ public class StateEditarPerfil extends Composite {
 		absolutePanel_1.add(btnEditarNome, 74, 87);
 		
 		textBoxNovoNome = new TextBox();
+		textBoxNovoNome.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				lblMensagemDeErroNome.setVisible(false);
+			}
+		});
 		absolutePanel_1.add(textBoxNovoNome, 127, 87);
 		textBoxNovoNome.setVisible(false);
 		
@@ -120,6 +135,11 @@ public class StateEditarPerfil extends Composite {
 		absolutePanel_1.add(btnEditarEmail, 74, 146);
 		
 		textBoxNovoEmail = new TextBox();
+		textBoxNovoEmail.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				lblMensagemDeErroEmail.setVisible(false);
+			}
+		});
 		absolutePanel_1.add(textBoxNovoEmail, 127, 146);
 		textBoxNovoEmail.setVisible(false);
 		
@@ -142,6 +162,11 @@ public class StateEditarPerfil extends Composite {
 		absolutePanel_1.add(btnEditarEndereco, 74, 204);
 		
 		textBoxNovoEndereco = new TextBox();
+		textBoxNovoEndereco.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				lblMensagemDeErroEndereco.setVisible(false);
+			}
+		});
 		absolutePanel_1.add(textBoxNovoEndereco, 127, 204);
 		textBoxNovoEndereco.setVisible(false);
 		
@@ -152,6 +177,7 @@ public class StateEditarPerfil extends Composite {
 			}
 		});
 		absolutePanel_1.add(txtbtnEnderecoOk, 294, 204);
+		txtbtnEnderecoOk.setVisible(false);
 		
 		FileUpload fileUpload = new FileUpload();
 		absolutePanel_1.add(fileUpload, 322, 337);
@@ -160,7 +186,26 @@ public class StateEditarPerfil extends Composite {
 		Image image = new Image(resources.getGenericUserImage());
 		absolutePanel_1.add(image, 417, 174);
 		image.setSize("126px", "139px");
-		txtbtnEnderecoOk.setVisible(false);
+		
+		lblMensagemDeErroLogin = new Label("erro login");
+		lblMensagemDeErroLogin.setStyleName("gwt-LabelEstradaSolidaria5");
+		absolutePanel_1.add(lblMensagemDeErroLogin, 203, 53);
+		lblMensagemDeErroLogin.setVisible(false);
+		
+		lblMensagemDeErroNome = new Label("erro nome");
+		lblMensagemDeErroNome.setStyleName("gwt-LabelEstradaSolidaria5");
+		absolutePanel_1.add(lblMensagemDeErroNome, 203, 111);
+		lblMensagemDeErroNome.setVisible(false);
+		
+		lblMensagemDeErroEmail = new Label("erro email");
+		lblMensagemDeErroEmail.setStyleName("gwt-LabelEstradaSolidaria5");
+		absolutePanel_1.add(lblMensagemDeErroEmail, 203, 174);
+		lblMensagemDeErroEmail.setVisible(false);
+		
+		lblMensagemDeErroEndereco = new Label("erro endereco");
+		lblMensagemDeErroEndereco.setStyleName("gwt-LabelEstradaSolidaria5");
+		absolutePanel_1.add(lblMensagemDeErroEndereco, 203, 233);
+		lblMensagemDeErroEndereco.setVisible(false);
 		
 		btnEditarEndereco.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -187,7 +232,6 @@ public class StateEditarPerfil extends Composite {
 			public void onClick(ClickEvent event) {
 				textBoxNovoLogin.setVisible(true);
 				txtbtnLoginOk.setVisible(true);
-				//editarLogin();
 			}
 		});
 		
@@ -198,7 +242,8 @@ public class StateEditarPerfil extends Composite {
 			@Override
 			public void onFailure(Throwable caught) {
 				// Show the RPC error message to the user 
-				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
+				lblMensagemDeErroNome.setText(caught.getMessage());
+				lblMensagemDeErroNome.setVisible(true);
 			}
 
 			@Override
@@ -207,7 +252,6 @@ public class StateEditarPerfil extends Composite {
 				textBoxNovoNome.setText("");
 				textBoxNovoNome.setVisible(false);
 				txtbtnNomeOk.setVisible(false);
-				//hide();
 			}
 		  });
 	}
@@ -217,7 +261,8 @@ public class StateEditarPerfil extends Composite {
 			@Override
 			public void onFailure(Throwable caught) {
 				// Show the RPC error message to the user 
-				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
+				lblMensagemDeErroLogin.setText(caught.getMessage());
+				lblMensagemDeErroLogin.setVisible(true);
 			}
 
 			@Override
@@ -226,7 +271,6 @@ public class StateEditarPerfil extends Composite {
 				textBoxNovoLogin.setText("");
 				textBoxNovoLogin.setVisible(false);
 				txtbtnLoginOk.setVisible(false);
-				//hide();
 			}
 		  });	
 	}
@@ -236,7 +280,8 @@ public class StateEditarPerfil extends Composite {
 			@Override
 			public void onFailure(Throwable caught) {
 				// Show the RPC error message to the user 
-				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
+				lblMensagemDeErroEmail.setText(caught.getMessage());
+				lblMensagemDeErroEmail.setVisible(true);
 			}
 
 			@Override
@@ -245,7 +290,6 @@ public class StateEditarPerfil extends Composite {
 				textBoxNovoEmail.setText("");
 				textBoxNovoEmail.setVisible(false);
 				txtbtnEmailOk.setVisible(false);
-				//hide();
 			}
 		  });
 	}
@@ -255,7 +299,8 @@ public class StateEditarPerfil extends Composite {
 			@Override
 			public void onFailure(Throwable caught) {
 				// Show the RPC error message to the user 
-				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
+				lblMensagemDeErroEndereco.setText(caught.getMessage());
+				lblMensagemDeErroEndereco.setVisible(true);
 			}
 
 			@Override
@@ -263,8 +308,7 @@ public class StateEditarPerfil extends Composite {
 				lblEnderecodousuario.setText(textBoxNovoEndereco.getText());
 				textBoxNovoEndereco.setText("");
 				textBoxNovoEndereco.setVisible(false);
-				txtbtnEnderecoOk.setVisible(false);
-				//hide();
+				txtbtnEnderecoOk.setVisible(false);;
 			}
 		  });
 	}
