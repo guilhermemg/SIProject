@@ -1,6 +1,7 @@
 package estradasolidaria.ui.server;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -8,16 +9,20 @@ import java.util.TreeMap;
 
 import javax.mail.MessagingException;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.ibm.icu.text.DateFormat;
 import com.ibm.icu.text.SimpleDateFormat;
 
 import estradasolidaria.ui.client.EstradaSolidariaService;
 import estradasolidaria.ui.client.GWTException;
+import estradasolidaria.ui.client.GWTInteresse;
 import estradasolidaria.ui.server.adder.Adder;
 import estradasolidaria.ui.server.logic.Carona;
 import estradasolidaria.ui.server.logic.CaronaInexistenteException;
 import estradasolidaria.ui.server.logic.CaronaInvalidaException;
 import estradasolidaria.ui.server.logic.EstradaSolidariaController;
+import estradasolidaria.ui.server.logic.Interesse;
 import estradasolidaria.ui.server.logic.Solicitacao;
 import estradasolidaria.ui.server.logic.TrajetoInexistenteException;
 import estradasolidaria.ui.server.logic.Usuario;
@@ -352,8 +357,7 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public String cadastrarInteresse(Integer idSessao, String origem,
 			String destino, String data, String horaInicio, String horaFim) {
-		// TODO Auto-generated method stub
-		return null;
+		return controller.cadastrarInteresse(idSessao, origem, destino, data, horaInicio, horaFim).toString();
 	}
 
 	@Override
@@ -470,5 +474,31 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		return result;
 	}
 	
+	@Override
+	public List<GWTInteresse> getInteresses(Integer idSessao) {
+		List<GWTInteresse> result = new LinkedList<GWTInteresse>();
+		
+		Usuario u = controller.getUsuario(idSessao);
+		
+		for (Interesse i : u.getMapIdInteresses().values()) {
+			System.out.println("Here: " + i);
+			
+			GWTInteresse gwt_i = new GWTInteresse();
+			Date data = i.getData().getTime();
+			
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat hourFormat = new SimpleDateFormat("hh:mm");
+			
+			gwt_i.setData(dateFormat.format(data));
+			gwt_i.setDestino(i.getDestino());
+			gwt_i.setHoraInicio(hourFormat.format(i.getHoraInicio().getTime()));
+			gwt_i.setHoraFim(hourFormat.format(i.getHoraFim().getTime()));
+			gwt_i.setIdInteresse(i.getIdInteresse().toString());
+			gwt_i.setOrigem(i.getOrigem());
+			
+			result.add(gwt_i);
+		}
+		return result;
+	}
 	
 }

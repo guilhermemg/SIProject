@@ -92,12 +92,14 @@ public class StateHomePage extends Composite {
 		
 		lblErroLoginUser = new Label("");
 		lblErroLoginUser.setStyleName("gwt-LabelEstradaSolidaria5");
-		absolutePanel_1.add(lblErroLoginUser, 257, 56);
+		absolutePanel_1.add(lblErroLoginUser, 257, 99);
+		lblErroLoginUser.setSize("15px", "15px");
 		lblErroLoginUser.setVisible(false);
 		
 		lblErroSenhaUser = new Label("");
 		lblErroSenhaUser.setStyleName("gwt-LabelEstradaSolidaria5");
-		absolutePanel_1.add(lblErroSenhaUser, 257, 87);
+		absolutePanel_1.add(lblErroSenhaUser, 257, 126);
+		lblErroSenhaUser.setSize("15px", "20px");
 		lblErroSenhaUser.setVisible(false);
 		
 		TextButton button = new TextButton("Login");
@@ -375,7 +377,7 @@ public class StateHomePage extends Composite {
 			@Override
 			public void onFailure(Throwable caught) {
 				// Show the RPC error message to the user
-				lblMensagemDeErro.setText("Remote Procedure Call - Failure: " + this.toString());
+				lblMensagemDeErro.setText(this.toString());
 				lblMensagemDeErro.setVisible(true);
 				textBoxNome.setText("");
 				textBoxEmail.setText("");
@@ -400,7 +402,7 @@ public class StateHomePage extends Composite {
 			@Override
 			public void onFailure(Throwable caught) {
 				// Show the RPC error message to the user
-				lblMensagemErroLogin.setText("Remote Procedure Call - Failure: " + caught.getMessage());
+				lblMensagemErroLogin.setText(caught.getMessage());
 				lblMensagemErroLogin.setVisible(true);
 			}
 
@@ -418,7 +420,7 @@ public class StateHomePage extends Composite {
 			@Override
 			public void onFailure(Throwable caught) {
 				// Show the RPC error message to the user 
-				lblMensagemErroLogin.setText("Remote Procedure Call - Failure: " + caught.getMessage());
+				lblMensagemErroLogin.setText(caught.getMessage());
 				lblMensagemErroLogin.setVisible(true);
 			}
 

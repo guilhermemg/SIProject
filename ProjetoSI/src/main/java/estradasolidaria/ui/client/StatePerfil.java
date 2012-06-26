@@ -70,10 +70,19 @@ public class StatePerfil extends Composite {
 		headerPanel.setSize("1338px", "172px");
 		
 		Label lblNomeDoUsuario = new Label("Olá " + dadosUsuario[2] + "!");
-		headerPanel.add(lblNomeDoUsuario, 33, 145);
+		headerPanel.add(lblNomeDoUsuario, 155, 10);
 		lblNomeDoUsuario.setStyleName("gwt-LabelEstradaSolidaria7");
-		headerPanel.add(lblNomeDoUsuario, 33, 145);
+		headerPanel.add(lblNomeDoUsuario, 155, 10);
 		lblNomeDoUsuario.setSize("126px", "17px");
+		
+		
+		Label lblEndereco = new Label("Endereco: " + dadosUsuario[3]);
+		lblEndereco.setStyleName("gwt-LabelEstradaSolidaria7");
+		headerPanel.add(lblEndereco, 155, 33);
+		
+		Label lblEmail = new Label("Email: " + dadosUsuario[4]);
+		lblEmail.setStyleName("gwt-LabelEstradaSolidaria7");
+		headerPanel.add(lblEmail, 155, 55);
 		
 		MenuBar menuBar = new MenuBar(false);
 		headerPanel.add(menuBar, 1127, 10);
@@ -125,26 +134,15 @@ public class StatePerfil extends Composite {
 		leftSideBarPanel.add(btnInicio, 10, 21);
 		btnInicio.setSize("122px", "64px");
 		
-		TextButton btnMeusInteresses = new TextButton("Meus Interesses");
-		btnMeusInteresses.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				//TODO fazer MeusInteresses
-			}
-		});
-		leftSideBarPanel.add(btnMeusInteresses, 10, 299);
-		btnMeusInteresses.setSize("122px", "56px");
+		TextButton txtbtnMeusInteresses = new TextButton("Meus Interesses");
+		leftSideBarPanel.add(txtbtnMeusInteresses, 10, 299);
+		txtbtnMeusInteresses.setSize("122px", "56px");
 		
 		TextButton buttonMinhasCaronas = new TextButton("Minhas Caronas");
 		leftSideBarPanel.add(buttonMinhasCaronas, 10, 161);
 		buttonMinhasCaronas.setSize("122px", "63px");
 		
 		TextButton txtbtnMinhasSugestoes = new TextButton("Minhas Sugestões\n");
-		txtbtnMinhasSugestoes.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent arg0) {
-				//TODO fazer Minhas Sugestões
-			}
-		});
-		
 		leftSideBarPanel.add(txtbtnMinhasSugestoes, 10, 361);
 		txtbtnMinhasSugestoes.setSize("122px", "63px");
 		
@@ -233,6 +231,18 @@ public class StatePerfil extends Composite {
 				pesquisarCaronaGUI();
 			}
 		});
+		
+		txtbtnMinhasSugestoes.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent arg0) {
+				//TODO fazer Minhas Sugestões
+			}
+		});
+		
+		txtbtnMeusInteresses.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				meusInteressesGUI();
+			}
+		});
 	}
 
 	protected void inicio() {
@@ -270,5 +280,13 @@ public class StatePerfil extends Composite {
 		scrollPanel.add(minhasCarona);
 		scrollPanel.setVisible(true);
 		minhasCarona.setSize("100%", "100%");
+	}
+	
+	protected void meusInteressesGUI() {
+		bodyPanel.clear();
+		scrollPanel.clear();
+		StateMeusInteresses mi = new StateMeusInteresses(estrada, estradaSolidariaService);
+		bodyPanel.add(mi);
+		mi.setSize("100%", "100%");
 	}
 }

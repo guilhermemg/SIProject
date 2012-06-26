@@ -49,12 +49,12 @@ public class StateCadastroCaronas extends Composite {
 		
 		TextButton btnEnviar = new TextButton("Enviar");
 
-		absPanelCadastroCarona.add(btnEnviar, 217, 284);
+		absPanelCadastroCarona.add(btnEnviar, 215, 275);
 		btnEnviar.setSize("77px", "40px");
 		
 		lblMensagemDeErro = new Label("Campo(s) origatório(s)");
 		lblMensagemDeErro.setStyleName("gwt-LabelEstradaSolidaria5");
-		absPanelCadastroCarona.add(lblMensagemDeErro, 178, 253);
+		absPanelCadastroCarona.add(lblMensagemDeErro, 164, 253);
 		lblMensagemDeErro.setVisible(false);
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
@@ -204,7 +204,7 @@ public class StateCadastroCaronas extends Composite {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				lblMensagemDeErro.setText("Remote Procedure Call - Failure: " + caught.getMessage());
+				lblMensagemDeErro.setText(caught.getMessage());
 				lblMensagemDeErro.setStyleName("gwt-LabelEstradaSolidaria5");
 				lblMensagemDeErro.setVisible(true);
 			}

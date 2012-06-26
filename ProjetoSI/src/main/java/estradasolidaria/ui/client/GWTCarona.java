@@ -1,6 +1,8 @@
 package estradasolidaria.ui.client;
 
-public class GWTCarona {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class GWTCarona implements IsSerializable {
 	protected String nomeDono;
 	protected String idDono;
 	protected String origem;
