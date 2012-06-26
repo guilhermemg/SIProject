@@ -27,7 +27,7 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 
-public class StateMinhasCaronas extends AbsolutePanel {
+public class StateCaronas extends AbsolutePanel {
 	final EstradaSolidaria estrada;
 	final Widget panel = this;
 	private EstradaSolidariaServiceAsync estradaSolidariaService;
@@ -55,13 +55,13 @@ public class StateMinhasCaronas extends AbsolutePanel {
 	private Column<GWTCarona,String> buttomColumn;
 	private boolean isSolicitacaoAceita;
 
-	public StateMinhasCaronas(EstradaSolidaria estrada,
+	public StateCaronas(EstradaSolidaria estrada,
 			EstradaSolidariaServiceAsync estradaSolidariaService) {
 		this.estrada = estrada;
 		this.estradaSolidariaService = estradaSolidariaService;
 		idSessao = EstradaSolidaria.getIdSessaoAberta();
 
-		setSize("586px", "487px");
+		setSize("950px", "493px");
 
 		//Inicia o tabPanel para visualizar as caronas
 		iniciarTabPanel();

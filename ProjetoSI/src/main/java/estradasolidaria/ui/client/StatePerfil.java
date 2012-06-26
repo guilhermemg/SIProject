@@ -292,7 +292,7 @@ public class StatePerfil extends Composite {
 		scrollPanel.clear();
 		bodyPanel.clear();
 		bodyPanel.setVisible(false);
-		Widget minhasCarona= new StateMinhasCaronas(estrada, estradaSolidariaService);
+		Widget minhasCarona= new StateCaronas(estrada, estradaSolidariaService);
 		scrollPanel.add(minhasCarona);
 		scrollPanel.setVisible(true);
 		minhasCarona.setSize("100%", "100%");
