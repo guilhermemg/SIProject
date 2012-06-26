@@ -1,6 +1,7 @@
 package estradasolidaria.ui.server;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -8,7 +9,9 @@ import java.util.TreeMap;
 
 import javax.mail.MessagingException;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.ibm.icu.text.DateFormat;
 import com.ibm.icu.text.SimpleDateFormat;
 
 import estradasolidaria.ui.client.EstradaSolidariaService;
@@ -481,6 +484,17 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 			System.out.println("Here: " + i);
 			
 			GWTInteresse gwt_i = new GWTInteresse();
+			Date data = i.getData().getTime();
+			
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat hourFormat = new SimpleDateFormat("hh:mm");
+			
+			gwt_i.setData(dateFormat.format(data));
+			gwt_i.setDestino(i.getDestino());
+			gwt_i.setHoraInicio(hourFormat.format(i.getHoraInicio().getTime()));
+			gwt_i.setHoraFim(hourFormat.format(i.getHoraFim().getTime()));
+			gwt_i.setIdInteresse(i.getIdInteresse().toString());
+			gwt_i.setOrigem(i.getOrigem());
 			
 			result.add(gwt_i);
 		}
