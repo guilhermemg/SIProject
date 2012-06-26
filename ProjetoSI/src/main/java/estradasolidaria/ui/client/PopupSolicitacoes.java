@@ -66,8 +66,8 @@ public class PopupSolicitacoes extends PopupPanel {
 		absolutePanel.setSize("380px", "302px");
 		
 		listBox = new ListBox();
-		absolutePanel.add(listBox, 173, 10);
-		listBox.setSize("137px", "144px");
+		absolutePanel.add(listBox, 126, 10);
+		listBox.setSize("223px", "144px");
 		listBox.setVisibleItemCount(5);
 		
 //		image = new Image((String) null);

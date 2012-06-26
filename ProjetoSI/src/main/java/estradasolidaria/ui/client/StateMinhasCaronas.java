@@ -440,6 +440,8 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		});
 		comboBoxTipoDeSolicitacao.addItem("Aceitas");
 		comboBoxTipoDeSolicitacao.addItem("Pendentes");
+		comboBoxTipoDeSolicitacao.addItem("Rejeitadas");
+		comboBoxTipoDeSolicitacao.addItem("Canceladas");
 		flexTableSolicitadas.add(comboBoxTipoDeSolicitacao);
 		
 		comboBoxTipoDeSolicitacao.setWidth("128px");
