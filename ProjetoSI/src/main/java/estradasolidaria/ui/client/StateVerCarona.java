@@ -15,19 +15,28 @@ public class StateVerCarona extends Composite {
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
+		absolutePanel.setSize("441px", "267px");
 		
 		MenuBar menuBar = new MenuBar(false);
-		absolutePanel.add(menuBar, 138, 269);
-		menuBar.setSize("300px", "19px");
+		absolutePanel.add(menuBar, 57, 210);
+		menuBar.setSize("363px", "21px");
 		
-		MenuItem mntmEnviarMensagemAo = new MenuItem("Enviar mensagem ao motorista", false, (Command) null);
+		MenuItem mntmEnviarMensagemAo = new MenuItem("Enviar mensagem ao motorista", false, new Command() {
+			public void execute() {
+				//TODO fazer acao de botao Enviar mensagem ao motorista em StateVerCarona
+			}
+		});
 		menuBar.addItem(mntmEnviarMensagemAo);
 		
 		MenuItemSeparator separator = new MenuItemSeparator();
 		menuBar.addSeparator(separator);
 		
-		MenuItem mntmDesistir = new MenuItem("Desistir", false, (Command) null);
-		menuBar.addItem(mntmDesistir);
+		MenuItem mntmOK = new MenuItem("OK", false, new Command() {
+			public void execute() {
+				//TODO fazer acao de botao OK em StateVerCarona
+			}
+		});
+		menuBar.addItem(mntmOK);
 		
 		Label lblCarona = new Label("Carona:");
 		absolutePanel.add(lblCarona, 10, 20);

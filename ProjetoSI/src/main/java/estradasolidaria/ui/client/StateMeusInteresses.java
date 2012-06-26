@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.widget.client.TextButton;
 
 public class StateMeusInteresses extends AbsolutePanel {
 	private List<GWTInteresse> listaDeInteresses;
@@ -21,7 +22,7 @@ public class StateMeusInteresses extends AbsolutePanel {
 	private EstradaSolidaria estrada;
 
 	private EstradaSolidariaServiceAsync estradaSolidariaService;
-	private Button btnAdicionar;
+	private TextButton btnAdicionar;
 	private DataGrid<GWTInteresse> dataGrid;
 	
 	public StateMeusInteresses(final EstradaSolidaria estrada, final EstradaSolidariaServiceAsync estradaSolidariaService) {
@@ -36,7 +37,7 @@ public class StateMeusInteresses extends AbsolutePanel {
 		add(absolutePanel_1);
 		absolutePanel_1.setSize("100%", "");
 		
-		btnAdicionar = new Button("Adicionar");
+		btnAdicionar = new TextButton("Adicionar");
 		btnAdicionar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				PopupPanel p = new PopUpAdicionarInteresse(estrada, estradaSolidariaService);
@@ -94,6 +95,14 @@ public class StateMeusInteresses extends AbsolutePanel {
 		};
 		dataGrid.addColumn(columnHoraFim, "Hora-Fim");
 		absolutePanel_1.add(btnAdicionar);
+		
+		TextButton txtbtnDeletar = new TextButton("Deletar");
+		txtbtnDeletar.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				//TODO fazer onClick de deletar interesse
+			}
+		});
+		absolutePanel_1.add(txtbtnDeletar, 88, 0);
 		
 		colocarInteressesNoGrid();
 	}
