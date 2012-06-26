@@ -1,0 +1,10 @@
+<module>
+	<inherits name="com.google.gwt.user.User" />
+	<inherits name="com.google.gwt.user.theme.standard.Standard" />
+	<entry-point
+		class="estradasolidaria.ui.client.EstradaSolidaria" />
+	<servlet class="estradasolidaria.ui.server.EstradaSolidariaServiceImpl" path="/estradaSolidariaService"/>
+	
+	<source path='client' />
+	<source path='resources' />
+</module>

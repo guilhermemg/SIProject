@@ -68,6 +68,10 @@ h2 {
 	font-color: #ffffff;
 }
 
+.loginViaFacebookPanel {
+	background-color: #0066FF; 
+}
+
 .headerPainelPerfil {
 	background-color: aliceblue;
 	border: 1px;
