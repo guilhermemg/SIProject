@@ -21,6 +21,9 @@ import com.google.gwt.user.datepicker.client.DatePicker;
 import com.google.gwt.widget.client.TextButton;
 
 import estradasolidaria.ui.resources.Resources;
+import com.google.gwt.user.datepicker.client.DateBox;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.NumberLabel;
 
 public class StatePerfil extends Composite {
 	
@@ -117,34 +120,47 @@ public class StatePerfil extends Composite {
 		headerPanel.add(photoPerfil, 23, 10);
 		photoPerfil.setSize("126px", "132px");
 		
+		TextBox txtbxPesquisarPorUsurio = new TextBox();
+		txtbxPesquisarPorUsurio.setText("Pesquisar por usuário");
+		headerPanel.add(txtbxPesquisarPorUsurio, 583, 10);
+		txtbxPesquisarPorUsurio.setSize("286px", "13px");
+		
+		TextButton txtbtnOk = new TextButton("OK");
+		headerPanel.add(txtbtnOk, 876, 10);
+		txtbtnOk.setSize("37px", "28px");
+		
 		leftSideBarPanel = new AbsolutePanel();
 		leftSideBarPanel.setStylePrimaryName("painelPerfil2");
 		dockPanel.add(leftSideBarPanel, DockPanel.WEST);
-		leftSideBarPanel.setSize("141px", "491px");
+		leftSideBarPanel.setSize("141px", "493px");
 		
 		TextButton txtbtnCadastrarCarona = new TextButton("Cadastrar Carona");
-		leftSideBarPanel.add(txtbtnCadastrarCarona, 10, 91);
+		leftSideBarPanel.add(txtbtnCadastrarCarona, 10, 80);
 		txtbtnCadastrarCarona.setSize("122px", "64px");
 		
 		TextButton txtbtnPesquisarCarona = new TextButton("Pesquisar Carona");
-		leftSideBarPanel.add(txtbtnPesquisarCarona, 10, 230);
+		leftSideBarPanel.add(txtbtnPesquisarCarona, 10, 219);
 		txtbtnPesquisarCarona.setSize("122px", "63px");
 		
 		TextButton btnInicio = new TextButton("Início");
-		leftSideBarPanel.add(btnInicio, 10, 21);
+		leftSideBarPanel.add(btnInicio, 10, 10);
 		btnInicio.setSize("122px", "64px");
 		
 		TextButton txtbtnMeusInteresses = new TextButton("Meus Interesses");
-		leftSideBarPanel.add(txtbtnMeusInteresses, 10, 299);
+		leftSideBarPanel.add(txtbtnMeusInteresses, 10, 288);
 		txtbtnMeusInteresses.setSize("122px", "56px");
 		
-		TextButton buttonMinhasCaronas = new TextButton("Minhas Caronas");
-		leftSideBarPanel.add(buttonMinhasCaronas, 10, 161);
-		buttonMinhasCaronas.setSize("122px", "63px");
+		TextButton txtbtnCaronas = new TextButton("Caronas");
+		leftSideBarPanel.add(txtbtnCaronas, 10, 150);
+		txtbtnCaronas.setSize("122px", "63px");
 		
-		TextButton txtbtnMinhasSugestoes = new TextButton("Minhas Sugestões\n");
-		leftSideBarPanel.add(txtbtnMinhasSugestoes, 10, 361);
-		txtbtnMinhasSugestoes.setSize("122px", "63px");
+		TextButton txtbtnSugestoes = new TextButton("Sugestões\n");
+		leftSideBarPanel.add(txtbtnSugestoes, 10, 350);
+		txtbtnSugestoes.setSize("122px", "63px");
+		
+		TextButton txtbtnSolicitaesFeitasPara = new TextButton("Solicitações");
+		leftSideBarPanel.add(txtbtnSolicitaesFeitasPara, 11, 419);
+		txtbtnSolicitaesFeitasPara.setSize("121px", "56px");
 		
 		bodyPanel = new AbsolutePanel();
 		bodyPanel.setStyleName("painelCentralPerfil");
@@ -209,10 +225,10 @@ public class StatePerfil extends Composite {
 			}
 		});
 		
-		buttonMinhasCaronas.addClickHandler(new ClickHandler() {
+		txtbtnCaronas.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-			      	minhasCaronasGUI();
+			      	caronasGUI();
 				}
 			});
 		
@@ -232,7 +248,7 @@ public class StatePerfil extends Composite {
 			}
 		});
 		
-		txtbtnMinhasSugestoes.addClickHandler(new ClickHandler() {
+		txtbtnSugestoes.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent arg0) {
 				//TODO fazer Minhas Sugestões
 			}
@@ -272,7 +288,7 @@ public class StatePerfil extends Composite {
 		
 	}
 	
-	protected void minhasCaronasGUI() {
+	protected void caronasGUI() {
 		scrollPanel.clear();
 		bodyPanel.clear();
 		bodyPanel.setVisible(false);
