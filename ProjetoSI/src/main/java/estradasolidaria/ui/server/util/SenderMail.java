@@ -58,14 +58,15 @@ public class SenderMail {
 	                               new InternetAddress(to));
 	
 	      // Set Subject: header field
-	      message.setSubject("SistemaCaronas email");
+	      message.setSubject("EstradaSolidaria Mail Service");
 	
 	      // Now set the actual message
 	      message.setText(text);
 	
 	      // Send message
 	      Transport.send(message);
-	      //System.out.println("Sent message successfully...."); TODO colocar em log depois
+	      //System.out.println("Sent message successfully...."); 
+	      //TODO colocar em log depois, q email foi enviado com sucesso
 	   }
 	   catch (MessagingException mex) {
 	      throw new MessagingException();

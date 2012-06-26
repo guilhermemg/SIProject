@@ -446,7 +446,7 @@ public interface AdapterInterface {
 	 * @param atributo
 	 * @return atributo de carona
 	 */
-	public Object getAtibutoCaronaRelampago(Integer idCarona, String atributo);
+	public Object getAtributoCaronaRelampago(String idCarona, String atributo);
 	
 	/**
 	 * Retorna minimo de caroneiros para a carona
@@ -455,14 +455,14 @@ public interface AdapterInterface {
 	 * @param idCarona
 	 * @return minimo de caroneiros
 	 */
-	public Integer getMinimoCaroneiros(Integer idCarona);
+	public Integer getMinimoCaroneiros(String idCarona);
 	
 	/**
 	 * Retorna atributo de 
 	 * 
 	 * @return
 	 */
-	public String getAtributoExpired(Integer idExpired, String atributo);
+	public String getAtributoExpired(String idExpired, String atributo);
 	
 	/**
 	 * Retorna carona relampago identificada por idCarona
@@ -470,14 +470,14 @@ public interface AdapterInterface {
 	 * @param idCarona
 	 * @return carona
 	 */
-	public Carona getCaronaRelampago(Integer idCarona);
+	public Carona getCaronaRelampago(String idCarona);
 
 	/**
 	 * Configures uma nova carona expirada (para testes)
 	 * 
 	 * @param idCarona
 	 */
-	public void setCaronaRelampagoExpired(Integer idCarona);
+	public void setCaronaRelampagoExpired(String idCarona);
 	
 	
 	
@@ -486,7 +486,7 @@ public interface AdapterInterface {
 	 * 
 	 * @param idCarona
 	 */
-	public void definirCaronaPreferencial(Integer idCarona); 
+	public void definirCaronaPreferencial(String idCarona); 
 	
 	/**
 	 * Retorna se uma carona identificada por idCarona eh preferencial.
@@ -494,7 +494,7 @@ public interface AdapterInterface {
 	 * @param idCarona
 	 * @return true se carona eh preferencial
 	 */
-	public boolean isCaronaPreferencial(Integer idCarona); 
+	public boolean isCaronaPreferencial(String idCarona); 
 	
 	/**
 	 * Retorna lista de usuarios preferenciais.
@@ -502,7 +502,7 @@ public interface AdapterInterface {
 	 * @param idCarona
 	 * @return lista de usuarios
 	 */
-	public List<Usuario> getUsuariosPreferenciaisCarona(Integer idCarona);
+	public List<Usuario> getUsuariosPreferenciaisCarona(String idCarona);
 	
 	/**
 	 * Retorna id de uma lista de caroneiros que
@@ -512,7 +512,7 @@ public interface AdapterInterface {
 	 * @param idSessao
 	 * @return id de lista de caroneiros
 	 */
-	public Integer listarCaroneirosProximos(Integer idSessao);
+	public Integer listarCaroneirosProximos(String idSessao);
 	
 	/**
 	 * Retorna lista de caroneiros proximos
@@ -531,4 +531,17 @@ public interface AdapterInterface {
 	 * @return lista de usuarios
 	 */
 	public List<Usuario> getRankingUsuarios(String ordem);
+	
+	/**
+	 * Cadastra carona relampago no sistema.
+	 * 
+	 * @param idSessao
+	 * @param origem
+	 * @param destino
+	 * @param data
+	 * @param hora
+	 * @param minimoCaroneiros
+	 */
+	public Integer cadastrarCaronaRelampago(String idSessao, String origem,
+			String destino, String data, String hora, String minimoCaroneiros);
 }

@@ -53,11 +53,11 @@ public class Adder {
 	}
 
 	private void aceitacaoDeVagas() throws IllegalArgumentException, CaronaInexistenteException, EstadoSolicitacaoException {
-		Collection<Solicitacao> solicitacoesFeitasPorU2 = sistema.getUsuario(idSessao2).getMapIdSolicitacoesFeitas().values();
+		Collection<Solicitacao> solicitacoesFeitasPorU2 = sistema.getUsuarioAPartirDeIDSessao(idSessao2).getMapIdSolicitacoesFeitas().values();
 		Iterator<Solicitacao> it = solicitacoesFeitasPorU2.iterator();
 		sistema.aceitarSolicitacao(idSessao1, it.next().getIdSolicitacao());
 		
-		Collection<Solicitacao> solicitacoesFeitasPorU5 = sistema.getUsuario(idSessao5).getMapIdSolicitacoesFeitas().values();
+		Collection<Solicitacao> solicitacoesFeitasPorU5 = sistema.getUsuarioAPartirDeIDSessao(idSessao5).getMapIdSolicitacoesFeitas().values();
 		it = solicitacoesFeitasPorU5.iterator();
 		Solicitacao s1 = it.next();
 		Solicitacao s2  = it.next();

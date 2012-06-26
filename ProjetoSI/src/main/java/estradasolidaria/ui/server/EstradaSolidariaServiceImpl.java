@@ -9,9 +9,7 @@ import java.util.TreeMap;
 
 import javax.mail.MessagingException;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.ibm.icu.text.DateFormat;
 import com.ibm.icu.text.SimpleDateFormat;
 
 import estradasolidaria.ui.client.EstradaSolidariaService;
@@ -409,7 +407,7 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		List<List<String>> result = new LinkedList<List<String>>();
 		Integer idCaronaInt = Integer.parseInt(idCarona);
 		
-		Usuario donoDaCarona = controller.getUsuario(idSessao);
+		Usuario donoDaCarona = controller.getUsuarioAPartirDeIDSessao(idSessao);
 		Carona c = donoDaCarona.getMapIdCaronasOferecidas().get(idCaronaInt);
 		
 		List<Solicitacao> solicitacoesConfirmadas = controller.getSolicitacoesConfirmadas(idSessao, idCaronaInt);
@@ -457,14 +455,14 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	
 	@Override
 	public String[] getUsuario(Integer idSessao){
-		Usuario u = controller.getUsuario(idSessao);
+		Usuario u = controller.getUsuarioAPartirDeIDSessao(idSessao);
 		String[] dadosUsuario = {u.getLogin(), u.getSenha(), u.getNome(), u.getEndereco(), u.getEmail()};
 		return dadosUsuario;
 	}
 
 	@Override
 	public List<String[]> getSolicitacoes(Integer idSessao, Integer idCarona) throws GWTException {
-		Usuario donoDaCarona = controller.getUsuario(idSessao);
+		Usuario donoDaCarona = controller.getUsuarioAPartirDeIDSessao(idSessao);
 		Collection<Solicitacao> solicitacoes = donoDaCarona.getMapIdCaronasOferecidas().get(idCarona).getMapIdSolicitacao().values();
 		List<String[]> result = new LinkedList<String[]>();
 		
@@ -478,7 +476,7 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	public List<GWTInteresse> getInteresses(Integer idSessao) {
 		List<GWTInteresse> result = new LinkedList<GWTInteresse>();
 		
-		Usuario u = controller.getUsuario(idSessao);
+		Usuario u = controller.getUsuarioAPartirDeIDSessao(idSessao);
 		
 		for (Interesse i : u.getMapIdInteresses().values()) {
 			System.out.println("Here: " + i);

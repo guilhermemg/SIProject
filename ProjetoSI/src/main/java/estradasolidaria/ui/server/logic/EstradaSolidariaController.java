@@ -27,7 +27,7 @@ import estradasolidaria.ui.server.data.GerenciadorDeDados;
 public class EstradaSolidariaController implements Serializable {
 	private static final long serialVersionUID = -9005050380302326978L;
 
-	private int ordemParaCaronas = 0;
+	private Integer ordemParaCaronas = 0;
 
 	private Map<Integer, Sessao> mapIdSessao = new TreeMap<Integer, Sessao>(); // contem
 	private Iterator<Sessao> iteratorIdSessao = this.mapIdSessao.values()
@@ -1190,8 +1190,18 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param idSessao
 	 * @return usuario
 	 */
-	public Usuario getUsuario(Integer idSessao) {
+	public Usuario getUsuarioAPartirDeIDSessao(Integer idSessao) {
 		return this.mapIdUsuario.get(this.mapIdSessao.get(idSessao).getIdUser());
+	}
+	
+	/**
+	 * Retorna usuario a partir de idUsuario.
+	 * 
+	 * @param idUsuario
+	 * @return usuario
+	 */
+	public Usuario getUsuarioAPartirDeIDUsuario(Integer idUsuario) {
+		return this.mapIdUsuario.get(idUsuario);
 	}
 	
 	/**
@@ -1273,8 +1283,15 @@ public class EstradaSolidariaController implements Serializable {
 	 */
 	public Integer cadastrarCaronaRelampago(Integer idSessao, String origem, String destino, String data, 
 			String hora, Integer minimoCaroneiros) {
-		//TODO fazer cadastrarCaronaRelampago
-		return -1;
+		if(idSessao == null)
+			throw new IllegalArgumentException("Sessão inválida");
+		Usuario donoDaCarona = this.mapIdUsuario.get(this.mapIdSessao.get(idSessao).getIdUser());
+		
+		if(donoDaCarona == null)
+			throw new UsuarioInexistenteException();
+		
+		return donoDaCarona.cadastrarCaronaRelampago(donoDaCarona.getIdUsuario(), 
+				origem, destino, data, hora, ordemParaCaronas++, minimoCaroneiros).getIdCarona();
 	}
 	
 	/**

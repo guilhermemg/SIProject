@@ -1027,20 +1027,69 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	
 	/*
 	 * (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#cadastrarCaronaRelampago(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public Integer cadastrarCaronaRelampago(String idSessao, String origem, String destino,
+			String data, String hora, String minimoCaroneiros) {
+		if(idSessao == null || idSessao.equals(""))
+			throw new IllegalArgumentException("Sessão inválida");
+		if(minimoCaroneiros == null || minimoCaroneiros.equals(""))
+			throw new IllegalArgumentException("Minimo Caroneiros inválido");
+		
+		Integer idSessao2 = null, minimoCaroneiros2 = null;
+		try {
+			idSessao2 = Integer.parseInt(idSessao);
+			minimoCaroneiros2 = Integer.parseInt(minimoCaroneiros);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sistema.cadastrarCaronaRelampago(idSessao2, origem, destino, data, hora, minimoCaroneiros2);
+	}
+	
+	/*
+	 * (non-Javadoc)
 	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getAtibutoCaronaRelampago(java.lang.Integer, java.lang.String)
 	 */
 	@Override
-	public Object getAtibutoCaronaRelampago(Integer idCarona, String atributo) {
-		// TODO fazer getAtributoCaronaRelampago
-		return null;
+	public Object getAtributoCaronaRelampago(String idCarona, String atributo) {
+		if (idCarona == null || idCarona.equals(""))
+			throw new IllegalArgumentException("IdCarona inválido");
+
+		Integer idCarona2 = null;
+		try {
+			idCarona2 = Integer.parseInt(idCarona);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		// Iterator Pattern
+		Iterator<Usuario> itUsuarios = sistema.getMapIdUsuario()
+				.values().iterator();
+		while (itUsuarios.hasNext()) {
+			Usuario u = itUsuarios.next();
+			Iterator<Carona> itCaronas = u.getMapIdCaronasOferecidas().values().iterator();
+			while (itCaronas.hasNext()) {
+				Carona c = itCaronas.next();
+				if (c.getIdCarona().equals(idCarona)) {
+					return getAtributoCaronaRelampago(c, atributo);
+				}
+			}
+		}
+		throw new IllegalArgumentException("Atributo inexistente");
 	}
 	
+	private Object getAtributoCaronaRelampago(Carona c, String atributo) {
+		
+		return null;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getMinimoCaroneiros(java.lang.Integer)
 	 */
 	@Override
-	public Integer getMinimoCaroneiros(Integer idCarona) {
+	public Integer getMinimoCaroneiros(String idCarona) {
 		// TODO fazer getMinimoCaroneiros
 		return null;
 	}
@@ -1050,7 +1099,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getAtributoExpired(java.lang.Integer, java.lang.String)
 	 */
 	@Override
-	public String getAtributoExpired(Integer idExpired, String atributo) {
+	public String getAtributoExpired(String idExpired, String atributo) {
 		// TODO fazer getAtributoExpired
 		return null;
 	}
@@ -1060,7 +1109,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getCaronaRelampago(java.lang.Integer)
 	 */
 	@Override
-	public Carona getCaronaRelampago(Integer idCarona) {
+	public Carona getCaronaRelampago(String idCarona) {
 		// TODO fazer getCaronaRelampago
 		return null;
 	}
@@ -1070,7 +1119,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	 * @see estradasolidaria.ui.server.logic.AdapterInterface#setCaronaRelampagoExpired(java.lang.Integer)
 	 */
 	@Override
-	public void setCaronaRelampagoExpired(Integer idCarona) {
+	public void setCaronaRelampagoExpired(String idCarona) {
 		// TODO fazer setCaronaRelampago
 		
 	}
@@ -1080,7 +1129,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	 * @see estradasolidaria.ui.server.logic.AdapterInterface#definirCaronaPreferencial(java.lang.Integer)
 	 */
 	@Override
-	public void definirCaronaPreferencial(Integer idCarona) {
+	public void definirCaronaPreferencial(String idCarona) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -1090,7 +1139,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	 * @see estradasolidaria.ui.server.logic.AdapterInterface#isCaronaPreferencial(java.lang.Integer)
 	 */
 	@Override
-	public boolean isCaronaPreferencial(Integer idCarona) {
+	public boolean isCaronaPreferencial(String idCarona) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -1100,7 +1149,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getUsuariosPreferenciaisCarona(java.lang.Integer)
 	 */
 	@Override
-	public List<Usuario> getUsuariosPreferenciaisCarona(Integer idCarona) {
+	public List<Usuario> getUsuariosPreferenciaisCarona(String idCarona) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -1110,7 +1159,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	 * @see estradasolidaria.ui.server.logic.AdapterInterface#listarCaroneirosProximos(java.lang.Integer)
 	 */
 	@Override
-	public Integer listarCaroneirosProximos(Integer idSessao) {
+	public Integer listarCaroneirosProximos(String idSessao) {
 		// TODO Auto-generated method stub
 		return null;
 	}

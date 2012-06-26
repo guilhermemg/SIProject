@@ -1135,4 +1135,31 @@ public class Usuario implements Serializable {
 	public Map<Integer, Sugestao> getMapIdSugestoesFeitas() {
 		return this.mapIdSugestoesFeitas;
 	}
+
+	/**
+	 * Cadastra carona relampago.
+	 * 
+	 * obs.: note que minimoCaroneiros eh passado duas
+	 * vezes para distinguir dos construtores ja existentes
+	 * e nao ficar ambiguo.
+	 * 
+	 * 
+	 * @param idDonoDaCarona
+	 * @param origem
+	 * @param destino
+	 * @param data
+	 * @param hora
+	 * @param ordemNaInsercaoNoSistema
+	 * @param minimoCaroneiros
+	 * @return id carona
+	 */
+	public Carona cadastrarCaronaRelampago(Integer idDonoDaCarona,
+			String origem,String destino, String data, 
+			String hora, Integer posicaoNaInsercao,
+			Integer minimoCaroneiros) {
+			Carona caronaRelampago = new Carona(idDonoDaCarona, origem, 
+					destino, data, hora, minimoCaroneiros, 
+					minimoCaroneiros, posicaoNaInsercao); 
+		return caronaRelampago;
+	}
 }

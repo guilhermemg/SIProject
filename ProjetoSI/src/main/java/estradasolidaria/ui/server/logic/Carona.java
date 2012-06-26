@@ -59,6 +59,8 @@ public class Carona implements Comparable<Carona>, Serializable {
 	private Map<Integer, EnumCaronaReview> mapDonoReviewCaroneiro = new TreeMap<Integer, EnumCaronaReview>();
 	private Map<Integer, Sugestao> mapSugestoesPontoDeEncontro = new TreeMap<Integer, Sugestao>();
 
+	private Integer minimoCaroneiros;
+
 
 	// ------------------------------------------------------------------------------------------------------
 
@@ -75,7 +77,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @param ordemParaCaronas
 	 */
 	public Carona(Integer idDonoDaCarona, String origem, String destino,
-			String data, String hora, Integer vagas, int ordemParaCaronas) {
+			String data, String hora, Integer vagas, Integer ordemParaCaronas) {
 
 		setIdDonoDaCarona(idDonoDaCarona);
 		setOrigem(origem);
@@ -102,7 +104,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 */
 	public Carona(Integer idDonoDaCarona, String origem2, String destino2,
 			String data2, String hora2, Integer vagas, String cidade,
-			int ordemParaCaronas) {
+			Integer ordemParaCaronas) {
 		setIdDonoDaCarona(idDonoDaCarona);
 		setOrigem(origem2);
 		setDestino(destino2);
@@ -116,6 +118,58 @@ public class Carona implements Comparable<Carona>, Serializable {
 		
 		setIdCarona(this.hashCode());
 	}
+	
+	/**
+	 * Construtor de caronas relampago.
+	 * 
+	 * obs.: note que vagas sera igual
+	 * ao minimo de caroneiros aqui, mas
+	 * na interface se passa apenas o minimo de
+	 * vagas.
+	 * 
+	 * @param idDonoDaCarona
+	 * @param origem
+	 * @param destino
+	 * @param data
+	 * @param hora
+	 * @param vagas
+	 * @param minimoCaroneiros
+	 */
+	public Carona(Integer idDonoDaCarona, String origem, String destino, String data,
+			String hora, Integer vagas, Integer minimoCaroneiros, Integer posicaoNaInsercaoNoSistema) {
+		setIdDonoDaCarona(idDonoDaCarona);
+		setOrigem(origem);
+		setDestino(destino);
+		setData(data);
+		setHora(hora);
+		setVagas(vagas);
+		setMinimoCaroneiros(minimoCaroneiros);
+		setPosicaoNaInsercaoNoSistema(posicaoNaInsercaoNoSistema);
+		setIdCarona(hashCode());
+	}
+	
+	/**
+	 * Configura o minimo de caroneiros para
+	 * carona relampago. Se esse minimo de caroneiros
+	 * nao for atingido até 48h antes da hora da carona,
+	 * o sistema manda um email cancelando a carona.
+	 * 
+	 * @param minimoCaroneiros
+	 */
+	private void setMinimoCaroneiros(Integer minimoCaroneiros) {
+		if(minimoCaroneiros == null || minimoCaroneiros <= 0)
+			throw new IllegalArgumentException("Minimo Caroneiros inválido");
+		this.minimoCaroneiros = minimoCaroneiros;
+	}
+	
+	/**
+	 * Retorna minimo de caroneiros para essa carona.
+	 * 
+	 * @return minimo de caroneiros.
+	 */
+	public int getMinimoCaroneiros() {
+		return this.minimoCaroneiros;
+	}
 
 	/**
 	 * Configura limite de vagas para a carona.
@@ -126,7 +180,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 		if (limite >= 0)
 			this.LIMITE_VAGAS = limite;
 	}
-
+	
 	/**
 	 * Retorna o id da carona.
 	 * 
