@@ -150,7 +150,7 @@ public class StateCadastroCaronas extends Composite {
 		
 		Label lblData = new Label("Data:");
 		flexTable.setWidget(3, 0, lblData);
-		lblData.setSize("100%", "100%");
+		lblData.setSize("54px", "17px");
 		lblData.setStyleName("gwt-LabelEstradaSolidaria4");
 		
 		FlexTable flexTable_4 = new FlexTable();
