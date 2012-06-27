@@ -4,7 +4,6 @@
 package estradasolidaria.ui.server.logic;
 
 /**
-<<<<<<< HEAD
  * Classe representante dos atributos de carona,
  * eh usada em getAtributoCarona(String).
  * 
@@ -22,7 +21,8 @@ public enum EnumCarona {
 	PONTO_ENCONTRO("Ponto de Encontro"),
 	VAGA("vagas"),
 	EH_MUINICIPAL("ehMunicipal"),
-	CIDADE("cidade");
+	CIDADE("cidade"),
+	MINIMO_CARONEIROS("minimoCaroneiros");
 	
 	private String nomeAtributo;
 	private EnumCarona(String menssagem) {

@@ -10,6 +10,8 @@ import java.util.TreeMap;
 
 import javax.mail.MessagingException;
 
+import org.apache.commons.collections.IteratorUtils;
+
 import estradasolidaria.ui.server.adder.Adder;
 import estradasolidaria.ui.server.data.GerenciadorDeDados;
 
@@ -1291,7 +1293,7 @@ public class EstradaSolidariaController implements Serializable {
 			throw new UsuarioInexistenteException();
 		
 		return donoDaCarona.cadastrarCaronaRelampago(donoDaCarona.getIdUsuario(), 
-				origem, destino, data, hora, ordemParaCaronas++, minimoCaroneiros).getIdCarona();
+				origem, destino, data, hora, minimoCaroneiros, ordemParaCaronas++).getIdCarona();
 	}
 	
 	/**
@@ -1300,10 +1302,28 @@ public class EstradaSolidariaController implements Serializable {
 	 * 
 	 * @param idCarona
 	 * @return minimo de caroneiros
+	 * @throws CaronaInexistenteException 
+	 * @throws CaronaInvalidaException 
 	 */
-	public Integer getMinimoCaroneiros(Integer idCarona) {
-		//TODO fazer getMinimoCaroneiros
-		return -1;
+	public Integer getMinimoCaroneiros(Integer idCarona) throws CaronaInexistenteException, CaronaInvalidaException {
+		if(idCarona == null)
+			throw new CaronaInvalidaException();
+		if(idCarona.equals(""))
+			throw new CaronaInexistenteException();
+		
+		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+		Usuario donoDaCarona;
+		while(iteratorIdUsuario.hasNext()) {
+			donoDaCarona = iteratorIdUsuario.next();
+			Iterator<Carona> iteratorIdCarona = donoDaCarona.getMapIdCaronasOferecidas().values().iterator();
+			while(iteratorIdCarona.hasNext()) {
+				Carona c = iteratorIdCarona.next();
+				if(c.getIdCarona().equals(idCarona)) {
+					return c.getMinimoCaroneiros();
+				}
+			}
+		}
+		throw new IllegalArgumentException("IdCarona inválido");
 	}
 	
 	/**
@@ -1311,10 +1331,25 @@ public class EstradaSolidariaController implements Serializable {
 	 * 
 	 * @param idCarona
 	 * @return carona
+	 * @throws CaronaInvalidaException 
 	 */
-	public Carona getCaronaRelampago(Integer idCarona) {
-		//TODO fazer getCaronaRelampago
-		return null;
+	public Carona getCaronaRelampago(Integer idCarona) throws CaronaInvalidaException {
+		if(idCarona == null)
+			throw new CaronaInvalidaException();
+		
+		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+		Usuario donoDaCarona;
+		while(iteratorIdUsuario.hasNext()) {
+			donoDaCarona = iteratorIdUsuario.next();
+			Iterator<Carona> iteratorCarona = donoDaCarona.getMapIdCaronasOferecidas().values().iterator();
+			while(iteratorCarona.hasNext()) {
+				Carona carona = iteratorCarona.next();
+				if(carona.getIdCarona().equals(idCarona)) {
+					return carona;
+				}
+			}
+		}
+		throw new IllegalArgumentException("IdCarona inválido");
 	}
 	
 	/**

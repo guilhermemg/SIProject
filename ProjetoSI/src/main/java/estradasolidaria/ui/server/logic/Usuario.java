@@ -1151,15 +1151,15 @@ public class Usuario implements Serializable {
 	 * @param hora
 	 * @param ordemNaInsercaoNoSistema
 	 * @param minimoCaroneiros
-	 * @return id carona
+	 * @return carona relampago
 	 */
 	public Carona cadastrarCaronaRelampago(Integer idDonoDaCarona,
 			String origem,String destino, String data, 
-			String hora, Integer posicaoNaInsercao,
-			Integer minimoCaroneiros) {
+			String hora, Integer minimoCaroneiros, Integer posicaoNaInsercao) {
 			Carona caronaRelampago = new Carona(idDonoDaCarona, origem, 
 					destino, data, hora, minimoCaroneiros, 
 					minimoCaroneiros, posicaoNaInsercao); 
+			this.mapIdCaronasOferecidas.put(caronaRelampago.getIdCarona(), caronaRelampago);
 		return caronaRelampago;
 	}
 }

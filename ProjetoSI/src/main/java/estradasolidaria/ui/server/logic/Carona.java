@@ -60,7 +60,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	private Map<Integer, Sugestao> mapSugestoesPontoDeEncontro = new TreeMap<Integer, Sugestao>();
 
 	private Integer minimoCaroneiros;
-
+	private boolean expired;
 
 	// ------------------------------------------------------------------------------------------------------
 
@@ -142,12 +142,31 @@ public class Carona implements Comparable<Carona>, Serializable {
 		setDestino(destino);
 		setData(data);
 		setHora(hora);
-		setVagas(vagas);
 		setMinimoCaroneiros(minimoCaroneiros);
+		setVagas(vagas);
 		setPosicaoNaInsercaoNoSistema(posicaoNaInsercaoNoSistema);
+		setExpired(false);
 		setIdCarona(hashCode());
 	}
 	
+	/**
+	 * Configura estado da carona relampago.
+	 * 
+	 * @param expired
+	 */
+	private void setExpired(boolean expired) {
+		this.expired = false;
+	}
+	
+	/**
+	 * Retorna estado da carona relampago.
+	 * 
+	 * @return estado da carona
+	 */
+	public boolean getExpired() {
+		return this.expired;
+	}
+
 	/**
 	 * Configura o minimo de caroneiros para
 	 * carona relampago. Se esse minimo de caroneiros
@@ -167,7 +186,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return minimo de caroneiros.
 	 */
-	public int getMinimoCaroneiros() {
+	public Integer getMinimoCaroneiros() {
 		return this.minimoCaroneiros;
 	}
 

@@ -445,8 +445,10 @@ public interface AdapterInterface {
 	 * 
 	 * @param atributo
 	 * @return atributo de carona
+	 * @throws CaronaInvalidaException 
+	 * @throws CaronaInexistenteException 
 	 */
-	public Object getAtributoCaronaRelampago(String idCarona, String atributo);
+	public Object getAtributoCaronaRelampago(String idCarona, String atributo) throws CaronaInvalidaException, CaronaInexistenteException;
 	
 	/**
 	 * Retorna minimo de caroneiros para a carona
@@ -454,8 +456,10 @@ public interface AdapterInterface {
 	 * 
 	 * @param idCarona
 	 * @return minimo de caroneiros
+	 * @throws CaronaInexistenteException 
+	 * @throws CaronaInvalidaException 
 	 */
-	public Integer getMinimoCaroneiros(String idCarona);
+	public Integer getMinimoCaroneiros(String idCarona) throws CaronaInexistenteException, CaronaInvalidaException;
 	
 	/**
 	 * Retorna atributo de 
@@ -469,8 +473,10 @@ public interface AdapterInterface {
 	 * 
 	 * @param idCarona
 	 * @return carona
+	 * @throws CaronaInexistenteException 
+	 * @throws CaronaInvalidaException 
 	 */
-	public Carona getCaronaRelampago(String idCarona);
+	public Carona getCaronaRelampago(String idCarona) throws CaronaInexistenteException, CaronaInvalidaException;
 
 	/**
 	 * Configures uma nova carona expirada (para testes)

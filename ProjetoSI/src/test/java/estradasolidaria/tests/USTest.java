@@ -37,7 +37,8 @@ public class USTest extends TestCase {
 	    files.add("scripts/US10.txt");
 	    files.add("scripts/US11.txt");
 	    files.add("scripts/US12.txt");
-
+	    files.add("scripts/US15.txt");
+	    
 		// Instantiate the SistemaCaronas
 		AdapterInterface sistemaAdapter = EasyacceptEstradaSolidariaAdapter.getInstance();
 		// Instantiate EasyAccept facade
