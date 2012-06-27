@@ -221,13 +221,13 @@ public class EstradaSolidariaController implements Serializable {
 	}
 
 	/**
-	 * Retorna a carona resumida oferecida pelo usuario que a registrou.
+	 * Retorna a carona oferecida pelo usuario que a registrou.
 	 * 
 	 * @param idCarona
 	 * @return string com dados da carona
 	 * @throws Exception
 	 */
-	public String getCarona(Integer idCarona) {
+	public Carona getCarona(Integer idCarona) {
 		if (idCarona == null)
 			throw new IllegalArgumentException("Carona Inválida");
 
@@ -1460,7 +1460,8 @@ public class EstradaSolidariaController implements Serializable {
 	}
 	
 	/**
-	 * Retorna lista de usuarios com nome pesquisado.
+	 * Retorna lista de usuarios de acordo com nome de usuario fornecido
+	 * para busca.
 	 * @param nome
 	 * @return lista de usuarios
 	 */

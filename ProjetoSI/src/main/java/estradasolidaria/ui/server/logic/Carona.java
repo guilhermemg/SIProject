@@ -526,12 +526,12 @@ public class Carona implements Comparable<Carona>, Serializable {
 	}
 
 	/**
-	 * Retorna a carona no formato: origem - destino
+	 * Retorna esta carona.
 	 * 
-	 * @return "origem - destino"
+	 * @return Carona
 	 */
-	public String getCarona() {
-		return this.toString();
+	public Carona getCarona() {
+		return this;
 	}
 
 	/**

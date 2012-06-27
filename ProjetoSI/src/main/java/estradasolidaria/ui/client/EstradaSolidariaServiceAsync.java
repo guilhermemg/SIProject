@@ -43,7 +43,7 @@ public interface EstradaSolidariaServiceAsync {
 	void enviarEmail(Integer idSessao, String destino, String message,
 			AsyncCallback<Boolean> callback);
 
-	void getCarona(Integer idCarona, AsyncCallback<String> callback);
+	void getCarona(Integer idCarona, AsyncCallback<List<String>> callback);
 
 	void getCaronaUsuario(Integer idSessao, int indexCarona,
 			AsyncCallback<String> callback);
@@ -134,6 +134,9 @@ public interface EstradaSolidariaServiceAsync {
 			AsyncCallback<List<GWTInteresse>> callback);
 	
 	void pesquisaUsuariosNoSistema(String nome,
+			AsyncCallback<List<String>> callback);
+	
+	void getUsuarioNoSistema(Integer idUsuario,
 			AsyncCallback<List<String>> callback);
 
 	void deletarInteresse(Integer idSessao, Integer idInteresse,
