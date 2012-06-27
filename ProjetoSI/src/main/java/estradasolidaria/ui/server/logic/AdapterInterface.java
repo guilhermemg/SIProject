@@ -465,8 +465,10 @@ public interface AdapterInterface {
 	 * Retorna atributo de 
 	 * 
 	 * @return
+	 * @throws CaronaInvalidaException 
+	 * @throws CaronaInexistenteException 
 	 */
-	public String getAtributoExpired(String idExpired, String atributo);
+	public Object getAtributoExpired(String idExpired, String atributo) throws CaronaInvalidaException, CaronaInexistenteException;
 	
 	/**
 	 * Retorna carona relampago identificada por idCarona
@@ -482,8 +484,11 @@ public interface AdapterInterface {
 	 * Configures uma nova carona expirada (para testes)
 	 * 
 	 * @param idCarona
+	 * @return 
+	 * @throws CaronaInvalidaException 
+	 * @throws CaronaInexistenteException 
 	 */
-	public void setCaronaRelampagoExpired(String idCarona);
+	public Integer setCaronaRelampagoExpired(String idCarona) throws CaronaInvalidaException, CaronaInexistenteException;
 	
 	
 	

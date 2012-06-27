@@ -54,4 +54,13 @@ public class EstadoSolicitacaoRejeitada implements EstadoSolicitacaoInterface {
 		throw new IllegalArgumentException("Solicitação inexistente");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.EstadoSolicitacaoInterface#getEnumNomeDoEstadoDaSolicitacao()
+	 */
+	@Override
+	public EnumNomeDoEstadoDaSolicitacao getEnumNomeDoEstadoDaSolicitacao() {
+		return EnumNomeDoEstadoDaSolicitacao.REJEITADA;
+	}
+
 }

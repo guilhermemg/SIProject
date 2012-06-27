@@ -100,7 +100,7 @@ aceitarSolicitacao idSessao=${sessaoMark} idSolicitacao=${solicitacao2ID}
 
 expiredID=setCaronaRelampagoExpired idCarona=${carona1ID}
 expect true getAtributoCaronaRelampago idCarona=${carona1ID} atributo="expired"
-expect [bill, steve] getAtributoExpired idExpired=${expiredID} atributo="emailTo"
+expect [bill,steve] getAtributoExpired idExpired=${expiredID} atributo="emailTo"
 
 
 

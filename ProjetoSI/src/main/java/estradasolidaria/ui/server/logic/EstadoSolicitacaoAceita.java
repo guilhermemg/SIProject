@@ -55,4 +55,13 @@ public class EstadoSolicitacaoAceita implements EstadoSolicitacaoInterface {
 			throw new CaronaInexistenteException();
 		throw new EstadoSolicitacaoException("Uma solicitação aceita não pode ser mais rejeitada.");
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.EstadoSolicitacaoInterface#getEnumNomeDoEstadoDaSolicitacao()
+	 */
+	@Override
+	public EnumNomeDoEstadoDaSolicitacao getEnumNomeDoEstadoDaSolicitacao() {
+		return EnumNomeDoEstadoDaSolicitacao.ACEITA;
+	}
 }

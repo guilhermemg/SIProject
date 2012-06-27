@@ -10,8 +10,6 @@ import java.util.TreeMap;
 
 import javax.mail.MessagingException;
 
-import org.apache.commons.collections.IteratorUtils;
-
 import estradasolidaria.ui.server.adder.Adder;
 import estradasolidaria.ui.server.data.GerenciadorDeDados;
 
@@ -1346,6 +1344,37 @@ public class EstradaSolidariaController implements Serializable {
 				Carona carona = iteratorCarona.next();
 				if(carona.getIdCarona().equals(idCarona)) {
 					return carona;
+				}
+			}
+		}
+		throw new IllegalArgumentException("IdCarona inválido");
+	}
+	
+	/**
+	 * Configura carona identificada por
+	 * idCarona para expirada.
+	 * 
+	 * @param idCarona
+	 * @return carona
+	 * @throws CaronaInvalidaException 
+	 * @throws CaronaInexistenteException 
+	 */
+	public Carona setCaronaRelampagoExpired(Integer idCarona) throws CaronaInvalidaException, CaronaInexistenteException {
+		if(idCarona == null)
+			throw new CaronaInvalidaException();
+		if(idCarona.equals(""))
+			throw new CaronaInexistenteException();
+		
+		Usuario donoDaCarona;
+		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+		while(iteratorIdUsuario.hasNext()) {
+			donoDaCarona = iteratorIdUsuario.next();
+			Iterator<Carona> iteratorCaronas = donoDaCarona.getMapIdCaronasOferecidas().values().iterator();
+			while(iteratorCaronas.hasNext()) {
+				Carona caronaRelampago = iteratorCaronas.next();
+				if(caronaRelampago.getIdCarona().equals(idCarona)) {
+					caronaRelampago.setExpired(true);
+					return caronaRelampago;
 				}
 			}
 		}

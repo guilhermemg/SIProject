@@ -53,4 +53,13 @@ public class EstadoSolicitacaoCancelada implements EstadoSolicitacaoInterface {
 		throw new EstadoSolicitacaoException("Uma solicitação cancelada não pode ser rejeitada.");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.EstadoSolicitacaoInterface#getEnumNomeDoEstadoDaSolicitacao()
+	 */
+	@Override
+	public EnumNomeDoEstadoDaSolicitacao getEnumNomeDoEstadoDaSolicitacao() {
+		return EnumNomeDoEstadoDaSolicitacao.CANCELADA;
+	}
+
 }

@@ -54,5 +54,14 @@ public class EstadoSolicitacaoPendente implements EstadoSolicitacaoInterface {
 		s.setEstado(new EstadoSolicitacaoRejeitada());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.EstadoSolicitacaoInterface#getEnumNomeDoEstadoDaSolicitacao()
+	 */
+	@Override
+	public EnumNomeDoEstadoDaSolicitacao getEnumNomeDoEstadoDaSolicitacao() {
+		return EnumNomeDoEstadoDaSolicitacao.PENDENTE;
+	}
+
 	
 }

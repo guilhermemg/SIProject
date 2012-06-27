@@ -11,6 +11,16 @@ import com.ibm.icu.text.SimpleDateFormat;
 import estradasolidaria.ui.server.util.SpecialLinkedListBrackets;
 import estradasolidaria.ui.server.util.SpecialLinkedListKeys;
 
+/**
+ * Adapter para os testes do framework
+ * easyaccept.
+ * 
+ * @author Guilherme Monteiro
+ * @author Leonardo Santos
+ * @author Hema Vidal
+ * @author Italo Silva
+ *
+ */
 public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 
 	private static EstradaSolidariaController sistema = EstradaSolidariaController.getInstance();
@@ -1040,10 +1050,15 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 		Integer idSessao2 = null, minimoCaroneiros2 = null;
 		try {
 			idSessao2 = Integer.parseInt(idSessao);
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Sessão inexistente");
+		}
+		try {
 			minimoCaroneiros2 = Integer.parseInt(minimoCaroneiros);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new IllegalArgumentException("Minimo Caroneiros inválido");
 		}
+		
 		return sistema.cadastrarCaronaRelampago(idSessao2, origem, destino, data, hora, minimoCaroneiros2);
 	}
 	
@@ -1063,7 +1078,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 		try {
 			idCarona2 = Integer.parseInt(idCarona);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new IllegalArgumentException("Item inexistente");
 		}
 		
 		// Iterator Pattern
@@ -1101,6 +1116,8 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 			return c.getPontoEncontro();
 		else if (atributo.equals(EnumCarona.MINIMO_CARONEIROS.getNomeAtributo()))
 			return c.getMinimoCaroneiros();
+		else if(atributo.equals(EnumCarona.EXPIRED.getNomeAtributo()))
+			return c.getExpired();
 		else
 			throw new IllegalArgumentException("Atributo inexistente");
 	}
@@ -1128,16 +1145,6 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getAtributoExpired(java.lang.Integer, java.lang.String)
-	 */
-	@Override
-	public String getAtributoExpired(String idExpired, String atributo) {
-		// TODO fazer getAtributoExpired
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getCaronaRelampago(java.lang.Integer)
 	 */
 	@Override
@@ -1151,7 +1158,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 		try {
 			idCarona2 = Integer.parseInt(idCarona);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new IllegalArgumentException("Carona Inexistente");
 		}
 		return sistema.getCaronaRelampago(idCarona2);
 	}
@@ -1161,9 +1168,60 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	 * @see estradasolidaria.ui.server.logic.AdapterInterface#setCaronaRelampagoExpired(java.lang.Integer)
 	 */
 	@Override
-	public void setCaronaRelampagoExpired(String idCarona) {
-		// TODO fazer setCaronaRelampago
+	public Integer setCaronaRelampagoExpired(String idCarona) throws CaronaInvalidaException, CaronaInexistenteException {
+		if(idCarona == null)
+			throw new CaronaInvalidaException();
+		if(idCarona.equals(""))
+			throw new CaronaInexistenteException();
+		Integer idCarona2 = null;
+		try {
+			idCarona2 = Integer.parseInt(idCarona);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sistema.setCaronaRelampagoExpired(idCarona2).getIdCarona();
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getAtributoExpired(java.lang.Integer, java.lang.String)
+	 */
+	@Override
+	public Object getAtributoExpired(String idExpired, String atributo) throws CaronaInvalidaException, CaronaInexistenteException {
+		if(idExpired == null)
+			throw new CaronaInvalidaException();
+		if(idExpired.equals(""))
+			throw new CaronaInvalidaException();
 		
+		Integer idExpired2 = null;
+		try {
+			idExpired2 = Integer.parseInt(idExpired);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Iterator<Usuario> iteratorUsuarios = sistema.getMapIdUsuario().values().iterator();
+		Usuario donoDaCarona;
+		while(iteratorUsuarios.hasNext()) {
+			donoDaCarona = iteratorUsuarios.next();
+			Iterator<Carona> iteratorCaronas = donoDaCarona.getMapIdCaronasOferecidas().values().iterator();
+			while(iteratorCaronas.hasNext()) {
+				Carona caronaRelampago = iteratorCaronas.next();
+				if(caronaRelampago.getIdCarona().equals(idExpired2)) {
+					return getAtributoExpired(caronaRelampago, atributo);
+				}
+			}
+		}
+		throw new IllegalArgumentException("IdExpired invalido");
+	}
+	
+	private Object getAtributoExpired(Carona caronaRelampago, String atributo) throws CaronaInexistenteException {
+		if(caronaRelampago == null)
+			throw new CaronaInexistenteException();
+		if(atributo == null || atributo.equals(""))
+			throw new IllegalArgumentException("Atributo inválido");
+		else if(atributo.equals(EnumExpired.EMAIL_TO.getNomeAtributo()))
+			return caronaRelampago.getEmailTo().toString();
+		throw new IllegalArgumentException("Atributo inexistente");
 	}
 
 	/*

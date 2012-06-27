@@ -2,6 +2,7 @@ package estradasolidaria.ui.server.logic;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.TreeMap;
 import com.ibm.icu.text.SimpleDateFormat;
 
 import estradasolidaria.ui.server.util.DateUtil;
+import estradasolidaria.ui.server.util.SpecialLinkedListBrackets;
 
 
 /**
@@ -154,8 +156,8 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @param expired
 	 */
-	private void setExpired(boolean expired) {
-		this.expired = false;
+	public void setExpired(boolean expired) {
+		this.expired = expired;
 	}
 	
 	/**
@@ -874,20 +876,57 @@ public class Carona implements Comparable<Carona>, Serializable {
 	public Map<Integer, Sugestao> getMapSugestoesPontoDeEncontro() {
 		return mapSugestoesPontoDeEncontro;
 	}
-
+	
+	/**
+	 * Atribui numeros ao review feito pelo
+	 * dono dessa carona a um usuario identificado
+	 * por idCaroneiro.
+	 * 
+	 * @param idCaroneiro
+	 * @return numero correspondente ao review dado
+	 */
 	public Integer getDonoReviewCaroneiro(Integer idCaroneiro) {
 		EnumCaronaReview review = getMapDonoReviewCaroneiro().get(idCaroneiro); 
 		if (review == EnumCaronaReview.FALTOU) {
 			return 0;
 		}
-		return 1;
+		return 1; // review == EnumCaronaReview.NAO_FALTOU
 	}
 	
-	public Integer getCaroneiroReviewDono(Integer idCaroneiro) {
-		EnumCaronaReview review = getMapCaroneiroReviewDono().get(idCaroneiro); 
+	/**
+	 * Atribui numeros ao review feito pelo caroneiro,
+	 * que pegou essa carona, ao usuario dono da carona,
+	 * que identificado por idDonoDaCarona.
+	 * 
+	 * @param idDonoDaCarona
+	 * @return numero correspondente ao review dado
+	 */
+	public Integer getCaroneiroReviewDono(Integer idDonoDaCarona) {
+		EnumCaronaReview review = getMapCaroneiroReviewDono().get(idDonoDaCarona); 
 		if (review == EnumCaronaReview.NAO_FUNCIONOU) {
 			return 0;
 		}
-		return 1;
+		return 1; // review == EnumCaronaReview.FUNCIONOU
+	}
+	
+	/**
+	 * Retorna lista de emails de usuarios
+	 * que serao avisados do cancelamento da
+	 * carona relampago, uma vez que o numero
+	 * minimo de caroneiros nao foi atingido.
+	 * 
+	 * @return lista de logins
+	 */
+	public List<String> getEmailTo() {
+		List<String> listaLogins = new SpecialLinkedListBrackets<String>();
+		iteratorIdSolicitacoes = this.mapIdSolicitacoes.values().iterator();
+		while(iteratorIdSolicitacoes.hasNext()) {
+			Solicitacao s = iteratorIdSolicitacoes.next();
+			if(s.getEstado().getEnumNomeDoEstadoDaSolicitacao().equals(EnumNomeDoEstadoDaSolicitacao.ACEITA)) {
+				listaLogins.add(s.getDonoDaSolicitacao().getLogin());
+			}
+		}
+		Collections.sort(listaLogins);
+		return listaLogins;
 	}
 }
