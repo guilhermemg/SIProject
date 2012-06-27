@@ -200,8 +200,6 @@ public class StateCaronas extends AbsolutePanel {
 					caronasCellTable.setRowCount(caronasGWT.size(),
 							true);
 					caronasCellTable.setRowData(0, caronasGWT);
-					
-					
 				}
 			});
 		} else {

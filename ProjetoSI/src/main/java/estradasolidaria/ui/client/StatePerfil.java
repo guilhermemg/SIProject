@@ -95,6 +95,7 @@ public class StatePerfil extends Composite {
 		MenuItem menuItemOpcoes = new MenuItem("Editar Perfil", false, new Command() {
 			public void execute() {
 				scrollPanel.clear();
+				bodyPanel.clear();
 				scrollPanel.setVisible(false);
 				Widget editarPerfil= new StateEditarPerfil(estradaSolidariaService, dadosUsuario);
 				bodyPanel.add(editarPerfil);

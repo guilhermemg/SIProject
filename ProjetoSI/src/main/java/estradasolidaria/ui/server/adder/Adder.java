@@ -60,8 +60,7 @@ public class Adder {
 		Collection<Solicitacao> solicitacoesFeitasPorU5 = sistema.getUsuarioAPartirDeIDSessao(idSessao5).getMapIdSolicitacoesFeitas().values();
 		it = solicitacoesFeitasPorU5.iterator();
 		Solicitacao s1 = it.next();
-		Solicitacao s2  = it.next();
-		sistema.aceitarSolicitacao(idSessao4, s2.getIdSolicitacao());
+		sistema.aceitarSolicitacao(idSessao4, s1.getIdSolicitacao());
 	}
 
 	private void solicitacaoDeVagas() throws CaronaInvalidaException {
