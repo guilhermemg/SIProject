@@ -27,11 +27,13 @@ public class PopUpAdicionarInteresse extends PopupPanel {
 	private ListBox comboBoxHoraFim;
 	private ListBox comboBoxMinutosFim;
 	private NumberFormat numberFormat;
+	private final StateMeusInteresses meusInteressesPanel;
 
-	public PopUpAdicionarInteresse(EstradaSolidaria estrada, EstradaSolidariaServiceAsync estradaSolidariaService) {
+	public PopUpAdicionarInteresse(EstradaSolidaria estrada, EstradaSolidariaServiceAsync estradaSolidariaService, StateMeusInteresses meusInteressesPanel) {
 		super(true);
 		this.estrada = estrada;
 		this.estradaSolidariaService = estradaSolidariaService;
+		this.meusInteressesPanel = meusInteressesPanel;
 		numberFormat = NumberFormat.getFormat("00");
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
@@ -162,6 +164,8 @@ public class PopUpAdicionarInteresse extends PopupPanel {
 			@Override
 			public void onSuccess(String result) {
 				Window.alert("Interresse cadastrado!");
+				meusInteressesPanel.colocarInteressesNoGrid();
+				hide();
 			}
 		});
 	}

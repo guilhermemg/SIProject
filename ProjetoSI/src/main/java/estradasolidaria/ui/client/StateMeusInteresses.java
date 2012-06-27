@@ -24,14 +24,15 @@ public class StateMeusInteresses extends AbsolutePanel {
 	private EstradaSolidariaServiceAsync estradaSolidariaService;
 	private TextButton btnAdicionar;
 	private DataGrid<GWTInteresse> dataGrid;
+
+	private StateMeusInteresses referenciaThis;
 	
 	public StateMeusInteresses(final EstradaSolidaria estrada, final EstradaSolidariaServiceAsync estradaSolidariaService) {
+		referenciaThis = this;
 		this.estrada = estrada;
 		this.estradaSolidariaService = estradaSolidariaService;
 		setTitle("Interresses");
 		listaDeInteresses = new LinkedList<GWTInteresse>();
-		
-		
 		
 		AbsolutePanel absolutePanel_1 = new AbsolutePanel();
 		add(absolutePanel_1);
@@ -40,7 +41,7 @@ public class StateMeusInteresses extends AbsolutePanel {
 		btnAdicionar = new TextButton("Adicionar");
 		btnAdicionar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				PopupPanel p = new PopUpAdicionarInteresse(estrada, estradaSolidariaService);
+				PopupPanel p = new PopUpAdicionarInteresse(estrada, estradaSolidariaService, referenciaThis);
 				p.center();
 				p.show();
 			}
@@ -107,7 +108,7 @@ public class StateMeusInteresses extends AbsolutePanel {
 		colocarInteressesNoGrid();
 	}
 
-	private void colocarInteressesNoGrid() {
+	protected void colocarInteressesNoGrid() {
 		Integer idSessao = EstradaSolidaria.getIdSessaoAberta();
 		estradaSolidariaService.getInteresses(idSessao, new AsyncCallback<List<GWTInteresse>>() {
 
