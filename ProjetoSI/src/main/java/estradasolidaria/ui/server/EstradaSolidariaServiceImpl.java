@@ -479,9 +479,9 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		Usuario u = controller.getUsuarioAPartirDeIDSessao(idSessao);
 		
 		for (Interesse i : u.getMapIdInteresses().values()) {
-			System.out.println("Here: " + i);
 			
 			GWTInteresse gwt_i = new GWTInteresse();
+			
 			Date data = i.getData().getTime();
 			
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
