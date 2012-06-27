@@ -496,16 +496,20 @@ public interface AdapterInterface {
 	 * Define uma carona como preferencial.
 	 * 
 	 * @param idCarona
+	 * @throws CaronaInvalidaException 
+	 * @throws CaronaInexistenteException 
 	 */
-	public void definirCaronaPreferencial(String idCarona); 
+	public void definirCaronaPreferencial(String idCarona) throws CaronaInvalidaException, CaronaInexistenteException; 
 	
 	/**
 	 * Retorna se uma carona identificada por idCarona eh preferencial.
 	 * 
 	 * @param idCarona
 	 * @return true se carona eh preferencial
+	 * @throws CaronaInexistenteException 
+	 * @throws CaronaInvalidaException 
 	 */
-	public boolean isCaronaPreferencial(String idCarona); 
+	public boolean isCaronaPreferencial(String idCarona) throws CaronaInexistenteException, CaronaInvalidaException; 
 	
 	/**
 	 * Retorna lista de usuarios preferenciais.

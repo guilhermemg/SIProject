@@ -64,6 +64,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 
 	private Integer minimoCaroneiros;
 	private boolean expired;
+	private boolean isPreferencial;
 
 	// ------------------------------------------------------------------------------------------------------
 
@@ -526,12 +527,12 @@ public class Carona implements Comparable<Carona>, Serializable {
 	}
 
 	/**
-	 * Retorna a carona no formato: origem - destino
+	 * Retorna esta carona.
 	 * 
-	 * @return "origem - destino"
+	 * @return Carona
 	 */
-	public String getCarona() {
-		return this.toString();
+	public Carona getCarona() {
+		return this;
 	}
 
 	/**
@@ -931,5 +932,19 @@ public class Carona implements Comparable<Carona>, Serializable {
 		}
 		Collections.sort(listaLogins);
 		return listaLogins;
+	}
+
+	/**
+	 * Define carona como preferencial. 
+	 */
+	public void definirCaronaComoPreferencial() {
+		this.isPreferencial = true;
+	}
+
+	/**
+	 * Retorna se esta carona eh preferencial.
+	 */
+	public boolean isCaronaPreferencial() {
+		return this.isPreferencial;
 	}
 }

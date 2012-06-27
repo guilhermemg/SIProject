@@ -1229,9 +1229,18 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	 * @see estradasolidaria.ui.server.logic.AdapterInterface#definirCaronaPreferencial(java.lang.Integer)
 	 */
 	@Override
-	public void definirCaronaPreferencial(String idCarona) {
-		// TODO Auto-generated method stub
-		
+	public void definirCaronaPreferencial(String idCarona) throws CaronaInvalidaException, CaronaInexistenteException {
+		if(idCarona == null)
+			throw new CaronaInvalidaException();
+		if(idCarona.equals(""))
+			throw new CaronaInexistenteException();
+		Integer idCarona2 = null;
+		try {
+			idCarona2 = Integer.parseInt(idCarona);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		sistema.definirCaronaPreferencial(idCarona2);
 	}
 
 	/*
@@ -1239,9 +1248,18 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	 * @see estradasolidaria.ui.server.logic.AdapterInterface#isCaronaPreferencial(java.lang.Integer)
 	 */
 	@Override
-	public boolean isCaronaPreferencial(String idCarona) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isCaronaPreferencial(String idCarona) throws CaronaInexistenteException, CaronaInvalidaException {
+		if(idCarona == null)
+			throw new CaronaInvalidaException();
+		if(idCarona.equals(""))
+			throw new CaronaInexistenteException();
+		Integer idCarona2 = null;
+		try {
+			idCarona2 = Integer.parseInt(idCarona);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sistema.isCaronaPreferencial(idCarona2);
 	}
 
 	/*

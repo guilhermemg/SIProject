@@ -338,7 +338,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param idCarona
 	 * @return toString da carona
 	 */
-	public String getCarona(Integer idCarona) {
+	public Carona getCarona(Integer idCarona) {
 		Carona c = this.mapIdCaronasOferecidas.get(idCarona);
 		if (c == null)
 			throw new IllegalArgumentException("Identificador do carona é inválido");

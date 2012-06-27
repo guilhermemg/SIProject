@@ -227,7 +227,7 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return string com dados da carona
 	 * @throws Exception
 	 */
-	public String getCarona(Integer idCarona) {
+	public Carona getCarona(Integer idCarona) {
 		if (idCarona == null)
 			throw new IllegalArgumentException("Carona Inválida");
 
@@ -1388,7 +1388,19 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param idCarona
 	 */
 	public void definirCaronaPreferencial(Integer idCarona) {
-		//TODO fazer definirCaronaPrefencial
+		Usuario donoDaCarona;
+		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+		while(iteratorIdUsuario.hasNext()) {
+			donoDaCarona = iteratorIdUsuario.next();
+			Iterator<Carona> iteratorCaronas = donoDaCarona.getMapIdCaronasOferecidas().values().iterator();
+			while(iteratorCaronas.hasNext()) {
+				Carona carona = iteratorCaronas.next();
+				if(carona.getIdCarona().equals(idCarona)) {
+					carona.definirCaronaComoPreferencial();
+				}
+			}
+		}
+		throw new IllegalArgumentException("IdCarona inválido");
 	}
 	
 	/**
@@ -1398,8 +1410,19 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return true se carona eh preferencial
 	 */
 	public boolean isCaronaPreferencial(Integer idCarona) {
-		//TODO
-		return false;
+		Usuario donoDaCarona;
+		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+		while(iteratorIdUsuario.hasNext()) {
+			donoDaCarona = iteratorIdUsuario.next();
+			Iterator<Carona> iteratorCaronas = donoDaCarona.getMapIdCaronasOferecidas().values().iterator();
+			while(iteratorCaronas.hasNext()) {
+				Carona carona = iteratorCaronas.next();
+				if(carona.getIdCarona().equals(idCarona)) {
+					return carona.isCaronaPreferencial();
+				}
+			}
+		}
+		throw new IllegalArgumentException("IdCarona inválido");
 	}
 	
 	/**
