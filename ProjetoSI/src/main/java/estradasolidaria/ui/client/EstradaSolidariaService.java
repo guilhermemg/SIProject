@@ -427,4 +427,6 @@ public interface EstradaSolidariaService extends RemoteService {
 	public abstract List<GWTInteresse> getInteresses(Integer idSessao);
 	
 	public abstract List<String> pesquisaUsuariosNoSistema(String nome);
+
+	void deletarInteresse(Integer idSessao, Integer idInteresse);
 }

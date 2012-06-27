@@ -135,4 +135,7 @@ public interface EstradaSolidariaServiceAsync {
 	
 	void pesquisaUsuariosNoSistema(String nome,
 			AsyncCallback<List<String>> callback);
+
+	void deletarInteresse(Integer idSessao, Integer idInteresse,
+			AsyncCallback<Void> asyncCallback);
 }
