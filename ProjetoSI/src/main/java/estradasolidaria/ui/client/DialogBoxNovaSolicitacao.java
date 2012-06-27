@@ -45,8 +45,8 @@ public class DialogBoxNovaSolicitacao extends DialogBox {
 		absolutePanel.add(lblLoginusuario, 174, 10);
 		
 		Label lblGettrajeto = new Label("trajetoDaCarona");
-		absolutePanel.add(lblGettrajeto, 168, 40);
-		lblGettrajeto.setSize("0px", "0px");
+		absolutePanel.add(lblGettrajeto, 174, 40);
+		lblGettrajeto.setSize("166px", "16px");
 		
 		getTrajetoGUI(idDaCarona, lblGettrajeto);
 		

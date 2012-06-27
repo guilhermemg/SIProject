@@ -4,7 +4,6 @@ import java.util.Map;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
@@ -19,6 +18,8 @@ public class StateCaronasEncontradas extends Composite {
 	private EstradaSolidariaServiceAsync estradaSolidariaService;
 	private EstradaSolidaria entryPoint;
 	private Integer idSessao;
+	private Label lblMensagemdeerro;
+	private DialogBox newDialog;
 
 	@SuppressWarnings("static-access")
 	public StateCaronasEncontradas(final EstradaSolidariaServiceAsync estradaService, EstradaSolidaria estrada, Map<String, Integer> map) {
@@ -34,11 +35,16 @@ public class StateCaronasEncontradas extends Composite {
 		absolutePanel.setSize("593px", "491px");
 		
 		final ListBox listBoxCaronasEncontradas = new ListBox();
+		listBoxCaronasEncontradas.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				lblMensagemdeerro.setVisible(false);
+			}
+		});
 		for(int i = 0; i < arrayIdCaronaToString.length; i++){
 			listBoxCaronasEncontradas.addItem((String) arrayIdCaronaToString[i]);
 		}
 
-		absolutePanel.add(listBoxCaronasEncontradas, 80, 164);
+		absolutePanel.add(listBoxCaronasEncontradas, 80, 176);
 		listBoxCaronasEncontradas.setSize("477px", "294px");
 		listBoxCaronasEncontradas.setVisibleItemCount(10);
 		
@@ -48,7 +54,7 @@ public class StateCaronasEncontradas extends Composite {
 		
 		AbsolutePanel absolutePanel_1 = new AbsolutePanel();
 		absolutePanel.add(absolutePanel_1, 80, 74);
-		absolutePanel_1.setSize("477px", "70px");
+		absolutePanel_1.setSize("477px", "96px");
 		
 		Label lblNewLabel = new Label("Sugira um local de encontro: (Opcional)");
 		absolutePanel_1.add(lblNewLabel, 10, 10);
@@ -59,14 +65,20 @@ public class StateCaronasEncontradas extends Composite {
 		
 		TextButton txtbtnRequisitarVaga = new TextButton("Requisitar Vaga em carona");
 		absolutePanel_1.add(txtbtnRequisitarVaga, 267, 28);
+		
+		lblMensagemdeerro = new Label("MensagemDeErro");
+		lblMensagemdeerro.setStyleName("gwt-LabelEstradaSolidaria5");
+		absolutePanel_1.add(lblMensagemdeerro, 10, 70);
+		lblMensagemdeerro.setVisible(false);
+		
 		txtbtnRequisitarVaga.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent arg0) {
 				Integer idCarona = mapaIdCaronaToString.get(listBoxCaronasEncontradas.getItemText(listBoxCaronasEncontradas.getSelectedIndex()));
+				newDialog = new DialogBoxNovaSolicitacao(estradaService, idCarona);
+				newDialog.center();
+				newDialog.hide();
 				if(textBox.getText().equals("")){
 					solicitarVagaGUI(idSessao, idCarona);
-					DialogBox newDialog = new DialogBoxNovaSolicitacao(estradaService, idCarona);
-					newDialog.center();
-					newDialog.show();
 				} else {
 					solicitarVagaComPontoDeEncontroGUI(idSessao, idCarona, textBox.getText());
 				}
@@ -80,12 +92,13 @@ public class StateCaronasEncontradas extends Composite {
 			@Override
 			public void onFailure(Throwable caught) {
 				// Show the RPC error message to the user 
-				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
+				lblMensagemdeerro.setText(caught.getMessage());
+				lblMensagemdeerro.setVisible(true);
 			}
 
 			@Override
 			public void onSuccess(String result) {
-				//hide();
+				newDialog.show();
 			}
 		  });	
 	}
@@ -95,13 +108,13 @@ public class StateCaronasEncontradas extends Composite {
 			@Override
 			public void onFailure(Throwable caught) {
 				// Show the RPC error message to the user 
-				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
+				lblMensagemdeerro.setText(caught.getMessage());
+				lblMensagemdeerro.setVisible(true);
 			}
 
 			@Override
 			public void onSuccess(String result) {
-				//hide();
-				Window.alert(result);
+				newDialog.show();
 			}
 		  });	
 	}
