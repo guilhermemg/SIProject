@@ -1499,4 +1499,16 @@ public class EstradaSolidariaController implements Serializable {
 		}
 		return result;
 	}
+
+	/**
+	 * Deleta interesse do mapa de interesses do
+	 * usuario ao qual pertence o interesse.
+	 * 
+	 * @param idInteresse
+	 * @param idInteresse2 
+	 */
+	public void deletarInteresse(Integer idSessao, Integer idInteresse) {
+		Usuario donoDoInteresse = getUsuarioAPartirDeIDSessao(idSessao);
+		donoDoInteresse.deletarInteresse(idInteresse);
+	}
 }

@@ -543,9 +543,7 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public void deletarInteresse(Integer idSessao, Integer idInteresse) {
-		Usuario u = controller.getUsuarioAPartirDeIDSessao(idSessao);
-		u.getMapIdInteresses().remove(idInteresse);
-		
+		controller.deletarInteresse(idSessao, idInteresse);
 	}
 	
 }

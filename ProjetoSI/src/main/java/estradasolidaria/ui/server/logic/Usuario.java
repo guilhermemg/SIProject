@@ -1191,4 +1191,14 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		}
 		return sumPontuacaoEmCaronasOferecidas + sumPontuacaoEmCaronasPegas;
 	}
+
+	/**
+	 * Deleta interesse do mapa de interesses
+	 * desse usuario.
+	 * 
+	 * @param idInteresse
+	 */
+	public void deletarInteresse(Integer idInteresse) {
+		this.mapIdInteresse.remove(idInteresse);
+	}
 }
