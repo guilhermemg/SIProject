@@ -88,7 +88,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param idCarona
 	 * @return carona
 	 */
-	public abstract String getCarona(Integer idCarona);
+	public abstract List<String> getCarona(Integer idCarona);
 
 	/**
 	 * Encerra sessao aberta.
@@ -424,4 +424,10 @@ public interface EstradaSolidariaService extends RemoteService {
 	public abstract List<String[]> getSolicitacoes(Integer idSessao, Integer idCarona) throws GWTException;
 
 	public abstract List<GWTInteresse> getInteresses(Integer idSessao);
+	
+	public abstract List<String> pesquisaUsuariosNoSistema(String nome);
+
+	public abstract List<String> getUsuarioNoSistema(Integer idUsuario);
+
+	void deletarInteresse(Integer idSessao, Integer idInteresse);
 }

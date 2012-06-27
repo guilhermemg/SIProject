@@ -3,17 +3,22 @@ package estradasolidaria.ui.client;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.gwt.cell.client.CheckboxCell;
+import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.DataGrid;
+import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.cellview.client.DataGrid;
-import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.ProvidesKey;
+import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.widget.client.TextButton;
 
 public class StateMeusInteresses extends AbsolutePanel {
@@ -26,6 +31,16 @@ public class StateMeusInteresses extends AbsolutePanel {
 	private DataGrid<GWTInteresse> dataGrid;
 
 	private StateMeusInteresses referenciaThis;
+
+	private Column<GWTInteresse, Boolean> checkBoxcolumn;
+
+	private SelectionModel<GWTInteresse> selectionModel;
+
+	private TextButton txtbtnDeletar;
+
+	protected Integer idInteresseEscolhido;
+
+	private AbsolutePanel absolutePanel_1;
 	
 	public StateMeusInteresses(final EstradaSolidaria estrada, final EstradaSolidariaServiceAsync estradaSolidariaService) {
 		referenciaThis = this;
@@ -34,7 +49,7 @@ public class StateMeusInteresses extends AbsolutePanel {
 		setTitle("Interresses");
 		listaDeInteresses = new LinkedList<GWTInteresse>();
 		
-		AbsolutePanel absolutePanel_1 = new AbsolutePanel();
+		absolutePanel_1 = new AbsolutePanel();
 		add(absolutePanel_1);
 		absolutePanel_1.setSize("100%", "");
 		
@@ -54,6 +69,36 @@ public class StateMeusInteresses extends AbsolutePanel {
 		dataGrid = new DataGrid<GWTInteresse>();
 		absolutePanel.add(dataGrid, 0, 0);
 		dataGrid.setSize("100%", "100%");
+		selectionModel = new MultiSelectionModel<GWTInteresse>(
+				new ProvidesKey<GWTInteresse>() {
+					@Override
+					public Object getKey(GWTInteresse item) {
+						return item;
+					}
+				});
+
+		dataGrid.setSelectionModel(selectionModel);
+		
+		checkBoxcolumn = new Column<GWTInteresse, Boolean>(new CheckboxCell()) {
+			@Override
+			public Boolean getValue(GWTInteresse interesse) {
+				return selectionModel.isSelected(interesse);
+			}
+		};
+		checkBoxcolumn.setFieldUpdater(new FieldUpdater<GWTInteresse, Boolean>() {
+			
+			@Override
+			public void update(int index, GWTInteresse interesse, Boolean value) {
+				if (value) {
+					idInteresseEscolhido = Integer.parseInt(interesse.getIdInteresse());					
+				} else {
+					idInteresseEscolhido = null;
+				}
+			}
+		});
+		checkBoxcolumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
+		dataGrid.addColumn(checkBoxcolumn);
+		dataGrid.setColumnWidth(checkBoxcolumn, "40px");
 		
 		TextColumn<GWTInteresse> columnOrigem = new TextColumn<GWTInteresse>() {
 			@Override
@@ -97,15 +142,39 @@ public class StateMeusInteresses extends AbsolutePanel {
 		dataGrid.addColumn(columnHoraFim, "Hora-Fim");
 		absolutePanel_1.add(btnAdicionar);
 		
-		TextButton txtbtnDeletar = new TextButton("Deletar");
+		txtbtnDeletar = new TextButton("Deletar");
 		txtbtnDeletar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				//TODO fazer onClick de deletar interesse
+				if (idInteresseEscolhido == null) {
+					Window.alert("Escolha um interesse a ser removido!");					
+				} else {
+					deletarInteresse();
+				}
 			}
 		});
 		absolutePanel_1.add(txtbtnDeletar, 88, 0);
 		
 		colocarInteressesNoGrid();
+	}
+
+	private void deletarInteresse() {
+		Integer idSessao = EstradaSolidaria.getIdSessaoAberta();
+		estradaSolidariaService.deletarInteresse(idSessao, idInteresseEscolhido, new AsyncCallback<Void>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Remote Procedure Call - Failure: "
+						+ caught.getMessage());
+				
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				colocarInteressesNoGrid();
+				Window.alert("Interesse Removido!");
+			}
+		});
+		
 	}
 
 	protected void colocarInteressesNoGrid() {
@@ -121,7 +190,6 @@ public class StateMeusInteresses extends AbsolutePanel {
 			@Override
 			public void onSuccess(List<GWTInteresse> result) {
 				listaDeInteresses = result;
-				System.out.println("size: " + result.size());
 				dataGrid.setRowCount(listaDeInteresses.size(), true);
 				dataGrid.setRowData(listaDeInteresses);
 				

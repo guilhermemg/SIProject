@@ -333,10 +333,10 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	}
 
 	/**
-	 * Retorna string com detalhes da carona.
+	 * Retorna uma carona.
 	 * 
 	 * @param idCarona
-	 * @return toString da carona
+	 * @return Carona
 	 */
 	public Carona getCarona(Integer idCarona) {
 		Carona c = this.mapIdCaronasOferecidas.get(idCarona);

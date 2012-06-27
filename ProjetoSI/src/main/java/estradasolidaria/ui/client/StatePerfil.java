@@ -1,5 +1,7 @@
 package estradasolidaria.ui.client;
 
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -7,6 +9,7 @@ import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -16,14 +19,12 @@ import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.MenuItemSeparator;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DatePicker;
 import com.google.gwt.widget.client.TextButton;
 
 import estradasolidaria.ui.resources.Resources;
-import com.google.gwt.user.datepicker.client.DateBox;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.NumberLabel;
 
 public class StatePerfil extends Composite {
 	
@@ -120,12 +121,17 @@ public class StatePerfil extends Composite {
 		headerPanel.add(photoPerfil, 23, 10);
 		photoPerfil.setSize("126px", "132px");
 		
-		TextBox txtbxPesquisarPorUsurio = new TextBox();
+		final TextBox txtbxPesquisarPorUsurio = new TextBox();
 		txtbxPesquisarPorUsurio.setText("Pesquisar por usuário");
 		headerPanel.add(txtbxPesquisarPorUsurio, 583, 10);
 		txtbxPesquisarPorUsurio.setSize("286px", "13px");
 		
 		TextButton txtbtnOk = new TextButton("OK");
+		txtbtnOk.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				pesquisarUsuarioGUI(txtbxPesquisarPorUsurio.getText());
+			}
+		});
 		headerPanel.add(txtbtnOk, 876, 10);
 		txtbtnOk.setSize("37px", "28px");
 		
@@ -259,6 +265,27 @@ public class StatePerfil extends Composite {
 				meusInteressesGUI();
 			}
 		});
+	}
+
+	protected void pesquisarUsuarioGUI(String text) {
+		estradaSolidariaService.pesquisaUsuariosNoSistema(text, new AsyncCallback<List<String>>(){ 
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert(caught.getMessage()); 
+			}
+
+			@Override
+			public void onSuccess(List<String> result) {
+				scrollPanel.clear();
+				bodyPanel.clear();
+				scrollPanel.setVisible(false);
+				Widget pesquisarCarona = new StateUsuariosEncontrados(estrada, estradaSolidariaService, result);
+				bodyPanel.add(pesquisarCarona);
+				bodyPanel.setVisible(true);
+				pesquisarCarona.setSize("100%", "100%");
+			}
+		  });
+		
 	}
 
 	protected void inicio() {

@@ -221,7 +221,7 @@ public class EstradaSolidariaController implements Serializable {
 	}
 
 	/**
-	 * Retorna a carona resumida oferecida pelo usuario que a registrou.
+	 * Retorna a carona oferecida pelo usuario que a registrou.
 	 * 
 	 * @param idCarona
 	 * @return string com dados da carona
@@ -1480,5 +1480,23 @@ public class EstradaSolidariaController implements Serializable {
 		Collections.sort(listaUsuarios);
 		
 		return listaUsuarios;
+	}
+	
+	/**
+	 * Retorna lista de usuarios de acordo com nome de usuario fornecido
+	 * para busca.
+	 * @param nome
+	 * @return lista de usuarios
+	 */
+	public List<Usuario> pesquisaUsuariosNoSistema(String nome){
+		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+		List<Usuario> result = new SpecialLinkedListBrackets<Usuario>();
+		while(iteratorIdUsuario.hasNext()) {
+			Usuario u = iteratorIdUsuario.next();
+			if(u.getNome().toLowerCase().contains(nome.toLowerCase())){
+				result.add(u);
+			}
+		}
+		return result;
 	}
 }

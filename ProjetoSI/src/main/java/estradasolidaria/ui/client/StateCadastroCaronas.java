@@ -9,6 +9,7 @@ import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
@@ -19,6 +20,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.widget.client.TextButton;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.FlexTable;
 
 public class StateCadastroCaronas extends Composite {
 
@@ -31,216 +33,170 @@ public class StateCadastroCaronas extends Composite {
 	private Label lblErrohora;
 	private Label lblErrodata;
 	private Label lblErrovagas;
+	private NumberFormat numberFormat;
 
 	public StateCadastroCaronas(EstradaSolidaria estradaSolidaria, EstradaSolidariaServiceAsync estradaSolidariaService) {
 		this.estrada = estradaSolidaria;
 		this.estradaSolidariaService = estradaSolidariaService;
-		
+		numberFormat = NumberFormat.getFormat("00");
 		
 		AbsolutePanel absPanelCadastroCarona = new AbsolutePanel();
 		initWidget(absPanelCadastroCarona);
-		absPanelCadastroCarona.setSize("413px", "334px");
+		absPanelCadastroCarona.setSize("322px", "277px");
 		
 		Label lblCadastreUmaN = new Label("Cadastre uma nova carona");
 		lblCadastreUmaN.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		lblCadastreUmaN.setStyleName("gwt-LabelEstradaSolidaria9");
-		absPanelCadastroCarona.add(lblCadastreUmaN, 83, 34);
+		absPanelCadastroCarona.add(lblCadastreUmaN, 38, 0);
 		lblCadastreUmaN.setSize("209px", "16px");
 		DateTimeFormat dateFormat = DateTimeFormat.getFormat("dd/MM/yyyy");
 		
 		TextButton btnEnviar = new TextButton("Enviar");
 
-		absPanelCadastroCarona.add(btnEnviar, 215, 275);
+		absPanelCadastroCarona.add(btnEnviar, 204, 219);
 		btnEnviar.setSize("77px", "40px");
 		
 		lblMensagemDeErro = new Label("Campo(s) origatório(s)");
 		lblMensagemDeErro.setStyleName("gwt-LabelEstradaSolidaria5");
-		absPanelCadastroCarona.add(lblMensagemDeErro, 164, 253);
+		absPanelCadastroCarona.add(lblMensagemDeErro, 21, 219);
 		lblMensagemDeErro.setVisible(false);
 		
-		AbsolutePanel absolutePanel = new AbsolutePanel();
-		absPanelCadastroCarona.add(absolutePanel, 83, 73);
-		absolutePanel.setSize("242px", "174px");
+		FlexTable flexTable = new FlexTable();
+		absPanelCadastroCarona.add(flexTable, 21, 22);
+		flexTable.setSize("271px", "187px");
 		
 		Label lblOrigem = new Label("Origem:");
-		absolutePanel.add(lblOrigem, 2, 10);
+		flexTable.setWidget(0, 0, lblOrigem);
 		lblOrigem.setStyleName("gwt-LabelEstradaSolidaria4");
 		
-		Label lblDestino = new Label("Destino:");
-		absolutePanel.add(lblDestino, 0, 43);
-		lblDestino.setStyleName("gwt-LabelEstradaSolidaria4");
-		
-		Label lblHora = new Label("Hora:");
-		absolutePanel.add(lblHora, 2, 77);
-		lblHora.setStyleName("gwt-LabelEstradaSolidaria4");
-		
-		Label lblData = new Label("Data:");
-		absolutePanel.add(lblData, 2, 109);
-		lblData.setStyleName("gwt-LabelEstradaSolidaria4");
-		
-		Label lblVagas = new Label("Vagas:");
-		absolutePanel.add(lblVagas, 2, 143);
-		lblVagas.setStyleName("gwt-LabelEstradaSolidaria4");
+		FlexTable flexTable_2 = new FlexTable();
+		flexTable.setWidget(0, 1, flexTable_2);
+		flexTable_2.setSize("100%", "100%");
 		
 		final TextBox textBoxOrigem = new TextBox();
+		flexTable_2.setWidget(0, 0, textBoxOrigem);
+		textBoxOrigem.setSize("184px", "100%");
+		
+		lblErroorige = new Label("*");
+		flexTable_2.setWidget(0, 1, lblErroorige);
+		lblErroorige.setStyleName("gwt-LabelEstradaSolidaria6");
+		lblErroorige.setVisible(false);
 		textBoxOrigem.addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent event) {
 				lblErroorige.setVisible(false);
 				lblMensagemDeErro.setVisible(false);
 			}
 		});
-		absolutePanel.add(textBoxOrigem, 52, -2);
+		
+		Label lblDestino = new Label("Destino:");
+		flexTable.setWidget(1, 0, lblDestino);
+		lblDestino.setStyleName("gwt-LabelEstradaSolidaria4");
+		
+		FlexTable flexTable_3 = new FlexTable();
+		flexTable.setWidget(1, 1, flexTable_3);
+		flexTable_3.setSize("100%", "100%");
 		
 		final TextBox textBoxDestino = new TextBox();
+		flexTable_3.setWidget(0, 0, textBoxDestino);
+		textBoxDestino.setSize("184px", "100%");
+		
+		lblErrodestino = new Label("*");
+		flexTable_3.setWidget(0, 1, lblErrodestino);
+		lblErrodestino.setStyleName("gwt-LabelEstradaSolidaria6");
+		lblErrodestino.setSize("100%", "100%");
+		lblErrodestino.setVisible(false);
 		textBoxDestino.addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent event) {
 				lblErrodestino.setVisible(false);
 				lblMensagemDeErro.setVisible(false);
 			}
 		});
-		absolutePanel.add(textBoxDestino, 52, 32);
+		
+		Label lblHora = new Label("Hora:");
+		flexTable.setWidget(2, 0, lblHora);
+		lblHora.setStyleName("gwt-LabelEstradaSolidaria4");
+		
+		FlexTable flexTable_1 = new FlexTable();
+		flexTable.setWidget(2, 1, flexTable_1);
+		flexTable_1.setSize("100%", "100%");
+		
+		final ListBox comboBoxHora = new ListBox();
+		for (int i = 0; i <= 23; i++) {
+			comboBoxHora.addItem(numberFormat.format(i));
+		}
+		flexTable_1.setWidget(0, 0, comboBoxHora);
+		comboBoxHora.setSize("100%", "100%");
+		comboBoxHora.setName("horas");
+		
+		final ListBox comboBoxMinutos = new ListBox();
+		for (int i = 0; i <= 59; i++) {
+			comboBoxMinutos.addItem(numberFormat.format(i));
+		}
+		
+		Label lblH = new Label("h");
+		flexTable_1.setWidget(0, 1, lblH);
+		flexTable_1.setWidget(0, 2, comboBoxMinutos);
+		comboBoxMinutos.setSize("100%", "100%");
+		comboBoxMinutos.setName("minutos");
+		
+		Label lblMin = new Label("min");
+		flexTable_1.setWidget(0, 3, lblMin);
+		
+		lblErrohora = new Label("*");
+		flexTable_1.setWidget(0, 4, lblErrohora);
+		lblErrohora.setSize("100%", "100%");
+		lblErrohora.setStyleName("gwt-LabelEstradaSolidaria6");
+		lblErrohora.setVisible(false);
+		
+		Label lblData = new Label("Data:");
+		flexTable.setWidget(3, 0, lblData);
+		lblData.setSize("54px", "17px");
+		lblData.setStyleName("gwt-LabelEstradaSolidaria4");
+		
+		FlexTable flexTable_4 = new FlexTable();
+		flexTable.setWidget(3, 1, flexTable_4);
+		flexTable_4.setSize("100%", "100%");
 		
 		final DateBox dateBox = new DateBox();
+		flexTable_4.setWidget(0, 0, dateBox);
+		dateBox.setSize("184px", "100%");
 		dateBox.addValueChangeHandler(new ValueChangeHandler<Date>() {
 			public void onValueChange(ValueChangeEvent<Date> event) {
 				lblErrodata.setVisible(false);
 				lblMensagemDeErro.setVisible(false);
 			}
 		});
-		absolutePanel.add(dateBox, 52, 99);
 		dateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
 		
+		lblErrodata = new Label("*");
+		flexTable_4.setWidget(0, 1, lblErrodata);
+		lblErrodata.setSize("100%", "100%");
+		lblErrodata.setStyleName("gwt-LabelEstradaSolidaria6");
+		lblErrodata.setVisible(false);
+		
+		Label lblVagas = new Label("Vagas:");
+		flexTable.setWidget(4, 0, lblVagas);
+		lblVagas.setStyleName("gwt-LabelEstradaSolidaria4");
+		
+		FlexTable flexTable_5 = new FlexTable();
+		flexTable.setWidget(4, 1, flexTable_5);
+		flexTable_5.setSize("100%", "100%");
+		
 		final TextBox textBoxVagas = new TextBox();
+		flexTable_5.setWidget(0, 0, textBoxVagas);
+		textBoxVagas.setSize("184px", "100%");
+		
+		lblErrovagas = new Label("*");
+		flexTable_5.setWidget(0, 1, lblErrovagas);
+		lblErrovagas.setSize("5px", "16px");
+		lblErrovagas.setStyleName("gwt-LabelEstradaSolidaria6");
+		lblErrovagas.setVisible(false);
 		textBoxVagas.addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent event) {
 				lblErrovagas.setVisible(false);
 				lblMensagemDeErro.setVisible(false);
 			}
 		});
-		absolutePanel.add(textBoxVagas, 52, 131);
-		
-		lblErroorige = new Label("*");
-		absolutePanel.add(lblErroorige, 227, -2);
-		lblErroorige.setStyleName("gwt-LabelEstradaSolidaria6");
-		
-		lblErrodestino = new Label("*");
-		absolutePanel.add(lblErrodestino, 227, 32);
-		lblErrodestino.setStyleName("gwt-LabelEstradaSolidaria6");
-		lblErrodestino.setSize("9px", "16px");
-		
-		lblErrodata = new Label("*");
-		absolutePanel.add(lblErrodata, 227, 99);
-		lblErrodata.setSize("5px", "16px");
-		lblErrodata.setStyleName("gwt-LabelEstradaSolidaria6");
-		
-		lblErrovagas = new Label("*");
-		absolutePanel.add(lblErrovagas, 227, 131);
-		lblErrovagas.setSize("5px", "16px");
-		lblErrovagas.setStyleName("gwt-LabelEstradaSolidaria6");
-		
-		lblErrohora = new Label("*");
-		absolutePanel.add(lblErrohora, 227, 64);
-		lblErrohora.setSize("15px", "16px");
-		lblErrohora.setStyleName("gwt-LabelEstradaSolidaria6");
-		
-		final ListBox comboBoxHora = new ListBox();
-		comboBoxHora.addItem("00");
-		comboBoxHora.addItem("01");
-		comboBoxHora.addItem("02");
-		comboBoxHora.addItem("03");
-		comboBoxHora.addItem("04");
-		comboBoxHora.addItem("05");
-		comboBoxHora.addItem("06");
-		comboBoxHora.addItem("07");
-		comboBoxHora.addItem("08");
-		comboBoxHora.addItem("09");
-		comboBoxHora.addItem("10");
-		comboBoxHora.addItem("11");
-		comboBoxHora.addItem("12");
-		comboBoxHora.addItem("13");
-		comboBoxHora.addItem("14");
-		comboBoxHora.addItem("15");
-		comboBoxHora.addItem("16");
-		comboBoxHora.addItem("17");
-		comboBoxHora.addItem("18");
-		comboBoxHora.addItem("19");
-		comboBoxHora.addItem("20");
-		comboBoxHora.addItem("21");
-		comboBoxHora.addItem("22");
-		comboBoxHora.addItem("23");
-		comboBoxHora.setName("horas");
-		absolutePanel.add(comboBoxHora, 62, 66);
-		
-		final ListBox comboBoxMinutos = new ListBox();
-		comboBoxMinutos.addItem("00");
-		comboBoxMinutos.addItem("01");
-		comboBoxMinutos.addItem("02");
-		comboBoxMinutos.addItem("03");
-		comboBoxMinutos.addItem("04");
-		comboBoxMinutos.addItem("05");
-		comboBoxMinutos.addItem("06");
-		comboBoxMinutos.addItem("07");
-		comboBoxMinutos.addItem("08");
-		comboBoxMinutos.addItem("09");
-		comboBoxMinutos.addItem("10");
-		comboBoxMinutos.addItem("11");
-		comboBoxMinutos.addItem("12");
-		comboBoxMinutos.addItem("13");
-		comboBoxMinutos.addItem("14");
-		comboBoxMinutos.addItem("15");
-		comboBoxMinutos.addItem("16");
-		comboBoxMinutos.addItem("17");
-		comboBoxMinutos.addItem("18");
-		comboBoxMinutos.addItem("19");
-		comboBoxMinutos.addItem("20");
-		comboBoxMinutos.addItem("21");
-		comboBoxMinutos.addItem("22");
-		comboBoxMinutos.addItem("23");
-		comboBoxMinutos.addItem("24");
-		comboBoxMinutos.addItem("25");
-		comboBoxMinutos.addItem("26");
-		comboBoxMinutos.addItem("27");
-		comboBoxMinutos.addItem("28");
-		comboBoxMinutos.addItem("29");
-		comboBoxMinutos.addItem("30");
-		comboBoxMinutos.addItem("31");
-		comboBoxMinutos.addItem("32");
-		comboBoxMinutos.addItem("33");
-		comboBoxMinutos.addItem("34");
-		comboBoxMinutos.addItem("35");
-		comboBoxMinutos.addItem("36");
-		comboBoxMinutos.addItem("37");
-		comboBoxMinutos.addItem("38");
-		comboBoxMinutos.addItem("39");
-		comboBoxMinutos.addItem("40");
-		comboBoxMinutos.addItem("41");
-		comboBoxMinutos.addItem("42");
-		comboBoxMinutos.addItem("43");
-		comboBoxMinutos.addItem("44");
-		comboBoxMinutos.addItem("45");
-		comboBoxMinutos.addItem("46");
-		comboBoxMinutos.addItem("47");
-		comboBoxMinutos.addItem("48");
-		comboBoxMinutos.addItem("49");
-		comboBoxMinutos.addItem("50");
-		comboBoxMinutos.addItem("51");
-		comboBoxMinutos.addItem("52");
-		comboBoxMinutos.addItem("53");
-		comboBoxMinutos.addItem("54");
-		comboBoxMinutos.addItem("55");
-		comboBoxMinutos.addItem("56");
-		comboBoxMinutos.addItem("57");
-		comboBoxMinutos.addItem("58");
-		comboBoxMinutos.addItem("59");
-		comboBoxMinutos.addItem("");
-		comboBoxMinutos.addItem("");
-		comboBoxMinutos.setName("minutos");
-		absolutePanel.add(comboBoxMinutos, 124, 67);
-		lblErrohora.setVisible(false);
-		lblErrovagas.setVisible(false);
-		lblErrodata.setVisible(false);
-		lblErrodestino.setVisible(false);
-		lblErroorige.setVisible(false);
 		
 		btnEnviar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {

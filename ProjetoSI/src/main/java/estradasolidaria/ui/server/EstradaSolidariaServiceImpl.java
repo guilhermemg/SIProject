@@ -99,9 +99,30 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public String getCarona(Integer idCarona) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<String> getCarona(Integer idCarona) {
+		Carona c = controller.getCarona(idCarona);
+		List<String> dadosCarona = new LinkedList<String>();
+		dadosCarona.add(c.getIdCarona().toString());
+		dadosCarona.add(c.getIdDonoDaCarona().toString());
+		dadosCarona.add(c.getCidade());
+		dadosCarona.add(c.getOrigem());
+		dadosCarona.add(c.getDestino());
+		dadosCarona.add(c.getPontoEncontro());
+//		dadosCarona.add(c.getPosicaoNaInsercaoNoSistema());
+//		dadosCarona.add(c.getCaroneiroReviewDono(idDonoDaCarona));
+//		dadosCarona.add(c.getDonoReviewCaroneiro(idCaroneiro));
+		dadosCarona.add(c.getMinimoCaroneiros().toString());
+		dadosCarona.add(c.getVagas().toString());
+		dadosCarona.add(c.getData().toString());
+		dadosCarona.add(c.getHora().toString());
+//		dadosCarona.add(c.getEmailTo());
+//		dadosCarona.add(c.getExpired());
+//		dadosCarona.add(c.getMapDonoReviewCaroneiro());
+//		dadosCarona.add(c.getMapIdSolicitacao());
+//		dadosCarona.add(c.getMapSugestoesPontoDeEncontro());
+//		dadosCarona.add(c.getPontosSugeridos());
+//		dadosCarona.add(c.getTrajeto());
+		return dadosCarona;
 	}
 
 	@Override
@@ -497,6 +518,34 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 			result.add(gwt_i);
 		}
 		return result;
+	}
+	
+	@Override
+	public List<String> pesquisaUsuariosNoSistema(String nome){
+		List<Usuario> listaDeUsuarios = controller.pesquisaUsuariosNoSistema(nome);
+		List<String> resultado = new LinkedList<String>();
+		for(Usuario u : listaDeUsuarios){
+			resultado.add(u.getNome());
+		}
+		return resultado;
+	}
+	
+	@Override
+	public List<String> getUsuarioNoSistema(Integer idUsuario){
+		Usuario u = controller.getUsuarioAPartirDeIDUsuario(idUsuario);
+		List<String> dadosUsuario = new LinkedList<String>();
+		dadosUsuario.add(u.getNome());
+		dadosUsuario.add(u.getLogin());
+		dadosUsuario.add(u.getEmail());
+		dadosUsuario.add(u.getEndereco());
+		return dadosUsuario;
+	}
+
+	@Override
+	public void deletarInteresse(Integer idSessao, Integer idInteresse) {
+		Usuario u = controller.getUsuarioAPartirDeIDSessao(idSessao);
+		u.getMapIdInteresses().remove(idInteresse);
+		
 	}
 	
 }
