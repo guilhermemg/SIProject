@@ -24,7 +24,7 @@ import estradasolidaria.ui.server.util.SenderMail;
  * @author Italo Silva
  * 
  */
-public class Usuario implements Serializable {
+public class Usuario implements Serializable, Comparable<Usuario> {
 	private static final long serialVersionUID = -3288136633613252896L;
 	
 	private Integer idUsuario;
@@ -42,7 +42,7 @@ public class Usuario implements Serializable {
 
 	// contem dados temporarios (at� a carona acontecer de fato)
 	private Map<Integer, Carona> mapIdCaronasPegas = new TreeMap<Integer, Carona>();
-	private Iterator<Carona> iteratorCaronasPegas = this.mapIdCaronasPegas
+	private Iterator<Carona> iteratorIdCaronasPegas = this.mapIdCaronasPegas
 			.values().iterator();
 
 	private Map<Integer, Interesse> mapIdInteresse = new TreeMap<Integer, Interesse>();
@@ -615,9 +615,9 @@ public class Usuario implements Serializable {
 	public Integer getPresencasEmVagasDeCaronas() {
 		int sum = 0;
 		// Iterator Pattern
-		iteratorCaronasPegas = this.mapIdCaronasPegas.values().iterator();
-		while (iteratorCaronasPegas.hasNext()) {
-			Carona c = iteratorCaronasPegas.next();
+		iteratorIdCaronasPegas = this.mapIdCaronasPegas.values().iterator();
+		while (iteratorIdCaronasPegas.hasNext()) {
+			Carona c = iteratorIdCaronasPegas.next();
 			Iterator<EnumCaronaReview> it = c.getMapDonoReviewCaroneiro()
 					.values().iterator();
 			while (it.hasNext()) {
@@ -639,9 +639,9 @@ public class Usuario implements Serializable {
 		int sum = 0;
 
 		// Iterator Pattern
-		iteratorCaronasPegas = this.mapIdCaronasPegas.values().iterator();
-		while (iteratorCaronasPegas.hasNext()) {
-			Carona c = iteratorCaronasPegas.next();
+		iteratorIdCaronasPegas = this.mapIdCaronasPegas.values().iterator();
+		while (iteratorIdCaronasPegas.hasNext()) {
+			Carona c = iteratorIdCaronasPegas.next();
 			Iterator<EnumCaronaReview> it = c.getMapDonoReviewCaroneiro()
 					.values().iterator();
 			while (it.hasNext()) {
@@ -1161,5 +1161,34 @@ public class Usuario implements Serializable {
 					minimoCaroneiros, posicaoNaInsercao); 
 			this.mapIdCaronasOferecidas.put(caronaRelampago.getIdCarona(), caronaRelampago);
 		return caronaRelampago;
+	}
+
+	@Override
+	public int compareTo(Usuario other) {
+		return this.getPontuacao() - other.getPontuacao();
+	}
+	
+	/**
+	 * Retorna pontuacao obtida
+	 * pelo usuario de acordo com os reviews
+	 * que ele recebeu pelas caronas que ele
+	 * deu e nas quais ele foi.
+	 * 
+	 * @return pontuacao
+	 */
+	public int getPontuacao() {
+		int sumPontuacaoEmCaronasPegas = 0;
+		iteratorIdCaronasPegas = this.mapIdCaronasPegas.values().iterator();
+		while(iteratorIdCaronasPegas.hasNext()) {
+			Carona caronaPega = iteratorIdCaronasPegas.next();
+			sumPontuacaoEmCaronasPegas += caronaPega.getDonoReviewCaroneiro(this.getIdUsuario());
+		}
+		int sumPontuacaoEmCaronasOferecidas = 0;
+		iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas.values().iterator();
+		while(iteratorIdCaronasOferecidas.hasNext()) {
+			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
+			sumPontuacaoEmCaronasOferecidas += caronaOferecida.getCaroneiroReviewDono(this.getIdUsuario());
+		}
+		return sumPontuacaoEmCaronasOferecidas + sumPontuacaoEmCaronasPegas;
 	}
 }

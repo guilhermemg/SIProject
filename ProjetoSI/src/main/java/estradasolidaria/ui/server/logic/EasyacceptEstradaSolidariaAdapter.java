@@ -1253,36 +1253,4 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#listarCaroneirosProximos(java.lang.Integer)
-	 */
-	@Override
-	public Integer listarCaroneirosProximos(String idSessao) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getListaID()
-	 */
-	@Override
-	public List<Usuario> getListaID() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getRankingUsuarios(java.lang.String)
-	 */
-	@Override
-	public List<Usuario> getRankingUsuarios(String ordem) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
 }

@@ -12,6 +12,7 @@ import javax.mail.MessagingException;
 
 import estradasolidaria.ui.server.adder.Adder;
 import estradasolidaria.ui.server.data.GerenciadorDeDados;
+import estradasolidaria.ui.server.util.SpecialLinkedListBrackets;
 
 
 /**
@@ -1439,13 +1440,22 @@ public class EstradaSolidariaController implements Serializable {
 	/**
 	 * Retorna lista de usuarios ranqueados segundo
 	 * avaliacoes feitas por outros usuario e registradas
-	 * no sistema.
+	 * no sistema e que estao com sessao aberta atualmente.
 	 * 
 	 * @param ordem
 	 * @return lista de usuarios
 	 */
 	public List<Usuario> getRankingUsuarios(String ordem) {
-		//TODO
-		return null;
+		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+		List<Usuario> listaUsuarios = new SpecialLinkedListBrackets<Usuario>();
+		if(ordem.equals(EnumOrdemParaRanking.CRESCENTE.getOrdem())) {
+			while(iteratorIdUsuario.hasNext()) {
+				Usuario u = iteratorIdUsuario.next();
+				listaUsuarios.add(u);
+			}
+		}
+		Collections.sort(listaUsuarios);
+		
+		return listaUsuarios;
 	}
 }

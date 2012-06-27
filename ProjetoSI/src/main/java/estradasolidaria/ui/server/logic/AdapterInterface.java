@@ -516,34 +516,6 @@ public interface AdapterInterface {
 	public List<Usuario> getUsuariosPreferenciaisCarona(String idCarona);
 	
 	/**
-	 * Retorna id de uma lista de caroneiros que
-	 * estão geograficamente proximos do caroneiro
-	 * identificado por idSessao.
-	 * 
-	 * @param idSessao
-	 * @return id de lista de caroneiros
-	 */
-	public Integer listarCaroneirosProximos(String idSessao);
-	
-	/**
-	 * Retorna lista de caroneiros proximos
-	 * ao usuario.
-	 * 
-	 * @return lista de usuarios
-	 */
-	public List<Usuario> getListaID();
-	
-	/**
-	 * Retorna lista de usuarios ranqueados segundo
-	 * avaliacoes feitas por outros usuario e registradas
-	 * no sistema.
-	 * 
-	 * @param ordem
-	 * @return lista de usuarios
-	 */
-	public List<Usuario> getRankingUsuarios(String ordem);
-	
-	/**
 	 * Cadastra carona relampago no sistema.
 	 * 
 	 * @param idSessao
