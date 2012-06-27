@@ -2,13 +2,14 @@ package estradasolidaria.ui.client;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.widget.client.TextButton;
+import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
 
 public class DialogBoxAlterarSenha extends DialogBox {
 	
@@ -16,6 +17,8 @@ public class DialogBoxAlterarSenha extends DialogBox {
 	private PasswordTextBox textBoxSenha2;
 	private Integer idSessao;
 	private EstradaSolidariaServiceAsync estradaService;
+	private Label lblMensagemdeerro;
+	private Label lblErro;
 
 	public DialogBoxAlterarSenha(EstradaSolidariaServiceAsync estradaSolidariaService) {
 		
@@ -35,18 +38,33 @@ public class DialogBoxAlterarSenha extends DialogBox {
 		absolutePanel.add(lblConfirmeASenh, 10, 53);
 		
 		textBoxSenha = new PasswordTextBox();
+		textBoxSenha.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				lblMensagemdeerro.setVisible(false);
+				lblErro.setVisible(false);
+			}
+		});
 		absolutePanel.add(textBoxSenha, 165, 20);
 		
 		textBoxSenha2 = new PasswordTextBox();
+		textBoxSenha2.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				lblMensagemdeerro.setVisible(false);
+				lblErro.setVisible(false);
+			}
+		});
 		absolutePanel.add(textBoxSenha2, 165, 53);
 		
 		TextButton txtbtnEnviar = new TextButton("Enviar");
 		txtbtnEnviar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				if(!textBoxSenha.getText().equals(textBoxSenha2.getText())){
-					Window.alert("Redigite a senha");
+					lblMensagemdeerro.setText("Redigite a senha");
+					lblMensagemdeerro.setVisible(true);
+					lblErro.setVisible(true);
+				} else {
+					editarSenhaGUI(idSessao, textBoxSenha2.getText());
 				}
-				editarSenhaGUI(idSessao, textBoxSenha2.getText());
 			}
 		});
 		absolutePanel.add(txtbtnEnviar, 181, 105);
@@ -58,6 +76,17 @@ public class DialogBoxAlterarSenha extends DialogBox {
 			}
 		});
 		absolutePanel.add(txtbtnCancelar, 249, 105);
+		
+		lblMensagemdeerro = new Label("MensagemDeErro");
+		lblMensagemdeerro.setStyleName("gwt-LabelEstradaSolidaria5");
+		absolutePanel.add(lblMensagemdeerro, 10, 84);
+		lblMensagemdeerro.setVisible(false);
+		
+		lblErro = new Label("*");
+		lblErro.setStyleName("gwt-LabelEstradaSolidaria5");
+		absolutePanel.add(lblErro, 336, 53);
+		lblErro.setSize("13px", "16px");
+		lblErro.setVisible(false);
 	}
 
 	protected void editarSenhaGUI(Integer idSessao2, String text) {
@@ -65,7 +94,8 @@ public class DialogBoxAlterarSenha extends DialogBox {
 			@Override
 			public void onFailure(Throwable caught) {
 				// Show the RPC error message to the user 
-				Window.alert("Remote Procedure Call - Failure: " + caught.getMessage());
+				lblMensagemdeerro.setText(caught.getMessage());
+				lblMensagemdeerro.setVisible(true);
 			}
 
 			@Override
