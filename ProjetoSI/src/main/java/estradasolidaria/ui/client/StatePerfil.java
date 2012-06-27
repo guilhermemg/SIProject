@@ -157,9 +157,9 @@ public class StatePerfil extends Composite {
 		leftSideBarPanel.add(txtbtnMeusInteresses, 10, 288);
 		txtbtnMeusInteresses.setSize("122px", "56px");
 		
-		TextButton txtbtnCaronas = new TextButton("Caronas");
-		leftSideBarPanel.add(txtbtnCaronas, 10, 150);
-		txtbtnCaronas.setSize("122px", "63px");
+		TextButton txtbtnMinhasCaronas = new TextButton("Minhas Caronas");
+		leftSideBarPanel.add(txtbtnMinhasCaronas, 10, 150);
+		txtbtnMinhasCaronas.setSize("122px", "63px");
 		
 		TextButton txtbtnSugestoes = new TextButton("Sugestões\n");
 		leftSideBarPanel.add(txtbtnSugestoes, 10, 350);
@@ -232,7 +232,7 @@ public class StatePerfil extends Composite {
 			}
 		});
 		
-		txtbtnCaronas.addClickHandler(new ClickHandler() {
+		txtbtnMinhasCaronas.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 			      	caronasGUI();
@@ -320,7 +320,7 @@ public class StatePerfil extends Composite {
 		scrollPanel.clear();
 		bodyPanel.clear();
 		bodyPanel.setVisible(false);
-		Widget minhasCarona= new StateCaronas(estrada, estradaSolidariaService);
+		Widget minhasCarona= new StateMinhasCaronas(estrada, estradaSolidariaService);
 		scrollPanel.add(minhasCarona);
 		scrollPanel.setVisible(true);
 		minhasCarona.setSize("100%", "100%");

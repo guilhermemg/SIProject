@@ -42,8 +42,12 @@ public class Carona implements Comparable<Carona>, Serializable {
 
 	private int posicaoNaInsercaoNoSistema;
 
-	private boolean municipal = false; // muda para true quando uma carona municipal eh cadastrada
 	private String cidade;
+
+	private Integer minimoCaroneiros;
+	private boolean isExpired;
+	private boolean isMunicipal = false; // muda para true quando uma carona municipal eh cadastrada
+	private boolean isPreferencial;
 
 	// as solicitacoes sao apagadas apos aceitas pelo dono da carona
 	private Map<Integer, Solicitacao> mapIdSolicitacoes = new TreeMap<Integer, Solicitacao>();
@@ -62,9 +66,6 @@ public class Carona implements Comparable<Carona>, Serializable {
 	private Map<Integer, EnumCaronaReview> mapDonoReviewCaroneiro = new TreeMap<Integer, EnumCaronaReview>();
 	private Map<Integer, Sugestao> mapSugestoesPontoDeEncontro = new TreeMap<Integer, Sugestao>();
 
-	private Integer minimoCaroneiros;
-	private boolean expired;
-	private boolean isPreferencial;
 
 	// ------------------------------------------------------------------------------------------------------
 
@@ -159,7 +160,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @param expired
 	 */
 	public void setExpired(boolean expired) {
-		this.expired = expired;
+		this.isExpired = expired;
 	}
 	
 	/**
@@ -168,7 +169,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @return estado da carona
 	 */
 	public boolean getExpired() {
-		return this.expired;
+		return this.isExpired;
 	}
 
 	/**
@@ -387,7 +388,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 				* result
 				+ ((mapSugestoesPontoDeEncontro == null) ? 0
 						: mapSugestoesPontoDeEncontro.hashCode());
-		result = prime * result + (municipal ? 1231 : 1237);
+		result = prime * result + (isMunicipal ? 1231 : 1237);
 		result = prime * result + ((origem == null) ? 0 : origem.hashCode());
 		result = prime * result
 				+ ((pontoEncontro == null) ? 0 : pontoEncontro.hashCode());
@@ -459,7 +460,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 		} else if (!mapSugestoesPontoDeEncontro
 				.equals(other.mapSugestoesPontoDeEncontro))
 			return false;
-		if (municipal != other.municipal)
+		if (isMunicipal != other.isMunicipal)
 			return false;
 		if (origem == null) {
 			if (other.origem != null)
@@ -718,7 +719,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @return true: se for municipal, false: se não for municipal
 	 */
 	public boolean isMunicipal() {
-		return municipal;
+		return isMunicipal;
 	}
 
 	/**
@@ -727,7 +728,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @param municipal
 	 */
 	protected void setMunicipal(boolean municipal) {
-		this.municipal = municipal;
+		this.isMunicipal = municipal;
 	}
 
 	/**
