@@ -11,6 +11,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import estradasolidaria.ui.server.logic.CaronaInexistenteException;
 import estradasolidaria.ui.server.logic.CaronaInvalidaException;
 import estradasolidaria.ui.server.logic.TrajetoInexistenteException;
+import estradasolidaria.ui.server.logic.Usuario;
 
 
 /**
@@ -424,4 +425,6 @@ public interface EstradaSolidariaService extends RemoteService {
 	public abstract List<String[]> getSolicitacoes(Integer idSessao, Integer idCarona) throws GWTException;
 
 	public abstract List<GWTInteresse> getInteresses(Integer idSessao);
+	
+	public abstract List<String> pesquisaUsuariosNoSistema(String nome);
 }

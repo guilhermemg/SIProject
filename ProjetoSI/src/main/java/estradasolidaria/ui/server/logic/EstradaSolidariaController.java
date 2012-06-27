@@ -1458,4 +1458,21 @@ public class EstradaSolidariaController implements Serializable {
 		
 		return listaUsuarios;
 	}
+	
+	/**
+	 * Retorna lista de usuarios com nome pesquisado.
+	 * @param nome
+	 * @return lista de usuarios
+	 */
+	public List<Usuario> pesquisaUsuariosNoSistema(String nome){
+		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+		List<Usuario> result = new SpecialLinkedListBrackets<Usuario>();
+		while(iteratorIdUsuario.hasNext()) {
+			Usuario u = iteratorIdUsuario.next();
+			if(u.getNome().toLowerCase().contains(nome.toLowerCase())){
+				result.add(u);
+			}
+		}
+		return result;
+	}
 }

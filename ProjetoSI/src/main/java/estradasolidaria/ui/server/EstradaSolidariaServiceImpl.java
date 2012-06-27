@@ -499,4 +499,14 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		return result;
 	}
 	
+	@Override
+	public List<String> pesquisaUsuariosNoSistema(String nome){
+		List<Usuario> listaDeUsuarios = controller.pesquisaUsuariosNoSistema(nome);
+		List<String> resultado = new LinkedList<String>();
+		for(Usuario u : listaDeUsuarios){
+			resultado.add(u.getNome());
+		}
+		return resultado;
+	}
+	
 }
