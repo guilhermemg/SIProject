@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.mail.MessagingException;
-
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.ibm.icu.text.SimpleDateFormat;
 
@@ -18,11 +16,9 @@ import estradasolidaria.ui.client.GWTInteresse;
 import estradasolidaria.ui.server.adder.Adder;
 import estradasolidaria.ui.server.logic.Carona;
 import estradasolidaria.ui.server.logic.CaronaInexistenteException;
-import estradasolidaria.ui.server.logic.CaronaInvalidaException;
 import estradasolidaria.ui.server.logic.EstradaSolidariaController;
 import estradasolidaria.ui.server.logic.Interesse;
 import estradasolidaria.ui.server.logic.Solicitacao;
-import estradasolidaria.ui.server.logic.TrajetoInexistenteException;
 import estradasolidaria.ui.server.logic.Usuario;
 import estradasolidaria.ui.server.logic.UsuarioInexistenteException;
 
@@ -92,29 +88,33 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public String getTrajeto(Integer idCarona)
-			throws TrajetoInexistenteException {
-		String[] trajetoString = controller.getTrajeto(idCarona);
-		return "De " + trajetoString[0] + " para " + trajetoString[1];
+	public String getTrajeto(Integer idCarona) throws GWTException {
+		try {
+			String[] trajetoString = controller.getTrajeto(idCarona);
+			return "De " + trajetoString[0] + " para " + trajetoString[1];
+		} catch (Exception e) {
+			throw new GWTException(e.getMessage());
+		}
 	}
 
 	@Override
-	public List<String> getCarona(Integer idCarona) {
-		Carona c = controller.getCarona(idCarona);
-		List<String> dadosCarona = new LinkedList<String>();
-		dadosCarona.add(c.getIdCarona().toString());
-		dadosCarona.add(c.getIdDonoDaCarona().toString());
-		dadosCarona.add(c.getCidade());
-		dadosCarona.add(c.getOrigem());
-		dadosCarona.add(c.getDestino());
-		dadosCarona.add(c.getPontoEncontro());
+	public List<String> getCarona(Integer idCarona) throws GWTException {
+		try {
+			Carona c = controller.getCarona(idCarona);
+			List<String> dadosCarona = new LinkedList<String>();
+			dadosCarona.add(c.getIdCarona().toString());
+			dadosCarona.add(c.getIdDonoDaCarona().toString());
+			dadosCarona.add(c.getCidade());
+			dadosCarona.add(c.getOrigem());
+			dadosCarona.add(c.getDestino());
+			dadosCarona.add(c.getPontoEncontro());
 //		dadosCarona.add(c.getPosicaoNaInsercaoNoSistema());
 //		dadosCarona.add(c.getCaroneiroReviewDono(idDonoDaCarona));
 //		dadosCarona.add(c.getDonoReviewCaroneiro(idCaroneiro));
-		dadosCarona.add(c.getMinimoCaroneiros().toString());
-		dadosCarona.add(c.getVagas().toString());
-		dadosCarona.add(c.getData().toString());
-		dadosCarona.add(c.getHora().toString());
+//		dadosCarona.add(c.getMinimoCaroneiros().toString());
+			dadosCarona.add(c.getVagas().toString());
+			dadosCarona.add(c.getData().toString());
+			dadosCarona.add(c.getHora().toString());
 //		dadosCarona.add(c.getEmailTo());
 //		dadosCarona.add(c.getExpired());
 //		dadosCarona.add(c.getMapDonoReviewCaroneiro());
@@ -122,52 +122,58 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 //		dadosCarona.add(c.getMapSugestoesPontoDeEncontro());
 //		dadosCarona.add(c.getPontosSugeridos());
 //		dadosCarona.add(c.getTrajeto());
-		return dadosCarona;
+			return dadosCarona;
+		} catch (Exception e) {
+			throw new GWTException(e.getMessage());
+		}
 	}
 
 	@Override
-	public void encerrarSessao(String login) {
+	public void encerrarSessao(String login) throws GWTException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void zerarSistema() {
+	public void zerarSistema() throws GWTException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void encerrarSistema() {
+	public void encerrarSistema() throws GWTException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void reiniciarSistema() {
+	public void reiniciarSistema() throws GWTException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public String sugerirPontoEncontro(Integer idSessao, Integer idCarona,
-			String pontos) {
+			String pontos) throws GWTException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void responderSugestaoPontoEncontro(Integer idSessao,
-			Integer idCarona, String idSugestao, String pontos) {
+			Integer idCarona, String idSugestao, String pontos) throws GWTException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public String solicitarVagaPontoEncontro(Integer idSessao, Integer idCarona,
-			String ponto) throws CaronaInvalidaException,
-			CaronaInexistenteException {
-		return controller.solicitarVagaPontoEncontro(idSessao, idCarona, ponto).toString();
+			String ponto) throws GWTException {
+		try {
+			return controller.solicitarVagaPontoEncontro(idSessao, idCarona, ponto).toString();
+		} catch (Exception e) {
+			throw new GWTException(e.getMessage());
+		}
 	}
 
 	@Override
@@ -188,14 +194,16 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		} catch (Exception e) {
 			throw new GWTException(e.getMessage());
 		}
-		
 	}
 
 	@Override
-	public String solicitarVaga(Integer idSessao, Integer idCarona)
-			throws CaronaInvalidaException {
-		Solicitacao s = controller.solicitarVaga(idSessao, idCarona);
-		return s.toString();
+	public String solicitarVaga(Integer idSessao, Integer idCarona) throws GWTException {
+		try {
+			Solicitacao s = controller.solicitarVaga(idSessao, idCarona);
+			return s.toString();
+		} catch (Exception e) {
+			throw new GWTException(e.getMessage());
+		}
 	}
 
 	@Override
@@ -207,33 +215,31 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		} catch (Exception e) {
 			throw new GWTException(e.getMessage());
 		}
-		
 	}
 
 	@Override
 	public void desistirRequisicao(Integer idSessao, Integer idCarona,
-			Integer idSolicitacao) throws CaronaInvalidaException {
+			Integer idSolicitacao) throws GWTException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public String visualizarPerfil(Integer idSessao, String login) {
+	public String visualizarPerfil(Integer idSessao, String login) throws GWTException  {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void reviewVagaEmCarona(Integer idSessao, Integer idCarona,
-			String loginCaroneiro, String review)
-			throws CaronaInvalidaException {
+			String loginCaroneiro, String review) throws GWTException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void reviewCarona(Integer idSessao, Integer idCarona, String review)
-			throws CaronaInexistenteException {
+			throws GWTException {
 		// TODO Auto-generated method stub
 		
 	}
@@ -241,309 +247,382 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public String cadastrarCaronaMunicipal(Integer idSessao, String origem,
 			String destino, String cidade, String data, String hora,
-			String vagas) {
+			String vagas) throws GWTException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<String> localizarCaronaMunicipal(Integer idSessao,
-			String cidade, String origem, String destino) {
+			String cidade, String origem, String destino) throws GWTException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<String> localizarCaronaMunicipal(Integer idSessao, String cidade) {
+	public List<String> localizarCaronaMunicipal(Integer idSessao, String cidade) throws GWTException  {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getCaronaUsuario(Integer idSessao, int indexCarona) {
+	public String getCaronaUsuario(Integer idSessao, int indexCarona) throws GWTException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<List<String>> getTodasCaronasUsuario(Integer idSessao) {
-		List<List<String>> result = new LinkedList<List<String>>();
-		List<Carona> listaCaronas = controller.getTodasCaronasUsuario(idSessao);
-		SimpleDateFormat formatterData = new SimpleDateFormat("dd/MM/yyyy");
-		SimpleDateFormat formatterHora = new SimpleDateFormat("HH:mm");
-		
-		for (Carona c : listaCaronas) {
-			List<String> caronaList = new LinkedList<String>();
+	public List<List<String>> getTodasCaronasUsuario(Integer idSessao) throws GWTException {
+		try {
+			List<List<String>> result = new LinkedList<List<String>>();
+			List<Carona> listaCaronas = controller.getTodasCaronasUsuario(idSessao);
+			SimpleDateFormat formatterData = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat formatterHora = new SimpleDateFormat("HH:mm");
 			
-			Usuario donoDaCarona = controller.getMapIdUsuario().get(c.getIdDonoDaCarona());
-			
-			caronaList.add(c.getIdDonoDaCarona().toString());
-			caronaList.add(c.getOrigem());
-			caronaList.add(c.getDestino());
-			caronaList.add(formatterData.format(c.getData().getTime()));
-			caronaList.add(formatterHora.format(c.getHora().getTime()));
-			caronaList.add(c.getVagas().toString());
-			if (c.getPontoEncontro() == null) {
-				caronaList.add(c.getPontoEncontro());
-			}else {
-				caronaList.add(new String(""));
-			}
-			caronaList.add(donoDaCarona.getNome());
-			caronaList.add(c.getIdCarona().toString());
-			
-			result.add(caronaList);
-		}
-		return result;
-	}
-
-	@Override
-	public List<List<String>> getSolicitacoesFeitasConfirmadas(Integer idSessao) {
-		SimpleDateFormat formatterData = new SimpleDateFormat("dd/MM/yyyy");
-		SimpleDateFormat formatterHora = new SimpleDateFormat("HH:mm");
-		List<List<String>> result = new LinkedList<List<String>>();
-		for (Solicitacao s : controller.getMapaSolicitacoesFeitas(idSessao).values()) {
-			if (s.isAceita()) {
-				List<String> solicitacaoList = new LinkedList<String>();
+			for (Carona c : listaCaronas) {
+				List<String> caronaList = new LinkedList<String>();
 				
-				Usuario donoDaCarona = s.getDonoDaCarona();
-				Carona c = donoDaCarona.getMapIdCaronasOferecidas().get(s.getIdCarona());
+				Usuario donoDaCarona = controller.getMapIdUsuario().get(c.getIdDonoDaCarona());
 				
-				solicitacaoList.add(c.getIdDonoDaCarona().toString());
-				solicitacaoList.add(c.getOrigem());
-				solicitacaoList.add(c.getDestino());
-				solicitacaoList.add(formatterData.format(c.getData().getTime()));
-				solicitacaoList.add(formatterHora.format(c.getHora().getTime()));
-				solicitacaoList.add(c.getVagas().toString());
-				if (c.getPontoEncontro() != null) {
-					solicitacaoList.add(c.getPontoEncontro());
+				caronaList.add(c.getIdDonoDaCarona().toString());
+				caronaList.add(c.getOrigem());
+				caronaList.add(c.getDestino());
+				caronaList.add(formatterData.format(c.getData().getTime()));
+				caronaList.add(formatterHora.format(c.getHora().getTime()));
+				caronaList.add(c.getVagas().toString());
+				if (c.getPontoEncontro() == null) {
+					caronaList.add(c.getPontoEncontro());
 				}else {
-					solicitacaoList.add(new String(""));
+					caronaList.add(new String(""));
 				}
-				solicitacaoList.add(donoDaCarona.getNome());
-				solicitacaoList.add(c.getIdCarona().toString());
+				caronaList.add(donoDaCarona.getNome());
+				caronaList.add(c.getIdCarona().toString());
 				
-				result.add(solicitacaoList);
+				result.add(caronaList);
 			}
+			return result;
+			
+		} catch (Exception e) {
+			throw new GWTException(e.getMessage());
 		}
-		return result;
 	}
 
 	@Override
-	public List<List<String>> getSolicitacoesFeitasPendentes(Integer idSessao) throws Exception {
-		SimpleDateFormat formatterData = new SimpleDateFormat("dd/MM/yyyy");
-		SimpleDateFormat formatterHora = new SimpleDateFormat("HH:mm");
-		List<List<String>> result = new LinkedList<List<String>>();
-		for (Solicitacao s : controller.getMapaSolicitacoesFeitas(idSessao).values()) {
-			if (s.isPendente()) {
-				List<String> solicitacaoList = new LinkedList<String>();
-				
-				Usuario donoDaCarona = s.getDonoDaCarona();
-				Carona c = donoDaCarona.getMapIdCaronasOferecidas().get(s.getIdCarona());
-				
-				solicitacaoList.add(c.getIdDonoDaCarona().toString());
-				solicitacaoList.add(c.getOrigem());
-				solicitacaoList.add(c.getDestino());
-				solicitacaoList.add(formatterData.format(c.getData().getTime()));
-				solicitacaoList.add(formatterHora.format(c.getHora().getTime()));
-				solicitacaoList.add(c.getVagas().toString());
-				if (c.getPontoEncontro() != null) {
-					solicitacaoList.add(c.getPontoEncontro());
-				}else {
-					solicitacaoList.add(new String(""));
+	public List<List<String>> getSolicitacoesFeitasConfirmadas(Integer idSessao) throws GWTException {
+		try {
+			SimpleDateFormat formatterData = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat formatterHora = new SimpleDateFormat("HH:mm");
+			List<List<String>> result = new LinkedList<List<String>>();
+			for (Solicitacao s : controller.getMapaSolicitacoesFeitas(idSessao).values()) {
+				if (s.isAceita()) {
+					List<String> solicitacaoList = new LinkedList<String>();
+					
+					Usuario donoDaCarona = s.getDonoDaCarona();
+					Carona c = donoDaCarona.getMapIdCaronasOferecidas().get(s.getIdCarona());
+					
+					solicitacaoList.add(c.getIdDonoDaCarona().toString());
+					solicitacaoList.add(c.getOrigem());
+					solicitacaoList.add(c.getDestino());
+					solicitacaoList.add(formatterData.format(c.getData().getTime()));
+					solicitacaoList.add(formatterHora.format(c.getHora().getTime()));
+					solicitacaoList.add(c.getVagas().toString());
+					if (c.getPontoEncontro() != null) {
+						solicitacaoList.add(c.getPontoEncontro());
+					}else {
+						solicitacaoList.add(new String(""));
+					}
+					solicitacaoList.add(donoDaCarona.getNome());
+					solicitacaoList.add(c.getIdCarona().toString());
+					
+					result.add(solicitacaoList);
 				}
-				solicitacaoList.add(donoDaCarona.getNome());
-				solicitacaoList.add(c.getIdCarona().toString());
-				
-				result.add(solicitacaoList);
 			}
+			return result;
+			
+		} catch (Exception e) {
+			throw new GWTException(e.getMessage());
 		}
-		return result;
+	}
+
+	@Override
+	public List<List<String>> getSolicitacoesFeitasPendentes(Integer idSessao) throws GWTException {
+		try {
+			SimpleDateFormat formatterData = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat formatterHora = new SimpleDateFormat("HH:mm");
+			List<List<String>> result = new LinkedList<List<String>>();
+			for (Solicitacao s : controller.getMapaSolicitacoesFeitas(idSessao).values()) {
+				if (s.isPendente()) {
+					List<String> solicitacaoList = new LinkedList<String>();
+					
+					Usuario donoDaCarona = s.getDonoDaCarona();
+					Carona c = donoDaCarona.getMapIdCaronasOferecidas().get(s.getIdCarona());
+					
+					solicitacaoList.add(c.getIdDonoDaCarona().toString());
+					solicitacaoList.add(c.getOrigem());
+					solicitacaoList.add(c.getDestino());
+					solicitacaoList.add(formatterData.format(c.getData().getTime()));
+					solicitacaoList.add(formatterHora.format(c.getHora().getTime()));
+					solicitacaoList.add(c.getVagas().toString());
+					if (c.getPontoEncontro() != null) {
+						solicitacaoList.add(c.getPontoEncontro());
+					}else {
+						solicitacaoList.add(new String(""));
+					}
+					solicitacaoList.add(donoDaCarona.getNome());
+					solicitacaoList.add(c.getIdCarona().toString());
+					
+					result.add(solicitacaoList);
+				}
+			}
+			return result;
+			
+		} catch (Exception e) {
+			throw new GWTException(e.getMessage());
+		}
 	}
 
 	@Override
 	public String getPontosSugeridos(Integer idSessao, Integer idCarona)
-			throws CaronaInvalidaException {
+			throws GWTException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getPontosEncontro(Integer idSessao, Integer idCarona) {
+	public String getPontosEncontro(Integer idSessao, Integer idCarona) throws GWTException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String cadastrarInteresse(Integer idSessao, String origem,
-			String destino, String data, String horaInicio, String horaFim) {
-		return controller.cadastrarInteresse(idSessao, origem, destino, data, horaInicio, horaFim).toString();
+			String destino, String data, String horaInicio, String horaFim) throws GWTException {
+		try {
+			return controller.cadastrarInteresse(idSessao, origem, destino, data, horaInicio, horaFim).toString();
+		} catch (Exception e) {
+			throw new GWTException(e.getMessage());
+		}
 	}
 
 	@Override
-	public String verificarMensagensPerfil(Integer idSessao) {
+	public String verificarMensagensPerfil(Integer idSessao) throws GWTException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public boolean enviarEmail(Integer idSessao, String destino, String message)
-			throws MessagingException {
+			throws GWTException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public List<List<String>> getTodasCaronasPegas(Integer idSessao) {
-		SimpleDateFormat formatterData = new SimpleDateFormat("dd/MM/yyyy");
-		SimpleDateFormat formatterHora = new SimpleDateFormat("HH:mm");
-		List<List<String>> result = new LinkedList<List<String>>();
-		List<Carona> listaCaronas = controller.getTodasCaronasPegas(idSessao);
-		for (Carona c : listaCaronas) {
-			List<String> caronaList = new LinkedList<String>();
-			
-			Usuario donoDaCarona = controller.getMapIdUsuario().get(c.getIdDonoDaCarona());
-			
-			caronaList.add(c.getIdDonoDaCarona().toString());
-			caronaList.add(c.getOrigem());
-			caronaList.add(c.getDestino());
-			caronaList.add(formatterData.format(c.getData().getTime()));
-			caronaList.add(formatterHora.format(c.getHora().getTime()));
-			caronaList.add(c.getVagas().toString());
-			caronaList.add(c.getPontoEncontro());
-			caronaList.add(donoDaCarona.getNome());
-			
-			result.add(caronaList);
-		}
-		return result;
-	}
-
-	@Override
-	public void editarSenha(Integer idSessaoAberta, String novaSenha) {
-		controller.setSenha(idSessaoAberta, novaSenha);
-		
-	}
-
-	@Override
-	public List<List<String>> getCaroneiros(Integer idSessao, String idCarona) {
-		List<List<String>> result = new LinkedList<List<String>>();
-		Integer idCaronaInt = Integer.parseInt(idCarona);
-		
-		Usuario donoDaCarona = controller.getUsuarioAPartirDeIDSessao(idSessao);
-		Carona c = donoDaCarona.getMapIdCaronasOferecidas().get(idCaronaInt);
-		
-		List<Solicitacao> solicitacoesConfirmadas = controller.getSolicitacoesConfirmadas(idSessao, idCaronaInt);
-		
-		if (solicitacoesConfirmadas.size() > 0) {
-			for (Solicitacao s : solicitacoesConfirmadas) {
-				List<String> infCaroneiro = new LinkedList<String>();
+	public List<List<String>> getTodasCaronasPegas(Integer idSessao) throws GWTException {
+		try {
+			SimpleDateFormat formatterData = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat formatterHora = new SimpleDateFormat("HH:mm");
+			List<List<String>> result = new LinkedList<List<String>>();
+			List<Carona> listaCaronas = controller.getTodasCaronasPegas(idSessao);
+			for (Carona c : listaCaronas) {
+				List<String> caronaList = new LinkedList<String>();
 				
-				Usuario donoSolicitacao = s.getDonoDaSolicitacao();
+				Usuario donoDaCarona = controller.getMapIdUsuario().get(c.getIdDonoDaCarona());
 				
-				infCaroneiro.add(donoSolicitacao.getIdUsuario().toString());
-				infCaroneiro.add(donoSolicitacao.getNome());
-				if (c.getDonoReviewCaroneiro(donoSolicitacao.getIdUsuario()) == 0) {
-					infCaroneiro.add("1");
-				} else {
-					infCaroneiro.add("0");
-				}
-				//Review
+				caronaList.add(c.getIdDonoDaCarona().toString());
+				caronaList.add(c.getOrigem());
+				caronaList.add(c.getDestino());
+				caronaList.add(formatterData.format(c.getData().getTime()));
+				caronaList.add(formatterHora.format(c.getHora().getTime()));
+				caronaList.add(c.getVagas().toString());
+				caronaList.add(c.getPontoEncontro());
+				caronaList.add(donoDaCarona.getNome());
+				
+				result.add(caronaList);
 			}
+			return result;
+		} catch (Exception e) {
+			throw new GWTException(e.getMessage());
 		}
-		
-		return result;
+	}
+
+	@Override
+	public void editarSenha(Integer idSessaoAberta, String novaSenha) throws GWTException {
+		try {
+			controller.setSenha(idSessaoAberta, novaSenha);
+		} catch (Exception e) {
+			throw new GWTException(e.getMessage());
+		}
+	}
+
+	@Override
+	public List<List<String>> getCaroneiros(Integer idSessao, String idCarona) throws GWTException {
+		try {
+			List<List<String>> result = new LinkedList<List<String>>();
+			Integer idCaronaInt = Integer.parseInt(idCarona);
+			
+			Usuario donoDaCarona = controller.getUsuarioAPartirDeIDSessao(idSessao);
+			Carona c = donoDaCarona.getMapIdCaronasOferecidas().get(idCaronaInt);
+			
+			List<Solicitacao> solicitacoesConfirmadas = controller.getSolicitacoesConfirmadas(idSessao, idCaronaInt);
+			
+			if (solicitacoesConfirmadas.size() > 0) {
+				for (Solicitacao s : solicitacoesConfirmadas) {
+					List<String> infCaroneiro = new LinkedList<String>();
+					
+					Usuario donoSolicitacao = s.getDonoDaSolicitacao();
+					
+					infCaroneiro.add(donoSolicitacao.getIdUsuario().toString());
+					infCaroneiro.add(donoSolicitacao.getNome());
+					if (c.getDonoReviewCaroneiro(donoSolicitacao.getIdUsuario()) == 0) {
+						infCaroneiro.add("1");
+					} else {
+						infCaroneiro.add("0");
+					}
+					//Review
+				}
+			}
+			return result;
+		} catch (Exception e) {
+			throw new GWTException(e.getMessage());
+		}
 	}
 	
 	@Override
-	public void editarLogin(Integer idSessaoAberta, String novoLogin) {
-		controller.setLogin(idSessaoAberta, novoLogin);
+	public void editarLogin(Integer idSessaoAberta, String novoLogin) throws GWTException {
+		try {
+			controller.setLogin(idSessaoAberta, novoLogin);
+		} catch (Exception e) {
+			throw new GWTException(e.getMessage());
+		}
 	}
 	
 	@Override
-	public void editarNome(Integer idSessaoAberta, String novoNome) {
-		controller.setNome(idSessaoAberta, novoNome);
+	public void editarNome(Integer idSessaoAberta, String novoNome) throws GWTException {
+		try {
+			controller.setNome(idSessaoAberta, novoNome);
+		} catch (Exception e) {
+			throw new GWTException(e.getMessage());
+		}
 	}
 	
 	@Override
-	public void editarEmail(Integer idSessaoAberta, String novoEmail) {
-		controller.setEmail(idSessaoAberta, novoEmail);
+	public void editarEmail(Integer idSessaoAberta, String novoEmail) throws GWTException {
+		try {
+			controller.setEmail(idSessaoAberta, novoEmail);
+		}
+		catch(Exception e) {
+			throw new GWTException(e.getMessage());
+		}
 	}
 	
 	@Override
-	public void editarEndereco(Integer idSessaoAberta, String novoEndereco) {
-		controller.setEndereco(idSessaoAberta, novoEndereco);
+	public void editarEndereco(Integer idSessaoAberta, String novoEndereco) throws GWTException {
+		try{
+			controller.setEndereco(idSessaoAberta, novoEndereco);
+		}
+		catch(Exception e) {
+			throw new GWTException(e.getMessage());
+		}
 	}
 	
 	
 	@Override
-	public String[] getUsuario(Integer idSessao){
-		Usuario u = controller.getUsuarioAPartirDeIDSessao(idSessao);
-		String[] dadosUsuario = {u.getLogin(), u.getSenha(), u.getNome(), u.getEndereco(), u.getEmail()};
-		return dadosUsuario;
+	public String[] getUsuario(Integer idSessao) throws GWTException{
+		try {
+			Usuario u = controller.getUsuarioAPartirDeIDSessao(idSessao);
+			String[] dadosUsuario = {u.getLogin(), u.getSenha(), u.getNome(), u.getEndereco(), u.getEmail()};
+			return dadosUsuario;
+		} catch (Exception e) {
+			throw new GWTException(e.getMessage());
+		}
 	}
 
 	@Override
 	public List<String[]> getSolicitacoes(Integer idSessao, Integer idCarona) throws GWTException {
-		Usuario donoDaCarona = controller.getUsuarioAPartirDeIDSessao(idSessao);
-		Collection<Solicitacao> solicitacoes = donoDaCarona.getMapIdCaronasOferecidas().get(idCarona).getMapIdSolicitacao().values();
-		List<String[]> result = new LinkedList<String[]>();
-		
-		for (Solicitacao s : solicitacoes) {
-			result.add(new String[] {s.getDonoDaSolicitacao().getIdUsuario().toString(), s.getDonoDaSolicitacao().getNome(), s.getIdSolicitacao().toString()});
+		try{
+			Usuario donoDaCarona = controller.getUsuarioAPartirDeIDSessao(idSessao);
+			Collection<Solicitacao> solicitacoes = donoDaCarona.getMapIdCaronasOferecidas().get(idCarona).getMapIdSolicitacao().values();
+			List<String[]> result = new LinkedList<String[]>();
+			
+			for (Solicitacao s : solicitacoes) {
+				result.add(new String[] {s.getDonoDaSolicitacao().getIdUsuario().toString(), s.getDonoDaSolicitacao().getNome(), s.getIdSolicitacao().toString()});
+			}
+			return result;
+		} catch(Exception e) {
+			throw new GWTException(e.getMessage());
 		}
-		return result;
 	}
 	
 	@Override
-	public List<GWTInteresse> getInteresses(Integer idSessao) {
-		List<GWTInteresse> result = new LinkedList<GWTInteresse>();
-		
-		Usuario u = controller.getUsuarioAPartirDeIDSessao(idSessao);
-		
-		for (Interesse i : u.getMapIdInteresses().values()) {
+	public List<GWTInteresse> getInteresses(Integer idSessao) throws GWTException {
+		try {
+			List<GWTInteresse> result = new LinkedList<GWTInteresse>();
 			
-			GWTInteresse gwt_i = new GWTInteresse();
+			Usuario u = controller.getUsuarioAPartirDeIDSessao(idSessao);
 			
-			Date data = i.getData().getTime();
-			
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-			SimpleDateFormat hourFormat = new SimpleDateFormat("hh:mm");
-			
-			gwt_i.setData(dateFormat.format(data));
-			gwt_i.setDestino(i.getDestino());
-			gwt_i.setHoraInicio(hourFormat.format(i.getHoraInicio().getTime()));
-			gwt_i.setHoraFim(hourFormat.format(i.getHoraFim().getTime()));
-			gwt_i.setIdInteresse(i.getIdInteresse().toString());
-			gwt_i.setOrigem(i.getOrigem());
-			
-			result.add(gwt_i);
+			for (Interesse i : u.getMapIdInteresses().values()) {
+				
+				GWTInteresse gwt_i = new GWTInteresse();
+				
+				Date data = i.getData().getTime();
+				
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+				SimpleDateFormat hourFormat = new SimpleDateFormat("hh:mm");
+				
+				gwt_i.setData(dateFormat.format(data));
+				gwt_i.setDestino(i.getDestino());
+				gwt_i.setHoraInicio(hourFormat.format(i.getHoraInicio().getTime()));
+				gwt_i.setHoraFim(hourFormat.format(i.getHoraFim().getTime()));
+				gwt_i.setIdInteresse(i.getIdInteresse().toString());
+				gwt_i.setOrigem(i.getOrigem());
+				
+				result.add(gwt_i);
+			}
+			return result;
 		}
-		return result;
+		catch(Exception e) {
+			throw new GWTException(e.getMessage());
+		}
 	}
 	
 	@Override
-	public List<String> pesquisaUsuariosNoSistema(String nome){
-		List<Usuario> listaDeUsuarios = controller.pesquisaUsuariosNoSistema(nome);
-		List<String> resultado = new LinkedList<String>();
-		for(Usuario u : listaDeUsuarios){
-			resultado.add(u.getNome());
+	public List<String> pesquisaUsuariosNoSistema(String nome) throws GWTException {
+		try {
+			List<Usuario> listaDeUsuarios = controller.pesquisaUsuariosNoSistema(nome);
+			List<String> resultado = new LinkedList<String>();
+			for(Usuario u : listaDeUsuarios){
+				resultado.add(u.getNome());
+			}
+			return resultado;
 		}
-		return resultado;
+		catch(Exception e) {
+			throw new GWTException(e.getMessage());
+		}
 	}
 	
 	@Override
-	public List<String> getUsuarioNoSistema(Integer idUsuario){
-		Usuario u = controller.getUsuarioAPartirDeIDUsuario(idUsuario);
-		List<String> dadosUsuario = new LinkedList<String>();
-		dadosUsuario.add(u.getNome());
-		dadosUsuario.add(u.getLogin());
-		dadosUsuario.add(u.getEmail());
-		dadosUsuario.add(u.getEndereco());
-		return dadosUsuario;
+	public List<String> getUsuarioNoSistema(Integer idUsuario) throws GWTException{
+		try {
+			Usuario u = controller.getUsuarioAPartirDeIDUsuario(idUsuario);
+			List<String> dadosUsuario = new LinkedList<String>();
+			dadosUsuario.add(u.getNome());
+			dadosUsuario.add(u.getLogin());
+			dadosUsuario.add(u.getEmail());
+			dadosUsuario.add(u.getEndereco());
+			return dadosUsuario;
+		} catch (Exception e) {
+			throw new GWTException(e.getMessage());
+		}
 	}
 
 	@Override
-	public void deletarInteresse(Integer idSessao, Integer idInteresse) {
-		controller.deletarInteresse(idSessao, idInteresse);
+	public void deletarInteresse(Integer idSessao, Integer idInteresse) throws GWTException {
+		try {
+			controller.deletarInteresse(idSessao, idInteresse);
+		} catch (Exception e) {
+			throw new GWTException(e.getMessage());
+		}
 	}
 	
 }

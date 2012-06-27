@@ -80,7 +80,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @throws TrajetoInexistenteException
 	 */
 	public abstract String getTrajeto(Integer idCarona)
-			throws Exception;
+			throws GWTException;
 
 	/**
 	 * Retorna carona.
@@ -88,29 +88,29 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param idCarona
 	 * @return carona
 	 */
-	public abstract List<String> getCarona(Integer idCarona);
+	public abstract List<String> getCarona(Integer idCarona) throws GWTException;
 
 	/**
 	 * Encerra sessao aberta.
 	 * 
 	 * @param login
 	 */
-	public abstract void encerrarSessao(String login);
+	public abstract void encerrarSessao(String login) throws GWTException;
 
 	/**
 	 * Torna null todos os objetos do sistema.
 	 */
-	public abstract void zerarSistema();
+	public abstract void zerarSistema() throws GWTException;
 
 	/**
 	 * Persiste e encerra o sistema.
 	 */
-	public abstract void encerrarSistema();
+	public abstract void encerrarSistema() throws GWTException;
 
 	/**
 	 * Reinicia o sistema com os dados persistidos no encerramento.
 	 */
-	public abstract void reiniciarSistema();
+	public abstract void reiniciarSistema() throws GWTException;
 
 	/**
 	 * Sugere ponto de encontro para uma carona.
@@ -121,7 +121,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @return id da sugestao feita
 	 */
 	public abstract String sugerirPontoEncontro(Integer idSessao,
-			Integer idCarona, String pontos);
+			Integer idCarona, String pontos)  throws GWTException;
 
 	/**
 	 * Responde a uma sugestao feita por outro usuario.
@@ -133,7 +133,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 *            : ponto de encontro escolhido ate o momento para a carona
 	 */
 	public abstract void responderSugestaoPontoEncontro(Integer idSessao,
-			Integer idCarona, String idSugestao, String pontos);
+			Integer idCarona, String idSugestao, String pontos) throws GWTException;
 
 	/**
 	 * Solicita vaga e sugere um ponto de encontro para a carona.
@@ -146,7 +146,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @throws CaronaInexistenteException 
 	 */
 	public abstract String solicitarVagaPontoEncontro(Integer idSessao,
-			Integer idCarona, String ponto) throws Exception;
+			Integer idCarona, String ponto) throws GWTException;
 
 	/**
 	 * Aceita uma solicitacão.
@@ -156,7 +156,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param idSolicitacao
 	 */
 	public abstract void aceitarSolicitacaoPontoEncontro(Integer idSessao,
-			Integer idSolicitacao);
+			Integer idSolicitacao) throws GWTException;
 
 	/**
 	 * Aceita solicitacao
@@ -180,7 +180,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @throws CaronaInvalidaException
 	 */
 	public abstract String solicitarVaga(Integer idSessao, Integer idCarona)
-			throws Exception;
+			throws GWTException;
 
 	/**
 	 * Usuario dono da carona, indicado por idSessao, rejeita solicitacao,
@@ -204,7 +204,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @throws CaronaInvalidaException
 	 */
 	public abstract void desistirRequisicao(Integer idSessao, Integer idCarona,
-			Integer idSolicitacao) throws Exception;
+			Integer idSolicitacao) throws GWTException;
 
 	/**
 	 * Pega usuario associado a sessao indicada por idSessao e pega o perfil
@@ -214,7 +214,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param login
 	 * @return idPerfil
 	 */
-	public abstract String visualizarPerfil(Integer idSessao, String login);
+	public abstract String visualizarPerfil(Integer idSessao, String login)  throws GWTException;
 
 	/**
 	 * Seta o valor do review de vaga em carona: diz se o solicitante
@@ -233,8 +233,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @throws CaronaInvalidaException
 	 */
 	public abstract void reviewVagaEmCarona(Integer idSessao, Integer idCarona,
-			String loginCaroneiro, String review)
-			throws Exception;
+			String loginCaroneiro, String review) throws GWTException;
 
 	/**
 	 * Seta o valor do review da carona, diz se a carona foi boa ou nao. O
@@ -254,7 +253,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 *            : review do caroneiro presente
 	 */
 	public abstract void reviewCarona(Integer idSessao, Integer idCarona,
-			String review) throws Exception;
+			String review) throws GWTException;
 
 	/**
 	 * Cadastra no usuario identificado por idSessao, a carona com os atributos
@@ -268,7 +267,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 */
 	public abstract String cadastrarCaronaMunicipal(Integer idSessao,
 			String origem, String destino, String cidade, String data,
-			String hora, String vagas);
+			String hora, String vagas) throws GWTException;
 
 	/**
 	 * Pesquisa entre as caronas oferecidas por todos os usuarios as que sao
@@ -281,7 +280,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @return lista de ids de caronas localizadas
 	 */
 	public abstract List<String> localizarCaronaMunicipal(Integer idSessao,
-			String cidade, String origem, String destino);
+			String cidade, String origem, String destino) throws GWTException;
 
 	/**
 	 * Pesquisa entre as caronas oferecidas por todos os usuarios as que sao
@@ -293,7 +292,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @return lista de ids de caronas
 	 */
 	public abstract List<String> localizarCaronaMunicipal(Integer idSessao,
-			String cidade);
+			String cidade) throws GWTException;
 
 	/**
 	 * Retorna carona do usuario identificado por idSessao. O indexCarona vai
@@ -304,7 +303,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param indexCarona
 	 * @return carona
 	 */
-	public abstract String getCaronaUsuario(Integer idSessao, int indexCarona);
+	public abstract String getCaronaUsuario(Integer idSessao, int indexCarona) throws GWTException;
 
 	/**
 	 * Retorna todas as caronas cadastradas pelo usuario identificado por
@@ -313,7 +312,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param idSessao
 	 * @return lista de ids de caronas como string
 	 */
-	public abstract List<List<String>> getTodasCaronasUsuario(Integer idSessao);
+	public abstract List<List<String>> getTodasCaronasUsuario(Integer idSessao) throws GWTException;
 
 	/**
 	 * Retorna lista de ids de solicitacoes confirmadas para a carona (idCarona)
@@ -323,7 +322,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param idCarona
 	 * @return lista de ids de solicitacoes confirmadas como string
 	 */
-	public abstract List<List<String>> getSolicitacoesFeitasConfirmadas(Integer idSessao);
+	public abstract List<List<String>> getSolicitacoesFeitasConfirmadas(Integer idSessao) throws GWTException;
 
 	/**
 	 * Retorna lista de solicitacoes pendentes de serem respondidas pelo usuario
@@ -334,7 +333,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @return lista de ids de solicitacoes
 	 * @throws CaronaInvalidaException
 	 */
-	public abstract List<List<String>> getSolicitacoesFeitasPendentes(Integer idSessao) throws Exception;
+	public abstract List<List<String>> getSolicitacoesFeitasPendentes(Integer idSessao) throws GWTException;
 
 	/**
 	 * Retorna string com o ponto sugerido para idCarona. O usuario identificado
@@ -348,7 +347,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @throws CaronaInvalidaException
 	 */
 	public abstract String getPontosSugeridos(Integer idSessao, Integer idCarona)
-			throws Exception;
+			throws GWTException;
 
 	/**
 	 * Retorna ponto de encontro para a carona identificada por idCarona.
@@ -358,7 +357,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param idCarona
 	 * @return string com ponto de encontro
 	 */
-	public abstract String getPontosEncontro(Integer idSessao, Integer idCarona);
+	public abstract String getPontosEncontro(Integer idSessao, Integer idCarona) throws GWTException;
 
 	/**
 	 * Cadastra interesse em determinada carona, mas nao envia solicitacao de
@@ -381,7 +380,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @return idInteresse
 	 */
 	public abstract String cadastrarInteresse(Integer idSessao, String origem,
-			String destino, String data, String horaInicio, String horaFim);
+			String destino, String data, String horaInicio, String horaFim) throws GWTException;
 
 	/**
 	 * Resume as mensagens sobre as caronas sobre as quais o usuario demonstra
@@ -390,7 +389,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param idSessao
 	 * @return mensagens
 	 */
-	public abstract String verificarMensagensPerfil(Integer idSessao);
+	public abstract String verificarMensagensPerfil(Integer idSessao) throws GWTException;
 
 	/**
 	 * Envia email criado automaticamente pelo sistema, a partir de um conjunto
@@ -403,31 +402,31 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @throws MessagingException
 	 */
 	public abstract boolean enviarEmail(Integer idSessao, String destino,
-			String message) throws Exception;
+			String message) throws GWTException;
 
-	public abstract List<List<String>> getTodasCaronasPegas(Integer idSessao);
+	public abstract List<List<String>> getTodasCaronasPegas(Integer idSessao) throws GWTException;
 
-	public abstract void editarSenha(Integer idSessaoAberta, String novaSenha);
+	public abstract void editarSenha(Integer idSessaoAberta, String novaSenha) throws GWTException;
 
-	public abstract List<List<String>> getCaroneiros(Integer idSessao, String idCarona);
+	public abstract List<List<String>> getCaroneiros(Integer idSessao, String idCarona) throws GWTException;
 	
-	public abstract void editarLogin(Integer idSessaoAberta, String novoLogin);
+	public abstract void editarLogin(Integer idSessaoAberta, String novoLogin) throws GWTException;
 
-	public abstract void editarNome(Integer idSessaoAberta, String novoNome);
+	public abstract void editarNome(Integer idSessaoAberta, String novoNome) throws GWTException;
 
-	public abstract void editarEmail(Integer idSessaoAberta, String novoEmail);
+	public abstract void editarEmail(Integer idSessaoAberta, String novoEmail) throws GWTException;
 
-	public abstract void editarEndereco(Integer idSessaoAberta, String novoEndereco);
+	public abstract void editarEndereco(Integer idSessaoAberta, String novoEndereco) throws GWTException;
 	
-	public abstract String[] getUsuario(Integer idSessao);
+	public abstract String[] getUsuario(Integer idSessao) throws GWTException;
 
 	public abstract List<String[]> getSolicitacoes(Integer idSessao, Integer idCarona) throws GWTException;
 
-	public abstract List<GWTInteresse> getInteresses(Integer idSessao);
+	public abstract List<GWTInteresse> getInteresses(Integer idSessao) throws GWTException;
 	
-	public abstract List<String> pesquisaUsuariosNoSistema(String nome);
+	public abstract List<String> pesquisaUsuariosNoSistema(String nome) throws GWTException;
 
-	public abstract List<String> getUsuarioNoSistema(Integer idUsuario);
+	public abstract List<String> getUsuarioNoSistema(Integer idUsuario) throws GWTException;
 
-	void deletarInteresse(Integer idSessao, Integer idInteresse);
+	void deletarInteresse(Integer idSessao, Integer idInteresse) throws GWTException;
 }
