@@ -48,7 +48,7 @@ public class StateEditarPerfil extends Composite {
 		AbsolutePanel absolutePanel_EditarPerfil = new AbsolutePanel();
 		absolutePanel_EditarPerfil.setStylePrimaryName("painelPerfil3");
 		initWidget(absolutePanel_EditarPerfil);
-		absolutePanel_EditarPerfil.setSize("653px", "433px");
+		absolutePanel_EditarPerfil.setSize("873px", "433px");
 		
 		Label lblEditarPerfil = new Label("Editar Perfil");
 		lblEditarPerfil.setStyleName("gwt-LabelEstradaSolidaria2");
@@ -56,7 +56,7 @@ public class StateEditarPerfil extends Composite {
 		
 		AbsolutePanel absolutePanel_1 = new AbsolutePanel();
 		absolutePanel_EditarPerfil.add(absolutePanel_1, 54, 48);
-		absolutePanel_1.setSize("599px", "375px");
+		absolutePanel_1.setSize("812px", "375px");
 		
 		Label lblNewLabel = new Label("Login:");
 		absolutePanel_1.add(lblNewLabel, 10, 10);
@@ -65,7 +65,7 @@ public class StateEditarPerfil extends Composite {
 		absolutePanel_1.add(lblLogindousuario, 74, 10);
 		
 		TextButton txtBtnEditarLogin = new TextButton("Editar");
-		absolutePanel_1.add(txtBtnEditarLogin, 74, 32);
+		absolutePanel_1.add(txtBtnEditarLogin, 84, 32);
 		
 		textBoxNovoLogin = new TextBox();
 		textBoxNovoLogin.addKeyPressHandler(new KeyPressHandler() {
@@ -73,7 +73,7 @@ public class StateEditarPerfil extends Composite {
 				lblMensagemDeErroLogin.setVisible(false);
 			}
 		});
-		absolutePanel_1.add(textBoxNovoLogin, 127, 28);
+		absolutePanel_1.add(textBoxNovoLogin, 145, 32);
 		textBoxNovoLogin.setVisible(false);
 		
 		txtbtnLoginOk = new TextButton("OK");
@@ -82,11 +82,11 @@ public class StateEditarPerfil extends Composite {
 				editarLoginGUI(idSessaoAberta, textBoxNovoLogin.getText());
 			}
 		});
-		absolutePanel_1.add(txtbtnLoginOk, 294, 28);
+		absolutePanel_1.add(txtbtnLoginOk, 306, 32);
 		txtbtnLoginOk.setVisible(false);
 		
 		Label lblSenha = new Label("Senha:");
-		absolutePanel_1.add(lblSenha, 417, 28);
+		absolutePanel_1.add(lblSenha, 473, 10);
 		
 		TextButton txtbtnAlterarSenha = new TextButton("Alterar senha");
 		txtbtnAlterarSenha.addClickHandler(new ClickHandler() {
@@ -96,16 +96,16 @@ public class StateEditarPerfil extends Composite {
 				newDialog.show();
 			}
 		});
-		absolutePanel_1.add(txtbtnAlterarSenha, 417, 53);
+		absolutePanel_1.add(txtbtnAlterarSenha, 473, 32);
 		
 		Label lblNome = new Label("Nome:");
-		absolutePanel_1.add(lblNome, 10, 65);
+		absolutePanel_1.add(lblNome, 10, 85);
 		
 		lblNomeusuario = new Label(dadosUsuario[2]);
-		absolutePanel_1.add(lblNomeusuario, 74, 65);
+		absolutePanel_1.add(lblNomeusuario, 74, 85);
 		
 		TextButton btnEditarNome = new TextButton("Editar");
-		absolutePanel_1.add(btnEditarNome, 74, 87);
+		absolutePanel_1.add(btnEditarNome, 85, 107);
 		
 		textBoxNovoNome = new TextBox();
 		textBoxNovoNome.addKeyPressHandler(new KeyPressHandler() {
@@ -113,7 +113,7 @@ public class StateEditarPerfil extends Composite {
 				lblMensagemDeErroNome.setVisible(false);
 			}
 		});
-		absolutePanel_1.add(textBoxNovoNome, 127, 87);
+		absolutePanel_1.add(textBoxNovoNome, 145, 107);
 		textBoxNovoNome.setVisible(false);
 		
 		txtbtnNomeOk = new TextButton("OK");
@@ -122,17 +122,17 @@ public class StateEditarPerfil extends Composite {
 				editarNomeGUI(idSessaoAberta, textBoxNovoNome.getText());
 			}
 		});
-		absolutePanel_1.add(txtbtnNomeOk, 294, 87);
+		absolutePanel_1.add(txtbtnNomeOk, 306, 107);
 		txtbtnNomeOk.setVisible(false);
 		
 		Label lblEmail = new Label("Email:");
-		absolutePanel_1.add(lblEmail, 10, 124);
+		absolutePanel_1.add(lblEmail, 10, 164);
 		
 		lblEmaildousuario = new Label(dadosUsuario[4]);
-		absolutePanel_1.add(lblEmaildousuario, 74, 124);
+		absolutePanel_1.add(lblEmaildousuario, 74, 164);
 		
 		TextButton btnEditarEmail = new TextButton("Editar");
-		absolutePanel_1.add(btnEditarEmail, 74, 146);
+		absolutePanel_1.add(btnEditarEmail, 85, 184);
 		
 		textBoxNovoEmail = new TextBox();
 		textBoxNovoEmail.addKeyPressHandler(new KeyPressHandler() {
@@ -140,7 +140,7 @@ public class StateEditarPerfil extends Composite {
 				lblMensagemDeErroEmail.setVisible(false);
 			}
 		});
-		absolutePanel_1.add(textBoxNovoEmail, 127, 146);
+		absolutePanel_1.add(textBoxNovoEmail, 145, 184);
 		textBoxNovoEmail.setVisible(false);
 		
 		txtbtnEmailOk = new TextButton("OK");
@@ -149,17 +149,17 @@ public class StateEditarPerfil extends Composite {
 				editarEmailGUI(idSessaoAberta, textBoxNovoEmail.getText());
 			}
 		});
-		absolutePanel_1.add(txtbtnEmailOk, 294, 146);
+		absolutePanel_1.add(txtbtnEmailOk, 306, 184);
 		txtbtnEmailOk.setVisible(false);
 		
 		Label lblEndereo = new Label("Endereço:");
-		absolutePanel_1.add(lblEndereo, 10, 182);
+		absolutePanel_1.add(lblEndereo, 9, 243);
 		
 		lblEnderecodousuario = new Label(dadosUsuario[3]);
-		absolutePanel_1.add(lblEnderecodousuario, 74, 182);
+		absolutePanel_1.add(lblEnderecodousuario, 74, 243);
 		
 		TextButton btnEditarEndereco = new TextButton("Editar");
-		absolutePanel_1.add(btnEditarEndereco, 74, 204);
+		absolutePanel_1.add(btnEditarEndereco, 85, 265);
 		
 		textBoxNovoEndereco = new TextBox();
 		textBoxNovoEndereco.addKeyPressHandler(new KeyPressHandler() {
@@ -167,7 +167,7 @@ public class StateEditarPerfil extends Composite {
 				lblMensagemDeErroEndereco.setVisible(false);
 			}
 		});
-		absolutePanel_1.add(textBoxNovoEndereco, 127, 204);
+		absolutePanel_1.add(textBoxNovoEndereco, 145, 265);
 		textBoxNovoEndereco.setVisible(false);
 		
 		txtbtnEnderecoOk = new TextButton("OK");
@@ -176,35 +176,35 @@ public class StateEditarPerfil extends Composite {
 				editarEnderecoGUI(idSessaoAberta, textBoxNovoEndereco.getText());
 			}
 		});
-		absolutePanel_1.add(txtbtnEnderecoOk, 294, 204);
+		absolutePanel_1.add(txtbtnEnderecoOk, 306, 265);
 		txtbtnEnderecoOk.setVisible(false);
 		
 		FileUpload fileUpload = new FileUpload();
-		absolutePanel_1.add(fileUpload, 322, 337);
+		absolutePanel_1.add(fileUpload, 473, 319);
 		fileUpload.setSize("330px", "22px");
 		
 		Image image = new Image(resources.getGenericUserImage());
-		absolutePanel_1.add(image, 417, 174);
+		absolutePanel_1.add(image, 473, 174);
 		image.setSize("126px", "139px");
 		
 		lblMensagemDeErroLogin = new Label("erro login");
 		lblMensagemDeErroLogin.setStyleName("gwt-LabelEstradaSolidaria5");
-		absolutePanel_1.add(lblMensagemDeErroLogin, 203, 53);
+		absolutePanel_1.add(lblMensagemDeErroLogin, 145, 62);
 		lblMensagemDeErroLogin.setVisible(false);
 		
 		lblMensagemDeErroNome = new Label("erro nome");
 		lblMensagemDeErroNome.setStyleName("gwt-LabelEstradaSolidaria5");
-		absolutePanel_1.add(lblMensagemDeErroNome, 203, 111);
+		absolutePanel_1.add(lblMensagemDeErroNome, 145, 141);
 		lblMensagemDeErroNome.setVisible(false);
 		
 		lblMensagemDeErroEmail = new Label("erro email");
 		lblMensagemDeErroEmail.setStyleName("gwt-LabelEstradaSolidaria5");
-		absolutePanel_1.add(lblMensagemDeErroEmail, 203, 174);
+		absolutePanel_1.add(lblMensagemDeErroEmail, 145, 218);
 		lblMensagemDeErroEmail.setVisible(false);
 		
 		lblMensagemDeErroEndereco = new Label("erro endereco");
 		lblMensagemDeErroEndereco.setStyleName("gwt-LabelEstradaSolidaria5");
-		absolutePanel_1.add(lblMensagemDeErroEndereco, 203, 233);
+		absolutePanel_1.add(lblMensagemDeErroEndereco, 145, 297);
 		lblMensagemDeErroEndereco.setVisible(false);
 		
 		btnEditarEndereco.addClickHandler(new ClickHandler() {
