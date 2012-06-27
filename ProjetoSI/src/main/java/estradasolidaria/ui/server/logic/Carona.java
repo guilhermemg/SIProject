@@ -3,6 +3,7 @@ package estradasolidaria.ui.server.logic;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,7 +28,7 @@ import estradasolidaria.ui.server.util.SpecialLinkedListBrackets;
 public class Carona implements Comparable<Carona>, Serializable {
 	private static final long serialVersionUID = -467338420076141417L;
 
-	private DateUtil dateUtil = new DateUtil();
+	private DateUtil dateUtil;
 
 	private Integer idDonoDaCarona;
 	private Integer idCarona;
@@ -235,10 +236,11 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @param hora
 	 */
 	public void setHora(String hora) {
+		dateUtil = new DateUtil(new GregorianCalendar());
 		if(hora == null || hora.equals(""))
 			throw new IllegalArgumentException("Hora inválida");
 		else if(dateUtil.validaHora(hora))
-			this.hora = dateUtil.getHora();
+			this.hora = dateUtil.getCalendar();
 		else
 			throw new IllegalArgumentException("Hora inválida");
 	}
@@ -250,10 +252,11 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @param data
 	 */
 	public void setData(String data) {
+		dateUtil = new DateUtil(new GregorianCalendar());
 		if(data == null || data.equals(""))
 			throw new IllegalArgumentException("Data inválida");
 		else if(dateUtil.validaData(data) && dateUtil.validaDataJaPassou())
-			this.data = dateUtil.getData();
+			this.data = dateUtil.getCalendar();
 		else
 			throw new IllegalArgumentException("Data inválida");
 	}

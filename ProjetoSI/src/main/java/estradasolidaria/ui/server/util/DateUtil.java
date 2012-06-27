@@ -18,9 +18,12 @@ public class DateUtil {
 	private int mes;
 	private int ano;
 	
-	Calendar calendarData = new GregorianCalendar();
-	Calendar calendarHora = new GregorianCalendar();
-
+	Calendar calendar;
+	
+	public DateUtil(Calendar calendar) {
+		this.calendar= calendar;
+	}
+	
 	/**
 	 * Valida formato da data.
 	 * 
@@ -49,11 +52,11 @@ public class DateUtil {
 				return false;
 			}
 			// 01 <= mes <= 12
-			calendarData.set(GregorianCalendar.DAY_OF_MONTH, dia);
-			calendarData.set(GregorianCalendar.MONTH, --mes); // 0=janeiro, 1=fevereiro, ...
-			calendarData.set(GregorianCalendar.YEAR, ano);
+			calendar.set(GregorianCalendar.DAY_OF_MONTH, dia);
+			calendar.set(GregorianCalendar.MONTH, --mes); // 0=janeiro, 1=fevereiro, ...
+			calendar.set(GregorianCalendar.YEAR, ano);
 			
-			if (dia > calendarData.getActualMaximum(Calendar.DAY_OF_MONTH)) {
+			if (dia > calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
 				return false;
 			}
 			else {
@@ -71,7 +74,7 @@ public class DateUtil {
 	 * @return true se data ainda nao passou
 	 */
 	public boolean validaDataJaPassou() {
-		if(calendarData.getTimeInMillis() > Calendar.getInstance().getTimeInMillis()) {
+		if(calendar.getTimeInMillis() > Calendar.getInstance().getTimeInMillis()) {
 			return true;
 		}
 		else {
@@ -148,11 +151,11 @@ public class DateUtil {
 			if(h < 0 || h > 23 || m < 0 || m > 59)
 				return false;
 		
-			calendarHora.set(Calendar.YEAR, calendarData.get(Calendar.YEAR));
-			calendarHora.set(Calendar.MONTH, calendarData.get(Calendar.MONTH));
-			calendarHora.set(Calendar.DAY_OF_MONTH,	calendarData.get(Calendar.DAY_OF_MONTH));
-			calendarHora.set(Calendar.HOUR_OF_DAY, h);
-			calendarHora.set(Calendar.MINUTE, m);
+			calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
+			calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
+			calendar.set(Calendar.DAY_OF_MONTH,	calendar.get(Calendar.DAY_OF_MONTH));
+			calendar.set(Calendar.HOUR_OF_DAY, h);
+			calendar.set(Calendar.MINUTE, m);
 			
 			return true;
 		}
@@ -162,20 +165,12 @@ public class DateUtil {
 	}
 	
 	/**
-	 * Retorna data no formato Calendar.
+	 * Retorna o Calendar nos
+	 * quais as operacoes foram realizadas.
 	 * 
-	 * @return data
+	 * @return calendar
 	 */
-	public Calendar getData() {
-		return this.calendarData;
-	}
-	
-	/**
-	 * Retorna hora no formato Calendar.
-	 * 
-	 * @return hora
-	 */
-	public Calendar getHora() {
-		return this.calendarHora;
+	public Calendar getCalendar() {
+		return this.calendar;
 	}
 }

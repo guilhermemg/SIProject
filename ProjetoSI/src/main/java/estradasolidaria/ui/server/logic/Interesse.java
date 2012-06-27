@@ -2,6 +2,7 @@ package estradasolidaria.ui.server.logic;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import estradasolidaria.ui.server.util.DateUtil;
 
@@ -23,7 +24,7 @@ public class Interesse implements Serializable {
 	private String destino;
 	private Integer idInteresse;
 	
-	private DateUtil dateUtil = new DateUtil();
+	private DateUtil dateUtil;
 	private Calendar horaFim;
 	private Calendar horaInicio;
 	private Calendar data;
@@ -126,12 +127,13 @@ public class Interesse implements Serializable {
 	 * @param data
 	 */
 	public void setData(String data) {
+		dateUtil = new DateUtil(new GregorianCalendar());
 		if(data == null)
 			throw new IllegalArgumentException("Data inválida");
 		else if(data.equals(""))
 			this.data = null;
 		else if(dateUtil.validaData(data) && dateUtil.validaDataJaPassou())
-			this.data = dateUtil.getData();
+			this.data = dateUtil.getCalendar();
 		else
 			throw new IllegalArgumentException("Data inválida");
 	}
@@ -171,12 +173,13 @@ public class Interesse implements Serializable {
 	 * @param horaFim
 	 */
 	private void setHoraFim(String horaFim) {
+		dateUtil = new DateUtil(new GregorianCalendar());
 		if(horaFim == null)
 			throw new IllegalArgumentException("Hora inválida");
 		else if(horaFim.equals(""))
 			this.horaFim = null; 
 		else if(dateUtil.validaHora(horaFim))
-			this.horaFim = dateUtil.getHora();
+			this.horaFim = dateUtil.getCalendar();
 		else
 			throw new IllegalArgumentException("Hora inválida");
 	}
@@ -193,12 +196,13 @@ public class Interesse implements Serializable {
 	 * @param horaInicio
 	 */
 	private void setHoraInicio(String horaInicio) {
+		dateUtil = new DateUtil(new GregorianCalendar());
 		if(horaInicio == null)
 			throw new IllegalArgumentException("Hora inválida");
 		else if(horaInicio.equals(""))
 			this.horaInicio = null;
 		else if(dateUtil.validaHora(horaInicio))
-			this.horaInicio = dateUtil.getHora();
+			this.horaInicio = dateUtil.getCalendar();
 		else
 			throw new IllegalArgumentException("Hora inválida");
 	}
