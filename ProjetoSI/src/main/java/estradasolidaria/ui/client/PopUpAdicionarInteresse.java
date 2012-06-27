@@ -4,7 +4,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -14,6 +13,11 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.widget.client.TextButton;
+import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import java.util.Date;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
 
 public class PopUpAdicionarInteresse extends PopupPanel {
 
@@ -28,6 +32,7 @@ public class PopUpAdicionarInteresse extends PopupPanel {
 	private ListBox comboBoxMinutosFim;
 	private NumberFormat numberFormat;
 	private final StateMeusInteresses meusInteressesPanel;
+	private Label lblMensagemDeErro;
 
 	public PopUpAdicionarInteresse(EstradaSolidaria estrada, EstradaSolidariaServiceAsync estradaSolidariaService, StateMeusInteresses meusInteressesPanel) {
 		super(true);
@@ -38,7 +43,7 @@ public class PopUpAdicionarInteresse extends PopupPanel {
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		setWidget(absolutePanel);
-		absolutePanel.setSize("317px", "308px");
+		absolutePanel.setSize("317px", "337px");
 		
 		Label lblAdicionaRinteresse = new Label("Adicionar Interesse");
 		absolutePanel.add(lblAdicionaRinteresse, 10, 10);
@@ -51,18 +56,33 @@ public class PopUpAdicionarInteresse extends PopupPanel {
 		flexTable.setWidget(0, 0, lblNewLabel);
 		
 		textBoxOrigem = new TextBox();
+		textBoxOrigem.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				lblMensagemDeErro.setVisible(false);
+			}
+		});
 		flexTable.setWidget(0, 1, textBoxOrigem);
 		
 		Label lblDestino = new Label("Destino:");
 		flexTable.setWidget(1, 0, lblDestino);
 		
 		textBoxDestino = new TextBox();
+		textBoxDestino.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				lblMensagemDeErro.setVisible(false);
+			}
+		});
 		flexTable.setWidget(1, 1, textBoxDestino);
 		
 		Label lblData = new Label("Data:");
 		flexTable.setWidget(2, 0, lblData);
 		
 		dateBox = new DateBox();
+		dateBox.addValueChangeHandler(new ValueChangeHandler<Date>() {
+			public void onValueChange(ValueChangeEvent<Date> event) {
+				lblMensagemDeErro.setVisible(false);
+			}
+		});
 		DateTimeFormat dateFormat = DateTimeFormat.getFormat("dd/MM/yyyy");
 	    dateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
 		flexTable.setWidget(2, 1, dateBox);
@@ -127,7 +147,7 @@ public class PopUpAdicionarInteresse extends PopupPanel {
 				cadastrarInteresse();
 			}
 		});
-		absolutePanel.add(txtbtnAdicionar, 119, 258);
+		absolutePanel.add(txtbtnAdicionar, 124, 299);
 		
 		TextButton txtbtnCancelar = new TextButton("Cancelar");
 		txtbtnCancelar.addClickHandler(new ClickHandler() {
@@ -135,7 +155,11 @@ public class PopUpAdicionarInteresse extends PopupPanel {
 				hide();
 			}
 		});
-		absolutePanel.add(txtbtnCancelar, 226, 258);
+		absolutePanel.add(txtbtnCancelar, 221, 299);
+		
+		lblMensagemDeErro = new Label("Mensagem de erro");
+		absolutePanel.add(lblMensagemDeErro, 10, 272);
+		lblMensagemDeErro.setVisible(false);
 	}
 
 	private void cadastrarInteresse() {
@@ -156,14 +180,13 @@ public class PopUpAdicionarInteresse extends PopupPanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("Remote Procedure Call - Failure: "
-						+ caught.getMessage());
-				
+				lblMensagemDeErro.setText(caught.getMessage());
+				lblMensagemDeErro.setStyleName("gwt-LabelEstradaSolidaria5");
+				lblMensagemDeErro.setVisible(true);
 			}
 
 			@Override
 			public void onSuccess(String result) {
-				Window.alert("Interresse cadastrado!");
 				meusInteressesPanel.colocarInteressesNoGrid();
 				hide();
 			}
