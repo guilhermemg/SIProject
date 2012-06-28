@@ -39,19 +39,21 @@ public class StatePesquisaCarona extends Composite {
 		flexTable.setSize("283px", "53px");
 		
 		Label lblPesuisa = new Label("Origem:");
-		lblPesuisa.setStyleName("gwt-LabelHomePage");
+		lblPesuisa.setStyleName("gwt-LabelEstradaSolidaria4");
 		flexTable.setWidget(0, 0, lblPesuisa);
 		
 		textBoxOrigem = new TextBox();
 		flexTable.setWidget(0, 1, textBoxOrigem);
 		
 		Label lblDestino = new Label("Destino:");
+		lblDestino.setStyleName("gwt-LabelEstradaSolidaria4");
 		flexTable.setWidget(1, 0, lblDestino);
 		
 		textBoxDestino = new TextBox();
 		flexTable.setWidget(1, 1, textBoxDestino);
 		
 		Label lblCidade = new Label("Cidade:");
+		lblCidade.setStyleName("gwt-LabelEstradaSolidaria4");
 		flexTable.setWidget(2, 0, lblCidade);
 		
 		TextBox textBoxCidade = new TextBox();
