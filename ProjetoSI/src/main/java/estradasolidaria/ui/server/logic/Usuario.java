@@ -1151,13 +1151,14 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param hora
 	 * @param ordemNaInsercaoNoSistema
 	 * @param minimoCaroneiros
+	 * @param ordemParaCaronas 
 	 * @return carona relampago
 	 */
 	public Carona cadastrarCaronaRelampago(Integer idDonoDaCarona,
 			String origem,String destino, String data, 
-			String hora, Integer minimoCaroneiros, Integer posicaoNaInsercao) {
+			String hora, Integer vagas, Integer minimoCaroneiros, Integer posicaoNaInsercao) {
 			Carona caronaRelampago = new Carona(idDonoDaCarona, origem, 
-					destino, data, hora, minimoCaroneiros, 
+					destino, data, hora, vagas, 
 					minimoCaroneiros, posicaoNaInsercao); 
 			this.mapIdCaronasOferecidas.put(caronaRelampago.getIdCarona(), caronaRelampago);
 		return caronaRelampago;

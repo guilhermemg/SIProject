@@ -1280,10 +1280,11 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param data
 	 * @param hora
 	 * @param minimoCaroneiros
+	 * @param minimoCaroneiros2 
 	 * @return idCarona
 	 */
 	public Integer cadastrarCaronaRelampago(Integer idSessao, String origem, String destino, String data, 
-			String hora, Integer minimoCaroneiros) {
+			String hora, Integer vagas, Integer minimoCaroneiros) {
 		if(idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 		Usuario donoDaCarona = this.mapIdUsuario.get(this.mapIdSessao.get(idSessao).getIdUser());
@@ -1292,7 +1293,7 @@ public class EstradaSolidariaController implements Serializable {
 			throw new UsuarioInexistenteException();
 		
 		return donoDaCarona.cadastrarCaronaRelampago(donoDaCarona.getIdUsuario(), 
-				origem, destino, data, hora, minimoCaroneiros, ordemParaCaronas++).getIdCarona();
+				origem, destino, data, hora, vagas,minimoCaroneiros, ordemParaCaronas++).getIdCarona();
 	}
 	
 	/**

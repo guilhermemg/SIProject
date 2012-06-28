@@ -1058,8 +1058,9 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Minimo Caroneiros inválido");
 		}
+		Integer vagas = minimoCaroneiros2;
 		
-		return sistema.cadastrarCaronaRelampago(idSessao2, origem, destino, data, hora, minimoCaroneiros2);
+		return sistema.cadastrarCaronaRelampago(idSessao2, origem, destino, data, hora, vagas, minimoCaroneiros2);
 	}
 	
 	/*
