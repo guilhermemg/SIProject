@@ -277,9 +277,7 @@ public class StatePerfil extends Composite {
 
 			@Override
 			public void onSuccess(List<String> result) {
-				scrollPanel.clear();
 				bodyPanel.clear();
-				scrollPanel.setVisible(false);
 				Widget pesquisarCarona = new StateUsuariosEncontrados(estrada, estradaSolidariaService, result);
 				bodyPanel.add(pesquisarCarona);
 				bodyPanel.setVisible(true);
@@ -290,15 +288,13 @@ public class StatePerfil extends Composite {
 	}
 
 	protected void inicio() {
-		scrollPanel.clear();	
 		bodyPanel.clear();
 		//TODO fazer Inicio
 	}
 
 	protected void cadastrarCaronaGUI() {
-		scrollPanel.clear();
-		bodyPanel.clear();
 		scrollPanel.setVisible(false);
+		bodyPanel.clear();
 		Widget cadastrarCarona = new StateCadastroCaronas(estrada, estradaSolidariaService);
 		bodyPanel.add(cadastrarCarona);
 		bodyPanel.setVisible(true);
@@ -306,29 +302,22 @@ public class StatePerfil extends Composite {
 	}
 
 	protected void pesquisarCaronaGUI() {
-		scrollPanel.clear();
 		bodyPanel.clear();
-		scrollPanel.setVisible(false);
 		Widget pesquisarCarona = new StatePesquisaCarona(estrada, estradaSolidariaService, bodyPanel);
 		bodyPanel.add(pesquisarCarona);
 		bodyPanel.setVisible(true);
 		pesquisarCarona.setSize("100%", "100%");
-		
 	}
 	
 	protected void minhasCaronasGUI() {
-		scrollPanel.clear();
 		bodyPanel.clear();
-		bodyPanel.setVisible(false);
 		Widget minhasCarona= new StateMinhasCaronas(estrada, estradaSolidariaService);
-		scrollPanel.add(minhasCarona);
-		scrollPanel.setVisible(true);
+		bodyPanel.add(minhasCarona);
 		minhasCarona.setSize("100%", "100%");
 	}
 	
 	protected void meusInteressesGUI() {
 		bodyPanel.clear();
-		scrollPanel.clear();
 		StateMeusInteresses mi = new StateMeusInteresses(estrada, estradaSolidariaService);
 		bodyPanel.add(mi);
 		mi.setSize("100%", "100%");

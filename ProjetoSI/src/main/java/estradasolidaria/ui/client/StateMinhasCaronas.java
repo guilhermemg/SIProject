@@ -27,6 +27,9 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.widget.client.TextButton;
+import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.Command;
 
 public class StateMinhasCaronas extends AbsolutePanel {
 	final EstradaSolidaria estrada;
@@ -55,6 +58,11 @@ public class StateMinhasCaronas extends AbsolutePanel {
 	private ListBox comboBoxTipoDeSolicitacao;
 	private Column<GWTCarona,String> buttomColumn;
 	private boolean isSolicitacaoAceita;
+	private AbsolutePanel absolutePanelAcoes;
+	private MenuItem mntmPontoDeEncontro;
+	private MenuItem mntmCaronaPreferencial;
+	private MenuItem mntmSugerirPontoDe;
+	private MenuItem mntmVisualizarSugestes;
 
 	public StateMinhasCaronas(EstradaSolidaria estrada,
 			EstradaSolidariaServiceAsync estradaSolidariaService) {
@@ -82,24 +90,8 @@ public class StateMinhasCaronas extends AbsolutePanel {
 
 	private void iniciarTabPanel() {
 		tabPanel = new TabPanel();
-		add(tabPanel, 0, 36);
+		add(tabPanel);
 		tabPanel.setSize("950px", "457px");
-		
-		TextButton txtbtnEncerrarCarona = new TextButton("Encerrar Carona");
-		add(txtbtnEncerrarCarona, 10, 2);
-		
-		TextButton txtbtnCancelarCarona = new TextButton("Cancelar Carona");
-		add(txtbtnCancelarCarona, 129, 2);
-		
-		TextButton txtbtnSugerirPontoDe = new TextButton("Sugerir Ponto de Encontro");
-		add(txtbtnSugerirPontoDe, 250, 2);
-		
-		TextButton txtbtnVisualizarPontosDe = new TextButton("Visualizar Pontos de Encontro Sugeridos");
-		add(txtbtnVisualizarPontosDe, 430, 2);
-		
-		TextButton txtbtnMarcarCaronaComo = new TextButton("Marcar Carona como Preferencial");
-		add(txtbtnMarcarCaronaComo, 693, 2);
-		txtbtnMarcarCaronaComo.setSize("216px", "28px");
 
 		tabPanel.getTabBar().addSelectionHandler(
 				new SelectionHandler<Integer>() {
@@ -381,6 +373,36 @@ public class StateMinhasCaronas extends AbsolutePanel {
 
 	private void colocarColunasEmCaronasCellTableOferecidas() {
 		zerarCaronasCellTable();
+		
+		absolutePanelAcoes = new AbsolutePanel();
+		tabOferecidas.setWidget(0, 0, absolutePanelAcoes);
+		absolutePanelAcoes.setSize("100%", "23px");
+		
+		MenuBar menuBar = new MenuBar(false);
+		absolutePanelAcoes.add(menuBar);
+		MenuBar menuBar_1 = new MenuBar(true);
+		
+		MenuItem mntmCarona = new MenuItem("Carona", false, menuBar_1);
+		
+		MenuItem mntmEncerrar = new MenuItem("Encerrar", false, (Command) null);
+		menuBar_1.addItem(mntmEncerrar);
+		
+		MenuItem mntmCancelar = new MenuItem("Cancelar", false, (Command) null);
+		menuBar_1.addItem(mntmCancelar);
+		
+		mntmCaronaPreferencial = new MenuItem("Carona Preferencial", false, (Command) null);
+		menuBar_1.addItem(mntmCaronaPreferencial);
+		menuBar.addItem(mntmCarona);
+		MenuBar menuBar_2 = new MenuBar(true);
+		
+		mntmPontoDeEncontro = new MenuItem("Ponto de Encontro", false, menuBar_2);
+		
+		mntmSugerirPontoDe = new MenuItem("Sugerir", false, (Command) null);
+		menuBar_2.addItem(mntmSugerirPontoDe);
+		
+		mntmVisualizarSugestes = new MenuItem("Visualizar Sugestões", false, (Command) null);
+		menuBar_2.addItem(mntmVisualizarSugestes);
+		menuBar.addItem(mntmPontoDeEncontro);
 
 		caronasCellTable.addColumn(buttomColumn);
 		caronasCellTable.setColumnWidth(buttomColumn, "100%");
