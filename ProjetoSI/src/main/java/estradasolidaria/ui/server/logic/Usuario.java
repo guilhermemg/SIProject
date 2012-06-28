@@ -1202,4 +1202,192 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	public void deletarInteresse(Integer idInteresse) {
 		this.mapIdInteresse.remove(idInteresse);
 	}
+
+	/**
+	 * Retorna lista de caronas oferecidas por
+	 * este usuario.
+	 * 
+	 * @return lista de caronas oferecidas
+	 */
+	public List<Carona> getListaCaronasOfercidas() {
+		List<Carona> listaCaronasOferecidas = new LinkedList<Carona>();
+		iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas.values().iterator();
+		while(iteratorIdCaronasOferecidas.hasNext()) {
+			listaCaronasOferecidas.add(iteratorIdCaronasOferecidas.next());
+		}
+		return listaCaronasOferecidas;
+	}
+
+	/**
+	 * Retorna lista de caronas pegas por
+	 * este usuario.
+	 * 
+	 * @return lista de caronas pegas
+	 */
+	public List<Carona> getListaCaronasPegas() {
+		List<Carona> listaCaronasPegas = new LinkedList<Carona>();
+		iteratorIdCaronasPegas = this.mapIdCaronasPegas.values().iterator();
+		while(iteratorIdCaronasPegas.hasNext()) {
+			listaCaronasPegas.add(iteratorIdCaronasPegas.next());
+		}
+		return listaCaronasPegas;
+	}
+
+	/**
+	 * Retorna lista de caronas confirmadas
+	 * ate o momento, dentre as caronas oferecidas por
+	 * ele.
+	 * 
+	 * @return lista de caronas confirmadas
+	 */
+	public List<Carona> getListaCaronasConfirmadas() {
+		List<Carona> listaCaronasConfirmadas = new LinkedList<Carona>();
+		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
+		while(iteratorIdCaronasOferecidas.hasNext()) {
+			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
+			if(caronaOferecida.getEstadoDaCarona().equals(EstadoDaCarona.CONFIRMADA))
+				listaCaronasConfirmadas.add(caronaOferecida);
+		}
+		return listaCaronasConfirmadas;
+	}
+	
+	/**
+	 * Retorna lista de caronas canceladas
+	 * ate o momento, dentre as caronas oferecidas por
+	 * ele.
+	 * 
+	 * @return lista de caronas canceladas
+	 */
+	public List<Carona> getListaCaronasCanceladas() {
+		List<Carona> listaCaronasCanceladas = new LinkedList<Carona>();
+		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
+		while(iteratorIdCaronasOferecidas.hasNext()) {
+			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
+			if(caronaOferecida.getEstadoDaCarona().equals(EstadoDaCarona.CANCELADA))
+				listaCaronasCanceladas.add(caronaOferecida);
+		}
+		return listaCaronasCanceladas;
+	}
+	
+	/**
+	 * Retorna lista de caronas expired
+	 * ate o momento, dentre as caronas oferecidas por
+	 * ele.
+	 * 
+	 * @return lista de caronas expired
+	 */
+	public List<Carona> getListaCaronasExpired() {
+		List<Carona> listaCaronasExpired = new LinkedList<Carona>();
+		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
+		while(iteratorIdCaronasOferecidas.hasNext()) {
+			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
+			if(caronaOferecida.getEstadoDaCarona().equals(EstadoDaCarona.EXPIRED))
+				listaCaronasExpired.add(caronaOferecida);
+		}
+		return listaCaronasExpired;
+	}
+	
+	/**
+	 * Retorna lista de caronas ocorrendo
+	 * ate o momento, dentre as caronas oferecidas por
+	 * ele.
+	 * 
+	 * @return lista de caronas ocorrendo
+	 */
+	public List<Carona> getListaCaronasOcorrendo() {
+		List<Carona> listaCaronasOcorrendo = new LinkedList<Carona>();
+		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
+		while(iteratorIdCaronasOferecidas.hasNext()) {
+			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
+			if(caronaOferecida.getEstadoDaCarona().equals(EstadoDaCarona.OCORRENDO))
+				listaCaronasOcorrendo.add(caronaOferecida);
+		}
+		return listaCaronasOcorrendo;
+	}
+	
+	/**
+	 * Retorna lista de caronas encerradas
+	 * ate o momento, dentre as caronas oferecidas por
+	 * ele.
+	 * 
+	 * @return lista de caronas encerradas
+	 */
+	public List<Carona> getListaCaronasEncerradas() {
+		List<Carona> listaCaronasEncerradas = new LinkedList<Carona>();
+		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
+		while(iteratorIdCaronasOferecidas.hasNext()) {
+			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
+			if(caronaOferecida.getEstadoDaCarona().equals(EstadoDaCarona.ENCERRADA))
+				listaCaronasEncerradas.add(caronaOferecida);
+		}
+		return listaCaronasEncerradas;
+	}
+
+	/**
+	 * Retorna lista de caronas comuns
+	 * oferecidas por este usuario.
+	 * 
+	 * @return lista de caronas comuns
+	 */
+	public List<Carona> getListaCaronasComuns() {
+		List<Carona> listaCaronasComuns = new LinkedList<Carona>();
+		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
+		while(iteratorIdCaronasOferecidas.hasNext()) {
+			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
+			if(caronaOferecida.isCaronaComum())
+				listaCaronasComuns.add(caronaOferecida);
+		}
+		return listaCaronasComuns;
+	}
+	
+	/**
+	 * Retorna lista de caronas comuns
+	 * oferecidas por este usuario.
+	 * 
+	 * @return lista de caronas comuns
+	 */
+	public List<Carona> getListaCaronasMunicipais() {
+		List<Carona> listaCaronasMunicipais = new LinkedList<Carona>();
+		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
+		while(iteratorIdCaronasOferecidas.hasNext()) {
+			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
+			if(caronaOferecida.isCaronaMunicipal())
+				listaCaronasMunicipais.add(caronaOferecida);
+		}
+		return listaCaronasMunicipais;
+	}
+	
+	/**
+	 * Retorna lista de caronas relampago
+	 * oferecidas por este usuario.
+	 * 
+	 * @return lista de caronas relampago
+	 */
+	public List<Carona> getListaCaronasRelampago() {
+		List<Carona> listaCaronasRelampago = new LinkedList<Carona>();
+		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
+		while(iteratorIdCaronasOferecidas.hasNext()) {
+			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
+			if(caronaOferecida.isCaronaRelampago())
+				listaCaronasRelampago.add(caronaOferecida);
+		}
+		return listaCaronasRelampago;
+	}
+	
+	/**
+	 * Retorna lista de caronas preferenciais
+	 * oferecidas por este usuario.
+	 * 
+	 * @return lista de caronas preferenciais
+	 */
+	public List<Carona> getListaCaronasPreferenciais() {
+		List<Carona> listaCaronasComuns = new LinkedList<Carona>();
+		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
+		while(iteratorIdCaronasOferecidas.hasNext()) {
+			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
+			if(caronaOferecida.isCaronaPreferencial())
+				listaCaronasComuns.add(caronaOferecida);
+		}
+		return listaCaronasComuns;
+	}
 }

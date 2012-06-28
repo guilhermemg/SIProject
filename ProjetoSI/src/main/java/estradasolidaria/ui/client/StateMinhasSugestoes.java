@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.TabPanel;
 
-public class StateSugestoes extends AbsolutePanel {
+public class StateMinhasSugestoes extends AbsolutePanel {
 		final EstradaSolidaria estrada;
 		final Widget panel = this;
 		private EstradaSolidariaServiceAsync estradaSolidariaService;
@@ -17,7 +17,7 @@ public class StateSugestoes extends AbsolutePanel {
 		private LinkedList<GWTSugestao> sugestoesGWT; // Lista de Sugestoes transformadas para a classe GWTSugestoes
 		private Integer idSessao;
 													
-		public StateSugestoes(EstradaSolidaria estrada,
+		public StateMinhasSugestoes(EstradaSolidaria estrada,
 				EstradaSolidariaServiceAsync estradaSolidariaService) {
 			this.estrada = estrada;
 			this.estradaSolidariaService = estradaSolidariaService;

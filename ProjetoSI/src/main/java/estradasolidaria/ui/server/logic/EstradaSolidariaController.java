@@ -1438,30 +1438,6 @@ public class EstradaSolidariaController implements Serializable {
 	}
 	
 	/**
-	 * Retorna id de uma lista de caroneiros que
-	 * estão geograficamente proximos do caroneiro
-	 * identificado por idSessao.
-	 * 
-	 * @param idSessao
-	 * @return id de lista de caroneiros
-	 */
-	public Integer listarCaroneirosProximos(Integer idSessao) {
-		//TODO
-		return null;
-	}
-	
-	/**
-	 * Retorna lista de caroneiros proximos
-	 * ao usuario.
-	 * 
-	 * @return lista de usuarios
-	 */
-	public List<Usuario> getListaID() {
-		//TODO
-		return null;
-	}
-	
-	/**
 	 * Retorna lista de usuarios ranqueados segundo
 	 * avaliacoes feitas por outros usuario e registradas
 	 * no sistema e que estao com sessao aberta atualmente.
@@ -1511,5 +1487,142 @@ public class EstradaSolidariaController implements Serializable {
 	public void deletarInteresse(Integer idSessao, Integer idInteresse) {
 		Usuario donoDoInteresse = getUsuarioAPartirDeIDSessao(idSessao);
 		donoDoInteresse.deletarInteresse(idInteresse);
+	}
+	
+	/**
+	 * Retorna lista de caronas oferecidas
+	 * pelo usuario identificado por idSessao.
+	 * 
+	 * @param idSessao
+	 * @return lista de caronas oferecidas
+	 */
+	public List<Carona> getListaCaronasOferecidas(Integer idSessao) {
+		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
+		return donoDasCaronas.getListaCaronasOfercidas();
+	}
+	
+	/**
+	 * Retorna lista de carona pegas
+	 * pelo usuario identificado por idSessao.
+	 * 
+	 * @param idSessao
+	 * @return lista de caronas pegas
+	 */
+	public List<Carona> getListaCaronasPegas(Integer idSessao) {
+		Usuario donoDaSessao = getUsuarioAPartirDeIDSessao(idSessao);
+		return donoDaSessao.getListaCaronasPegas();
+	}
+	
+	/**
+	 * Retorna lista de caronas confirmadas
+	 * ate o momento atual, dentre as caronas oferecidas
+	 * por ele.
+	 * 
+	 * @param idSessao
+	 * @return lista de caronas confirmadas
+	 */
+	public List<Carona> getListaCaronasConfirmadas(Integer idSessao) {
+		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
+		return donoDasCaronas.getListaCaronasConfirmadas();
+	}
+	
+	/**
+	 * Retorna lista de caronas canceladas
+	 * ate o momento atual, dentre as caronas oferecidas
+	 * por ele.
+	 * 
+	 * @param idSessao
+	 * @return lista de caronas canceladas
+	 */
+	public List<Carona> getListaCaronasCanceladas(Integer idSessao) {
+		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
+		return donoDasCaronas.getListaCaronasCanceladas();
+	}
+	
+	/**
+	 * Retorna lista de caronas ocorrendo
+	 * ate o momento atual, dentre as caronas oferecidas
+	 * por ele.
+	 * 
+	 * @param idSessao
+	 * @return lista de caronas ocorrendo
+	 */
+	public List<Carona> getListaCaronasOcorrendo(Integer idSessao) {
+		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
+		return donoDasCaronas.getListaCaronasOcorrendo();
+	}
+	
+	/**
+	 * Retorna lista de caronas encerradas
+	 * ate o momento atual, dentre as caronas oferecidas
+	 * por ele.
+	 * 
+	 * @param idSessao
+	 * @return lista de caronas encerradas
+	 */
+	public List<Carona> getListaCaronasEncerradas(Integer idSessao) {
+		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
+		return donoDasCaronas.getListaCaronasEncerradas();
+	}
+	
+	/**
+	 * Retorna lista de caronas expiradas
+	 * ate o momento atual, dentre as caronas oferecidas
+	 * por ele.
+	 * 
+	 * @param idSessao
+	 * @return lista de caronas expiradas
+	 */
+	public List<Carona> getListaCaronasExpired(Integer idSessao) {
+		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
+		return donoDasCaronas.getListaCaronasExpired();
+	}
+	
+	/**
+	 * Retorna lista de caronas comuns do usuario,
+	 * identificado por idSessao, dentre as caronas oferecidas por ele.
+	 * 
+	 * @param idSessao
+	 * @return lista caronas comuns
+	 */
+	public List<Carona> getListaCaronasComuns(Integer idSessao) {
+		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
+		return donoDasCaronas.getListaCaronasComuns();
+	}
+	
+	/**
+	 * Retorna lista de caronas municipais do usuario,
+	 * identificado por idSessao, dentre as caronas oferecidas por ele.
+	 * 
+	 * @param idSessao
+	 * @return lista caronas municipais
+	 */
+	public List<Carona> getListaCaronasMunicipais(Integer idSessao) {
+		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
+		return donoDasCaronas.getListaCaronasMunicipais();
+	}
+	
+	/**
+	 * Retorna lista de caronas relampago do usuario,
+	 * identificado por idSessao, dentre as caronas oferecidas por ele.
+	 * 
+	 * @param idSessao
+	 * @return lista caronas relampago
+	 */
+	public List<Carona> getListaCaronasRelampago(Integer idSessao) {
+		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
+		return donoDasCaronas.getListaCaronasRelampago();
+	}
+	
+	/**
+	 * Retorna lista de caronas preferenciais do usuario,
+	 * identificado por idSessao, dentre as caronas oferecidas por ele.
+	 * 
+	 * @param idSessao
+	 * @return lista caronas preferenciais
+	 */
+	public List<Carona> getListaCaronasPreferenciais(Integer idSessao) {
+		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
+		return donoDasCaronas.getListaCaronasPreferenciais();
 	}
 }
