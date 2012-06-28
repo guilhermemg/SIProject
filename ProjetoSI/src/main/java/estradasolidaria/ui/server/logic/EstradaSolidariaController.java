@@ -1485,6 +1485,10 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param idInteresse2 
 	 */
 	public void deletarInteresse(Integer idSessao, Integer idInteresse) {
+		if(idSessao == null)
+			throw new IllegalArgumentException("Sessão inválida");
+		if(idInteresse == null)
+			throw new IllegalArgumentException("Interesse inválido");
 		Usuario donoDoInteresse = getUsuarioAPartirDeIDSessao(idSessao);
 		donoDoInteresse.deletarInteresse(idInteresse);
 	}
@@ -1497,6 +1501,8 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return lista de caronas oferecidas
 	 */
 	public List<Carona> getListaCaronasOferecidas(Integer idSessao) {
+		if(idSessao == null)
+			throw new IllegalArgumentException("Sessão inválida");
 		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
 		return donoDasCaronas.getListaCaronasOfercidas();
 	}
@@ -1509,6 +1515,8 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return lista de caronas pegas
 	 */
 	public List<Carona> getListaCaronasPegas(Integer idSessao) {
+		if(idSessao == null)
+			throw new IllegalArgumentException("Sessão inválida");
 		Usuario donoDaSessao = getUsuarioAPartirDeIDSessao(idSessao);
 		return donoDaSessao.getListaCaronasPegas();
 	}
@@ -1522,6 +1530,8 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return lista de caronas confirmadas
 	 */
 	public List<Carona> getListaCaronasConfirmadas(Integer idSessao) {
+		if(idSessao == null)
+			throw new IllegalArgumentException("Sessão inválida");
 		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
 		return donoDasCaronas.getListaCaronasConfirmadas();
 	}
@@ -1535,6 +1545,8 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return lista de caronas canceladas
 	 */
 	public List<Carona> getListaCaronasCanceladas(Integer idSessao) {
+		if(idSessao == null)
+			throw new IllegalArgumentException("Sessão inválida");
 		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
 		return donoDasCaronas.getListaCaronasCanceladas();
 	}
@@ -1548,6 +1560,8 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return lista de caronas ocorrendo
 	 */
 	public List<Carona> getListaCaronasOcorrendo(Integer idSessao) {
+		if(idSessao == null)
+			throw new IllegalArgumentException("Sessão inválida");
 		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
 		return donoDasCaronas.getListaCaronasOcorrendo();
 	}
@@ -1561,6 +1575,8 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return lista de caronas encerradas
 	 */
 	public List<Carona> getListaCaronasEncerradas(Integer idSessao) {
+		if(idSessao == null)
+			throw new IllegalArgumentException("Sessão inválida");
 		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
 		return donoDasCaronas.getListaCaronasEncerradas();
 	}
@@ -1574,6 +1590,8 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return lista de caronas expiradas
 	 */
 	public List<Carona> getListaCaronasExpired(Integer idSessao) {
+		if(idSessao == null)
+			throw new IllegalArgumentException("Sessão inválida");
 		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
 		return donoDasCaronas.getListaCaronasExpired();
 	}
@@ -1586,6 +1604,8 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return lista caronas comuns
 	 */
 	public List<Carona> getListaCaronasComuns(Integer idSessao) {
+		if(idSessao == null)
+			throw new IllegalArgumentException("Sessão inválida");
 		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
 		return donoDasCaronas.getListaCaronasComuns();
 	}
@@ -1598,6 +1618,8 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return lista caronas municipais
 	 */
 	public List<Carona> getListaCaronasMunicipais(Integer idSessao) {
+		if(idSessao == null)
+			throw new IllegalArgumentException("Sessão inválida");
 		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
 		return donoDasCaronas.getListaCaronasMunicipais();
 	}
@@ -1610,6 +1632,8 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return lista caronas relampago
 	 */
 	public List<Carona> getListaCaronasRelampago(Integer idSessao) {
+		if(idSessao == null)
+			throw new IllegalArgumentException("Sessão inválida");
 		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
 		return donoDasCaronas.getListaCaronasRelampago();
 	}
@@ -1622,7 +1646,43 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return lista caronas preferenciais
 	 */
 	public List<Carona> getListaCaronasPreferenciais(Integer idSessao) {
+		if(idSessao == null)
+			throw new IllegalArgumentException("Sessão inválida");
 		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
 		return donoDasCaronas.getListaCaronasPreferenciais();
+	}
+	
+	/**
+	 * Encerra carona apos a carona ser concluida.
+	 * 
+	 * @param idSessao
+	 * @param idCarona
+	 * @throws CaronaInvalidaException 
+	 */
+	public void encerrarCarona(Integer idSessao, Integer idCarona) throws CaronaInvalidaException {
+		if(idSessao == null)
+			throw new IllegalArgumentException("Sessão inválida");
+		if(idCarona == null)
+			throw new CaronaInvalidaException();
+		Usuario donoDaCarona = getUsuarioAPartirDeIDSessao(idSessao);
+		donoDaCarona.encerrarCarona(idCarona);
+	}
+	
+	/**
+	 * Cancela carona identificada por idCarona,
+	 * a carona ate este momento estava confirmada
+	 * mas nao havia sido concluida.
+	 * 
+	 * @param idSessao
+	 * @param idCarona
+	 * @throws CaronaInvalidaException 
+	 */
+	public void cancelarCarona(Integer idSessao, Integer idCarona) throws CaronaInvalidaException {
+		if(idSessao == null)
+			throw new IllegalArgumentException("Sessão inválida");
+		if(idCarona == null)
+			throw new CaronaInvalidaException();
+		Usuario donoDaCarona = getUsuarioAPartirDeIDSessao(idSessao);
+		donoDaCarona.cancelarCarona(idCarona);
 	}
 }

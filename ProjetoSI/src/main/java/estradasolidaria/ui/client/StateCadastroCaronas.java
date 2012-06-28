@@ -193,6 +193,7 @@ public class StateCadastroCaronas extends Composite {
 		lblErrovagas.setStyleName("gwt-LabelEstradaSolidaria6");
 		
 		Label lblCidade = new Label("Cidade:");
+		lblCidade.setStyleName("gwt-LabelEstradaSolidaria4");
 		flexTable.setWidget(5, 0, lblCidade);
 		
 		FlexTable flexTable_6 = new FlexTable();
@@ -204,6 +205,7 @@ public class StateCadastroCaronas extends Composite {
 		textBoxCidade.setWidth("218px");
 		
 		Label lblMnimoDeCaroneiros = new Label("Mínimo de Caroneiros:");
+		lblMnimoDeCaroneiros.setStyleName("gwt-LabelEstradaSolidaria4");
 		flexTable.setWidget(6, 0, lblMnimoDeCaroneiros);
 		
 		FlexTable flexTable_7 = new FlexTable();

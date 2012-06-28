@@ -89,13 +89,17 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		add(txtbtnEncerrarCarona, 10, 2);
 		
 		TextButton txtbtnCancelarCarona = new TextButton("Cancelar Carona");
-		add(txtbtnCancelarCarona, 141, 2);
+		add(txtbtnCancelarCarona, 129, 2);
 		
 		TextButton txtbtnSugerirPontoDe = new TextButton("Sugerir Ponto de Encontro");
-		add(txtbtnSugerirPontoDe, 275, 2);
+		add(txtbtnSugerirPontoDe, 250, 2);
 		
 		TextButton txtbtnVisualizarPontosDe = new TextButton("Visualizar Pontos de Encontro Sugeridos");
-		add(txtbtnVisualizarPontosDe, 471, 2);
+		add(txtbtnVisualizarPontosDe, 430, 2);
+		
+		TextButton txtbtnMarcarCaronaComo = new TextButton("Marcar Carona como Preferencial");
+		add(txtbtnMarcarCaronaComo, 693, 2);
+		txtbtnMarcarCaronaComo.setSize("216px", "28px");
 
 		tabPanel.getTabBar().addSelectionHandler(
 				new SelectionHandler<Integer>() {

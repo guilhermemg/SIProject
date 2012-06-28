@@ -1390,4 +1390,23 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		}
 		return listaCaronasComuns;
 	}
+
+	/**
+	 * Encerra a carona identificada por idCarona.
+	 * 
+	 * @param idCarona
+	 */
+	public void encerrarCarona(Integer idCarona) {
+		Carona carona = mapIdCaronasOferecidas.get(idCarona);
+		carona.encerrarCarona();
+	}
+
+	/**
+	 * Cancela carona identificada por idCarona.
+	 * @param idCarona
+	 */
+	public void cancelarCarona(Integer idCarona) {
+		Carona carona = mapIdCaronasOferecidas.get(idCarona);
+		carona.cancelarCarona();
+	}
 }

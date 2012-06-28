@@ -1004,4 +1004,18 @@ public class Carona implements Comparable<Carona>, Serializable {
 	public void definirCaronaComoPreferencial() {
 		setTipoDeCarona(TipoDeCarona.PREFERENCIAL);
 	}
+
+	/**
+	 * Encerrar esta carona. 
+	 */
+	public void encerrarCarona() {
+		this.setEstadoDaCarona(EstadoDaCarona.ENCERRADA);
+	}
+
+	/**
+	 * Cancela esta carona.
+	 */
+	public void cancelarCarona() {
+		this.setEstadoDaCarona(EstadoDaCarona.CANCELADA);
+	}
 }

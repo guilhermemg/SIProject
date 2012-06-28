@@ -161,7 +161,7 @@ public class StatePerfil extends Composite {
 		leftSideBarPanel.add(txtbtnMinhasCaronas, 10, 150);
 		txtbtnMinhasCaronas.setSize("122px", "63px");
 		
-		TextButton txtbtnSugestoes = new TextButton("Sugestões\n");
+		TextButton txtbtnSugestoes = new TextButton("Minhas Sugestões\n");
 		leftSideBarPanel.add(txtbtnSugestoes, 10, 350);
 		txtbtnSugestoes.setSize("122px", "63px");
 		
@@ -235,7 +235,7 @@ public class StatePerfil extends Composite {
 		txtbtnMinhasCaronas.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-			      	caronasGUI();
+			      	minhasCaronasGUI();
 				}
 			});
 		
@@ -316,7 +316,7 @@ public class StatePerfil extends Composite {
 		
 	}
 	
-	protected void caronasGUI() {
+	protected void minhasCaronasGUI() {
 		scrollPanel.clear();
 		bodyPanel.clear();
 		bodyPanel.setVisible(false);
