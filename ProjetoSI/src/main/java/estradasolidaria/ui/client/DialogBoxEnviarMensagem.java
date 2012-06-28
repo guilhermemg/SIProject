@@ -20,18 +20,22 @@ public class DialogBoxEnviarMensagem extends DialogBox {
 		Label lblEnviarMensagem = new Label("Digite sua mensagem");
 		absolutePanel.add(lblEnviarMensagem, 10, 10);
 		
+
+		final TextArea textArea = new TextArea();
+		absolutePanel.add(textArea, 10, 44);
+		textArea.setSize("418px", "127px");
+		
 		TextButton txtbtnEnviar = new TextButton("Enviar");
 		txtbtnEnviar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
+				String text = textArea.getText();
+				//TODO fazer enviarMensagem e captura de erros e acertos
 				hide();
 			}
 		});
 		absolutePanel.add(txtbtnEnviar, 349, 183);
 		txtbtnEnviar.setSize("87px", "28px");
 		
-		TextArea textArea = new TextArea();
-		absolutePanel.add(textArea, 10, 44);
-		textArea.setSize("418px", "127px");
 		
 		TextButton txtbtnCancelar = new TextButton("Cancelar");
 		txtbtnCancelar.addClickHandler(new ClickHandler() {

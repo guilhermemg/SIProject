@@ -32,7 +32,7 @@ public class StatePesquisaCarona extends Composite {
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
-		absolutePanel.setSize("387px", "209px");
+		absolutePanel.setSize("340px", "219px");
 		
 		FlexTable flexTable = new FlexTable();
 		absolutePanel.add(flexTable, 28, 52);
@@ -51,12 +51,18 @@ public class StatePesquisaCarona extends Composite {
 		textBoxDestino = new TextBox();
 		flexTable.setWidget(1, 1, textBoxDestino);
 		
+		Label lblCidade = new Label("Cidade:");
+		flexTable.setWidget(2, 0, lblCidade);
+		
+		TextBox textBoxCidade = new TextBox();
+		flexTable.setWidget(2, 1, textBoxCidade);
+		
 		Label lblPesquiseUmaCarona = new Label("Pesquise uma carona");
 		lblPesquiseUmaCarona.setStyleName("gwt-LabelHomePage2");
 		absolutePanel.add(lblPesquiseUmaCarona, 28, 10);
 		
 		TextButton btnPesquisa = new TextButton("New button");
-		absolutePanel.add(btnPesquisa, 278, 132);
+		absolutePanel.add(btnPesquisa, 278, 176);
 		btnPesquisa.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				pesquisarCaronasNoSistema(idSessao, textBoxOrigem.getText(), textBoxDestino.getText());

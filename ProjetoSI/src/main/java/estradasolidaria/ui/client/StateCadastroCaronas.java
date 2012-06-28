@@ -21,6 +21,7 @@ import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.widget.client.TextButton;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.CheckBox;
 
 public class StateCadastroCaronas extends Composite {
 
@@ -42,7 +43,7 @@ public class StateCadastroCaronas extends Composite {
 		
 		AbsolutePanel absPanelCadastroCarona = new AbsolutePanel();
 		initWidget(absPanelCadastroCarona);
-		absPanelCadastroCarona.setSize("322px", "277px");
+		absPanelCadastroCarona.setSize("414px", "404px");
 		
 		Label lblCadastreUmaN = new Label("Cadastre uma nova carona");
 		lblCadastreUmaN.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -53,17 +54,17 @@ public class StateCadastroCaronas extends Composite {
 		
 		TextButton btnEnviar = new TextButton("Enviar");
 
-		absPanelCadastroCarona.add(btnEnviar, 204, 219);
+		absPanelCadastroCarona.add(btnEnviar, 252, 349);
 		btnEnviar.setSize("77px", "40px");
 		
 		lblMensagemDeErro = new Label("Campo(s) origatório(s)");
 		lblMensagemDeErro.setStyleName("gwt-LabelEstradaSolidaria5");
-		absPanelCadastroCarona.add(lblMensagemDeErro, 21, 219);
+		absPanelCadastroCarona.add(lblMensagemDeErro, 69, 349);
 		lblMensagemDeErro.setVisible(false);
 		
 		FlexTable flexTable = new FlexTable();
 		absPanelCadastroCarona.add(flexTable, 21, 22);
-		flexTable.setSize("271px", "187px");
+		flexTable.setSize("333px", "310px");
 		
 		Label lblOrigem = new Label("Origem:");
 		flexTable.setWidget(0, 0, lblOrigem);
@@ -75,7 +76,7 @@ public class StateCadastroCaronas extends Composite {
 		
 		final TextBox textBoxOrigem = new TextBox();
 		flexTable_2.setWidget(0, 0, textBoxOrigem);
-		textBoxOrigem.setSize("184px", "100%");
+		textBoxOrigem.setSize("234px", "100%");
 		
 		lblErroorige = new Label("*");
 		flexTable_2.setWidget(0, 1, lblErroorige);
@@ -98,7 +99,7 @@ public class StateCadastroCaronas extends Composite {
 		
 		final TextBox textBoxDestino = new TextBox();
 		flexTable_3.setWidget(0, 0, textBoxDestino);
-		textBoxDestino.setSize("184px", "100%");
+		textBoxDestino.setSize("231px", "100%");
 		
 		lblErrodestino = new Label("*");
 		flexTable_3.setWidget(0, 1, lblErrodestino);
@@ -159,7 +160,7 @@ public class StateCadastroCaronas extends Composite {
 		
 		final DateBox dateBox = new DateBox();
 		flexTable_4.setWidget(0, 0, dateBox);
-		dateBox.setSize("184px", "100%");
+		dateBox.setSize("228px", "100%");
 		dateBox.addValueChangeHandler(new ValueChangeHandler<Date>() {
 			public void onValueChange(ValueChangeEvent<Date> event) {
 				lblErrodata.setVisible(false);
@@ -184,12 +185,40 @@ public class StateCadastroCaronas extends Composite {
 		
 		final TextBox textBoxVagas = new TextBox();
 		flexTable_5.setWidget(0, 0, textBoxVagas);
-		textBoxVagas.setSize("184px", "100%");
+		textBoxVagas.setSize("227px", "100%");
 		
 		lblErrovagas = new Label("*");
 		flexTable_5.setWidget(0, 1, lblErrovagas);
 		lblErrovagas.setSize("5px", "16px");
 		lblErrovagas.setStyleName("gwt-LabelEstradaSolidaria6");
+		
+		Label lblCidade = new Label("Cidade:");
+		flexTable.setWidget(5, 0, lblCidade);
+		
+		FlexTable flexTable_6 = new FlexTable();
+		flexTable.setWidget(5, 1, flexTable_6);
+		flexTable_6.setWidth("240px");
+		
+		TextBox textBoxCidade = new TextBox();
+		flexTable_6.setWidget(0, 0, textBoxCidade);
+		textBoxCidade.setWidth("218px");
+		
+		Label lblMnimoDeCaroneiros = new Label("Mínimo de Caroneiros:");
+		flexTable.setWidget(6, 0, lblMnimoDeCaroneiros);
+		
+		FlexTable flexTable_7 = new FlexTable();
+		flexTable.setWidget(6, 1, flexTable_7);
+		flexTable_7.setWidth("242px");
+		
+		TextBox textBoxMinimoCaroneiros = new TextBox();
+		flexTable_7.setWidget(0, 0, textBoxMinimoCaroneiros);
+		textBoxMinimoCaroneiros.setWidth("218px");
+		
+		FlexTable flexTable_8 = new FlexTable();
+		flexTable.setWidget(7, 1, flexTable_8);
+		
+		CheckBox chckbxCaronaPreferencial = new CheckBox("Carona Preferencial");
+		flexTable_8.setWidget(0, 0, chckbxCaronaPreferencial);
 		lblErrovagas.setVisible(false);
 		textBoxVagas.addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent event) {

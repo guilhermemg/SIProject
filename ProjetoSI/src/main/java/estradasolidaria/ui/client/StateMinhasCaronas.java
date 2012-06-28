@@ -26,6 +26,7 @@ import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
+import com.google.gwt.widget.client.TextButton;
 
 public class StateMinhasCaronas extends AbsolutePanel {
 	final EstradaSolidaria estrada;
@@ -81,8 +82,20 @@ public class StateMinhasCaronas extends AbsolutePanel {
 
 	private void iniciarTabPanel() {
 		tabPanel = new TabPanel();
-		add(tabPanel);
-		tabPanel.setSize("100%", "100%");
+		add(tabPanel, 0, 36);
+		tabPanel.setSize("950px", "457px");
+		
+		TextButton txtbtnEncerrarCarona = new TextButton("Encerrar Carona");
+		add(txtbtnEncerrarCarona, 10, 2);
+		
+		TextButton txtbtnCancelarCarona = new TextButton("Cancelar Carona");
+		add(txtbtnCancelarCarona, 141, 2);
+		
+		TextButton txtbtnSugerirPontoDe = new TextButton("Sugerir Ponto de Encontro");
+		add(txtbtnSugerirPontoDe, 275, 2);
+		
+		TextButton txtbtnVisualizarPontosDe = new TextButton("Visualizar Pontos de Encontro Sugeridos");
+		add(txtbtnVisualizarPontosDe, 471, 2);
 
 		tabPanel.getTabBar().addSelectionHandler(
 				new SelectionHandler<Integer>() {
