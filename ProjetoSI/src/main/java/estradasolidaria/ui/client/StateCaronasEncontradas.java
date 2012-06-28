@@ -74,7 +74,7 @@ public class StateCaronasEncontradas extends Composite {
 		txtbtnRequisitarVaga.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent arg0) {
 				Integer idCarona = mapaIdCaronaToString.get(listBoxCaronasEncontradas.getItemText(listBoxCaronasEncontradas.getSelectedIndex()));
-				newDialog = new DialogBoxNovaSolicitacao(estradaService, idCarona);
+				newDialog = new DialogBoxNovaSolicitacao(estradaService, idCarona, idSessao);
 				newDialog.center();
 				newDialog.hide();
 				if(textBox.getText().equals("")){

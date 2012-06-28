@@ -15,12 +15,15 @@ public class DialogBoxNovaSolicitacao extends DialogBox {
 	
 	private EstradaSolidariaServiceAsync estradaService;
 	private Integer idDaCarona;
+	private Integer idDaSessao;
+	private String idDonoDaCarona;
 	private Label lblLoginusuario;
 	private Label lblGettrajeto;
 
-	public DialogBoxNovaSolicitacao(EstradaSolidariaServiceAsync estradaSolidariaService, Integer idCarona) {
+	public DialogBoxNovaSolicitacao(EstradaSolidariaServiceAsync estradaSolidariaService, Integer idCarona, Integer idSessao) {
 		this.estradaService = estradaSolidariaService;
 		this.idDaCarona = idCarona;
+		this.idDaSessao = idSessao;
 		
 		setHTML("Novo pedido de carona");
 		
@@ -38,7 +41,7 @@ public class DialogBoxNovaSolicitacao extends DialogBox {
 		txtbtnVerCarona.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				hide();
-				DialogBox newDialog = new DialogBoxEnviarMensagem();
+				DialogBox newDialog = new DialogBoxEnviarMensagem(estradaService, idDonoDaCarona, idDaSessao);
 				newDialog.center();
 				newDialog.show();
 			}
@@ -77,7 +80,7 @@ public class DialogBoxNovaSolicitacao extends DialogBox {
 			@Override
 			public void onSuccess(List<String> result) {
 				// 1 = indice do id do dono da carona na lista retornada. 
-				String idDonoDaCarona = result.get(1);
+				idDonoDaCarona = result.get(1);
 				getLoginUsuarioGUI(idDonoDaCarona);
 			}
 		  });
