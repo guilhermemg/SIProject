@@ -10,5 +10,5 @@ package estradasolidaria.ui.server.logic;
  *
  */
 public enum TipoDeCarona {
-	COMUM, RELAMPAGO, MUNICIPAL, PREFERENCIAL, EXPIRED
+	COMUM, RELAMPAGO, MUNICIPAL, PREFERENCIAL
 }

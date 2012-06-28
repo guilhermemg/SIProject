@@ -39,16 +39,14 @@ public class Carona implements Comparable<Carona>, Serializable {
 	private Integer vagas;
 	private String pontoEncontro;
 	private int LIMITE_VAGAS;
-
+	private TipoDeCarona tipoDeCarona;
 	private int posicaoNaInsercaoNoSistema;
+	private EstadoDaCarona estadoDaCarona;
 
 	private String cidade;
 
 	private Integer minimoCaroneiros;
-	private boolean isExpired;
-	private boolean isMunicipal = false; // muda para true quando uma carona municipal eh cadastrada
-	private boolean isPreferencial;
-
+	
 	// as solicitacoes sao apagadas apos aceitas pelo dono da carona
 	private Map<Integer, Solicitacao> mapIdSolicitacoes = new TreeMap<Integer, Solicitacao>();
 	private Iterator<Solicitacao> iteratorIdSolicitacoes = this.mapIdSolicitacoes
@@ -92,8 +90,13 @@ public class Carona implements Comparable<Carona>, Serializable {
 		setVagas(vagas);
 		setLimiteVagas(vagas);
 		setPosicaoNaInsercaoNoSistema(ordemParaCaronas);
+		setTipoDeCarona(TipoDeCarona.COMUM);
+		setEstadoDaCarona(EstadoDaCarona.CONFIRMADA);
 		setIdCarona(this.hashCode());
 	}
+
+
+
 
 	/**
 	 * Construtor para carona municipal.
@@ -118,8 +121,10 @@ public class Carona implements Comparable<Carona>, Serializable {
 		setVagas(vagas);
 		setLimiteVagas(vagas);
 		setPosicaoNaInsercaoNoSistema(ordemParaCaronas);
+		setTipoDeCarona(TipoDeCarona.MUNICIPAL);
+		setEstadoDaCarona(EstadoDaCarona.CONFIRMADA);
+		
 		setCidade(cidade);
-		setMunicipal(true);
 		
 		setIdCarona(this.hashCode());
 	}
@@ -150,9 +155,52 @@ public class Carona implements Comparable<Carona>, Serializable {
 		setMinimoCaroneiros(minimoCaroneiros);
 		setVagas(vagas);
 		setPosicaoNaInsercaoNoSistema(posicaoNaInsercaoNoSistema);
-		setExpired(false);
+		setTipoDeCarona(TipoDeCarona.RELAMPAGO);
+		setEstadoDaCarona(EstadoDaCarona.CONFIRMADA);
+		
 		setIdCarona(hashCode());
 	}
+	
+	/**
+	 * Configura o tipo da carona.
+	 * 
+	 * @param tipo
+	 */
+	private void setTipoDeCarona(TipoDeCarona tipo) {
+		if(tipo == null)
+			throw new IllegalArgumentException("Tipo de carona inválido");
+		tipoDeCarona = tipo;
+	}
+	
+	/**
+	 * Retorna o tipo de carona.
+	 * 
+	 * @return tipo
+	 */
+	public TipoDeCarona getTipoDeCarona() {
+		return this.tipoDeCarona;
+	}
+	
+	/**
+	 * Configura estado da carona.
+	 * 
+	 * @param estado
+	 */
+	private void setEstadoDaCarona(EstadoDaCarona estado) {
+		if(estado == null)
+			throw new IllegalArgumentException("Estado da carona inválido");
+		this.estadoDaCarona = estado;
+	}
+	
+	/**
+	 * Retorna estado da carona.
+	 * 
+	 * @return estadoDaCarona
+	 */
+	public EstadoDaCarona getEstadoDaCarona() {
+		return this.estadoDaCarona;
+	}
+	
 	
 	/**
 	 * Configura estado da carona relampago.
@@ -160,7 +208,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @param expired
 	 */
 	public void setExpired(boolean expired) {
-		this.isExpired = expired;
+		setEstadoDaCarona(EstadoDaCarona.EXPIRED);
 	}
 	
 	/**
@@ -169,7 +217,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @return estado da carona
 	 */
 	public boolean getExpired() {
-		return this.isExpired;
+		return this.estadoDaCarona.equals(EstadoDaCarona.EXPIRED);
 	}
 
 	/**
@@ -388,7 +436,6 @@ public class Carona implements Comparable<Carona>, Serializable {
 				* result
 				+ ((mapSugestoesPontoDeEncontro == null) ? 0
 						: mapSugestoesPontoDeEncontro.hashCode());
-		result = prime * result + (isMunicipal ? 1231 : 1237);
 		result = prime * result + ((origem == null) ? 0 : origem.hashCode());
 		result = prime * result
 				+ ((pontoEncontro == null) ? 0 : pontoEncontro.hashCode());
@@ -459,8 +506,6 @@ public class Carona implements Comparable<Carona>, Serializable {
 				return false;
 		} else if (!mapSugestoesPontoDeEncontro
 				.equals(other.mapSugestoesPontoDeEncontro))
-			return false;
-		if (isMunicipal != other.isMunicipal)
 			return false;
 		if (origem == null) {
 			if (other.origem != null)
@@ -718,17 +763,35 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return true: se for municipal, false: se não for municipal
 	 */
-	public boolean isMunicipal() {
-		return isMunicipal;
+	public boolean isCaronaMunicipal() {
+		return tipoDeCarona.equals(TipoDeCarona.MUNICIPAL);
 	}
-
+	
 	/**
-	 * Modifica o tipo da carona(municipal ou não).
+	 * Verifica se esta carona é uma carona preferencial ou não.
 	 * 
-	 * @param municipal
+	 * @return true: se for preferencial, false: se não for preferencial
 	 */
-	protected void setMunicipal(boolean municipal) {
-		this.isMunicipal = municipal;
+	public boolean isCaronaPreferencial() {
+		return tipoDeCarona.equals(TipoDeCarona.PREFERENCIAL);
+	}
+	
+	/**
+	 * Verifica se esta carona é uma carona comum ou não.
+	 * 
+	 * @return true: se for comum, false: se não for comum
+	 */
+	public boolean isCaronaComum() {
+		return tipoDeCarona.equals(TipoDeCarona.COMUM);
+	}
+	
+	/**
+	 * Verifica se esta carona é uma carona relampago ou não.
+	 * 
+	 * @return true: se for relampago, false: se não for relampago
+	 */
+	public boolean isCaronaRelampago() {
+		return tipoDeCarona.equals(TipoDeCarona.RELAMPAGO);
 	}
 
 	/**
@@ -939,13 +1002,6 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * Define carona como preferencial. 
 	 */
 	public void definirCaronaComoPreferencial() {
-		this.isPreferencial = true;
-	}
-
-	/**
-	 * Retorna se esta carona eh preferencial.
-	 */
-	public boolean isCaronaPreferencial() {
-		return this.isPreferencial;
+		setTipoDeCarona(TipoDeCarona.PREFERENCIAL);
 	}
 }

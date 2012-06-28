@@ -794,7 +794,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 			// Iterator Pattern
 			while (iteratorIdCaronasOferecidas.hasNext()) {
 				Carona c = iteratorIdCaronasOferecidas.next();
-				if (c.getDestino().equals(destino) && c.isMunicipal()) {
+				if (c.getDestino().equals(destino) && c.isCaronaMunicipal()) {
 					caronas.add(c);
 				}
 			}
@@ -802,7 +802,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 			// Iterator Pattern
 			while (iteratorIdCaronasOferecidas.hasNext()) {
 				Carona c = iteratorIdCaronasOferecidas.next();
-				if (c.getOrigem().equals(origem) && c.isMunicipal()) {
+				if (c.getOrigem().equals(origem) && c.isCaronaMunicipal()) {
 					caronas.add(c);
 				}
 			}
@@ -811,7 +811,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 			while (iteratorIdCaronasOferecidas.hasNext()) {
 				Carona c = iteratorIdCaronasOferecidas.next();
 				if (c.getOrigem().equals(origem)
-						&& c.getDestino().equals(destino) && c.isMunicipal()) {
+						&& c.getDestino().equals(destino) && c.isCaronaMunicipal()) {
 					caronas.add(c);
 				}
 			}
@@ -844,7 +844,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 				.iterator();
 		while (iteratorIdCaronasOferecidas.hasNext()) {
 			Carona c = iteratorIdCaronasOferecidas.next();
-			if (c.isMunicipal() && c.getCidade().equals(cidade)) {
+			if (c.isCaronaMunicipal() && c.getCidade().equals(cidade)) {
 				caronas.add(c);
 			}
 		}

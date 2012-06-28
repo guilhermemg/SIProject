@@ -230,7 +230,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 			return c.getPontoEncontro();
 		else if (nomeAtributo
 				.equals(EnumCarona.EH_MUINICIPAL.getNomeAtributo()))
-			return c.isMunicipal();
+			return c.isCaronaMunicipal();
 		else
 			throw new IllegalArgumentException("Atributo inexistente");
 	}
