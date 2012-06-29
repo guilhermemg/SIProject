@@ -50,6 +50,8 @@ public class Carona implements Comparable<Carona>, Serializable {
 
 	private Integer minimoCaroneiros;
 	
+	private Calendar dataVolta;
+	
 	// as solicitacoes sao apagadas apos aceitas pelo dono da carona
 	private Map<Integer, Solicitacao> mapIdSolicitacoes = new TreeMap<Integer, Solicitacao>();
 	private Iterator<Solicitacao> iteratorIdSolicitacoes = this.mapIdSolicitacoes
@@ -72,6 +74,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	private Thread threadIntervaloPreferencial;
 
 	private boolean isFinalizedTimeIntervalParaCaronaPreferencial;
+
 
 	// ------------------------------------------------------------------------------------------------------
 
@@ -150,12 +153,14 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @param vagas
 	 * @param minimoCaroneiros
 	 */
-	public Carona(Integer idDonoDaCarona, String origem, String destino, String data,
-			String hora, Integer vagas, Integer minimoCaroneiros, Integer posicaoNaInsercaoNoSistema) {
+	public Carona(Integer idDonoDaCarona, String origem, String destino, String dataIda,
+			String dataVolta, String hora, Integer vagas, 
+			Integer minimoCaroneiros, Integer posicaoNaInsercaoNoSistema) {
 		setIdDonoDaCarona(idDonoDaCarona);
 		setOrigem(origem);
 		setDestino(destino);
-		setData(data);
+		setData(dataIda);
+		setDataVolta(dataVolta);
 		setHora(hora);
 		setMinimoCaroneiros(minimoCaroneiros);
 		setVagas(vagas);
@@ -164,7 +169,27 @@ public class Carona implements Comparable<Carona>, Serializable {
 		setTipoDeCarona(TipoDeCarona.RELAMPAGO);
 		setEstadoDaCarona(EstadoDaCarona.CONFIRMADA);
 		
-		setIdCarona(hashCode());
+		setIdCarona(this.hashCode());
+	}
+	
+	private void setDataVolta(String dataVolta) {
+		dateUtil = new DateUtil(new GregorianCalendar());
+		if(dataVolta == null || dataVolta.equals(""))
+			throw new IllegalArgumentException("Data inválida");
+		else if(dateUtil.validaData(dataVolta) && dateUtil.validaDataJaPassou())
+			this.dataVolta = dateUtil.getCalendar();
+		else
+			throw new IllegalArgumentException("Data inválida");
+	}
+	
+	/**
+	 * Retorna data de volta
+	 * da carona relampago.
+	 * 
+	 * @return data volta
+	 */
+	public Calendar getDataVolta() {
+		return this.dataVolta;
 	}
 	
 	/**

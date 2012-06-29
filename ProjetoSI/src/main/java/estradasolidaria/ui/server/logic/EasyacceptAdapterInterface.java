@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.mail.MessagingException;
 
-public interface AdapterInterface {
+public interface EasyacceptAdapterInterface {
 
 	/**
 	 * Cria usuario para o sistema.
@@ -481,7 +481,7 @@ public interface AdapterInterface {
 	 * @throws CaronaInexistenteException 
 	 * @throws CaronaInvalidaException 
 	 */
-	public Carona getCaronaRelampago(String idCarona) throws CaronaInexistenteException, CaronaInvalidaException;
+	public String getCaronaRelampago(String idCarona) throws CaronaInexistenteException, CaronaInvalidaException;
 
 	/**
 	 * Configures uma nova carona expirada (para testes)
@@ -535,5 +535,6 @@ public interface AdapterInterface {
 	 * @param minimoCaroneiros
 	 */
 	public Integer cadastrarCaronaRelampago(String idSessao, String origem,
-			String destino, String data, String hora, String minimoCaroneiros);
+			String destino, String dataIda, String dataVolta,
+			String hora, String minimoCaroneiros);
 }

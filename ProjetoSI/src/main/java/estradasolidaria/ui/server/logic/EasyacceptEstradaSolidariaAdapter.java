@@ -21,18 +21,18 @@ import estradasolidaria.ui.server.util.SpecialLinkedListKeys;
  * @author Italo Silva
  *
  */
-public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
+public class EasyacceptEstradaSolidariaAdapter implements EasyacceptAdapterInterface {
 
 	private static EstradaSolidariaController sistema = EstradaSolidariaController.getInstance();
 
-	private static volatile AdapterInterface uniqueInstance;
+	private static volatile EasyacceptAdapterInterface uniqueInstance;
 
 	/**
 	 * Retorna unica instancia do adapter do controlador
 	 * 
 	 * @return instancia
 	 */
-	public static AdapterInterface getInstance() {
+	public static EasyacceptAdapterInterface getInstance() {
 		if (uniqueInstance == null) {
 			synchronized (EasyacceptEstradaSolidariaAdapter.class) {
 				if (uniqueInstance == null)
@@ -43,7 +43,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#criarUsuario(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#criarUsuario(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
 	public void criarUsuario(String login, String senha, String nome,
@@ -52,7 +52,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#cadastrarCarona(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#cadastrarCarona(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
 	public String cadastrarCarona(String idSessao, String origem,
@@ -83,7 +83,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#abrirSessao(java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#abrirSessao(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public String abrirSessao(String login, String senha) {
@@ -97,7 +97,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getAtributoUsuario(java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#getAtributoUsuario(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public Object getAtributoUsuario(String login, String atributo) {
@@ -135,7 +135,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#localizarCarona(java.lang.String, java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#localizarCarona(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
 	public String localizarCarona(String idSessao, String origem, String destino) {
@@ -161,7 +161,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getAtributoCarona(java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#getAtributoCarona(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public Object getAtributoCarona(String idCarona, String nomeAtributo) {
@@ -236,7 +236,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getTrajeto(java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#getTrajeto(java.lang.String)
 	 */
 	@Override
 	public String getTrajeto(String idCarona)
@@ -259,7 +259,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getCarona(java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#getCarona(java.lang.String)
 	 */
 	@Override
 	public String getCarona(String idCarona) {
@@ -279,7 +279,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#encerrarSessao(java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#encerrarSessao(java.lang.String)
 	 */
 	@Override
 	public void encerrarSessao(String login) {
@@ -287,7 +287,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#zerarSistema()
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#zerarSistema()
 	 */
 	@Override
 	public void zerarSistema() {
@@ -295,7 +295,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#encerrarSistema()
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#encerrarSistema()
 	 */
 	@Override
 	public void encerrarSistema() {
@@ -303,7 +303,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#reiniciarSistema()
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#reiniciarSistema()
 	 */
 	@Override
 	public void reiniciarSistema() {
@@ -311,7 +311,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getAtributoSolicitacao(java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#getAtributoSolicitacao(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public Object getAtributoSolicitacao(String idSolicitacao, String atributo) {
@@ -384,7 +384,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#sugerirPontoEncontro(java.lang.String, java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#sugerirPontoEncontro(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
 	public String sugerirPontoEncontro(String idSessao, String idCarona,
@@ -409,7 +409,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#responderSugestaoPontoEncontro(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#responderSugestaoPontoEncontro(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
 	public void responderSugestaoPontoEncontro(String idSessao,
@@ -438,7 +438,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#solicitarVagaPontoEncontro(java.lang.String, java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#solicitarVagaPontoEncontro(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
 	public String solicitarVagaPontoEncontro(String idSessao, String idCarona,
@@ -461,7 +461,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#aceitarSolicitacaoPontoEncontro(java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#aceitarSolicitacaoPontoEncontro(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public void aceitarSolicitacaoPontoEncontro(String idSessao,
@@ -484,7 +484,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#aceitarSolicitacao(java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#aceitarSolicitacao(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public void aceitarSolicitacao(String idSessao, String idSolicitacao) throws IllegalArgumentException, CaronaInexistenteException, EstadoSolicitacaoException {
@@ -505,7 +505,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#solicitarVaga(java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#solicitarVaga(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public String solicitarVaga(String idSessao, String idCarona)
@@ -528,7 +528,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#rejeitarSolicitacao(java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#rejeitarSolicitacao(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public void rejeitarSolicitacao(String idSessao, String idSolicitacao) throws CaronaInexistenteException, EstadoSolicitacaoException {
@@ -549,7 +549,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#desistirRequisicao(java.lang.String, java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#desistirRequisicao(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
 	public void desistirRequisicao(String idSessao, String idCarona,
@@ -574,7 +574,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#visualizarPerfil(java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#visualizarPerfil(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public String visualizarPerfil(String idSessao, String login) {
@@ -593,7 +593,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getAtributoPerfil(java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#getAtributoPerfil(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public Object getAtributoPerfil(String login, String atributo) {
@@ -663,7 +663,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#reviewVagaEmCarona(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#reviewVagaEmCarona(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
 	public void reviewVagaEmCarona(String idSessao, String idCarona,
@@ -688,7 +688,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#reviewCarona(java.lang.String, java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#reviewCarona(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
 	public void reviewCarona(String idSessao, String idCarona, String review)
@@ -711,7 +711,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#cadastrarCaronaMunicipal(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#cadastrarCaronaMunicipal(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
 	public String cadastrarCaronaMunicipal(String idSessao, String origem,
@@ -736,7 +736,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#localizarCaronaMunicipal(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#localizarCaronaMunicipal(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
 	public List<String> localizarCaronaMunicipal(String idSessao,
@@ -766,7 +766,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#localizarCaronaMunicipal(java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#localizarCaronaMunicipal(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public List<String> localizarCaronaMunicipal(String idSessao, String cidade) {
@@ -794,7 +794,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getCaronaUsuario(java.lang.String, int)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#getCaronaUsuario(java.lang.String, int)
 	 */
 	@Override
 	public String getCaronaUsuario(String idSessao, int indexCarona) {
@@ -813,7 +813,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getTodasCaronasUsuario(java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#getTodasCaronasUsuario(java.lang.String)
 	 */
 	@Override
 	public String getTodasCaronasUsuario(String idSessao) {
@@ -840,7 +840,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getSolicitacoesConfirmadas(java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#getSolicitacoesConfirmadas(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public String getSolicitacoesConfirmadas(String idSessao, String idCarona) {
@@ -872,7 +872,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getSolicitacoesPendentes(java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#getSolicitacoesPendentes(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public String getSolicitacoesPendentes(String idSessao, String idCarona)
@@ -904,7 +904,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getPontosSugeridos(java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#getPontosSugeridos(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public String getPontosSugeridos(String idSessao, String idCarona)
@@ -936,7 +936,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getPontosEncontro(java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#getPontosEncontro(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public String getPontosEncontro(String idSessao, String idCarona) {
@@ -966,7 +966,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#cadastrarInteresse(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#cadastrarInteresse(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
 	public String cadastrarInteresse(String idSessao, String origem,
@@ -987,7 +987,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#verificarMensagensPerfil(java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#verificarMensagensPerfil(java.lang.String)
 	 */
 	@Override
 	public String verificarMensagensPerfil(String idSessao) {
@@ -1017,7 +1017,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#enviarEmail(java.lang.String, java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#enviarEmail(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
 	public boolean enviarEmail(String idSessao, String destino, String message)
@@ -1037,11 +1037,11 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#cadastrarCaronaRelampago(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#cadastrarCaronaRelampago(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
 	public Integer cadastrarCaronaRelampago(String idSessao, String origem, String destino,
-			String data, String hora, String minimoCaroneiros) {
+			String dataIda, String dataVolta, String hora, String minimoCaroneiros) {
 		if(idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 		if(minimoCaroneiros == null || minimoCaroneiros.equals(""))
@@ -1060,12 +1060,13 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 		}
 		Integer vagas = minimoCaroneiros2;
 		
-		return sistema.cadastrarCaronaRelampago(idSessao2, origem, destino, data, hora, vagas, minimoCaroneiros2);
+		return sistema.cadastrarCaronaRelampago(idSessao2, origem, destino, dataIda,
+				dataVolta, hora, vagas, minimoCaroneiros2);
 	}
 	
 	/*
 	 * (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getAtibutoCaronaRelampago(java.lang.Integer, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#getAtibutoCaronaRelampago(java.lang.Integer, java.lang.String)
 	 */
 	@Override
 	public Object getAtributoCaronaRelampago(String idCarona, String atributo) 
@@ -1109,8 +1110,10 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 			return c.getOrigem();
 		else if (atributo.equals(EnumCarona.DESTINO.getNomeAtributo()))
 			return c.getDestino();
-		else if (atributo.equals(EnumCarona.DATA.getNomeAtributo()))
+		else if (atributo.equals(EnumCarona.DATA_IDA.getNomeAtributo()))
 			return formatterData.format(c.getData().getTime());
+		else if (atributo.equals(EnumCarona.DATA_VOLTA.getNomeAtributo()))
+			return formatterData.format(c.getDataVolta().getTime());
 		else if (atributo.equals(EnumCarona.HORA.getNomeAtributo()))
 			return formatterHora.format(c.getHora().getTime());
 		else if (atributo.equals(EnumCarona.PONTO_ENCONTRO.getNomeAtributo()))
@@ -1125,7 +1128,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 
 	/*
 	 * (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getMinimoCaroneiros(java.lang.Integer)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#getMinimoCaroneiros(java.lang.Integer)
 	 */
 	@Override
 	public Integer getMinimoCaroneiros(String idCarona) throws CaronaInexistenteException, CaronaInvalidaException {
@@ -1146,10 +1149,10 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getCaronaRelampago(java.lang.Integer)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#getCaronaRelampago(java.lang.Integer)
 	 */
 	@Override
-	public Carona getCaronaRelampago(String idCarona) throws CaronaInexistenteException, CaronaInvalidaException {
+	public String getCaronaRelampago(String idCarona) throws CaronaInexistenteException, CaronaInvalidaException {
 		if(idCarona == null)
 			throw new CaronaInvalidaException();
 		if(idCarona.equals(""))
@@ -1161,12 +1164,12 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Carona Inexistente");
 		}
-		return sistema.getCaronaRelampago(idCarona2);
+		return sistema.getCaronaRelampago(idCarona2).toString();
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#setCaronaRelampagoExpired(java.lang.Integer)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#setCaronaRelampagoExpired(java.lang.Integer)
 	 */
 	@Override
 	public Integer setCaronaRelampagoExpired(String idCarona) throws CaronaInvalidaException, CaronaInexistenteException {
@@ -1185,7 +1188,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getAtributoExpired(java.lang.Integer, java.lang.String)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#getAtributoExpired(java.lang.Integer, java.lang.String)
 	 */
 	@Override
 	public Object getAtributoExpired(String idExpired, String atributo) throws CaronaInvalidaException, CaronaInexistenteException {
@@ -1227,7 +1230,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 
 	/*
 	 * (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#definirCaronaPreferencial(java.lang.Integer)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#definirCaronaPreferencial(java.lang.Integer)
 	 */
 	@Override
 	public void definirCaronaPreferencial(String idCarona) throws CaronaInvalidaException, CaronaInexistenteException {
@@ -1246,7 +1249,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 
 	/*
 	 * (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#isCaronaPreferencial(java.lang.Integer)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#isCaronaPreferencial(java.lang.Integer)
 	 */
 	@Override
 	public boolean isCaronaPreferencial(String idCarona) throws CaronaInexistenteException, CaronaInvalidaException {
@@ -1265,7 +1268,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 
 	/*
 	 * (non-Javadoc)
-	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getUsuariosPreferenciaisCarona(java.lang.Integer)
+	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#getUsuariosPreferenciaisCarona(java.lang.Integer)
 	 */
 	@Override
 	public List<Usuario> getUsuariosPreferenciaisCarona(String idCarona) throws CaronaInexistenteException, CaronaInvalidaException {

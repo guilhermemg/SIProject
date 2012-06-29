@@ -23,7 +23,8 @@ public enum EnumCarona {
 	EH_MUINICIPAL("ehMunicipal"),
 	CIDADE("cidade"),
 	MINIMO_CARONEIROS("minimoCaroneiros"), 
-	EXPIRED("expired");
+	EXPIRED("expired"), DATA_IDA("dataIda"), 
+	DATA_VOLTA("dataVolta");
 	
 	private String nomeAtributo;
 	private EnumCarona(String menssagem) {
