@@ -3,12 +3,15 @@ package estradasolidaria.ui.client;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.gwt.cell.client.Cell;
+import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.TextButtonCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.user.cellview.client.CellBasedWidgetImplStandardBase;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -20,16 +23,19 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
+import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.widget.client.TextButton;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.ui.ScrollPanel;
 
 public class StateMinhasCaronas extends AbsolutePanel {
 	final EstradaSolidaria estrada;
@@ -51,18 +57,26 @@ public class StateMinhasCaronas extends AbsolutePanel {
 	private Column<GWTCarona, String> reviewColumn;
 	private HasHorizontalAlignment pontoDeEncontroColumn;
 	private Integer idSessao;
-	private AbsolutePanel flexTablePegas;
+	private FlexTable tabPegas;
 	private TabPanel tabPanel;
 	private AbsolutePanel flexTableSolicitadas;
 	private boolean isOferecida;
 	private ListBox comboBoxTipoDeSolicitacao;
-	private Column<GWTCarona,String> buttomColumn;
+	private Column<GWTCarona, String> buttomColumn;
 	private boolean isSolicitacaoAceita;
 	private AbsolutePanel absolutePanelAcoes;
 	private MenuItem mntmPontoDeEncontro;
-	private MenuItem mntmCaronaPreferencial;
 	private MenuItem mntmSugerirPontoDe;
 	private MenuItem mntmVisualizarSugestes;
+	private MenuBar menuBar;
+	private MenuItem mntmCarona;
+	private MenuItem mntmEncerrar;
+	private MenuItem mntmCancelar;
+	private MenuItem mntmCaronaPreferencial;
+	private MenuBar subMenuPontoDeEncontro;
+	private MenuBar subMenuAcoesDaCarona;
+	private ScrollPanel scrollPanelCaronas;
+	private Column<GWTCarona, Boolean> checkBoxColumn;
 
 	public StateMinhasCaronas(EstradaSolidaria estrada,
 			EstradaSolidariaServiceAsync estradaSolidariaService) {
@@ -71,20 +85,28 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		idSessao = EstradaSolidaria.getIdSessaoAberta();
 
 		setSize("950px", "493px");
-
-		//Inicia o tabPanel para visualizar as caronas
-		iniciarTabPanel();
 		
-		//Inicia as tabs do tabPanel -----
+		// Inicia Menu de Ações
+		iniciarMenuDeAcoes();
+
+		// Inicia o tabPanel para visualizar as caronas
+		iniciarTabPanel();
+
+		// Inicia as tabs do tabPanel -----
 		iniciarTabOferecidas();
 		iniciarTabPegas();
-		iniciarTabSolicitadas();
-		//--------------------------------
+		// --------------------------------
 
-		//Inicia a tabela onde serão exibidas as caronas e solicitações
+		// Inicia a tabela onde serão exibidas as caronas e solicitações
 		iniciarColunas();
 		iniciarCaronasCellTable();
 
+		//Inicia o StateMinhasCaronas com a tabOferecidas
+		processarTabOferecidas();
+		tabPanel.selectTab(0);
+		
+		// Comandos para teste no Windown manager
+//		tabOferecidas.setWidget(0, 0, absolutePanelAcoes);
 //		colocarColunasEmCaronasCellTableOferecidas();
 	}
 
@@ -92,7 +114,7 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		tabPanel = new TabPanel();
 		add(tabPanel);
 		tabPanel.setSize("950px", "457px");
-
+		
 		tabPanel.getTabBar().addSelectionHandler(
 				new SelectionHandler<Integer>() {
 
@@ -104,10 +126,6 @@ public class StateMinhasCaronas extends AbsolutePanel {
 						} else if (event.getSelectedItem().equals(1)) {
 							isOferecida = false;
 							processarTabPegas();
-						} else if (event.getSelectedItem().equals(2)) {
-							isOferecida = false;
-							isSolicitacaoAceita = true;
-							processarTabSolicitadas();
 						}
 					}
 				});
@@ -116,25 +134,17 @@ public class StateMinhasCaronas extends AbsolutePanel {
 	private void iniciarTabOferecidas() {
 		tabOferecidas = new FlexTable();
 		tabPanel.add(tabOferecidas, "Oferecidas", false);
-		tabOferecidas.setSize("100%", "100%");
-		tabOferecidas.getCellFormatter().setVerticalAlignment(1, 0,
-				HasVerticalAlignment.ALIGN_TOP);
+		tabOferecidas.setSize("100%", "90%");
 	}
 
 	private void iniciarTabPegas() {
-		flexTablePegas = new AbsolutePanel();
-		tabPanel.add(flexTablePegas, "Pegas", false);
-		flexTablePegas.setSize("100%", "100%");
-	}
-
-	private void iniciarTabSolicitadas() {
-		flexTableSolicitadas = new AbsolutePanel();
-		tabPanel.add(flexTableSolicitadas, "Solicitadas", false);
-		flexTableSolicitadas.setSize("100%", "100%");
+		tabPegas = new FlexTable();
+		tabPanel.add(tabPegas, "Pegas", false);
+		tabPegas.setSize("100%", "100%");
 	}
 
 	private void iniciarCaronasCellTable() {
-		selectionModel = new MultiSelectionModel<GWTCarona>(
+		selectionModel = new SingleSelectionModel<GWTCarona>(
 				new ProvidesKey<GWTCarona>() {
 					@Override
 					public Object getKey(GWTCarona item) {
@@ -144,8 +154,46 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		zerarCaronasCellTable();
 	}
 
+	private void iniciarMenuDeAcoes() {
+		absolutePanelAcoes = new AbsolutePanel();
+		absolutePanelAcoes.setSize("100%", "23px");
+
+		menuBar = new MenuBar(false);
+		absolutePanelAcoes.add(menuBar);
+		subMenuAcoesDaCarona = new MenuBar(true);
+
+		mntmCarona = new MenuItem("Carona", false, subMenuAcoesDaCarona);
+
+		mntmEncerrar = new MenuItem("Encerrar", false, (Command) null);
+		subMenuAcoesDaCarona.addItem(mntmEncerrar);
+
+		mntmCancelar = new MenuItem("Cancelar", false, (Command) null);
+		subMenuAcoesDaCarona.addItem(mntmCancelar);
+
+		mntmCaronaPreferencial = new MenuItem("Marcar como Preferencial",
+				false, (Command) null);
+		subMenuAcoesDaCarona.addItem(mntmCaronaPreferencial);
+		menuBar.addItem(mntmCarona);
+
+		subMenuPontoDeEncontro = new MenuBar(true);
+
+		mntmPontoDeEncontro = new MenuItem("Ponto de Encontro", false,
+				subMenuPontoDeEncontro);
+
+		mntmSugerirPontoDe = new MenuItem("Sugerir", false, (Command) null);
+		subMenuPontoDeEncontro.addItem(mntmSugerirPontoDe);
+
+		mntmVisualizarSugestes = new MenuItem("Visualizar Sugestões", false,
+				(Command) null);
+		subMenuPontoDeEncontro.addItem(mntmVisualizarSugestes);
+		menuBar.addItem(mntmPontoDeEncontro);
+	}
+
 	private void zerarCaronasCellTable() {
+		scrollPanelCaronas = new ScrollPanel();
+		scrollPanelCaronas.setSize("100%", "420px");
 		caronasCellTable = new CellTable<GWTCarona>();
+		scrollPanelCaronas.setWidget(caronasCellTable);
 		caronasCellTable.setSelectionModel(selectionModel,
 				DefaultSelectionEventManager
 						.<GWTCarona> createCheckboxManager());
@@ -193,45 +241,6 @@ public class StateMinhasCaronas extends AbsolutePanel {
 				});
 	}
 
-	private void gerarListaDeCaronasSolicitadas() {
-		if (comboBoxTipoDeSolicitacao.getSelectedIndex() == 0) {
-			this.estradaSolidariaService.getSolicitacoesFeitasConfirmadas(idSessao, new AsyncCallback<List<List<String>>>() {
-				
-				@Override
-				public void onFailure(Throwable caught) {
-					Window.alert("Remote Procedure Call - Failure: "
-							+ caught.getMessage());
-				}
-				
-				@Override
-				public void onSuccess(List<List<String>> result) {
-					atualizaListaGWTCaronas(result);
-					caronasCellTable.setRowCount(caronasGWT.size(),
-							true);
-					caronasCellTable.setRowData(0, caronasGWT);
-				}
-			});
-		} else {
-			this.estradaSolidariaService.getSolicitacoesFeitasPendentes(
-					idSessao, new AsyncCallback<List<List<String>>>() {
-
-						@Override
-						public void onFailure(Throwable caught) {
-							Window.alert("Remote Procedure Call - Failure: "
-									+ caught.getMessage());
-						}
-
-						@Override
-						public void onSuccess(List<List<String>> result) {
-							atualizaListaGWTCaronas(result);
-							caronasCellTable.setRowCount(caronasGWT.size(),
-									true);
-							caronasCellTable.setRowData(0, caronasGWT);
-						}
-					});
-		}
-	}
-
 	private void atualizaListaGWTCaronas(List<List<String>> result) {
 		// ZERA LISTA
 		caronasGWT = new LinkedList<GWTCarona>();
@@ -254,16 +263,6 @@ public class StateMinhasCaronas extends AbsolutePanel {
 	}
 
 	private void iniciarColunas() {
-		// Coluna de checkBox das Caronas
-//		checkBoxColumn = new Column<GWTCarona, Boolean>(new CheckboxCell()) {
-//			@Override
-//			public Boolean getValue(GWTCarona carona) {
-//				return selectionModel.isSelected(carona);
-//			}
-//		};
-//		checkBoxColumn
-//				.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-
 		buttomColumn = new Column<GWTCarona, String>(new TextButtonCell()) {
 
 			@Override
@@ -282,6 +281,17 @@ public class StateMinhasCaronas extends AbsolutePanel {
 				p.show();
 			}
 		});
+		
+		// Coluna de checkBox das Caronas
+		checkBoxColumn = new Column<GWTCarona, Boolean>(new CheckboxCell()) {
+			@Override
+			public Boolean getValue(GWTCarona carona) {
+				return selectionModel.isSelected(carona);
+			}
+		};
+		checkBoxColumn
+				.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		
 		// Coluna de Donos das Caronas
 		donoDaCaronaColumn = new TextColumn<GWTCarona>() {
 			@Override
@@ -373,42 +383,12 @@ public class StateMinhasCaronas extends AbsolutePanel {
 
 	private void colocarColunasEmCaronasCellTableOferecidas() {
 		zerarCaronasCellTable();
-		
-		absolutePanelAcoes = new AbsolutePanel();
-		tabOferecidas.setWidget(0, 0, absolutePanelAcoes);
-		absolutePanelAcoes.setSize("100%", "23px");
-		
-		MenuBar menuBar = new MenuBar(false);
-		absolutePanelAcoes.add(menuBar);
-		MenuBar menuBar_1 = new MenuBar(true);
-		
-		MenuItem mntmCarona = new MenuItem("Carona", false, menuBar_1);
-		
-		MenuItem mntmEncerrar = new MenuItem("Encerrar", false, (Command) null);
-		menuBar_1.addItem(mntmEncerrar);
-		
-		MenuItem mntmCancelar = new MenuItem("Cancelar", false, (Command) null);
-		menuBar_1.addItem(mntmCancelar);
-		
-		mntmCaronaPreferencial = new MenuItem("Carona Preferencial", false, (Command) null);
-		menuBar_1.addItem(mntmCaronaPreferencial);
-		menuBar.addItem(mntmCarona);
-		MenuBar menuBar_2 = new MenuBar(true);
-		
-		mntmPontoDeEncontro = new MenuItem("Ponto de Encontro", false, menuBar_2);
-		
-		mntmSugerirPontoDe = new MenuItem("Sugerir", false, (Command) null);
-		menuBar_2.addItem(mntmSugerirPontoDe);
-		
-		mntmVisualizarSugestes = new MenuItem("Visualizar Sugestões", false, (Command) null);
-		menuBar_2.addItem(mntmVisualizarSugestes);
-		menuBar.addItem(mntmPontoDeEncontro);
 
 		caronasCellTable.addColumn(buttomColumn);
 		caronasCellTable.setColumnWidth(buttomColumn, "100%");
-		
-//		caronasCellTable.addColumn(checkBoxColumn);
-//		caronasCellTable.setColumnWidth(checkBoxColumn, "100%");
+
+		caronasCellTable.addColumn(checkBoxColumn);
+		caronasCellTable.setColumnWidth(checkBoxColumn, "45px");
 
 		caronasCellTable.addColumn(origemColumn, "Origem");
 		caronasCellTable.setColumnWidth(origemColumn, "100%");
@@ -427,17 +407,15 @@ public class StateMinhasCaronas extends AbsolutePanel {
 
 		caronasCellTable.addColumn(reviewColumn, "Review");
 		caronasCellTable.setColumnWidth(reviewColumn, "100%");
-
-		// COLOCA caronasCellTable em flexTableOferecidas
-		tabOferecidas.setWidget(1, 0, caronasCellTable);
+		
+		tabOferecidas.setWidget(1, 0, scrollPanelCaronas);
 	}
 
 	private void colocarColunasEmCaronasCellTablePegas() {
 		zerarCaronasCellTable();
-		flexTablePegas.clear();
-		
-//		caronasCellTable.addColumn(checkBoxColumn);
-//		caronasCellTable.setColumnWidth(checkBoxColumn, "100%");
+
+		// caronasCellTable.addColumn(checkBoxColumn);
+		// caronasCellTable.setColumnWidth(checkBoxColumn, "100%");
 
 		caronasCellTable.addColumn(donoDaCaronaColumn, "Dono");
 		caronasCellTable.setColumnWidth(donoDaCaronaColumn, "100%");
@@ -461,66 +439,18 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		caronasCellTable.setColumnWidth(reviewColumn, "100%");
 
 		// COLOCA caronasCellTable em flexTablePegas
-		flexTablePegas.add(caronasCellTable);
-
-	}
-
-	private void colocarColunasEmCaronasCellTableSolicitadas() {
-		zerarCaronasCellTable();
-		flexTableSolicitadas.clear();
-		
-		comboBoxTipoDeSolicitacao = new ListBox();
-		comboBoxTipoDeSolicitacao.addChangeHandler(new ChangeHandler() {
-			public void onChange(ChangeEvent event) {
-				gerarListaDeCaronasSolicitadas();
-			}
-		});
-		comboBoxTipoDeSolicitacao.addItem("Aceitas");
-		comboBoxTipoDeSolicitacao.addItem("Pendentes");
-		comboBoxTipoDeSolicitacao.addItem("Rejeitadas");
-		comboBoxTipoDeSolicitacao.addItem("Canceladas");
-		flexTableSolicitadas.add(comboBoxTipoDeSolicitacao);
-		
-		comboBoxTipoDeSolicitacao.setWidth("128px");
-
-//		caronasCellTable.addColumn(checkBoxColumn);
-//		caronasCellTable.setColumnWidth(checkBoxColumn, "100%");
-
-		caronasCellTable.addColumn(donoDaCaronaColumn, "Dono");
-		caronasCellTable.setColumnWidth(donoDaCaronaColumn, "100%");
-
-		caronasCellTable.addColumn(origemColumn, "Origem");
-		caronasCellTable.setColumnWidth(origemColumn, "100%");
-
-		caronasCellTable.addColumn(destinoColumn, "Destino");
-		caronasCellTable.setColumnWidth(destinoColumn, "100%");
-
-		caronasCellTable.addColumn(dataColumn, "Data");
-		caronasCellTable.setColumnWidth(dataColumn, "100%");
-
-		caronasCellTable.addColumn(horaColumn, "Hora-Saída");
-		caronasCellTable.setColumnWidth(horaColumn, "100%");
-
-		caronasCellTable.addColumn(vagasColumn, "Vagas");
-		caronasCellTable.setColumnWidth(vagasColumn, "100%");
-
-		// COLOCA caronasCellTable em flexTableSolicitadas
-		flexTableSolicitadas.add(caronasCellTable);
-
+		tabPegas.setWidget(1, 0, scrollPanelCaronas);
 	}
 
 	private void processarTabOferecidas() {
 		gerarListaDeCaronasOferecidas(idSessao);
+		tabOferecidas.setWidget(0, 0, absolutePanelAcoes);
 		colocarColunasEmCaronasCellTableOferecidas();
 	}
 
 	private void processarTabPegas() {
 		gerarListaDeCaronasPegas(idSessao);
+		tabPegas.setWidget(0, 0, absolutePanelAcoes);
 		colocarColunasEmCaronasCellTablePegas();
-	}
-
-	private void processarTabSolicitadas() {
-		colocarColunasEmCaronasCellTableSolicitadas();
-		gerarListaDeCaronasSolicitadas();
 	}
 }
