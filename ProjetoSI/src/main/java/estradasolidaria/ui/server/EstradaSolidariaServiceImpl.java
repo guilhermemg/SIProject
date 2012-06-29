@@ -463,6 +463,7 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 				caronaList.add(c.getVagas().toString());
 				caronaList.add(c.getPontoEncontro());
 				caronaList.add(donoDaCarona.getNome());
+				caronaList.add(c.getIdCarona().toString());
 				
 				result.add(caronaList);
 			}
