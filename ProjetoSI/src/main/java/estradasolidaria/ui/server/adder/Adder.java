@@ -3,6 +3,7 @@ package estradasolidaria.ui.server.adder;
 import java.util.Collection;
 import java.util.Iterator;
 
+import estradasolidaria.ui.server.logic.CadastroEmCaronaPreferencialException;
 import estradasolidaria.ui.server.logic.CaronaInexistenteException;
 import estradasolidaria.ui.server.logic.CaronaInvalidaException;
 import estradasolidaria.ui.server.logic.EstadoSolicitacaoException;
@@ -63,7 +64,7 @@ public class Adder {
 		sistema.aceitarSolicitacao(idSessao4, s1.getIdSolicitacao());
 	}
 
-	private void solicitacaoDeVagas() throws CaronaInvalidaException {
+	private void solicitacaoDeVagas() throws CaronaInvalidaException, CaronaInexistenteException, CadastroEmCaronaPreferencialException {
 		sistema.solicitarVaga(idSessao2, sistema.getCaronaUsuario(idSessao1, 1).getIdCarona());
 		sistema.solicitarVagaPontoEncontro(idSessao3, (sistema.getCaronaUsuario(idSessao2, 1).getIdCarona()), "ponto1");
 		sistema.solicitarVagaPontoEncontro(idSessao4, (sistema.getCaronaUsuario(idSessao5, 2).getIdCarona()), "ponto2");

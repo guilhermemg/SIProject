@@ -72,4 +72,59 @@ public class SenderMail {
 	      throw new MessagingException();
 	   }
 	}
+
+	/**
+	 * Envia email com origem no email de
+	 * suporte do sistema: estradaSolidariaSupport@gmail.com
+	 * 
+	 * @param destino
+	 * @param text
+	 * @throws MessagingException
+	 */
+	public static void sendMail(String destino, String text) throws MessagingException {
+		//TODO ver se isso funciona depois
+		// Recipient's email ID needs to be mentioned.
+		   String to = destino;
+		
+		   // Sender's email ID needs to be mentioned
+		   String from = "estradaSolidariaSupport@gmail.com";
+		
+		   // Assuming you are sending email from localhost
+		   String host = "localhost";
+		
+		   // Get system properties
+		   Properties properties = System.getProperties();
+		
+		   // Setup mail server
+		   properties.setProperty("mail.smtp.host", host);
+		
+		   // Get the default Session object.
+		   Session session = Session.getDefaultInstance(properties);
+		
+		   try{
+		      // Create a default MimeMessage object.
+		      MimeMessage message = new MimeMessage(session);
+		
+		      // Set From: header field of the header.
+		      message.setFrom(new InternetAddress(from));
+		      
+		      // Set To: header field of the header.
+		      message.addRecipient(Message.RecipientType.TO,
+		                               new InternetAddress(to));
+		
+		      // Set Subject: header field
+		      message.setSubject("EstradaSolidaria Mail Service");
+		
+		      // Now set the actual message
+		      message.setText(text);
+		
+		      // Send message
+		      Transport.send(message);
+		      //System.out.println("Sent message successfully...."); 
+		      //TODO colocar em log depois, q email foi enviado com sucesso
+		   }
+		   catch (MessagingException mex) {
+		      throw new MessagingException();
+		   }
+	}
 }

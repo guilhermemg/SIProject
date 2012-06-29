@@ -280,10 +280,11 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param donoDaSolicitacao
 	 * @param pontos
 	 * @return idSolicitacao
+	 * @throws CadastroEmCaronaPreferencialException 
 	 * 
 	 */
 	public Solicitacao sugerirPontoEncontro(String idCarona, Usuario donoDaCarona,
-			Usuario donoDaSolicitacao, String pontos) {
+			Usuario donoDaSolicitacao, String pontos) throws CadastroEmCaronaPreferencialException {
 		Carona c = this.mapIdCaronasOferecidas.get(idCarona);
 		if (c == null)
 			throw new IllegalArgumentException(
@@ -300,13 +301,18 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param donoDaSolicitacao
 	 * @param pontos
 	 * @return idSolicitacao
+	 * @throws CaronaInexistenteException 
+	 * @throws CadastroEmCaronaPreferencialException 
 	 * 
 	 */
 	public Solicitacao solicitarVagaPontoEncontro(Integer idCarona,
-			Usuario donoDaCarona, Usuario donoDaSolicitacao, String pontos) {
-		Carona c = this.mapIdCaronasOferecidas.get(idCarona);
-		return c.addSolicitacao(c.getOrigem(), c.getDestino(), donoDaCarona,
-				donoDaSolicitacao, pontos);
+			Usuario donoDaCarona, Usuario donoDaSolicitacao, String pontos) throws CaronaInexistenteException, CadastroEmCaronaPreferencialException {
+		Carona carona = this.mapIdCaronasOferecidas.get(idCarona);
+		if(carona != null) {
+			return carona.addSolicitacao(carona.getOrigem(), carona.getDestino(), donoDaCarona,
+						donoDaSolicitacao, pontos);
+		}
+		throw new CaronaInexistenteException();
 	}
 
 	/**
@@ -442,14 +448,15 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas.values()
 				.iterator();
 		while (iteratorIdCaronasOferecidas.hasNext()) {
-			Carona c = iteratorIdCaronasOferecidas.next();
-			Iterator<Solicitacao> it = c.getMapIdSolicitacao().values()
+			Carona carona = iteratorIdCaronasOferecidas.next();
+			Iterator<Solicitacao> it = carona.getMapIdSolicitacao().values()
 					.iterator();
 			while (it.hasNext()) {
 				Solicitacao s = it.next();
-				if (s.getIdSolicitacao().equals(idSolicitacao) && s.getTipoSolicitacao().equals(EnumTipoSolicitacao.SOLICITACAO_SEM_PONTO_ENCONTRO)) {
+				if (s.getIdSolicitacao().equals(idSolicitacao) &&
+						s.getTipoSolicitacao().equals(EnumTipoSolicitacao.SOLICITACAO_SEM_PONTO_ENCONTRO)) {
 					// nao seta pontoEncontro da carona ==> fica null
-					c.aceitarSolicitacao(s);
+					carona.aceitarSolicitacao(s);
 					return s;
 				}
 			}
@@ -520,14 +527,16 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param donoDaCarona
 	 * @param donoDaSolicitacao
 	 * @return idSolicitacao
+	 * @throws CadastroEmCaronaPreferencialException 
 	 * 
 	 */
 	public Solicitacao solicitarVaga(Integer idCarona, Usuario donoDaCarona,
-			Usuario donoDaSolicitacao) throws IllegalArgumentException {
-		Carona c = this.mapIdCaronasOferecidas.get(idCarona);
-		if (c != null)
-			return c.addSolicitacao(c.getOrigem(), c.getDestino(),
+			Usuario donoDaSolicitacao) throws IllegalArgumentException, CadastroEmCaronaPreferencialException {
+		Carona carona = this.mapIdCaronasOferecidas.get(idCarona);
+		if (carona != null) {
+			return carona.addSolicitacao(carona.getOrigem(), carona.getDestino(),
 					donoDaCarona, donoDaSolicitacao);
+		}
 		throw new IllegalArgumentException("Identificador do carona é inválido");
 	}
 
@@ -1404,9 +1413,30 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	/**
 	 * Cancela carona identificada por idCarona.
 	 * @param idCarona
+	 * @throws MessagingException 
 	 */
-	public void cancelarCarona(Integer idCarona) {
+	public void cancelarCarona(Integer idCarona) throws MessagingException {
 		Carona carona = mapIdCaronasOferecidas.get(idCarona);
 		carona.cancelarCarona();
+	}
+
+	/**
+	 * Retorna lista de usuarios preferenciais
+	 * para uma carona preferencial identificada 
+	 * por idCarona.
+	 * 
+	 * @param idCarona
+	 * @return lista de usuarios preferenciais
+	 * @throws CaronaInexistenteException 
+	 */
+	public List<Usuario> getUsuariosPreferenciaisCarona(Integer idCarona) throws CaronaInexistenteException {
+		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
+		while(iteratorIdCaronasOferecidas.hasNext()) {
+			Carona carona = iteratorIdCaronasOferecidas.next();
+			if(carona.getIdCarona().equals(idCarona) && carona.isCaronaPreferencial()) {
+				return carona.getUsuariosPreferenciaisCarona();
+			}
+		}
+		throw new CaronaInexistenteException();
 	}
 }

@@ -363,7 +363,7 @@ public class StateHomePage extends Composite {
 		
 		absolutePanel_4.add(hprlnkRepositrioDeDesenvolvimento, 664, 37);
 		
-		Label lblAssinaturaDoSistema = new Label("Estrada Solidária foi desenvolvido por Guilherme Gadelha, Hemã Vidal, Ítalo Silva e Leonardo Santos.");
+		Label lblAssinaturaDoSistema = new Label("Estrada Solidária foi desenvolvido por Guilherme Monteiro, Hemã Vidal, Ítalo Silva e Leonardo Santos.");
 		absolutePanel_4.add(lblAssinaturaDoSistema, 381, 10);
 		lblAssinaturaDoSistema.setSize("706px", "24px");
 		

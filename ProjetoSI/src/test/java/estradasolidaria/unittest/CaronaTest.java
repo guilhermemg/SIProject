@@ -248,6 +248,6 @@ public class CaronaTest {
 
 	@Test
 	public void testGetCarona() {
-		assertEquals("Centro para Catol�, no dia 15/07/2012, as 08:30", carona3.getCarona());
+		assertEquals("Centro para Catol�, no dia 15/07/2012, as 08:30", carona3.getCarona().toString());
 	}
 }

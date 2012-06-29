@@ -158,9 +158,10 @@ public interface AdapterInterface {
 	 * @return id de solicitacao
 	 * @throws CaronaInvalidaException
 	 * @throws CaronaInexistenteException 
+	 * @throws CadastroEmCaronaPreferencialException 
 	 */
 	public abstract String solicitarVagaPontoEncontro(String idSessao,
-			String idCarona, String ponto) throws CaronaInvalidaException, CaronaInexistenteException;
+			String idCarona, String ponto) throws CaronaInvalidaException, CaronaInexistenteException, CadastroEmCaronaPreferencialException;
 
 	/**
 	 * Aceita uma solicitacão.
@@ -197,9 +198,11 @@ public interface AdapterInterface {
 	 * @param idCarona
 	 * @return solicitacao feita
 	 * @throws CaronaInvalidaException
+	 * @throws CadastroEmCaronaPreferencialException 
+	 * @throws IllegalArgumentException 
 	 */
 	public abstract String solicitarVaga(String idSessao, String idCarona)
-			throws CaronaInvalidaException;
+			throws CaronaInvalidaException, IllegalArgumentException, CadastroEmCaronaPreferencialException;
 
 	/**
 	 * Usuario dono da carona, indicado por idSessao, rejeita solicitacao,
@@ -516,8 +519,10 @@ public interface AdapterInterface {
 	 * 
 	 * @param idCarona
 	 * @return lista de usuarios
+	 * @throws CaronaInexistenteException 
+	 * @throws CaronaInvalidaException 
 	 */
-	public List<Usuario> getUsuariosPreferenciaisCarona(String idCarona);
+	public List<Usuario> getUsuariosPreferenciaisCarona(String idCarona) throws CaronaInexistenteException, CaronaInvalidaException;
 	
 	/**
 	 * Cadastra carona relampago no sistema.

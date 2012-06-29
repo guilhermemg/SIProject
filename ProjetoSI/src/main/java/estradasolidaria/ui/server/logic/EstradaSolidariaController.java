@@ -392,9 +392,11 @@ public class EstradaSolidariaController implements Serializable {
 	 *            : ponto de encontro sugerido
 	 * @return id da solicitacao feita
 	 * @throws CaronaInvalidaException 
+	 * @throws CaronaInexistenteException 
+	 * @throws CadastroEmCaronaPreferencialException 
 	 */
 	public Solicitacao solicitarVagaPontoEncontro(Integer idSessao,
-			Integer idCarona, String ponto) throws CaronaInvalidaException {
+			Integer idCarona, String ponto) throws CaronaInvalidaException, CaronaInexistenteException, CadastroEmCaronaPreferencialException {
 		if (idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 
@@ -509,8 +511,10 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param idCarona
 	 * @return solicitacao feita
 	 * @throws CaronaInvalidaException 
+	 * @throws CadastroEmCaronaPreferencialException 
+	 * @throws IllegalArgumentException 
 	 */
-	public Solicitacao solicitarVaga(Integer idSessao, Integer idCarona) throws CaronaInvalidaException {
+	public Solicitacao solicitarVaga(Integer idSessao, Integer idCarona) throws CaronaInvalidaException, IllegalArgumentException, CadastroEmCaronaPreferencialException {
 		if (idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 		if(idCarona == null)
@@ -1397,11 +1401,33 @@ public class EstradaSolidariaController implements Serializable {
 			while(iteratorCaronas.hasNext()) {
 				Carona carona = iteratorCaronas.next();
 				if(carona.getIdCarona().equals(idCarona)) {
-					carona.definirCaronaComoPreferencial();
+					carona.definirCaronaComoPreferencial(getListaUsuariosPreferenciais(donoDaCarona, carona));
 				}
 			}
 		}
 		throw new IllegalArgumentException("IdCarona inválido");
+	}
+	
+	/**
+	 * Retorna lista de usuarios preferenciais
+	 * desse usuario.
+	 * 
+	 * @param idDonoDaCarona
+	 * @param idCarona
+	 * @return lista de usuarios preferenciais
+	 */
+	private List<Usuario> getListaUsuariosPreferenciais(Usuario donoDaCarona, Carona carona) {
+		List<Usuario> listaUsuariosPreferenciais = new LinkedList<Usuario>();
+		Iterator<Integer> iteratorIdCaroneiros = carona.getMapCaroneiroReviewDono().keySet().iterator();
+		while(iteratorIdCaroneiros.hasNext()) {
+			Integer idCaroneiro = iteratorIdCaroneiros.next();
+			EnumCaronaReview review = carona.getMapCaroneiroReviewDono().get(idCaroneiro);
+			if(review.equals(EnumCaronaReview.SEGURA_E_TRANQUILA)) {
+				Usuario caroneiro = getUsuarioAPartirDeIDUsuario(idCaroneiro);
+				listaUsuariosPreferenciais.add(caroneiro);
+			}
+		}
+		return listaUsuariosPreferenciais;
 	}
 	
 	/**
@@ -1431,10 +1457,18 @@ public class EstradaSolidariaController implements Serializable {
 	 * 
 	 * @param idCarona
 	 * @return lista de usuarios
+	 * @throws CaronaInexistenteException 
 	 */
-	public List<Usuario> getUsuariosPreferenciaisCarona(Integer idCarona) {
-		//TODO
-		return null;
+	public List<Usuario> getUsuariosPreferenciaisCarona(Integer idCarona) throws CaronaInexistenteException {
+		Usuario donoDaCarona;
+		iteratorIdUsuario = mapIdUsuario.values().iterator();
+		while(iteratorIdUsuario.hasNext()) {
+			donoDaCarona = iteratorIdUsuario.next();
+			if(donoDaCarona.getMapIdCaronasOferecidas().containsKey(idCarona)) {
+				return donoDaCarona.getUsuariosPreferenciaisCarona(idCarona);
+			}
+		}
+		throw new UsuarioInexistenteException();
 	}
 	
 	/**
@@ -1676,8 +1710,9 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param idSessao
 	 * @param idCarona
 	 * @throws CaronaInvalidaException 
+	 * @throws MessagingException 
 	 */
-	public void cancelarCarona(Integer idSessao, Integer idCarona) throws CaronaInvalidaException {
+	public void cancelarCarona(Integer idSessao, Integer idCarona) throws CaronaInvalidaException, MessagingException {
 		if(idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 		if(idCarona == null)

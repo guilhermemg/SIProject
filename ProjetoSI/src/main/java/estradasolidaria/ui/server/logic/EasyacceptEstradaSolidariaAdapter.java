@@ -442,7 +442,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	 */
 	@Override
 	public String solicitarVagaPontoEncontro(String idSessao, String idCarona,
-			String ponto) throws CaronaInvalidaException, CaronaInexistenteException {
+			String ponto) throws CaronaInvalidaException, CaronaInexistenteException, CadastroEmCaronaPreferencialException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 		if(idCarona == null || idCarona.equals(""))
@@ -509,7 +509,7 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	 */
 	@Override
 	public String solicitarVaga(String idSessao, String idCarona)
-			throws CaronaInvalidaException {
+			throws CaronaInvalidaException, IllegalArgumentException, CadastroEmCaronaPreferencialException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 		if (idCarona == null || idCarona.equals(""))
@@ -1268,8 +1268,17 @@ public class EasyacceptEstradaSolidariaAdapter implements AdapterInterface {
 	 * @see estradasolidaria.ui.server.logic.AdapterInterface#getUsuariosPreferenciaisCarona(java.lang.Integer)
 	 */
 	@Override
-	public List<Usuario> getUsuariosPreferenciaisCarona(String idCarona) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Usuario> getUsuariosPreferenciaisCarona(String idCarona) throws CaronaInexistenteException, CaronaInvalidaException {
+		if(idCarona == null)
+			throw new CaronaInvalidaException();
+		if(idCarona.equals(""))
+			throw new CaronaInexistenteException();
+		Integer idCarona2 = null;
+		try {
+			idCarona2 = Integer.parseInt(idCarona);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sistema.getUsuariosPreferenciaisCarona(idCarona2);
 	}
 }

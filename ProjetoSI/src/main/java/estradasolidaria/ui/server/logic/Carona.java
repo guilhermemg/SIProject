@@ -10,9 +10,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.mail.MessagingException;
+
 import com.ibm.icu.text.SimpleDateFormat;
 
 import estradasolidaria.ui.server.util.DateUtil;
+import estradasolidaria.ui.server.util.SenderMail;
 import estradasolidaria.ui.server.util.SpecialLinkedListBrackets;
 
 
@@ -64,6 +67,11 @@ public class Carona implements Comparable<Carona>, Serializable {
 	private Map<Integer, EnumCaronaReview> mapDonoReviewCaroneiro = new TreeMap<Integer, EnumCaronaReview>();
 	private Map<Integer, Sugestao> mapSugestoesPontoDeEncontro = new TreeMap<Integer, Sugestao>();
 
+	private List<Usuario> listaUsuariosPreferenciais = new LinkedList<Usuario>();
+
+	private Thread threadIntervaloPreferencial;
+
+	private boolean isFinalizedTimeIntervalParaCaronaPreferencial;
 
 	// ------------------------------------------------------------------------------------------------------
 
@@ -94,9 +102,6 @@ public class Carona implements Comparable<Carona>, Serializable {
 		setEstadoDaCarona(EstadoDaCarona.CONFIRMADA);
 		setIdCarona(this.hashCode());
 	}
-
-
-
 
 	/**
 	 * Construtor para carona municipal.
@@ -154,6 +159,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 		setHora(hora);
 		setMinimoCaroneiros(minimoCaroneiros);
 		setVagas(vagas);
+		setLimiteVagas(vagas);
 		setPosicaoNaInsercaoNoSistema(posicaoNaInsercaoNoSistema);
 		setTipoDeCarona(TipoDeCarona.RELAMPAGO);
 		setEstadoDaCarona(EstadoDaCarona.CONFIRMADA);
@@ -186,7 +192,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @param estado
 	 */
-	private void setEstadoDaCarona(EstadoDaCarona estado) {
+	public void setEstadoDaCarona(EstadoDaCarona estado) {
 		if(estado == null)
 			throw new IllegalArgumentException("Estado da carona inválido");
 		this.estadoDaCarona = estado;
@@ -253,6 +259,15 @@ public class Carona implements Comparable<Carona>, Serializable {
 			this.LIMITE_VAGAS = limite;
 	}
 	
+	/**
+	 * Retorna o limite de vagas desta carona.
+	 * 
+	 * @return limite de vagas
+	 */
+	public int getLimiteVagas() {
+		return LIMITE_VAGAS;
+	}
+
 	/**
 	 * Retorna o id da carona.
 	 * 
@@ -650,17 +665,22 @@ public class Carona implements Comparable<Carona>, Serializable {
 	/**
 	 * Adiciona uma solicitação na carona.
 	 * 
-	 * @param origem2
-	 * @param destino2
-	 * @param donoDaCarona2
+	 * @param origem
+	 * @param destino
+	 * @param donoDaCarona
 	 * @param donoDaSolicitacao
 	 * @return idSolicitacao
+	 * @throws CadastroEmCaronaPreferencialException 
 	 * @throws Exception
 	 */
-	public Solicitacao addSolicitacao(String origem2, String destino2,
-			Usuario donoDaCarona2, Usuario donoDaSolicitacao)
-			throws IllegalArgumentException {
-		Solicitacao s = new Solicitacao(this.getIdCarona(), origem2, destino2, donoDaCarona2,
+	public Solicitacao addSolicitacao(String origem, String destino,
+			Usuario donoDaCarona, Usuario donoDaSolicitacao) throws IllegalArgumentException, CadastroEmCaronaPreferencialException {
+		if(this.getTipoDeCarona().equals(TipoDeCarona.PREFERENCIAL)) {
+			if(!isFinalizedTimeIntervalParaCaronaPreferencial) {
+				throw new CadastroEmCaronaPreferencialException();
+			}
+		}
+		Solicitacao s = new Solicitacao(this.getIdCarona(), origem, destino, donoDaCarona,
 				donoDaSolicitacao, EnumTipoSolicitacao.SOLICITACAO_SEM_PONTO_ENCONTRO);
 		this.mapIdSolicitacoes.put(s.getIdSolicitacao(), s);
 		return s;
@@ -674,14 +694,21 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @param ponto
 	 *            : ponto de encontro
 	 * @return id da solicitacao
+	 * @throws CadastroEmCaronaPreferencialException 
 	 */
 	public Solicitacao addSolicitacao(String origem, String destino,
-			Usuario donoDaCarona, Usuario donoDaSolicitacao, String ponto) {
-		if (validaPontoEncontro(donoDaSolicitacao, ponto)) {
+			Usuario donoDaCarona, Usuario donoDaSolicitacao, String ponto) throws CadastroEmCaronaPreferencialException {
+		if(validaPontoEncontro(donoDaSolicitacao, ponto)) {
+			if(this.isCaronaPreferencial()) {
+				if(!isFinalizedTimeIntervalParaCaronaPreferencial) {
+					throw new CadastroEmCaronaPreferencialException();
+				}
+			}
 			Solicitacao s = new Solicitacao(getIdCarona(), origem, destino, donoDaCarona,
 					donoDaSolicitacao, ponto, EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
 			this.mapIdSolicitacoes.put(s.getIdSolicitacao(), s);
 			return s;
+			
 		} else {
 			throw new IllegalArgumentException("Ponto Inválido");
 		}
@@ -1001,21 +1028,74 @@ public class Carona implements Comparable<Carona>, Serializable {
 	/**
 	 * Define carona como preferencial. 
 	 */
-	public void definirCaronaComoPreferencial() {
+	public void definirCaronaComoPreferencial(List<Usuario> listaDeUsuariosPreferenciais) {
 		setTipoDeCarona(TipoDeCarona.PREFERENCIAL);
+		setListaDeUsuariosPreferenciais(listaDeUsuariosPreferenciais);
+		iniciaIntervaloDeTempoParaCadastroDeUsuariosPreferenciais();
+	}
+	
+	private void iniciaIntervaloDeTempoParaCadastroDeUsuariosPreferenciais() {
+		threadIntervaloPreferencial =
+				new ThreadIntervaloDeTempoPreferencial("Intervalo de tempo para carona preferencial", this);
+		threadIntervaloPreferencial.start();
 	}
 
 	/**
-	 * Encerrar esta carona. 
+	 * Configura lista de usuarios preferenciais para esta carona.
+	 * 
+	 * @param listaDeUsuariosPreferenciais
+	 */
+	private void setListaDeUsuariosPreferenciais(
+			List<Usuario> listaDeUsuariosPreferenciais) {
+		if(listaDeUsuariosPreferenciais == null)
+			throw new IllegalArgumentException("Lista de usuarios preferenciais inválida");
+		this.listaUsuariosPreferenciais = listaDeUsuariosPreferenciais;
+	}
+
+	/**
+	 * Encerra esta carona. 
 	 */
 	public void encerrarCarona() {
 		this.setEstadoDaCarona(EstadoDaCarona.ENCERRADA);
 	}
 
 	/**
-	 * Cancela esta carona.
+	 * Cancela esta carona e envia email
+	 * aos usuarios aceitos dizendo que a carona
+	 * foi cancelada.
+	 * 
+	 * @throws MessagingException 
 	 */
-	public void cancelarCarona() {
+	public void cancelarCarona() throws MessagingException {
 		this.setEstadoDaCarona(EstadoDaCarona.CANCELADA);
+		Iterator<Solicitacao> itSolicitacoes = this.mapIdSolicitacoes.values().iterator();
+		while(itSolicitacoes.hasNext()) {
+			Solicitacao s = itSolicitacoes.next();
+			if(s.getEstado().equals(EnumNomeDoEstadoDaSolicitacao.ACEITA)) {
+				SenderMail.sendMail(s.getDonoDaSolicitacao().getEmail(), "Esta carona cancela foi cancelada. Mais detalhes entrar em contato" +
+						"com o dono da carona");
+			}
+		}
+	}
+
+	/**
+	 * Retorna lista de usuarios preferencias dessa carona.
+	 * 
+	 * @return lista de usuarios preferenciais
+	 */
+	public List<Usuario> getUsuariosPreferenciaisCarona() {
+		return listaUsuariosPreferenciais ;
+	}
+
+	/**
+	 * Configura a variavel que indica
+	 * se o tempo de espera para cadastro
+	 * dos usuarios preferenciais está finalizado
+	 * ou nao.
+	 * 
+	 * @param b
+	 */
+	public void setIsFinalizedTimeInterval(boolean b) {
+		this.isFinalizedTimeIntervalParaCaronaPreferencial = b;
 	}
 }

@@ -173,4 +173,22 @@ public class DateUtil {
 	public Calendar getCalendar() {
 		return this.calendar;
 	}
+
+	/**
+	 * Retorna hora exata da carona, com a data
+	 * e a hora incluidas num mesmo calendar.
+	 * 
+	 * @param data
+	 * @param hora
+	 * @return hora exata da carona
+	 */
+	public Long getTimeDaCarona(Calendar data, Calendar hora) {
+		Calendar horaDaCarona = new GregorianCalendar();
+		horaDaCarona.set(Calendar.YEAR, data.get(Calendar.YEAR));
+		horaDaCarona.set(Calendar.MONTH, data.get(Calendar.MONTH));
+		horaDaCarona.set(Calendar.DAY_OF_MONTH, data.get(Calendar.DAY_OF_MONTH));
+		horaDaCarona.set(Calendar.HOUR_OF_DAY, hora.get(Calendar.HOUR_OF_DAY));
+		horaDaCarona.set(Calendar.MINUTE, hora.get(Calendar.MINUTE));
+		return horaDaCarona.getTimeInMillis();
+	}
 }
