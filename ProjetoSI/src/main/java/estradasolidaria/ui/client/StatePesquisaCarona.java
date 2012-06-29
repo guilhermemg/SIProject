@@ -59,7 +59,7 @@ public class StatePesquisaCarona extends Composite {
 		flexTable.setWidget(2, 1, textBoxCidade);
 		
 		Label lblPesquiseUmaCarona = new Label("Pesquise uma carona");
-		lblPesquiseUmaCarona.setStyleName("gwt-LabelHomePage2");
+		lblPesquiseUmaCarona.setStyleName("gwt-LabelEstradaSolidaria2");
 		absolutePanel.add(lblPesquiseUmaCarona, 28, 10);
 		
 		TextButton btnPesquisa = new TextButton("New button");

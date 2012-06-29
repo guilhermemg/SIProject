@@ -1,15 +1,9 @@
 package estradasolidaria.ui.server.data;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.Map;
 import java.util.TreeMap;
-
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -34,7 +28,7 @@ import estradasolidaria.ui.server.logic.Usuario;
 public class GerenciadorDeDados {
 	private XStream xstream;
 	private Map<Integer, Usuario> mapIdUsuario;
-	private String fname = "xml/sistemaCaronas.xml";
+	private String fname = "xml/estradaSolidaria.xml";
 	
 	private static volatile GerenciadorDeDados uniqueInstance;
 	
