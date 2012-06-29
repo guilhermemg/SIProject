@@ -452,8 +452,11 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public boolean enviarEmail(Integer idSessao, String destino, String message)
 			throws GWTException {
-		// TODO Auto-generated method stub
-		return false;
+		try {
+			return controller.enviarEmail(idSessao, destino, message);
+		} catch (Exception e) {
+			throw new GWTException(e.getMessage());
+		}
 	}
 
 	@Override

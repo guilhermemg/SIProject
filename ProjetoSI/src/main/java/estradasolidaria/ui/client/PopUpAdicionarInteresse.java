@@ -1,7 +1,13 @@
 package estradasolidaria.ui.client;
 
+import java.util.Date;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -13,11 +19,6 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.widget.client.TextButton;
-import com.google.gwt.event.dom.client.KeyPressHandler;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import java.util.Date;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
 
 public class PopUpAdicionarInteresse extends PopupPanel {
 
@@ -172,9 +173,15 @@ public class PopUpAdicionarInteresse extends PopupPanel {
 		
 		String origem = textBoxOrigem.getText(),
 						destino = textBoxDestino.getText(),
-						data = dateBox.getTextBox().getText(),
 						horarioInicio = horaInicio  + ":" + minutosInicio,
 						horarioFim = horaFim + ":" + minutosFim;
+		
+		String data;
+		if(dateBox.equals(null)){
+			data = "";
+		} else {
+			data = dateBox.getTextBox().getText();
+		}
 		
 		estradaSolidariaService.cadastrarInteresse(idSessao, origem, destino, data, horarioInicio, horarioFim, new AsyncCallback<String>() {
 

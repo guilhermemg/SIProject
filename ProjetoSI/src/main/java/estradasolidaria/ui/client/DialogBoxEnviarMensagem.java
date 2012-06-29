@@ -107,10 +107,17 @@ public class DialogBoxEnviarMensagem extends DialogBox {
 
 			@Override
 			public void onSuccess(Boolean result) {
-				textArea.setText("");
-				lblMensagemDeErro.setText("Mensagem enviada!");
-				lblMensagemDeErro.setStyleName("gwt-LabelEstradaSolidaria10");
-				lblMensagemDeErro.setVisible(true);
+				if(result){
+					textArea.setText("");
+					lblMensagemDeErro.setText("Mensagem enviada!");
+					lblMensagemDeErro.setStyleName("gwt-LabelEstradaSolidaria10");
+					lblMensagemDeErro.setVisible(true);
+				} else {
+					textArea.setText("");
+					lblMensagemDeErro.setText("Mensagem não enviada.");
+					lblMensagemDeErro.setStyleName("gwt-LabelEstradaSolidaria5");
+					lblMensagemDeErro.setVisible(true);
+				}
 			}
 		  });
 		
