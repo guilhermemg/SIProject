@@ -2,8 +2,11 @@ package estradasolidaria.ui.client;
 
 import java.util.List;
 
+import com.google.gwt.cell.client.CheckboxCell;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -71,7 +74,18 @@ public class StateCaronasEncontradas extends Composite {
 		
 		selectionModel = new MultiSelectionModel<GWTCarona>();
 		dataGrid_1.setSelectionModel(selectionModel);
-		
+			
+	    Column<GWTCarona, Boolean> checkColumn =
+		        new Column<GWTCarona, Boolean>(new CheckboxCell(true, false)) {
+		          @Override
+		          public Boolean getValue(GWTCarona object) {
+		            // Get the value from the selection model.
+		            return selectionModel.isSelected(object);
+		          }
+		        };
+		dataGrid_1.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
+		dataGrid_1.setColumnWidth(checkColumn, 40, Unit.PX);
+			    
 		TextColumn<GWTCarona> columnOrigem = new TextColumn<GWTCarona>() {
 			@Override
 			public String getValue(GWTCarona carona) {
