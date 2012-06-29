@@ -170,8 +170,16 @@ public class Carona implements Comparable<Carona>, Serializable {
 		setEstadoDaCarona(EstadoDaCarona.CONFIRMADA);
 		
 		setIdCarona(this.hashCode());
+		
+		iniciarIntervaloDeTempoAte48hAntesDaCaronaComecar();
 	}
 	
+	private void iniciarIntervaloDeTempoAte48hAntesDaCaronaComecar() {
+		Thread t = 
+				new ThreadIntervaloDeTempoParaRegistroEmCaronaRelampago("Thread intervalo de tempo ate 48h antes da carona relampago comecar", this);
+		t.start();
+	}
+
 	private void setDataVolta(String dataVolta) {
 		dateUtil = new DateUtil(new GregorianCalendar());
 		if(dataVolta == null || dataVolta.equals(""))
@@ -725,7 +733,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 			Usuario donoDaCarona, Usuario donoDaSolicitacao, String ponto) throws CadastroEmCaronaPreferencialException {
 		if(validaPontoEncontro(donoDaSolicitacao, ponto)) {
 			if(this.isCaronaPreferencial()) {
-				if(!isFinalizedTimeIntervalParaCaronaPreferencial) {
+				if(!this.listaUsuariosPreferenciais.contains(donoDaSolicitacao)) {
 					throw new CadastroEmCaronaPreferencialException();
 				}
 			}
@@ -1061,7 +1069,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	
 	private void iniciaIntervaloDeTempoParaCadastroDeUsuariosPreferenciais() {
 		threadIntervaloPreferencial =
-				new ThreadIntervaloDeTempoPreferencial("Intervalo de tempo para carona preferencial", this);
+				new ThreadIntervaloDeTempoParaRegistroEmCaronaPreferencial("Intervalo de tempo para carona preferencial", this);
 		threadIntervaloPreferencial.start();
 	}
 
