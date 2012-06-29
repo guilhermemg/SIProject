@@ -1,52 +1,49 @@
 package estradasolidaria.ui.client;
 
-import java.util.Map;
+import java.util.List;
 
+import com.google.gwt.cell.client.CheckboxCell;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.DataGrid;
+import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.widget.client.TextButton;
 
 public class StateCaronasEncontradas extends Composite {
-	private Map<String, Integer> mapaIdCaronaToString;
+	private List<GWTCarona> listaDeCaronas;
 	private EstradaSolidariaServiceAsync estradaSolidariaService;
 	private EstradaSolidaria entryPoint;
 	private Integer idSessao;
 	private Label lblMensagemdeerro;
 	private DialogBox newDialog;
+	
+	private DataGrid<GWTCarona> dataGrid_1;
+	private Column<GWTCarona, Boolean> checkBoxcolumn;
+	private SelectionModel<GWTCarona> selectionModel;
 
 	@SuppressWarnings("static-access")
-	public StateCaronasEncontradas(final EstradaSolidariaServiceAsync estradaService, EstradaSolidaria estrada, Map<String, Integer> map) {
+	public StateCaronasEncontradas(final EstradaSolidariaServiceAsync estradaService, EstradaSolidaria estrada, List<GWTCarona> list) {
 		this.estradaSolidariaService = estradaService;
 		this.entryPoint = estrada;
-		this.mapaIdCaronaToString = map;
-		Object[] arrayIdCaronaToString = mapaIdCaronaToString.keySet().toArray();
+		this.listaDeCaronas = list;
 		
-		idSessao  = entryPoint.getIdSessaoAberta();
+		this.idSessao  = entryPoint.getIdSessaoAberta();
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
-		absolutePanel.setSize("593px", "491px");
-		
-		final ListBox listBoxCaronasEncontradas = new ListBox();
-		listBoxCaronasEncontradas.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				lblMensagemdeerro.setVisible(false);
-			}
-		});
-		for(int i = 0; i < arrayIdCaronaToString.length; i++){
-			listBoxCaronasEncontradas.addItem((String) arrayIdCaronaToString[i]);
-		}
-
-		absolutePanel.add(listBoxCaronasEncontradas, 80, 176);
-		listBoxCaronasEncontradas.setSize("477px", "294px");
-		listBoxCaronasEncontradas.setVisibleItemCount(10);
+		absolutePanel.setSize("659px", "491px");
 		
 		Label lblCaronasEncontradas = new Label("Caronas Encontradas:");
 		lblCaronasEncontradas.setStyleName("gwt-LabelEstradaSolidaria2");
@@ -68,20 +65,73 @@ public class StateCaronasEncontradas extends Composite {
 		
 		lblMensagemdeerro = new Label("MensagemDeErro");
 		lblMensagemdeerro.setStyleName("gwt-LabelEstradaSolidaria5");
-		absolutePanel_1.add(lblMensagemdeerro, 10, 70);
 		lblMensagemdeerro.setVisible(false);
+		absolutePanel_1.add(lblMensagemdeerro, 10, 70);
 		
+		dataGrid_1 = new DataGrid<GWTCarona>();
+		absolutePanel.add(dataGrid_1, 78, 184);
+		dataGrid_1.setSize("571px", "280px");
+		
+		selectionModel = new MultiSelectionModel<GWTCarona>();
+		dataGrid_1.setSelectionModel(selectionModel);
+			
+	    Column<GWTCarona, Boolean> checkColumn =
+		        new Column<GWTCarona, Boolean>(new CheckboxCell(true, false)) {
+		          @Override
+		          public Boolean getValue(GWTCarona object) {
+		            // Get the value from the selection model.
+		            return selectionModel.isSelected(object);
+		          }
+		        };
+		dataGrid_1.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
+		dataGrid_1.setColumnWidth(checkColumn, 40, Unit.PX);
+			    
+		TextColumn<GWTCarona> columnOrigem = new TextColumn<GWTCarona>() {
+			@Override
+			public String getValue(GWTCarona carona) {
+				return carona.getOrigem();
+			}
+		};
+		dataGrid_1.addColumn(columnOrigem, "Origem");
+		
+		TextColumn<GWTCarona> columnDestino = new TextColumn<GWTCarona>() {
+			@Override
+			public String getValue(GWTCarona carona) {
+				return carona.getDestino();
+			}
+		};
+		dataGrid_1.addColumn(columnDestino, "Destino");
+		
+		TextColumn<GWTCarona> columnData = new TextColumn<GWTCarona>() {
+			@Override
+			public String getValue(GWTCarona carona) {
+				return carona.getData();
+			}
+		};
+		dataGrid_1.addColumn(columnData, "Data");
+		
+		TextColumn<GWTCarona> columnHora = new TextColumn<GWTCarona>() {
+			@Override
+			public String getValue(GWTCarona carona) {
+				return carona.getHora();
+			}
+		};
+		dataGrid_1.addColumn(columnHora, "Hora");
+		
+		TextColumn<GWTCarona> columnVagas = new TextColumn<GWTCarona>() {
+			@Override
+			public String getValue(GWTCarona carona) {
+				return carona.getVagas();
+			}
+		};
+		dataGrid_1.addColumn(columnVagas, "Vagas");
+		
+		dataGrid_1.setRowCount(listaDeCaronas.size(), true);
+		dataGrid_1.setRowData(listaDeCaronas);
+//		
 		txtbtnRequisitarVaga.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent arg0) {
-				Integer idCarona = mapaIdCaronaToString.get(listBoxCaronasEncontradas.getItemText(listBoxCaronasEncontradas.getSelectedIndex()));
-				newDialog = new DialogBoxNovaSolicitacao(estradaService, idCarona, idSessao);
-				newDialog.center();
-				newDialog.hide();
-				if(textBox.getText().equals("")){
-					solicitarVagaGUI(idSessao, idCarona);
-				} else {
-					solicitarVagaComPontoDeEncontroGUI(idSessao, idCarona, textBox.getText());
-				}
+					Window.alert("temporariamente fora de uso");
 			}
 
 		});

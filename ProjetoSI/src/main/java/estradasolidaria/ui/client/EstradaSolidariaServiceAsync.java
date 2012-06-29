@@ -64,7 +64,7 @@ public interface EstradaSolidariaServiceAsync {
 	void getTrajeto(Integer idCarona, AsyncCallback<String> callback);
 
 	void localizarCarona(Integer idSessao, String origem, String destino,
-			AsyncCallback<Map<String, Integer>> callback);
+			AsyncCallback<List<GWTCarona>> callback);
 
 	void localizarCaronaMunicipal(Integer idSessao, String cidade,
 			AsyncCallback<List<String>> callback);

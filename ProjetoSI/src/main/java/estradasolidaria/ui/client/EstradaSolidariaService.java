@@ -1,7 +1,6 @@
 package estradasolidaria.ui.client;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.mail.MessagingException;
 
@@ -69,7 +68,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @return lista de ids de caronas como string
 	 * @throws GWTException 
 	 */
-	public abstract Map<String, Integer> localizarCarona(Integer idSessao, String origem,
+	public abstract List<GWTCarona> localizarCarona(Integer idSessao, String origem,
 			String destino) throws GWTException;
 
 	/**

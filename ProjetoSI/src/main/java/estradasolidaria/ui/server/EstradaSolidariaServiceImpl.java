@@ -4,13 +4,12 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.ibm.icu.text.SimpleDateFormat;
 
 import estradasolidaria.ui.client.EstradaSolidariaService;
+import estradasolidaria.ui.client.GWTCarona;
 import estradasolidaria.ui.client.GWTException;
 import estradasolidaria.ui.client.GWTInteresse;
 import estradasolidaria.ui.server.adder.Adder;
@@ -73,16 +72,43 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		}
 	}
 
+//	@Override
+//	public Map<Integer, String> localizarCarona(Integer idSessao, String origem, String destino) throws GWTException {
+//		try {
+//			Map<Integer, String> mapaIdCaronasToString = new TreeMap<Integer, String>();
+//			List<Carona> listaCaronas = controller.localizarCarona(idSessao, origem, destino);
+//			for(Carona c : listaCaronas){
+//				mapaIdCaronasToString.put(c.getIdCarona(), c.toString());
+//			}
+//			return mapaIdCaronasToString;
+//		} catch(Exception e){
+//			throw new GWTException(e.getMessage());
+//		}
+//	}
+	
 	@Override
-	public Map<String, Integer> localizarCarona(Integer idSessao, String origem, String destino) throws GWTException {
+	public List<GWTCarona> localizarCarona(Integer idSessao, String origem, String destino) throws GWTException {
 		try {
-			Map<String, Integer> mapaIdCaronasToString = new TreeMap<String, Integer>();
+			List<GWTCarona> result = new LinkedList<GWTCarona>();
 			List<Carona> listaCaronas = controller.localizarCarona(idSessao, origem, destino);
-			for(Carona c : listaCaronas){
-				mapaIdCaronasToString.put(c.toString(), c.getIdCarona());
+			for(Carona c : listaCaronas) {
+				GWTCarona gwt_c = new GWTCarona();
+				Date data = c.getData().getTime();
+				Date hora = c.getHora().getTime();
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+				SimpleDateFormat hourFormat = new SimpleDateFormat("hh:mm");
+				gwt_c.setData(dateFormat.format(data));
+				gwt_c.setDestino(c.getDestino());
+				gwt_c.setHora(hourFormat.format(hora));
+				gwt_c.setIdCarona(c.getIdCarona().toString());
+				gwt_c.setOrigem(c.getOrigem());
+				gwt_c.setVagas(c.getVagas().toString());
+				
+				result.add(gwt_c);
 			}
-			return mapaIdCaronasToString;
-		} catch(Exception e){
+			return result;
+		}
+		catch(Exception e) {
 			throw new GWTException(e.getMessage());
 		}
 	}
