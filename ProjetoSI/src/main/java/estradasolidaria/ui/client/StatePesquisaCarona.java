@@ -1,6 +1,6 @@
 package estradasolidaria.ui.client;
 
-import java.util.Map;
+import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -10,7 +10,6 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.widget.client.TextButton;
@@ -74,7 +73,7 @@ public class StatePesquisaCarona extends Composite {
 	}
 
 	private void pesquisarCaronasNoSistema(Integer sessao, String origem, String destino) {
-		estradaSolidariaService.localizarCarona(sessao, origem, destino,  new AsyncCallback<Map<String, Integer>>(){ 
+		estradaSolidariaService.localizarCarona(sessao, origem, destino,  new AsyncCallback<List<GWTCarona>>(){ 
 			@Override
 			public void onFailure(Throwable caught) {
 				// Show the RPC error message to the user
@@ -82,7 +81,7 @@ public class StatePesquisaCarona extends Composite {
 			}
 
 			@Override
-			public void onSuccess(Map<String, Integer> result) {
+			public void onSuccess(List<GWTCarona> result) {
 				bodyPanel.clear();
 				Widget caronasEncontradas = new StateCaronasEncontradas(estradaSolidariaService, estrada, result);
 				bodyPanel.add(caronasEncontradas);
