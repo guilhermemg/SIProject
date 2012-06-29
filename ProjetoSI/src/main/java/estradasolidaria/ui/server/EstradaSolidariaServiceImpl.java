@@ -321,24 +321,31 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		return result;
 	}
 
-	private GWTCarona criaGWTCaronaDTO(Carona c) {
+	/**
+	 * Cria uma GWTCarona DTO(Data Transfer Object) a partir de uma Carona
+	 * para que o lado-client possa manipular as caronas.
+	 * 
+	 * @param carona
+	 * @return gwtCarona
+	 */
+	private GWTCarona criaGWTCaronaDTO(Carona carona) {
 		GWTCarona gwt_c = new GWTCarona();
 		
-		Usuario donoDaCarona = controller.getMapIdUsuario().get(c.getIdDonoDaCarona());
+		Usuario donoDaCarona = controller.getMapIdUsuario().get(carona.getIdDonoDaCarona());
 		
-		gwt_c.setIdDono(c.getIdDonoDaCarona().toString());
-		gwt_c.setOrigem(c.getOrigem());
-		gwt_c.setDestino(c.getDestino());
-		gwt_c.setData(dateFormat.format(c.getData().getTime()));
-		gwt_c.setHora(hourFormat.format(c.getHora().getTime()));
-		gwt_c.setVagas(c.getVagas().toString());
-		if (c.getPontoEncontro() == null) {
-			gwt_c.setPontoEncontro(c.getPontoEncontro());
+		gwt_c.setIdDono(carona.getIdDonoDaCarona().toString());
+		gwt_c.setOrigem(carona.getOrigem());
+		gwt_c.setDestino(carona.getDestino());
+		gwt_c.setData(dateFormat.format(carona.getData().getTime()));
+		gwt_c.setHora(hourFormat.format(carona.getHora().getTime()));
+		gwt_c.setVagas(carona.getVagas().toString());
+		if (carona.getPontoEncontro() == null) {
+			gwt_c.setPontoEncontro(carona.getPontoEncontro());
 		}else {
 			gwt_c.setPontoEncontro(new String(""));
 		}
 		gwt_c.setNomeDono(donoDaCarona.getNome());
-		gwt_c.setIdCarona(c.getIdCarona().toString());
+		gwt_c.setIdCarona(carona.getIdCarona().toString());
 		
 		return gwt_c;
 	}
