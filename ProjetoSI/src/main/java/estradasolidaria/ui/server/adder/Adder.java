@@ -3,9 +3,12 @@ package estradasolidaria.ui.server.adder;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.mail.MessagingException;
+
 import estradasolidaria.ui.server.logic.CadastroEmCaronaPreferencialException;
 import estradasolidaria.ui.server.logic.CaronaInexistenteException;
 import estradasolidaria.ui.server.logic.CaronaInvalidaException;
+import estradasolidaria.ui.server.logic.EstadoCaronaException;
 import estradasolidaria.ui.server.logic.EstadoSolicitacaoException;
 import estradasolidaria.ui.server.logic.EstradaSolidariaController;
 import estradasolidaria.ui.server.logic.Solicitacao;
@@ -22,7 +25,7 @@ public class Adder {
 		this.sistema = uniqueInstance;
 	}
 
-	public void addElements() {
+	public void addElements() throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
 		for(int i = 1; i < 6; i++) {
 			sistema.criarUsuario("l"+i, "s"+i, "n"+i, "e"+i, "em"+i);
 		}
@@ -71,7 +74,7 @@ public class Adder {
 		sistema.solicitarVaga(idSessao5, sistema.getCaronaUsuario(idSessao4, 1).getIdCarona());
 	}
 
-	private void cadastraCaronas() {
+	private void cadastraCaronas() throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
 		for(int j = 11; j < 50; j++) {
 			sistema.cadastrarCarona(idSessao1, "o"+j, "d"+j, "12/12/2012", "12:12", j);
 		}

@@ -36,7 +36,7 @@ public class ThreadIntervaloDeTempoParaRegistroEmCaronaPreferencial extends Thre
 		Calendar actualTimeMais24h = Calendar.getInstance();
 		actualTimeMais24h.add(Calendar.HOUR_OF_DAY, 24); // acrescenta 24 horas a hora atual
 		try {
-			EstadoDaCarona estadoAtual = carona.getEstadoDaCarona();
+			EstadoCaronaInterface estadoAtual = carona.getEstadoDaCarona();
 			sleep(actualTimeMais24h.getTimeInMillis() - 
 					Calendar.getInstance().getTimeInMillis()); 
 			carona.setEstadoDaCarona(estadoAtual);

@@ -100,11 +100,14 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param hora
 	 * @param vagas
 	 * @return carona cadastrada
+	 * @throws EstadoCaronaException 
+	 * @throws CaronaInvalidaException 
+	 * @throws MessagingException 
 	 * 
 	 * @see Usuario
 	 */
 	public Carona cadastrarCarona(Integer idSessao, String origem,
-			String destino, String data, String hora, Integer vagas) {
+			String destino, String data, String hora, Integer vagas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
 		if (idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 
@@ -742,10 +745,13 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param destino
 	 * @param cidade
 	 * @return id carona cadastrada
+	 * @throws EstadoCaronaException 
+	 * @throws CaronaInvalidaException 
+	 * @throws MessagingException 
 	 */
 	public Carona cadastrarCaronaMunicipal(Integer idSessao, String origem,
 			String destino, String cidade, String data, String hora,
-			Integer vagas) {
+			Integer vagas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("IdSessao inválido");
 		if (vagas == null || vagas.equals(""))
@@ -1160,8 +1166,11 @@ public class EstradaSolidariaController implements Serializable {
 	/**
 	 * Metodo para adicionar usuarios e caronas automaticamente
 	 * ao sistema.
+	 * @throws EstadoCaronaException 
+	 * @throws CaronaInvalidaException 
+	 * @throws MessagingException 
 	 */
-	public void adicionaUsuarioECaronasAutomaticamente() {
+	public void adicionaUsuarioECaronasAutomaticamente() throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
 		Adder adder = new Adder(uniqueInstance);
 		adder.addElements();
 	}
@@ -1288,10 +1297,13 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param minimoCaroneiros
 	 * @param minimoCaroneiros2 
 	 * @return idCarona
+	 * @throws EstadoCaronaException 
+	 * @throws CaronaInvalidaException 
+	 * @throws MessagingException 
 	 */
 	public Integer cadastrarCaronaRelampago(Integer idSessao, String origem, 
 			String destino, String dataIda, String dataVolta, 
-			String hora, Integer vagas, Integer minimoCaroneiros) {
+			String hora, Integer vagas, Integer minimoCaroneiros) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
 		if(idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 		Usuario donoDaCarona = this.mapIdUsuario.get(this.mapIdSessao.get(idSessao).getIdUser());
@@ -1367,8 +1379,10 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return carona
 	 * @throws CaronaInvalidaException 
 	 * @throws CaronaInexistenteException 
+	 * @throws EstadoCaronaException 
+	 * @throws MessagingException 
 	 */
-	public Carona setCaronaRelampagoExpired(Integer idCarona) throws CaronaInvalidaException, CaronaInexistenteException {
+	public Carona setCaronaRelampagoExpired(Integer idCarona) throws CaronaInvalidaException, CaronaInexistenteException, MessagingException, EstadoCaronaException {
 		if(idCarona == null)
 			throw new CaronaInvalidaException();
 		if(idCarona.equals(""))
@@ -1695,8 +1709,9 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param idSessao
 	 * @param idCarona
 	 * @throws CaronaInvalidaException 
+	 * @throws EstadoCaronaException 
 	 */
-	public void encerrarCarona(Integer idSessao, Integer idCarona) throws CaronaInvalidaException {
+	public void encerrarCarona(Integer idSessao, Integer idCarona) throws CaronaInvalidaException, EstadoCaronaException {
 		if(idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 		if(idCarona == null)
@@ -1714,8 +1729,9 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param idCarona
 	 * @throws CaronaInvalidaException 
 	 * @throws MessagingException 
+	 * @throws EstadoCaronaException 
 	 */
-	public void cancelarCarona(Integer idSessao, Integer idCarona) throws CaronaInvalidaException, MessagingException {
+	public void cancelarCarona(Integer idSessao, Integer idCarona) throws CaronaInvalidaException, MessagingException, EstadoCaronaException {
 		if(idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 		if(idCarona == null)

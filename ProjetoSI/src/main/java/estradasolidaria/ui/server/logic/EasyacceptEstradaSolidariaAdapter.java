@@ -56,7 +56,7 @@ public class EasyacceptEstradaSolidariaAdapter implements EasyacceptAdapterInter
 	 */
 	@Override
 	public String cadastrarCarona(String idSessao, String origem,
-			String destino, String data, String hora, String vagas) {
+			String destino, String data, String hora, String vagas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 		
@@ -716,7 +716,7 @@ public class EasyacceptEstradaSolidariaAdapter implements EasyacceptAdapterInter
 	@Override
 	public String cadastrarCaronaMunicipal(String idSessao, String origem,
 			String destino, String cidade, String data, String hora,
-			String vagas) {
+			String vagas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("IdSessao inválido");
 		if (vagas == null || vagas.equals(""))
@@ -1041,7 +1041,7 @@ public class EasyacceptEstradaSolidariaAdapter implements EasyacceptAdapterInter
 	 */
 	@Override
 	public Integer cadastrarCaronaRelampago(String idSessao, String origem, String destino,
-			String dataIda, String dataVolta, String hora, String minimoCaroneiros) {
+			String dataIda, String dataVolta, String hora, String minimoCaroneiros) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
 		if(idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 		if(minimoCaroneiros == null || minimoCaroneiros.equals(""))
@@ -1172,7 +1172,7 @@ public class EasyacceptEstradaSolidariaAdapter implements EasyacceptAdapterInter
 	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#setCaronaRelampagoExpired(java.lang.Integer)
 	 */
 	@Override
-	public Integer setCaronaRelampagoExpired(String idCarona) throws CaronaInvalidaException, CaronaInexistenteException {
+	public Integer setCaronaRelampagoExpired(String idCarona) throws CaronaInvalidaException, CaronaInexistenteException, MessagingException, EstadoCaronaException {
 		if(idCarona == null)
 			throw new CaronaInvalidaException();
 		if(idCarona.equals(""))

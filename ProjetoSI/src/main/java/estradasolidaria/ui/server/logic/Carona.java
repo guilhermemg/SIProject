@@ -15,7 +15,6 @@ import javax.mail.MessagingException;
 import com.ibm.icu.text.SimpleDateFormat;
 
 import estradasolidaria.ui.server.util.DateUtil;
-import estradasolidaria.ui.server.util.SenderMail;
 import estradasolidaria.ui.server.util.SpecialLinkedListBrackets;
 
 
@@ -44,7 +43,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	private int LIMITE_VAGAS;
 	private TipoDeCarona tipoDeCarona;
 	private int posicaoNaInsercaoNoSistema;
-	private EstadoDaCarona estadoDaCarona;
+	private EstadoCaronaInterface estadoDaCarona;
 
 	private String cidade;
 
@@ -89,9 +88,12 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @param hora
 	 * @param vagas
 	 * @param ordemParaCaronas
+	 * @throws EstadoCaronaException 
+	 * @throws CaronaInvalidaException 
+	 * @throws MessagingException 
 	 */
 	public Carona(Integer idDonoDaCarona, String origem, String destino,
-			String data, String hora, Integer vagas, Integer ordemParaCaronas) {
+			String data, String hora, Integer vagas, Integer ordemParaCaronas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
 
 		setIdDonoDaCarona(idDonoDaCarona);
 		setOrigem(origem);
@@ -102,7 +104,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 		setLimiteVagas(vagas);
 		setPosicaoNaInsercaoNoSistema(ordemParaCaronas);
 		setTipoDeCarona(TipoDeCarona.COMUM);
-		setEstadoDaCarona(EstadoDaCarona.CONFIRMADA);
+		setEstadoDaCarona(new EstadoCaronaConfirmada());
 		setIdCarona(this.hashCode());
 	}
 
@@ -117,10 +119,13 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @param vagas
 	 * @param cidade
 	 * @param ordemParaCaronas
+	 * @throws EstadoCaronaException 
+	 * @throws CaronaInvalidaException 
+	 * @throws MessagingException 
 	 */
 	public Carona(Integer idDonoDaCarona, String origem2, String destino2,
 			String data2, String hora2, Integer vagas, String cidade,
-			Integer ordemParaCaronas) {
+			Integer ordemParaCaronas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
 		setIdDonoDaCarona(idDonoDaCarona);
 		setOrigem(origem2);
 		setDestino(destino2);
@@ -130,7 +135,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 		setLimiteVagas(vagas);
 		setPosicaoNaInsercaoNoSistema(ordemParaCaronas);
 		setTipoDeCarona(TipoDeCarona.MUNICIPAL);
-		setEstadoDaCarona(EstadoDaCarona.CONFIRMADA);
+		setEstadoDaCarona(new EstadoCaronaConfirmada());
 		
 		setCidade(cidade);
 		
@@ -152,10 +157,13 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @param hora
 	 * @param vagas
 	 * @param minimoCaroneiros
+	 * @throws EstadoCaronaException 
+	 * @throws CaronaInvalidaException 
+	 * @throws MessagingException 
 	 */
 	public Carona(Integer idDonoDaCarona, String origem, String destino, String dataIda,
 			String dataVolta, String hora, Integer vagas, 
-			Integer minimoCaroneiros, Integer posicaoNaInsercaoNoSistema) {
+			Integer minimoCaroneiros, Integer posicaoNaInsercaoNoSistema) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
 		setIdDonoDaCarona(idDonoDaCarona);
 		setOrigem(origem);
 		setDestino(destino);
@@ -167,7 +175,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 		setLimiteVagas(vagas);
 		setPosicaoNaInsercaoNoSistema(posicaoNaInsercaoNoSistema);
 		setTipoDeCarona(TipoDeCarona.RELAMPAGO);
-		setEstadoDaCarona(EstadoDaCarona.CONFIRMADA);
+		setEstadoDaCarona(new EstadoCaronaConfirmada());
 		
 		setIdCarona(this.hashCode());
 		
@@ -225,7 +233,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @param estado
 	 */
-	public void setEstadoDaCarona(EstadoDaCarona estado) {
+	public void setEstadoDaCarona(EstadoCaronaInterface estado) {
 		if(estado == null)
 			throw new IllegalArgumentException("Estado da carona inválido");
 		this.estadoDaCarona = estado;
@@ -236,7 +244,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return estadoDaCarona
 	 */
-	public EstadoDaCarona getEstadoDaCarona() {
+	public EstadoCaronaInterface getEstadoDaCarona() {
 		return this.estadoDaCarona;
 	}
 	
@@ -245,9 +253,12 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * Configura estado da carona relampago.
 	 * 
 	 * @param expired
+	 * @throws EstadoCaronaException 
+	 * @throws CaronaInvalidaException 
+	 * @throws MessagingException 
 	 */
-	public void setExpired(boolean expired) {
-		setEstadoDaCarona(EstadoDaCarona.EXPIRED);
+	public void setExpired(boolean expired) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
+		expirarCarona();
 	}
 	
 	/**
@@ -256,7 +267,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @return estado da carona
 	 */
 	public boolean getExpired() {
-		return this.estadoDaCarona.equals(EstadoDaCarona.EXPIRED);
+		return this.estadoDaCarona.getNomeEstado().equals(EnumNomeEstadoDaCarona.EXPIRED);
 	}
 
 	/**
@@ -1087,9 +1098,11 @@ public class Carona implements Comparable<Carona>, Serializable {
 
 	/**
 	 * Encerra esta carona. 
+	 * @throws EstadoCaronaException 
+	 * @throws CaronaInvalidaException 
 	 */
-	public void encerrarCarona() {
-		this.setEstadoDaCarona(EstadoDaCarona.ENCERRADA);
+	public void encerrarCarona() throws CaronaInvalidaException, EstadoCaronaException {
+		estadoDaCarona.encerrar(this);
 	}
 
 	/**
@@ -1098,17 +1111,45 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * foi cancelada.
 	 * 
 	 * @throws MessagingException 
+	 * @throws EstadoCaronaException 
+	 * @throws CaronaInvalidaException 
 	 */
-	public void cancelarCarona() throws MessagingException {
-		this.setEstadoDaCarona(EstadoDaCarona.CANCELADA);
-		Iterator<Solicitacao> itSolicitacoes = this.mapIdSolicitacoes.values().iterator();
-		while(itSolicitacoes.hasNext()) {
-			Solicitacao s = itSolicitacoes.next();
-			if(s.getEstado().equals(EnumNomeDoEstadoDaSolicitacao.ACEITA)) {
-				SenderMail.sendMail(s.getDonoDaSolicitacao().getEmail(), "Esta carona cancela foi cancelada. Mais detalhes entrar em contato" +
-						"com o dono da carona");
-			}
-		}
+	public void cancelarCarona() throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
+		estadoDaCarona.cancelar(this);
+	}
+	
+	/**
+	 * Coloca estado da carona em confirmada.
+	 * 
+	 * @throws MessagingException
+	 * @throws CaronaInvalidaException
+	 * @throws EstadoCaronaException
+	 */
+	public void confirmarCarona() throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
+		estadoDaCarona.confirmar(this);
+	}
+	
+	/**
+	 * Muda estado da carona (relampago) para expirada e envia email
+	 * para usuarios que foram aceitos nela.
+	 * 
+	 * @throws MessagingException
+	 * @throws CaronaInvalidaException
+	 * @throws EstadoCaronaException
+	 */
+	public void expirarCarona() throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
+		estadoDaCarona.expirar(this);
+	}
+	
+	/**
+	 * Muda estado da carona para ocorrendo.
+	 * 
+	 * @throws MessagingException
+	 * @throws CaronaInvalidaException
+	 * @throws EstadoCaronaException
+	 */
+	public void realizarCarona() throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
+		estadoDaCarona.realizar(this);
 	}
 
 	/**

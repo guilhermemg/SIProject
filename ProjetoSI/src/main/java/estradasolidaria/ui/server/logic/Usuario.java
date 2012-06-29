@@ -209,11 +209,14 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param vagas
 	 * @param ordemParaCaronas
 	 * @return carona cadastrada
+	 * @throws EstadoCaronaException 
+	 * @throws CaronaInvalidaException 
+	 * @throws MessagingException 
 	 * 
 	 */
 	public Carona cadastrarCarona(Integer idUsuario, String origem,
 			String destino, String data, String hora, Integer vagas,
-			int ordemParaCaronas) {
+			int ordemParaCaronas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
 
 		Carona carona = new Carona(idUsuario, origem, destino, data, hora,
 				vagas, ordemParaCaronas);
@@ -874,12 +877,15 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param ordemParaCaronas
 	 * 
 	 * @return carona municipal cadastrada
+	 * @throws EstadoCaronaException 
+	 * @throws CaronaInvalidaException 
+	 * @throws MessagingException 
 	 * 
 	 * @see CaronaMunicipal
 	 */
 	public Carona cadastrarCaronaMunicipal(String origem, String destino,
 			String cidade, String data, String hora, Integer vagas,
-			int ordemParaCaronas) {
+			int ordemParaCaronas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
 		Carona cm = new Carona(getIdUsuario(), origem, destino, data, hora,
 				vagas, cidade, ordemParaCaronas);
 		mapIdCaronasOferecidas.put(cm.getIdCarona(), cm);
@@ -1162,10 +1168,13 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param minimoCaroneiros
 	 * @param ordemParaCaronas 
 	 * @return carona relampago
+	 * @throws EstadoCaronaException 
+	 * @throws CaronaInvalidaException 
+	 * @throws MessagingException 
 	 */
 	public Carona cadastrarCaronaRelampago(Integer idDonoDaCarona,
 			String origem,String destino, String dataIda, String dataVolta, 
-			String hora, Integer vagas, Integer minimoCaroneiros, Integer posicaoNaInsercao) {
+			String hora, Integer vagas, Integer minimoCaroneiros, Integer posicaoNaInsercao) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
 			Carona caronaRelampago = new Carona(idDonoDaCarona, origem, 
 					destino, dataIda, dataVolta, hora, vagas, 
 					minimoCaroneiros, posicaoNaInsercao); 
@@ -1254,7 +1263,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
 		while(iteratorIdCaronasOferecidas.hasNext()) {
 			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
-			if(caronaOferecida.getEstadoDaCarona().equals(EstadoDaCarona.CONFIRMADA))
+			if(caronaOferecida.getEstadoDaCarona().getNomeEstado().equals(EnumNomeEstadoDaCarona.CONFIRMADA))
 				listaCaronasConfirmadas.add(caronaOferecida);
 		}
 		return listaCaronasConfirmadas;
@@ -1272,7 +1281,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
 		while(iteratorIdCaronasOferecidas.hasNext()) {
 			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
-			if(caronaOferecida.getEstadoDaCarona().equals(EstadoDaCarona.CANCELADA))
+			if(caronaOferecida.getEstadoDaCarona().getNomeEstado().equals(EnumNomeEstadoDaCarona.CANCELADA))
 				listaCaronasCanceladas.add(caronaOferecida);
 		}
 		return listaCaronasCanceladas;
@@ -1290,7 +1299,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
 		while(iteratorIdCaronasOferecidas.hasNext()) {
 			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
-			if(caronaOferecida.getEstadoDaCarona().equals(EstadoDaCarona.EXPIRED))
+			if(caronaOferecida.getEstadoDaCarona().getNomeEstado().equals(EnumNomeEstadoDaCarona.EXPIRED))
 				listaCaronasExpired.add(caronaOferecida);
 		}
 		return listaCaronasExpired;
@@ -1308,7 +1317,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
 		while(iteratorIdCaronasOferecidas.hasNext()) {
 			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
-			if(caronaOferecida.getEstadoDaCarona().equals(EstadoDaCarona.OCORRENDO))
+			if(caronaOferecida.getEstadoDaCarona().getNomeEstado().equals(EnumNomeEstadoDaCarona.OCORRENDO))
 				listaCaronasOcorrendo.add(caronaOferecida);
 		}
 		return listaCaronasOcorrendo;
@@ -1326,7 +1335,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
 		while(iteratorIdCaronasOferecidas.hasNext()) {
 			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
-			if(caronaOferecida.getEstadoDaCarona().equals(EstadoDaCarona.ENCERRADA))
+			if(caronaOferecida.getEstadoDaCarona().getNomeEstado().equals(EnumNomeEstadoDaCarona.ENCERRADA))
 				listaCaronasEncerradas.add(caronaOferecida);
 		}
 		return listaCaronasEncerradas;
@@ -1404,8 +1413,10 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * Encerra a carona identificada por idCarona.
 	 * 
 	 * @param idCarona
+	 * @throws EstadoCaronaException 
+	 * @throws CaronaInvalidaException 
 	 */
-	public void encerrarCarona(Integer idCarona) {
+	public void encerrarCarona(Integer idCarona) throws CaronaInvalidaException, EstadoCaronaException {
 		Carona carona = mapIdCaronasOferecidas.get(idCarona);
 		carona.encerrarCarona();
 	}
@@ -1414,8 +1425,10 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * Cancela carona identificada por idCarona.
 	 * @param idCarona
 	 * @throws MessagingException 
+	 * @throws EstadoCaronaException 
+	 * @throws CaronaInvalidaException 
 	 */
-	public void cancelarCarona(Integer idCarona) throws MessagingException {
+	public void cancelarCarona(Integer idCarona) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
 		Carona carona = mapIdCaronasOferecidas.get(idCarona);
 		carona.cancelarCarona();
 	}

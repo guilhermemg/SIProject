@@ -9,6 +9,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import estradasolidaria.ui.server.logic.CaronaInexistenteException;
 import estradasolidaria.ui.server.logic.CaronaInvalidaException;
+import estradasolidaria.ui.server.logic.EstadoCaronaException;
 import estradasolidaria.ui.server.logic.TrajetoInexistenteException;
 
 
@@ -43,11 +44,14 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param vagas
 	 * @return id da carona cadastrada
 	 * @throws GWTException 
+	 * @throws EstadoCaronaException 
+	 * @throws CaronaInvalidaException 
+	 * @throws MessagingException 
 	 * 
 	 * @see Usuario, SistemaCaronas
 	 */
 	public abstract String cadastrarCarona(Integer idSessao, String origem,
-			String destino, String data, String hora, String vagas) throws GWTException;
+			String destino, String data, String hora, String vagas) throws GWTException, MessagingException, CaronaInvalidaException, EstadoCaronaException;
 
 	/**
 	 * Abre sessao para usuario identificado por login e senha.

@@ -29,11 +29,14 @@ public interface EasyacceptAdapterInterface {
 	 * @param hora
 	 * @param vagas
 	 * @return id da carona cadastrada
+	 * @throws EstadoCaronaException 
+	 * @throws CaronaInvalidaException 
+	 * @throws MessagingException 
 	 * 
 	 * @see Usuario, SistemaCaronas
 	 */
 	public abstract String cadastrarCarona(String idSessao, String origem,
-			String destino, String data, String hora, String vagas);
+			String destino, String data, String hora, String vagas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException;
 
 	/**
 	 * Abre sessao para usuario identificado por login e senha.
@@ -301,10 +304,13 @@ public interface EasyacceptAdapterInterface {
 	 * @param destino
 	 * @param cidade
 	 * @return id carona cadastrada
+	 * @throws EstadoCaronaException 
+	 * @throws CaronaInvalidaException 
+	 * @throws MessagingException 
 	 */
 	public abstract String cadastrarCaronaMunicipal(String idSessao,
 			String origem, String destino, String cidade, String data,
-			String hora, String vagas);
+			String hora, String vagas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException;
 
 	/**
 	 * Pesquisa entre as caronas oferecidas por todos os usuarios as que sao
@@ -490,8 +496,10 @@ public interface EasyacceptAdapterInterface {
 	 * @return 
 	 * @throws CaronaInvalidaException 
 	 * @throws CaronaInexistenteException 
+	 * @throws EstadoCaronaException 
+	 * @throws MessagingException 
 	 */
-	public Integer setCaronaRelampagoExpired(String idCarona) throws CaronaInvalidaException, CaronaInexistenteException;
+	public Integer setCaronaRelampagoExpired(String idCarona) throws CaronaInvalidaException, CaronaInexistenteException, MessagingException, EstadoCaronaException;
 	
 	
 	
@@ -533,8 +541,11 @@ public interface EasyacceptAdapterInterface {
 	 * @param data
 	 * @param hora
 	 * @param minimoCaroneiros
+	 * @throws EstadoCaronaException 
+	 * @throws CaronaInvalidaException 
+	 * @throws MessagingException 
 	 */
 	public Integer cadastrarCaronaRelampago(String idSessao, String origem,
 			String destino, String dataIda, String dataVolta,
-			String hora, String minimoCaroneiros);
+			String hora, String minimoCaroneiros) throws MessagingException, CaronaInvalidaException, EstadoCaronaException;
 }
