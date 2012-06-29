@@ -106,7 +106,10 @@ public class Carona implements Comparable<Carona>, Serializable {
 		setTipoDeCarona(TipoDeCarona.COMUM);
 		setEstadoDaCarona(new EstadoCaronaConfirmada());
 		setIdCarona(this.hashCode());
+		
+		iniciarMonitoramentoDeOcorrenciaDeCarona();
 	}
+
 
 	/**
 	 * Construtor para carona municipal.
@@ -140,6 +143,8 @@ public class Carona implements Comparable<Carona>, Serializable {
 		setCidade(cidade);
 		
 		setIdCarona(this.hashCode());
+		
+		iniciarMonitoramentoDeOcorrenciaDeCarona();
 	}
 	
 	/**
@@ -179,7 +184,13 @@ public class Carona implements Comparable<Carona>, Serializable {
 		
 		setIdCarona(this.hashCode());
 		
+		iniciarMonitoramentoDeOcorrenciaDeCarona();
 		iniciarIntervaloDeTempoAte48hAntesDaCaronaComecar();
+	}
+	
+	private void iniciarMonitoramentoDeOcorrenciaDeCarona() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	private void iniciarIntervaloDeTempoAte48hAntesDaCaronaComecar() {

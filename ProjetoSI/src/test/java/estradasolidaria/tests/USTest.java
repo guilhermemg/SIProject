@@ -25,19 +25,19 @@ public class USTest extends TestCase {
 
 		List<String> files = new ArrayList<String>();
 		// Put the us1.txt file into the "test scripts" list
-		files.add("scripts/US01.txt");
-		files.add("scripts/US02.txt");
-		files.add("scripts/US03.txt");
-		files.add("scripts/US04.txt");
-		files.add("scripts/US05.txt");
-		files.add("scripts/US06.txt");
-        files.add("scripts/US07.txt");
-        files.add("scripts/US08.txt");
-        files.add("scripts/US09.txt");
-	    files.add("scripts/US10.txt");
+//		files.add("scripts/US01.txt");
+//		files.add("scripts/US02.txt");
+//		files.add("scripts/US03.txt");
+//		files.add("scripts/US04.txt");
+//		files.add("scripts/US05.txt");
+//		files.add("scripts/US06.txt");
+//        files.add("scripts/US07.txt");
+//        files.add("scripts/US08.txt");
+//        files.add("scripts/US09.txt");
+//	    files.add("scripts/US10.txt");
 	    files.add("scripts/US11.txt");
-	    files.add("scripts/US12.txt");
-	    files.add("scripts/US15.txt");
+//	    files.add("scripts/US12.txt");
+//	    files.add("scripts/US15.txt");
 	    files.add("scripts/US16.txt");
 	    
 		// Instantiate the SistemaCaronas

@@ -22,7 +22,7 @@ public class StateUsuariosEncontrados extends Composite {
 		initWidget(absolutePanel);
 		absolutePanel.setSize("533px", "390px");
 		
-		Label lblUsuariosEncontrados = new Label("Usuarios encontrados:");
+		Label lblUsuariosEncontrados = new Label("Usuários Encontrados:");
 		lblUsuariosEncontrados.setStyleName("gwt-LabelEstradaSolidaria2");
 		absolutePanel.add(lblUsuariosEncontrados, 10, 10);
 		

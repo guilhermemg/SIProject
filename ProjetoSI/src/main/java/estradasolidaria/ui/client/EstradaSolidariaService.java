@@ -7,12 +7,6 @@ import javax.mail.MessagingException;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
-import estradasolidaria.ui.server.logic.CaronaInexistenteException;
-import estradasolidaria.ui.server.logic.CaronaInvalidaException;
-import estradasolidaria.ui.server.logic.EstadoCaronaException;
-import estradasolidaria.ui.server.logic.TrajetoInexistenteException;
-
-
 /**
  * The client side stub for the RPC service.
  */
@@ -51,7 +45,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @see Usuario, SistemaCaronas
 	 */
 	public abstract String cadastrarCarona(Integer idSessao, String origem,
-			String destino, String data, String hora, String vagas) throws GWTException, MessagingException, CaronaInvalidaException, EstadoCaronaException;
+			String destino, String data, String hora, String vagas) throws GWTException;
 
 	/**
 	 * Abre sessao para usuario identificado por login e senha.

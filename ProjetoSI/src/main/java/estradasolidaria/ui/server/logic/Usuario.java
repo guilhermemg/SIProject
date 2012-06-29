@@ -429,12 +429,12 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param carona
 	 * @throws CaronaInexistenteException 
 	 */
-	public void adicionarIdCaronaPega(Integer idCarona, Carona c) throws CaronaInexistenteException {
+	public void adicionarIdCaronaPega(Integer idCarona, Carona carona) throws CaronaInexistenteException {
 		if(idCarona == null)
 			throw new IllegalArgumentException("IdCarona inválido");
-		if(c == null)
+		if(carona == null)
 			throw new CaronaInexistenteException();
-		this.mapIdCaronasPegas.put(idCarona, c);
+		this.mapIdCaronasPegas.put(idCarona, carona);
 	}
 
 	/**

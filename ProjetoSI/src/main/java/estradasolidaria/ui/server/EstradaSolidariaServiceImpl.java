@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.mail.MessagingException;
-
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import estradasolidaria.ui.client.EstradaSolidariaService;
@@ -17,8 +15,6 @@ import estradasolidaria.ui.client.GWTInteresse;
 import estradasolidaria.ui.server.adder.Adder;
 import estradasolidaria.ui.server.logic.Carona;
 import estradasolidaria.ui.server.logic.CaronaInexistenteException;
-import estradasolidaria.ui.server.logic.CaronaInvalidaException;
-import estradasolidaria.ui.server.logic.EstadoCaronaException;
 import estradasolidaria.ui.server.logic.EstradaSolidariaController;
 import estradasolidaria.ui.server.logic.Interesse;
 import estradasolidaria.ui.server.logic.Solicitacao;
@@ -36,9 +32,14 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 	private SimpleDateFormat hourFormat = new SimpleDateFormat("HH:mm");
 	
-	public EstradaSolidariaServiceImpl() throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
-		Adder adder = new Adder(this.controller);
-		adder.addElements();
+	public EstradaSolidariaServiceImpl() {
+		try {
+			Adder adder = new Adder(this.controller);
+			adder.addElements();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -54,7 +55,7 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public String cadastrarCarona(Integer idSessao, String origem,
-			String destino, String data, String hora, String vagas) throws GWTException, MessagingException, CaronaInvalidaException, EstadoCaronaException {
+			String destino, String data, String hora, String vagas) throws GWTException {
 		try {
 			Integer vagasInt = Integer.parseInt(vagas);
 			Carona c = controller.cadastrarCarona(idSessao, origem, destino, data, hora, vagasInt);
@@ -63,6 +64,8 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 			throw new GWTException("Formato de vagas inválido.");
 		} catch (IllegalArgumentException iae) {
 			throw new GWTException(iae.getMessage());
+		} catch(Exception e) {
+			throw new GWTException(e.getMessage());
 		}
 	}
 
