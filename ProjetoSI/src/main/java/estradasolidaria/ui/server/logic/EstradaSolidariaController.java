@@ -552,6 +552,8 @@ public class EstradaSolidariaController implements Serializable {
 		Solicitacao solicitacaoFeita =
 				donoDaCarona.solicitarVaga(idCarona, donoDaCarona, solicitante);
 		
+		System.out.println(solicitacaoFeita.toString());
+		
 		solicitante.addSolicitacaoFeita(solicitacaoFeita);
 		
 		return solicitacaoFeita;

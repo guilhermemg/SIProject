@@ -1,12 +1,12 @@
 package estradasolidaria.ui.server;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.ibm.icu.text.SimpleDateFormat;
 
 import estradasolidaria.ui.client.EstradaSolidariaService;
 import estradasolidaria.ui.client.GWTCarona;
@@ -28,6 +28,9 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		EstradaSolidariaService {
 	private static final long serialVersionUID = -1007968486871020509L;
 	private EstradaSolidariaController controller = EstradaSolidariaController.getInstance();
+	
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	private SimpleDateFormat hourFormat = new SimpleDateFormat("HH:mm");
 	
 	public EstradaSolidariaServiceImpl() {
 		Adder adder = new Adder(this.controller);
@@ -95,8 +98,6 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 				GWTCarona gwt_c = new GWTCarona();
 				Date data = c.getData().getTime();
 				Date hora = c.getHora().getTime();
-				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-				SimpleDateFormat hourFormat = new SimpleDateFormat("hh:mm");
 				gwt_c.setData(dateFormat.format(data));
 				gwt_c.setDestino(c.getDestino());
 				gwt_c.setHora(hourFormat.format(hora));
@@ -302,8 +303,6 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		try {
 			List<List<String>> result = new LinkedList<List<String>>();
 			List<Carona> listaCaronas = controller.getTodasCaronasUsuario(idSessao);
-			SimpleDateFormat formatterData = new SimpleDateFormat("dd/MM/yyyy");
-			SimpleDateFormat formatterHora = new SimpleDateFormat("HH:mm");
 			
 			for (Carona c : listaCaronas) {
 				List<String> caronaList = new LinkedList<String>();
@@ -313,8 +312,8 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 				caronaList.add(c.getIdDonoDaCarona().toString());
 				caronaList.add(c.getOrigem());
 				caronaList.add(c.getDestino());
-				caronaList.add(formatterData.format(c.getData().getTime()));
-				caronaList.add(formatterHora.format(c.getHora().getTime()));
+				caronaList.add(dateFormat.format(c.getData().getTime()));
+				caronaList.add(hourFormat.format(c.getHora().getTime()));
 				caronaList.add(c.getVagas().toString());
 				if (c.getPontoEncontro() == null) {
 					caronaList.add(c.getPontoEncontro());
@@ -336,8 +335,6 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public List<List<String>> getSolicitacoesFeitasConfirmadas(Integer idSessao) throws GWTException {
 		try {
-			SimpleDateFormat formatterData = new SimpleDateFormat("dd/MM/yyyy");
-			SimpleDateFormat formatterHora = new SimpleDateFormat("HH:mm");
 			List<List<String>> result = new LinkedList<List<String>>();
 			for (Solicitacao s : controller.getMapaSolicitacoesFeitas(idSessao).values()) {
 				if (s.isAceita()) {
@@ -349,8 +346,8 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 					solicitacaoList.add(c.getIdDonoDaCarona().toString());
 					solicitacaoList.add(c.getOrigem());
 					solicitacaoList.add(c.getDestino());
-					solicitacaoList.add(formatterData.format(c.getData().getTime()));
-					solicitacaoList.add(formatterHora.format(c.getHora().getTime()));
+					solicitacaoList.add(dateFormat.format(c.getData().getTime()));
+					solicitacaoList.add(hourFormat.format(c.getHora().getTime()));
 					solicitacaoList.add(c.getVagas().toString());
 					if (c.getPontoEncontro() != null) {
 						solicitacaoList.add(c.getPontoEncontro());
@@ -373,8 +370,6 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public List<List<String>> getSolicitacoesFeitasPendentes(Integer idSessao) throws GWTException {
 		try {
-			SimpleDateFormat formatterData = new SimpleDateFormat("dd/MM/yyyy");
-			SimpleDateFormat formatterHora = new SimpleDateFormat("HH:mm");
 			List<List<String>> result = new LinkedList<List<String>>();
 			for (Solicitacao s : controller.getMapaSolicitacoesFeitas(idSessao).values()) {
 				if (s.isPendente()) {
@@ -386,8 +381,8 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 					solicitacaoList.add(c.getIdDonoDaCarona().toString());
 					solicitacaoList.add(c.getOrigem());
 					solicitacaoList.add(c.getDestino());
-					solicitacaoList.add(formatterData.format(c.getData().getTime()));
-					solicitacaoList.add(formatterHora.format(c.getHora().getTime()));
+					solicitacaoList.add(dateFormat.format(c.getData().getTime()));
+					solicitacaoList.add(hourFormat.format(c.getHora().getTime()));
 					solicitacaoList.add(c.getVagas().toString());
 					if (c.getPontoEncontro() != null) {
 						solicitacaoList.add(c.getPontoEncontro());
@@ -446,8 +441,6 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public List<List<String>> getTodasCaronasPegas(Integer idSessao) throws GWTException {
 		try {
-			SimpleDateFormat formatterData = new SimpleDateFormat("dd/MM/yyyy");
-			SimpleDateFormat formatterHora = new SimpleDateFormat("HH:mm");
 			List<List<String>> result = new LinkedList<List<String>>();
 			List<Carona> listaCaronas = controller.getTodasCaronasPegas(idSessao);
 			for (Carona c : listaCaronas) {
@@ -458,8 +451,8 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 				caronaList.add(c.getIdDonoDaCarona().toString());
 				caronaList.add(c.getOrigem());
 				caronaList.add(c.getDestino());
-				caronaList.add(formatterData.format(c.getData().getTime()));
-				caronaList.add(formatterHora.format(c.getHora().getTime()));
+				caronaList.add(dateFormat.format(c.getData().getTime()));
+				caronaList.add(hourFormat.format(c.getHora().getTime()));
 				caronaList.add(c.getVagas().toString());
 				caronaList.add(c.getPontoEncontro());
 				caronaList.add(donoDaCarona.getNome());
@@ -592,9 +585,6 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 				GWTInteresse gwt_i = new GWTInteresse();
 				
 				Date data = i.getData().getTime();
-				
-				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-				SimpleDateFormat hourFormat = new SimpleDateFormat("hh:mm");
 				
 				gwt_i.setData(dateFormat.format(data));
 				gwt_i.setDestino(i.getDestino());

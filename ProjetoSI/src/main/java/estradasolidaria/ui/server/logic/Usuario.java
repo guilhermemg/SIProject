@@ -467,7 +467,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	// pure fabrication
 	@Override
 	public String toString() {
-		return "Usuario [idUsuario=" + idUsuario + ", nome=" + getNome() + "]";
+		return "Usuario [idUsuario=" + idUsuario + ", login=" + getLogin() + "]";
 	}
 
 @Override
