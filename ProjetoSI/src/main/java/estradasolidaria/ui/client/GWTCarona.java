@@ -19,51 +19,85 @@ public class GWTCarona implements IsSerializable {
 		return nomeDono +", "+origem+", " + destino + ", " + data +", " +vagas +", "+ review +", "+pontoEncontro;
 	}
 
+	public String getNomeDono() {
+		return nomeDono;
+	}
+
+	public void setNomeDono(String nomeDono) {
+		this.nomeDono = nomeDono;
+	}
+
+	public String getIdDono() {
+		return idDono;
+	}
+
+	public void setIdDono(String idDono) {
+		this.idDono = idDono;
+	}
+
 	public String getOrigem() {
 		return origem;
+	}
+
+	public void setOrigem(String origem) {
+		this.origem = origem;
 	}
 
 	public String getDestino() {
 		return destino;
 	}
 
+	public void setDestino(String destino) {
+		this.destino = destino;
+	}
+
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
+	}
+
 	public String getHora() {
 		return hora;
+	}
+
+	public void setHora(String hora) {
+		this.hora = hora;
 	}
 
 	public String getVagas() {
 		return vagas;
 	}
 
-	public String getData() {
-		return data;
+	public void setVagas(String vagas) {
+		this.vagas = vagas;
 	}
-	
+
+	public String getReview() {
+		return review;
+	}
+
+	public void setReview(String review) {
+		this.review = review;
+	}
+
+	public String getPontoEncontro() {
+		return pontoEncontro;
+	}
+
+	public void setPontoEncontro(String pontoEncontro) {
+		this.pontoEncontro = pontoEncontro;
+	}
+
 	public String getIdCarona() {
 		return idCarona;
 	}
 
-	public void setData(String format) {
-		this.data = format;
+	public void setIdCarona(String idCarona) {
+		this.idCarona = idCarona;
 	}
 
-	public void setDestino(String destino2) {
-		this.destino = destino2;
-	}
-
-	public void setOrigem(String origem2) {
-		this.origem = origem2;
-	}
-
-	public void setIdCarona(String string) {
-		this.idCarona = string;
-	}
-
-	public void setHora(String format) {
-		this.hora = format;
-	}
-
-	public void setVagas(String vagas2) {
-		this.vagas = vagas2;
-	}
+	
 }

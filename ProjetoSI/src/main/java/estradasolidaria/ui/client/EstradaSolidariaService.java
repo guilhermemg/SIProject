@@ -302,14 +302,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 */
 	public abstract String getCaronaUsuario(Integer idSessao, int indexCarona) throws GWTException;
 
-	/**
-	 * Retorna todas as caronas cadastradas pelo usuario identificado por
-	 * idSessao.
-	 * 
-	 * @param idSessao
-	 * @return lista de ids de caronas como string
-	 */
-	public abstract List<List<String>> getTodasCaronasUsuario(Integer idSessao) throws GWTException;
+	List<GWTCarona> getTodasCaronasUsuario(Integer idSessao) throws GWTException;
 
 	/**
 	 * Retorna lista de ids de solicitacoes confirmadas para a carona (idCarona)
@@ -401,7 +394,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	public abstract boolean enviarEmail(Integer idSessao, String destino,
 			String message) throws GWTException;
 
-	public abstract List<List<String>> getTodasCaronasPegas(Integer idSessao) throws GWTException;
+	List<GWTCarona> getTodasCaronasPegas(Integer idSessao) throws GWTException;
 
 	public abstract void editarSenha(Integer idSessaoAberta, String novaSenha) throws GWTException;
 

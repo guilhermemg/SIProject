@@ -306,37 +306,41 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public List<List<String>> getTodasCaronasUsuario(Integer idSessao) throws GWTException {
+	public List<GWTCarona> getTodasCaronasUsuario(Integer idSessao) throws GWTException {
+		List<GWTCarona> result = new LinkedList<GWTCarona>();
 		try {
-			List<List<String>> result = new LinkedList<List<String>>();
 			List<Carona> listaCaronas = controller.getTodasCaronasUsuario(idSessao);
 			
 			for (Carona c : listaCaronas) {
-				List<String> caronaList = new LinkedList<String>();
-				
-				Usuario donoDaCarona = controller.getMapIdUsuario().get(c.getIdDonoDaCarona());
-				
-				caronaList.add(c.getIdDonoDaCarona().toString());
-				caronaList.add(c.getOrigem());
-				caronaList.add(c.getDestino());
-				caronaList.add(dateFormat.format(c.getData().getTime()));
-				caronaList.add(hourFormat.format(c.getHora().getTime()));
-				caronaList.add(c.getVagas().toString());
-				if (c.getPontoEncontro() == null) {
-					caronaList.add(c.getPontoEncontro());
-				}else {
-					caronaList.add(new String(""));
-				}
-				caronaList.add(donoDaCarona.getNome());
-				caronaList.add(c.getIdCarona().toString());
-				
-				result.add(caronaList);
+				result.add(criaGWTCaronaDTO(c));
 			}
-			return result;
 			
 		} catch (Exception e) {
 			throw new GWTException(e.getMessage());
 		}
+		return result;
+	}
+
+	private GWTCarona criaGWTCaronaDTO(Carona c) {
+		GWTCarona gwt_c = new GWTCarona();
+		
+		Usuario donoDaCarona = controller.getMapIdUsuario().get(c.getIdDonoDaCarona());
+		
+		gwt_c.setIdDono(c.getIdDonoDaCarona().toString());
+		gwt_c.setOrigem(c.getOrigem());
+		gwt_c.setDestino(c.getDestino());
+		gwt_c.setData(dateFormat.format(c.getData().getTime()));
+		gwt_c.setHora(hourFormat.format(c.getHora().getTime()));
+		gwt_c.setVagas(c.getVagas().toString());
+		if (c.getPontoEncontro() == null) {
+			gwt_c.setPontoEncontro(c.getPontoEncontro());
+		}else {
+			gwt_c.setPontoEncontro(new String(""));
+		}
+		gwt_c.setNomeDono(donoDaCarona.getNome());
+		gwt_c.setIdCarona(c.getIdCarona().toString());
+		
+		return gwt_c;
 	}
 
 	@Override
@@ -446,31 +450,31 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public List<List<String>> getTodasCaronasPegas(Integer idSessao) throws GWTException {
+	public List<GWTCarona> getTodasCaronasPegas(Integer idSessao) throws GWTException {
+		List<GWTCarona> result = new LinkedList<GWTCarona>();
 		try {
-			List<List<String>> result = new LinkedList<List<String>>();
 			List<Carona> listaCaronas = controller.getTodasCaronasPegas(idSessao);
 			for (Carona c : listaCaronas) {
-				List<String> caronaList = new LinkedList<String>();
+				GWTCarona gwt_c = new GWTCarona();
 				
 				Usuario donoDaCarona = controller.getMapIdUsuario().get(c.getIdDonoDaCarona());
 				
-				caronaList.add(c.getIdDonoDaCarona().toString());
-				caronaList.add(c.getOrigem());
-				caronaList.add(c.getDestino());
-				caronaList.add(dateFormat.format(c.getData().getTime()));
-				caronaList.add(hourFormat.format(c.getHora().getTime()));
-				caronaList.add(c.getVagas().toString());
-				caronaList.add(c.getPontoEncontro());
-				caronaList.add(donoDaCarona.getNome());
-				caronaList.add(c.getIdCarona().toString());
+				gwt_c.setIdDono(c.getIdDonoDaCarona().toString());
+				gwt_c.setOrigem(c.getOrigem());
+				gwt_c.setDestino(c.getDestino());
+				gwt_c.setData(dateFormat.format(c.getData().getTime()));
+				gwt_c.setHora(hourFormat.format(c.getHora().getTime()));
+				gwt_c.setVagas(c.getVagas().toString());
+				gwt_c.setPontoEncontro(c.getPontoEncontro());
+				gwt_c.setNomeDono(donoDaCarona.getNome());
+				gwt_c.setIdCarona(c.getIdCarona().toString());
 				
-				result.add(caronaList);
+				result.add(gwt_c);
 			}
-			return result;
 		} catch (Exception e) {
 			throw new GWTException(e.getMessage());
 		}
+		return result;
 	}
 
 	@Override

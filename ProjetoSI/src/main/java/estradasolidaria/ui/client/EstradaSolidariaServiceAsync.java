@@ -58,7 +58,7 @@ public interface EstradaSolidariaServiceAsync {
 	void getSolicitacoesFeitasPendentes(Integer idSessao,
 			AsyncCallback<List<List<String>>> callback);
 
-	void getTodasCaronasUsuario(Integer idSessao, AsyncCallback<List<List<String>>> callback);
+	void getTodasCaronasUsuario(Integer idSessao, AsyncCallback<List<GWTCarona>> asyncCallback);
 
 	void getTrajeto(Integer idCarona, AsyncCallback<String> callback);
 
@@ -103,7 +103,7 @@ public interface EstradaSolidariaServiceAsync {
 	void zerarSistema(AsyncCallback<Void> callback);
 
 	void getTodasCaronasPegas(Integer idSessao,
-			AsyncCallback<List<List<String>>> asyncCallback);
+			AsyncCallback<List<GWTCarona>> asyncCallback);
 
 	void editarSenha(Integer idSessaoAberta, String novaSenha,
 			AsyncCallback<Void> asyncCallback);

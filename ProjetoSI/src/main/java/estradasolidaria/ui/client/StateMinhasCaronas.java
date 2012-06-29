@@ -37,7 +37,7 @@ public class StateMinhasCaronas extends AbsolutePanel {
 
 	private CellTable<GWTCarona> caronasCellTable;
 
-	private LinkedList<GWTCarona> caronasGWT; // Lista de Caronas transformadas
+	private List<GWTCarona> caronasGWT; // Lista de Caronas transformadas
 												// para a classe GWTCarona
 	private FlexTable tabOferecidas;
 	private SelectionModel<GWTCarona> selectionModel;
@@ -197,7 +197,7 @@ public class StateMinhasCaronas extends AbsolutePanel {
 	private void gerarListaDeCaronasOferecidas(Integer idSessao) {
 		caronasGWT = new LinkedList<GWTCarona>();
 		this.estradaSolidariaService.getTodasCaronasUsuario(idSessao,
-				new AsyncCallback<List<List<String>>>() {
+				new AsyncCallback<List<GWTCarona>>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
@@ -206,8 +206,8 @@ public class StateMinhasCaronas extends AbsolutePanel {
 					}
 
 					@Override
-					public void onSuccess(List<List<String>> result) {
-						atualizaListaGWTCaronas(result);
+					public void onSuccess(List<GWTCarona> result) {
+						caronasGWT = result;
 
 						caronasCellTable.setRowCount(caronasGWT.size(), true);
 						caronasCellTable.setRowData(0, caronasGWT);
@@ -217,7 +217,7 @@ public class StateMinhasCaronas extends AbsolutePanel {
 
 	private void gerarListaDeCaronasPegas(Integer idSessao) {
 		this.estradaSolidariaService.getTodasCaronasPegas(idSessao,
-				new AsyncCallback<List<List<String>>>() {
+				new AsyncCallback<List<GWTCarona>>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
@@ -226,14 +226,14 @@ public class StateMinhasCaronas extends AbsolutePanel {
 					}
 
 					@Override
-					public void onSuccess(List<List<String>> result) {
-						atualizaListaGWTCaronas(result);
+					public void onSuccess(List<GWTCarona> result) {
+						caronasGWT = result;
 						caronasCellTable.setRowCount(caronasGWT.size(), true);
 						caronasCellTable.setRowData(0, caronasGWT);
 					}
 				});
 	}
-
+	
 	private void atualizaListaGWTCaronas(List<List<String>> result) {
 		// ZERA LISTA
 		caronasGWT = new LinkedList<GWTCarona>();
