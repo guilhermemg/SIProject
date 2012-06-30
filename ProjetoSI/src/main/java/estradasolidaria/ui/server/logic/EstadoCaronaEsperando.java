@@ -1,31 +1,30 @@
 package estradasolidaria.ui.server.logic;
 
-import java.util.Iterator;
-
 import javax.mail.MessagingException;
 
-import estradasolidaria.ui.server.util.SenderMail;
-
 /**
- * Classe que representa o estado de uma carona confirmada.
+ * Classe que representa o estado de uma carona (relampago)
+ * que esta esperando a confirmacao do numero minimo
+ * de caroneiros para ela ser realizada.
  * 
  * @author Guilherme Monteiro
  * @author Leonardo Santos
  * @author Hema Vidal
  * @author Italo Silva
- *
+ * 
  */
-public class EstadoCaronaConfirmada implements EstadoCaronaInterface {
+public class EstadoCaronaEsperando implements EstadoCaronaInterface {
 
 	/*
 	 * (non-Javadoc)
 	 * @see estradasolidaria.ui.server.logic.EstadoCaronaInterface#confirmar(estradasolidaria.ui.server.logic.Carona)
 	 */
 	@Override
-	public void confirmar(Carona carona) throws CaronaInvalidaException, EstadoCaronaException {
+	public void confirmar(Carona carona) throws CaronaInvalidaException,
+			EstadoCaronaException {
 		if(carona == null)
 			throw new CaronaInvalidaException();
-		throw new EstadoCaronaException("Uma carona confirmada não pode ser confirmada novamente.");
+		carona.setEstadoDaCarona(new EstadoCaronaConfirmada());
 	}
 
 	/*
@@ -37,17 +36,6 @@ public class EstadoCaronaConfirmada implements EstadoCaronaInterface {
 			EstadoCaronaException, MessagingException {
 		if(carona == null)
 			throw new CaronaInvalidaException();
-		if(!carona.getEstadoDaCarona().getNomeEstado().equals(EnumNomeEstadoDaCarona.CONFIRMADA))
-			throw new EstadoCaronaException("Somente uma carona confirmada pode ser cancelada.");
-		
-		Iterator<Solicitacao> itSolicitacoes = carona.getMapIdSolicitacao().values().iterator();
-		while(itSolicitacoes.hasNext()) {
-			Solicitacao s = itSolicitacoes.next();
-			if(s.getEstado().equals(EnumNomeDoEstadoDaSolicitacao.ACEITA)) {
-				SenderMail.sendMail(s.getDonoDaSolicitacao().getEmail(), "Esta carona cancela foi cancelada. Mais detalhes entrar em contato" +
-						"com o dono da carona");
-			}
-		}
 		carona.setEstadoDaCarona(new EstadoCaronaCancelada());
 	}
 
@@ -60,9 +48,7 @@ public class EstadoCaronaConfirmada implements EstadoCaronaInterface {
 			EstadoCaronaException {
 		if(carona == null)
 			throw new CaronaInvalidaException();
-		if(!carona.getEstadoDaCarona().getNomeEstado().equals(EnumNomeEstadoDaCarona.CONFIRMADA))
-			throw new EstadoCaronaException("Uma carona que nao esteja confirmada não pode ser realizada.");
-		carona.setEstadoDaCarona(new EstadoCaronaOcorrendo());
+		throw new EstadoCaronaException("Uma carona que está em estado de espera não ainda pode ser realizada");
 	}
 
 	/*
@@ -74,11 +60,9 @@ public class EstadoCaronaConfirmada implements EstadoCaronaInterface {
 			EstadoCaronaException {
 		if(carona == null)
 			throw new CaronaInvalidaException();
-		if(!carona.getEstadoDaCarona().getNomeEstado().equals(EnumNomeEstadoDaCarona.OCORRENDO))
-			throw new EstadoCaronaException("Somente uma carona que ocorreu ou está ocorrendo pode ser encerrada");
-		carona.setEstadoDaCarona(new EstadoCaronaEncerrada());
+		throw new EstadoCaronaException("Uma carona que está em estado de espera não pode ser encerrada");
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see estradasolidaria.ui.server.logic.EstadoCaronaInterface#expirar(estradasolidaria.ui.server.logic.Carona)
@@ -88,8 +72,6 @@ public class EstadoCaronaConfirmada implements EstadoCaronaInterface {
 			EstadoCaronaException {
 		if(carona == null)
 			throw new CaronaInvalidaException();
-		if(!carona.getEstadoDaCarona().getNomeEstado().equals(EnumNomeEstadoDaCarona.CONFIRMADA)) 
-			throw new EstadoCaronaException("Uma carona que não esteja confirmada não pode ser expirada");
 		carona.setEstadoDaCarona(new EstadoCaronaExpired());
 	}
 
@@ -99,7 +81,7 @@ public class EstadoCaronaConfirmada implements EstadoCaronaInterface {
 	 */
 	@Override
 	public EnumNomeEstadoDaCarona getNomeEstado() {
-		return EnumNomeEstadoDaCarona.CONFIRMADA;
+		return EnumNomeEstadoDaCarona.ESPERANDO;
 	}
 
 	/*
@@ -111,6 +93,7 @@ public class EstadoCaronaConfirmada implements EstadoCaronaInterface {
 			EstadoCaronaException, CaronaInvalidaException {
 		if(carona == null)
 			throw new CaronaInvalidaException();
-		carona.setEstadoDaCarona(new EstadoCaronaEsperando());
+		throw new EstadoCaronaException("Uma carona que já está em estado de espera não pode ser colocada em estado de espera novamente");
 	}
+
 }

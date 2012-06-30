@@ -1095,7 +1095,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * 
 	 * @return mapIdInteresses
 	 */
-	public Map<Integer, Interesse> getMapIdInteresses() {
+	public Map<Integer, Interesse> getMapIdInteresse() {
 		return this.mapIdInteresse;
 	}
 

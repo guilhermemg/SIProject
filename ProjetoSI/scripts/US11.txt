@@ -44,8 +44,8 @@ expectError "Data inválida" cadastrarInteresse idSessao=${sessaoZezito} origem=
 
 #Cadastrar caronas.
 carona1ID=cadastrarCarona idSessao=${sessaoJuca} origem="Campina Grande" destino="João Pessoa" data="23/06/2013" hora="16:00" vagas=3
-carona1ID=cadastrarCarona idSessao=${sessaoJuca} origem="João Pessoa" destino="Campina Grande" data="25/06/2013" hora="14:00" vagas=4
-carona1ID=cadastrarCarona idSessao=${sessaoMariano} origem="João Pessoa" destino="Campina Grande" data="25/06/2013" hora="15:00" vagas=1
+carona2ID=cadastrarCarona idSessao=${sessaoJuca} origem="João Pessoa" destino="Campina Grande" data="25/06/2013" hora="14:00" vagas=4
+carona3ID=cadastrarCarona idSessao=${sessaoMariano} origem="João Pessoa" destino="Campina Grande" data="25/06/2013" hora="15:00" vagas=1
 
 #Verificar perfil.
 expect "[]" verificarMensagensPerfil idSessao=${sessaoZezito}

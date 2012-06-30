@@ -39,7 +39,15 @@ public class ThreadIntervaloDeTempoParaRegistroEmCaronaRelampago extends Thread
 		Long actualTime = Calendar.getInstance().getTimeInMillis();
 		Calendar timeDaCaronaMenos48h = dateUtil.getTimeDaCarona(carona.getData(), carona.getHora());
 		timeDaCaronaMenos48h.add(Calendar.DAY_OF_MONTH, -2); // 2 dias == 48h
-		EstadoCaronaInterface estadoAtual = carona.getEstadoDaCarona();
+		
+		try {
+			carona.setCaronaEmEstadoDeEspera();
+		} catch (CaronaInvalidaException e1) {
+			e1.printStackTrace();
+		} catch (EstadoCaronaException e1) {
+			e1.printStackTrace();
+		}
+		
 		try {
 			sleep(timeDaCaronaMenos48h.getTimeInMillis() - actualTime);
 			if(carona.getLimiteVagas() - carona.getVagas() < carona.getMinimoCaroneiros()) {
@@ -47,7 +55,7 @@ public class ThreadIntervaloDeTempoParaRegistroEmCaronaRelampago extends Thread
 				carona.cancelarCarona();
 			}
 			else {
-				carona.setEstadoDaCarona(estadoAtual);
+				carona.confirmarCarona();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

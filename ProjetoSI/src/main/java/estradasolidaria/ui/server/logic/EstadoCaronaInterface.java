@@ -63,4 +63,13 @@ public interface EstadoCaronaInterface {
 	 * @return nome do estado
 	 */
 	public EnumNomeEstadoDaCarona getNomeEstado();
+
+	/**
+	 * Muda estado da carona para esperando.
+	 * 
+	 * @param carona
+	 * @throws EstadoCaronaException 
+	 * @throws CaronaInvalidaException 
+	 */
+	public void esperar(Carona carona) throws CaronaInvalidaException, EstadoCaronaException, CaronaInvalidaException;
 }

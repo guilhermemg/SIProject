@@ -6,5 +6,5 @@ package estradasolidaria.ui.server.logic;
  *
  */
 public enum EnumNomeEstadoDaCarona {
-	OCORRENDO, ENCERRADA, EXPIRED, CANCELADA, CONFIRMADA
+	OCORRENDO, ENCERRADA, EXPIRED, CANCELADA, CONFIRMADA, ESPERANDO
 }

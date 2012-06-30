@@ -602,7 +602,7 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 			
 			Usuario u = controller.getUsuarioAPartirDeIDSessao(idSessao);
 			
-			for (Interesse i : u.getMapIdInteresses().values()) {
+			for (Interesse i : u.getMapIdInteresse().values()) {
 				
 				GWTInteresse gwt_i = new GWTInteresse();
 				

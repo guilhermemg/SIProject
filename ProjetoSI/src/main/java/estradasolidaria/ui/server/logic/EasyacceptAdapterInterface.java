@@ -423,9 +423,10 @@ public interface EasyacceptAdapterInterface {
 	 * @param horaInicio
 	 * @param horaFim
 	 * @return idInteresse
+	 * @throws CaronaInvalidaException 
 	 */
 	public abstract String cadastrarInteresse(String idSessao, String origem,
-			String destino, String data, String horaInicio, String horaFim);
+			String destino, String data, String horaInicio, String horaFim) throws CaronaInvalidaException;
 
 	/**
 	 * Resume as mensagens sobre as caronas sobre as quais o usuario demonstra

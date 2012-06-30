@@ -18,6 +18,8 @@ public class EstadoCaronaCancelada implements EstadoCaronaInterface {
 	@Override
 	public void confirmar(Carona carona) throws CaronaInvalidaException,
 			EstadoCaronaException {
+		if(carona == null)
+			throw new CaronaInvalidaException();
 		throw new EstadoCaronaException("Uma carona cancelada não pode ser confirmada");
 	}
 
@@ -27,6 +29,8 @@ public class EstadoCaronaCancelada implements EstadoCaronaInterface {
 	@Override
 	public void cancelar(Carona carona) throws CaronaInvalidaException,
 			EstadoCaronaException {
+		if(carona == null)
+			throw new CaronaInvalidaException();
 		throw new EstadoCaronaException("Uma carona cancelada não pode ser cancelada novamente");
 	}
 
@@ -36,6 +40,8 @@ public class EstadoCaronaCancelada implements EstadoCaronaInterface {
 	@Override
 	public void realizar(Carona carona) throws CaronaInvalidaException,
 			EstadoCaronaException {
+		if(carona == null)
+			throw new CaronaInvalidaException();
 		throw new EstadoCaronaException("Uma carona cancelada não pode ser mais realizada");
 	}
 
@@ -45,6 +51,8 @@ public class EstadoCaronaCancelada implements EstadoCaronaInterface {
 	@Override
 	public void encerrar(Carona carona) throws CaronaInvalidaException,
 			EstadoCaronaException {
+		if(carona == null)
+			throw new CaronaInvalidaException();
 		throw new EstadoCaronaException("Uma carona cancelada não pode ser encerrada");
 	}
 
@@ -54,9 +62,22 @@ public class EstadoCaronaCancelada implements EstadoCaronaInterface {
 	@Override
 	public void expirar(Carona carona) throws CaronaInvalidaException,
 			EstadoCaronaException {
+		if(carona == null)
+			throw new CaronaInvalidaException();
 		throw new EstadoCaronaException("Uma carona cancelada não pode ser expirada");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.EstadoCaronaInterface#esperar(estradasolidaria.ui.server.logic.Carona)
+	 */
+	@Override
+	public void esperar(Carona carona) throws EstadoCaronaException, CaronaInvalidaException {
+		if(carona == null)
+			throw new CaronaInvalidaException();
+		throw new EstadoCaronaException("Uma carona cancelada não pode ser posta em estado de espera");
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see estradasolidaria.ui.server.logic.EstadoCaronaInterface#getNomeEstado()
@@ -65,5 +86,4 @@ public class EstadoCaronaCancelada implements EstadoCaronaInterface {
 	public EnumNomeEstadoDaCarona getNomeEstado() {
 		return EnumNomeEstadoDaCarona.CANCELADA;
 	}
-
 }

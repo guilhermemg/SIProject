@@ -22,6 +22,8 @@ public class EstadoCaronaExpired implements EstadoCaronaInterface {
 	@Override
 	public void confirmar(Carona carona) throws CaronaInvalidaException,
 			EstadoCaronaException {
+		if(carona == null)
+			throw new CaronaInvalidaException();
 		throw new EstadoCaronaException("Uma carona expirada não pode ser confirmada");
 	}
 
@@ -31,6 +33,8 @@ public class EstadoCaronaExpired implements EstadoCaronaInterface {
 	@Override
 	public void cancelar(Carona carona) throws CaronaInvalidaException,
 			EstadoCaronaException, MessagingException {
+		if(carona == null)
+			throw new CaronaInvalidaException();
 		throw new EstadoCaronaException("Uma carona expirada não pode ser cancelada");
 	}
 
@@ -40,6 +44,8 @@ public class EstadoCaronaExpired implements EstadoCaronaInterface {
 	@Override
 	public void realizar(Carona carona) throws CaronaInvalidaException,
 			EstadoCaronaException {
+		if(carona == null)
+			throw new CaronaInvalidaException();
 		throw new EstadoCaronaException("Uma carona expirada não pode mais ser realizada");
 	}
 
@@ -49,6 +55,8 @@ public class EstadoCaronaExpired implements EstadoCaronaInterface {
 	@Override
 	public void encerrar(Carona carona) throws CaronaInvalidaException,
 			EstadoCaronaException {
+		if(carona == null)
+			throw new CaronaInvalidaException();
 		throw new EstadoCaronaException("Uma carona expirada não pode se encerrada");
 	}
 
@@ -58,6 +66,8 @@ public class EstadoCaronaExpired implements EstadoCaronaInterface {
 	@Override
 	public void expirar(Carona carona) throws CaronaInvalidaException,
 			EstadoCaronaException {
+		if(carona == null)
+			throw new CaronaInvalidaException();
 		throw new EstadoCaronaException("Uma carona expirada não pode ser expirada novamente");
 	}
 
@@ -67,6 +77,18 @@ public class EstadoCaronaExpired implements EstadoCaronaInterface {
 	@Override
 	public EnumNomeEstadoDaCarona getNomeEstado() {
 		return EnumNomeEstadoDaCarona.EXPIRED;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see estradasolidaria.ui.server.logic.EstadoCaronaInterface#esperar(estradasolidaria.ui.server.logic.Carona)
+	 */
+	@Override
+	public void esperar(Carona carona) throws CaronaInvalidaException,
+			EstadoCaronaException, CaronaInvalidaException {
+		if(carona == null)
+			throw new CaronaInvalidaException();
+		throw new EstadoCaronaException("Uma carona expirada não pode ser posta em estado de espera");
 	}
 
 }

@@ -189,8 +189,9 @@ public class Carona implements Comparable<Carona>, Serializable {
 	}
 	
 	private void iniciarMonitoramentoDeOcorrenciaDeCarona() {
-		// TODO Auto-generated method stub
-		
+		Thread t =
+				new ThreadMonitoramentoDeOcorrenciaDeCarona("Thread monitoramento de ocorrencia de carona", this);
+		t.start();
 	}
 	
 	private void iniciarIntervaloDeTempoAte48hAntesDaCaronaComecar() {
@@ -1164,6 +1165,16 @@ public class Carona implements Comparable<Carona>, Serializable {
 	}
 
 	/**
+	 * Coloca a carona em um estado de espera
+	 * pelo minimo de caroneiros.
+	 * @throws EstadoCaronaException 
+	 * @throws CaronaInvalidaException 
+	 */
+	public void setCaronaEmEstadoDeEspera() throws CaronaInvalidaException, EstadoCaronaException {
+		estadoDaCarona.esperar(this);
+	}
+	
+	/**
 	 * Retorna lista de usuarios preferencias dessa carona.
 	 * 
 	 * @return lista de usuarios preferenciais
@@ -1183,4 +1194,5 @@ public class Carona implements Comparable<Carona>, Serializable {
 	public void setIsFinalizedTimeInterval(boolean b) {
 		this.isFinalizedTimeIntervalParaCaronaPreferencial = b;
 	}
+
 }

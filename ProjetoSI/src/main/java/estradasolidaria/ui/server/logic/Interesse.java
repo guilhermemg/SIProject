@@ -1,6 +1,7 @@
 package estradasolidaria.ui.server.logic;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -211,11 +212,13 @@ public class Interesse implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime
-				* result
-				+ ((dateUtil == null) ? 0 : dateUtil
-						.hashCode());
+		result = prime * result + ((data == null) ? 0 : data.hashCode());
+		result = prime * result
+				+ ((dateUtil == null) ? 0 : dateUtil.hashCode());
 		result = prime * result + ((destino == null) ? 0 : destino.hashCode());
+		result = prime * result + ((horaFim == null) ? 0 : horaFim.hashCode());
+		result = prime * result
+				+ ((horaInicio == null) ? 0 : horaInicio.hashCode());
 		result = prime * result
 				+ ((idInteresse == null) ? 0 : idInteresse.hashCode());
 		result = prime * result + ((origem == null) ? 0 : origem.hashCode());
@@ -231,6 +234,11 @@ public class Interesse implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Interesse other = (Interesse) obj;
+		if (data == null) {
+			if (other.data != null)
+				return false;
+		} else if (!data.equals(other.data))
+			return false;
 		if (dateUtil == null) {
 			if (other.dateUtil != null)
 				return false;
@@ -240,6 +248,16 @@ public class Interesse implements Serializable {
 			if (other.destino != null)
 				return false;
 		} else if (!destino.equals(other.destino))
+			return false;
+		if (horaFim == null) {
+			if (other.horaFim != null)
+				return false;
+		} else if (!horaFim.equals(other.horaFim))
+			return false;
+		if (horaInicio == null) {
+			if (other.horaInicio != null)
+				return false;
+		} else if (!horaInicio.equals(other.horaInicio))
 			return false;
 		if (idInteresse == null) {
 			if (other.idInteresse != null)
@@ -268,30 +286,48 @@ public class Interesse implements Serializable {
 	 * @return true se carona corresponde a este interesse
 	 */
 	public boolean verificaCorrespondencia(Carona carona) {
-		System.out.println("carona.origem: " + carona.getOrigem());
-		System.out.println("carona.destino: " + carona.getDestino());
-		System.out.println("carona.data: " + carona.getData());
-		System.out.println("carona.hora: " + carona.getHora());
-		System.out.println("carona.vagas: " + carona.getVagas());
-		System.out.println("");
-		System.out.println("interesse.origem: " + origem);
-		System.out.println("interesse.destino: " + destino);
-		System.out.println("interesse.data: " + data);
-		System.out.println("interesse.horaInicio: " + horaInicio);
-		System.out.println("interesse.horaFim: " + horaFim);
-		System.out.println("");
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 		
-		if(this.getData().equals("")) { // retorna todas que ainda vao acontecer e tem origem e destino semelhantes ao do interesse
-			if(carona.getOrigem().equals(this.getOrigem()) && carona.getDestino().equals(this.getDestino()))
+		if(this.getData() == null) { // retorna todas que ainda vao acontecer e tem origem e destino semelhantes ao do interesse
+			if(carona.getOrigem().equals(this.getOrigem()) && carona.getDestino().equals(this.getDestino())
+				&& (carona.getData().getTimeInMillis() >= Calendar.getInstance().getTimeInMillis())) {
+				if(getHoraInicio() != null && getHoraFim() != null) {
+					Calendar timeDaCarona = carona.getHora();
+					return (getHoraInicio().getTimeInMillis() <= timeDaCarona.getTimeInMillis())
+							&& (getHoraFim().getTimeInMillis() >= timeDaCarona.getTimeInMillis());
+				}
 				return true; // nao precisa especificar hora
+			}
 		} 
 		else {
 			if(carona.getOrigem().equals(this.getOrigem()) && carona.getDestino().equals(this.getDestino()) 
-				&& carona.getData().equals(this.getData())) {
+				&& dateFormatter.format(carona.getData().getTime()).equals(dateFormatter.format(this.getData().getTime()))) {
+				if( getHoraInicio() != null && getHoraFim() != null ) {
+					Long timeDaCarona = carona.getHora().getTimeInMillis();
+					return getHoraInicio().getTimeInMillis() <= timeDaCarona && 
+							getHoraFim().getTimeInMillis() >= timeDaCarona;
+				}
 				return true;
 			}
 		}
-		//TODO terminar verificaCorrespondencia(Carona c)
 		return false;
+	}
+
+	@Override
+	public String toString() {
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat hourFormatter = new SimpleDateFormat("HH:mm");
+		if(this.getData() != null && getHoraFim() != null && getHoraInicio() != null) {
+			return "Interesse [origem=" + origem + ", destino=" + destino
+					+ ", idInteresse=" + idInteresse + ", horaFim=" + 
+			hourFormatter.format(this.getHoraFim().getTime()) + 
+			", horaInicio=" + hourFormatter.format(this.getHoraInicio().getTime())
+					+ ", data=" + dateFormatter.format(this.getData().getTime()) + "]";
+		}
+		else {
+			return "Interesse [origem=" + origem + ", destino=" + destino
+					+ ", idInteresse=" + idInteresse + ", horaFim=" + null + 
+			", horaInicio=" + null +  ", data=" + null + "]";
+		}
 	}
 }

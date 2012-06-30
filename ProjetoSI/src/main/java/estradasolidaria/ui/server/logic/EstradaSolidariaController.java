@@ -118,12 +118,13 @@ public class EstradaSolidariaController implements Serializable {
 				idSessao).getIdUser());
 
 		if (donoDaCarona == null)
-			throw new IllegalArgumentException("Usuario nao encontrado");
+			throw new IllegalArgumentException("Usuário não encontrado");
 
 		Carona carona = donoDaCarona.cadastrarCarona(
 				donoDaCarona.getIdUsuario(), origem, destino, data, hora,
 				vagas, ordemParaCaronas++);
-		if (carona.getIdCarona() != null) {
+		
+		if (carona != null) {
 			atualizaMensagensEmPerfis(carona);
 			return carona;
 		} 
@@ -145,7 +146,12 @@ public class EstradaSolidariaController implements Serializable {
 			throw new IllegalArgumentException("Login inválido");
 		if (senha == null || senha.equals(""))
 			throw new IllegalArgumentException("Senha inválida");
-
+		
+		//TODO fazer busca por sessao aberta
+//		Sessao sessaoAberta = buscaSessaoAberta(login);
+//		if(sessaoAberta != null)
+//			return sessaoAberta;
+		
 		// Iterator Pattern
 		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
 		while (iteratorIdUsuario.hasNext()) {
@@ -158,10 +164,24 @@ public class EstradaSolidariaController implements Serializable {
 					return s;
 				}
 				throw new IllegalArgumentException("Senha inválida");
-
 			}
 		}
 		throw new UsuarioInexistenteException();
+	}
+
+	private Sessao buscaSessaoAberta(String login) {
+		iteratorIdSessao = mapIdSessao.values().iterator();
+		iteratorIdUsuario = mapIdUsuario.values().iterator();
+		while(iteratorIdSessao.hasNext()) {
+			Sessao s = iteratorIdSessao.next();
+			while(iteratorIdUsuario.hasNext()) {
+				Usuario u = iteratorIdUsuario.next();
+				if(u.getLogin().equals(login)) {
+					return s;
+				}
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -555,8 +575,6 @@ public class EstradaSolidariaController implements Serializable {
 		Solicitacao solicitacaoFeita =
 				donoDaCarona.solicitarVaga(idCarona, donoDaCarona, solicitante);
 		
-		System.out.println(solicitacaoFeita.toString());
-		
 		solicitante.addSolicitacaoFeita(solicitacaoFeita);
 		
 		return solicitacaoFeita;
@@ -765,7 +783,7 @@ public class EstradaSolidariaController implements Serializable {
 
 		Carona caronaMunicipal = donoDaCarona.cadastrarCaronaMunicipal(origem,
 				destino, cidade, data, hora, vagas, ordemParaCaronas++);
-		if (caronaMunicipal.getIdCarona() != null) {
+		if (caronaMunicipal != null) {
 			atualizaMensagensEmPerfis(caronaMunicipal);
 			return caronaMunicipal;
 		} else
@@ -975,9 +993,10 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param horaInicio
 	 * @param horaFim
 	 * @return interesse
+	 * @throws CaronaInvalidaException 
 	 */
 	public Interesse cadastrarInteresse(Integer idSessao, String origem,
-			String destino, String data, String horaInicio, String horaFim) {
+			String destino, String data, String horaInicio, String horaFim) throws CaronaInvalidaException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 
@@ -1001,16 +1020,19 @@ public class EstradaSolidariaController implements Serializable {
 	 * 
 	 * @param carona
 	 * @return emailDonoDaCarona
+	 * @throws CaronaInvalidaException 
 	 */
-	private String getEmailDonoDeCarona(Carona carona) {
+	private String getEmailDonoDeCarona(Carona carona) throws CaronaInvalidaException {
+		if(carona == null)
+			throw new CaronaInvalidaException();
+		
 		String emailDonoDaCarona = null;
 
 		// Iterator Pattern
 		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
 		while (iteratorIdUsuario.hasNext()) {
 			Usuario u = iteratorIdUsuario.next();
-			Iterator<Carona> it = u.getMapIdCaronasOferecidas().values()
-					.iterator();
+			Iterator<Carona> it = u.getMapIdCaronasOferecidas().values().iterator();
 			while (it.hasNext()) {
 				Carona c = it.next();
 				if (c.getIdCarona().equals(carona.getIdCarona())) {
@@ -1030,20 +1052,17 @@ public class EstradaSolidariaController implements Serializable {
 	 * 
 	 * @param idNovaCarona
 	 *            : id da nova carona cadastrada no sistema
+	 * @throws CaronaInvalidaException 
 	 */
-	private void atualizaMensagensEmPerfis(Carona novaCarona) {
-		System.out.println("Atualizando mensagens em perfis");
-		// Iterator Pattern
-		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
-		while (iteratorIdUsuario.hasNext()) {
-			Usuario u = iteratorIdUsuario.next();
-			Iterator<Interesse> itInteresses = u.getMapIdInteresses().values().iterator();
-			while (itInteresses.hasNext()) {
-				Interesse interesse = itInteresses.next();
-				if (interesse.verificaCorrespondencia(novaCarona))
-					System.out.println("verificou correspondencia");
-					u.atualizaPerfilUsuarioInteressado(novaCarona,
-							getEmailDonoDeCarona(novaCarona));
+	private void atualizaMensagensEmPerfis(Carona novaCarona) throws CaronaInvalidaException {
+		if(novaCarona == null)
+			throw new CaronaInvalidaException();
+		
+		for(Usuario u : mapIdUsuario.values()) {
+			for(Interesse i : u.getMapIdInteresse().values()) {
+				if(i.verificaCorrespondencia(novaCarona)) {
+					u.atualizaPerfilUsuarioInteressado(novaCarona, getEmailDonoDeCarona(novaCarona));
+				}
 			}
 		}
 	}
@@ -1063,7 +1082,7 @@ public class EstradaSolidariaController implements Serializable {
 	 */
 	private List<Carona> buscaCaronasCorrespondentes(Interesse interesse) {
 		List<Carona> listaCaronas = new LinkedList<Carona>();
-		System.out.println("Buscando caronas correspondentes");
+		
 		// Iterator Pattern
 		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
 		while (iteratorIdUsuario.hasNext()) {
@@ -1071,10 +1090,9 @@ public class EstradaSolidariaController implements Serializable {
 			Iterator<Carona> itCaronas = u.getMapIdCaronasOferecidas().values()
 					.iterator();
 			while (itCaronas.hasNext()) {
-				Carona c = itCaronas.next();
-				if (interesse.verificaCorrespondencia(c)) {
-					System.out.println("Verificou correspondencia em busca caronas");
-					listaCaronas.add(c);
+				Carona carona = itCaronas.next();
+				if (interesse.verificaCorrespondencia(carona)) {
+					listaCaronas.add(carona);
 				}
 			}
 		}

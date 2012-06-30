@@ -19,6 +19,8 @@ public class EstadoCaronaEncerrada implements EstadoCaronaInterface {
 	@Override
 	public void confirmar(Carona carona) throws CaronaInvalidaException,
 			EstadoCaronaException {
+		if(carona == null)
+			throw new CaronaInvalidaException();
 		throw new EstadoCaronaException("Uma carona encerrada não pode ser confirmada");
 	}
 
@@ -28,6 +30,8 @@ public class EstadoCaronaEncerrada implements EstadoCaronaInterface {
 	@Override
 	public void cancelar(Carona carona) throws CaronaInvalidaException,
 			EstadoCaronaException, MessagingException {
+		if(carona == null)
+			throw new CaronaInvalidaException();
 		throw new EstadoCaronaException("Uma carona encerrada não pode ser cancelada");
 	}
 
@@ -37,6 +41,8 @@ public class EstadoCaronaEncerrada implements EstadoCaronaInterface {
 	@Override
 	public void realizar(Carona carona) throws CaronaInvalidaException,
 			EstadoCaronaException {
+		if(carona == null)
+			throw new CaronaInvalidaException();
 		throw new EstadoCaronaException("Uma carona encerrada não pode ser realizada novamente");
 	}
 
@@ -46,6 +52,8 @@ public class EstadoCaronaEncerrada implements EstadoCaronaInterface {
 	@Override
 	public void encerrar(Carona carona) throws CaronaInvalidaException,
 			EstadoCaronaException {
+		if(carona == null)
+			throw new CaronaInvalidaException();
 		throw new EstadoCaronaException("Uma carona encerrada não pode ser encerrada novamente");
 	}
 
@@ -55,6 +63,8 @@ public class EstadoCaronaEncerrada implements EstadoCaronaInterface {
 	@Override
 	public void expirar(Carona carona) throws CaronaInvalidaException,
 			EstadoCaronaException {
+		if(carona == null)
+			throw new CaronaInvalidaException();
 		throw new EstadoCaronaException("Uma carona encerrada não pode mais ser expirada");
 	}
 
@@ -64,6 +74,14 @@ public class EstadoCaronaEncerrada implements EstadoCaronaInterface {
 	@Override
 	public EnumNomeEstadoDaCarona getNomeEstado() {
 		return EnumNomeEstadoDaCarona.ENCERRADA;
+	}
+
+	@Override
+	public void esperar(Carona carona) throws CaronaInvalidaException,
+			EstadoCaronaException, CaronaInvalidaException {
+		if(carona == null)
+			throw new CaronaInvalidaException();
+		throw new EstadoCaronaException("Uma carona encerrada não pode entrar em estado de espera");
 	}
 
 }

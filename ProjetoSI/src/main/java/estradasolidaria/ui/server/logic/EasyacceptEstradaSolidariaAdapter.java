@@ -970,7 +970,7 @@ public class EasyacceptEstradaSolidariaAdapter implements EasyacceptAdapterInter
 	 */
 	@Override
 	public String cadastrarInteresse(String idSessao, String origem,
-			String destino, String data, String horaInicio, String horaFim) {
+			String destino, String data, String horaInicio, String horaFim) throws CaronaInvalidaException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 
