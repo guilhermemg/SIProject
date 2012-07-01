@@ -50,6 +50,8 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	private Map<Integer, Solicitacao> mapIdSolicitacoesFeitas = new TreeMap<Integer, Solicitacao>();
 
 	private Map<Integer, Sugestao> mapIdSugestoesFeitas = new TreeMap<Integer, Sugestao>();
+	
+	private List<Integer> listaIdsUsuariosPreferenciais = new LinkedList<Integer>();
 
 	/**
 	 * Construtor da classe Usuario.
@@ -293,7 +295,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 			throw new IllegalArgumentException(
 					"Identificador do carona é inválido");
 		return c.addSolicitacao(c.getOrigem(), c.getDestino(), donoDaCarona,
-				donoDaSolicitacao, pontos);
+				donoDaSolicitacao, pontos, listaIdsUsuariosPreferenciais);
 	}
 
 	/**
@@ -313,7 +315,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		Carona carona = this.mapIdCaronasOferecidas.get(idCarona);
 		if(carona != null) {
 			return carona.addSolicitacao(carona.getOrigem(), carona.getDestino(), donoDaCarona,
-						donoDaSolicitacao, pontos);
+						donoDaSolicitacao, pontos, listaIdsUsuariosPreferenciais);
 		}
 		throw new CaronaInexistenteException();
 	}
@@ -447,15 +449,14 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * 
 	 */
 	public Solicitacao aceitarSolicitacao(Integer idSolicitacao) throws IllegalArgumentException, CaronaInexistenteException, EstadoSolicitacaoException {
-		// Iterator Pattern
-		iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas.values()
-				.iterator();
+//		// Iterator Pattern
+		iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas.values().iterator();
 		while (iteratorIdCaronasOferecidas.hasNext()) {
 			Carona carona = iteratorIdCaronasOferecidas.next();
-			Iterator<Solicitacao> it = carona.getMapIdSolicitacao().values()
+			Iterator<Solicitacao> itSolicitacoes = carona.getMapIdSolicitacao().values()
 					.iterator();
-			while (it.hasNext()) {
-				Solicitacao s = it.next();
+			while (itSolicitacoes.hasNext()) {
+				Solicitacao s = itSolicitacoes.next();
 				if (s.getIdSolicitacao().equals(idSolicitacao) &&
 						s.getTipoSolicitacao().equals(EnumTipoSolicitacao.SOLICITACAO_SEM_PONTO_ENCONTRO)) {
 					// nao seta pontoEncontro da carona ==> fica null
@@ -538,7 +539,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		Carona carona = this.mapIdCaronasOferecidas.get(idCarona);
 		if (carona != null) {
 			return carona.addSolicitacao(carona.getOrigem(), carona.getDestino(),
-					donoDaCarona, donoDaSolicitacao);
+					donoDaCarona, donoDaSolicitacao, this.listaIdsUsuariosPreferenciais);
 		}
 		throw new IllegalArgumentException("Identificador do carona é inválido");
 	}
@@ -630,7 +631,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		iteratorIdCaronasPegas = this.mapIdCaronasPegas.values().iterator();
 		while (iteratorIdCaronasPegas.hasNext()) {
 			Carona c = iteratorIdCaronasPegas.next();
-			Iterator<EnumCaronaReview> it = c.getMapDonoReviewCaroneiro()
+			Iterator<EnumCaronaReview> it = c.getMapIdDonoReviewCaroneiro()
 					.values().iterator();
 			while (it.hasNext()) {
 				EnumCaronaReview review = it.next();
@@ -654,7 +655,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		iteratorIdCaronasPegas = this.mapIdCaronasPegas.values().iterator();
 		while (iteratorIdCaronasPegas.hasNext()) {
 			Carona c = iteratorIdCaronasPegas.next();
-			Iterator<EnumCaronaReview> it = c.getMapDonoReviewCaroneiro()
+			Iterator<EnumCaronaReview> it = c.getMapIdDonoReviewCaroneiro()
 					.values().iterator();
 			while (it.hasNext()) {
 				EnumCaronaReview review = it.next();
@@ -678,7 +679,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 				.iterator();
 		while (iteratorIdCaronasOferecidas.hasNext()) {
 			Carona c = iteratorIdCaronasOferecidas.next();
-			Iterator<EnumCaronaReview> it = c.getMapCaroneiroReviewDono().values().iterator();
+			Iterator<EnumCaronaReview> it = c.getMapIdCaroneiroReviewDono().values().iterator();
 			while (it.hasNext()) {
 				EnumCaronaReview review = it.next();
 				if (review.equals(EnumCaronaReview.NAO_FUNCIONOU)) {
@@ -701,7 +702,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 				.iterator();
 		while (iteratorIdCaronasOferecidas.hasNext()) {
 			Carona c = iteratorIdCaronasOferecidas.next();
-			Iterator<EnumCaronaReview> it = c.getMapCaroneiroReviewDono().values().iterator();
+			Iterator<EnumCaronaReview> it = c.getMapIdCaroneiroReviewDono().values().iterator();
 			while (it.hasNext()) {
 				EnumCaronaReview review = it.next();
 				if (review.equals(EnumCaronaReview.SEGURA_E_TRANQUILA)) {
@@ -764,13 +765,13 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param review
 	 * 
 	 */
-	public void setReviewCarona(Integer idCaroneiro, Integer idCarona,
+	public EnumCaronaReview setReviewCarona(Integer idCaroneiro, Integer idCarona,
 			String review) {
 		Carona c = mapIdCaronasPegas.get(idCarona);
 		if (c == null)
 			throw new IllegalArgumentException(
 					"Identificador do carona é inválido");
-		c.setDonoReviewCaroneiro(idCaroneiro, review);
+		return c.setCaroneiroReviewDono(idCaroneiro, review);
 	}
 
 	/**
@@ -1434,22 +1435,45 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	}
 
 	/**
-	 * Retorna lista de usuarios preferenciais
-	 * para uma carona preferencial identificada 
-	 * por idCarona.
+	 * Adiciona id de caroneiro
+	 * a lista de usuarios preferenciais,
+	 * este metodo somente eh usado internamente pelo sistema
+	 * quando um usuario faz um review positivo do dono da carona.
+	 * 
+	 * @param idCaroneiro
+	 */
+	public void addCaroneiroPreferencial(Integer idCaroneiro) {
+		listaIdsUsuariosPreferenciais.add(idCaroneiro);
+	}
+	
+	/**
+	 * Define a carona identificada por idCarona
+	 * como preferencial.
 	 * 
 	 * @param idCarona
-	 * @return lista de usuarios preferenciais
-	 * @throws CaronaInexistenteException 
 	 */
-	public List<Usuario> getUsuariosPreferenciaisCarona(Integer idCarona) throws CaronaInexistenteException {
-		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
-		while(iteratorIdCaronasOferecidas.hasNext()) {
-			Carona carona = iteratorIdCaronasOferecidas.next();
-			if(carona.getIdCarona().equals(idCarona) && carona.isCaronaPreferencial()) {
-				return carona.getUsuariosPreferenciaisCarona();
-			}
-		}
-		throw new CaronaInexistenteException();
+	public void definirCaronaComoPreferencial(
+			Integer idCarona) {
+		Carona carona = this.mapIdCaronasOferecidas.get(idCarona);
+		carona.definirCaronaComoPreferencial();
+	}
+	
+	/**
+	 * Retorna lista de usuarios preferencias desse usuario.
+	 * 
+	 * @return lista de usuarios preferenciais
+	 */
+	public List<Integer> getUsuariosPreferenciaisCarona() {
+		return listaIdsUsuariosPreferenciais ;
+	}
+
+	/**
+	 * Retorna lista de ids de usuarios
+	 * preferenciais desse usuario.
+	 * 
+	 * @return lista de ids de usuarios
+	 */
+	public List<Integer> getListaIdsUsuariosPreferenciais() {
+		return this.listaIdsUsuariosPreferenciais;
 	}
 }

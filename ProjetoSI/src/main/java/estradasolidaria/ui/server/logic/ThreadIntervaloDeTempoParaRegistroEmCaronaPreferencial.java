@@ -40,7 +40,6 @@ public class ThreadIntervaloDeTempoParaRegistroEmCaronaPreferencial extends Thre
 			sleep(actualTimeMais24h.getTimeInMillis() - 
 					Calendar.getInstance().getTimeInMillis()); 
 			carona.setEstadoDaCarona(estadoAtual);
-			carona.setIsFinalizedTimeInterval(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

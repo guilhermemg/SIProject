@@ -61,19 +61,14 @@ public class Carona implements Comparable<Carona>, Serializable {
 
 	// contem o mapeamento de cada usuario que compareceu a carona para o review
 	// q ele faz dela.
-	private Map<Integer, EnumCaronaReview> mapCaroneiroReviewDono = new TreeMap<Integer, EnumCaronaReview>();
+	private Map<Integer, EnumCaronaReview> mapIdCaroneiroReviewDono = new TreeMap<Integer, EnumCaronaReview>();
 
 	// contem o mapeamento de cada usuario presente para o review q o dono da
 	// carona faz dele.
 	private Map<Integer, EnumCaronaReview> mapDonoReviewCaroneiro = new TreeMap<Integer, EnumCaronaReview>();
 	private Map<Integer, Sugestao> mapSugestoesPontoDeEncontro = new TreeMap<Integer, Sugestao>();
 
-	private List<Usuario> listaUsuariosPreferenciais = new LinkedList<Usuario>();
-
 	private Thread threadIntervaloPreferencial;
-
-	private boolean isFinalizedTimeIntervalParaCaronaPreferencial;
-
 
 	// ------------------------------------------------------------------------------------------------------
 
@@ -497,7 +492,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 						.hashCode());
 		result = prime
 				* result
-				+ ((mapCaroneiroReviewDono == null) ? 0 : mapCaroneiroReviewDono
+				+ ((mapIdCaroneiroReviewDono == null) ? 0 : mapIdCaroneiroReviewDono
 						.hashCode());
 		result = prime
 				* result
@@ -561,10 +556,10 @@ public class Carona implements Comparable<Carona>, Serializable {
 				return false;
 		} else if (!mapIdSolicitacoes.equals(other.mapIdSolicitacoes))
 			return false;
-		if (mapCaroneiroReviewDono == null) {
-			if (other.mapCaroneiroReviewDono != null)
+		if (mapIdCaroneiroReviewDono == null) {
+			if (other.mapIdCaroneiroReviewDono != null)
 				return false;
-		} else if (!mapCaroneiroReviewDono.equals(other.mapCaroneiroReviewDono))
+		} else if (!mapIdCaroneiroReviewDono.equals(other.mapIdCaroneiroReviewDono))
 			return false;
 		if (mapDonoReviewCaroneiro == null) {
 			if (other.mapDonoReviewCaroneiro != null)
@@ -730,9 +725,10 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @throws Exception
 	 */
 	public Solicitacao addSolicitacao(String origem, String destino,
-			Usuario donoDaCarona, Usuario donoDaSolicitacao) throws IllegalArgumentException, CadastroEmCaronaPreferencialException {
+			Usuario donoDaCarona, Usuario donoDaSolicitacao, 
+			List<Integer> listaIdsUsuariosPreferenciais) throws IllegalArgumentException, CadastroEmCaronaPreferencialException {
 		if(this.getTipoDeCarona().equals(TipoDeCarona.PREFERENCIAL)) {
-			if(!isFinalizedTimeIntervalParaCaronaPreferencial) {
+			if(!listaIdsUsuariosPreferenciais.contains(donoDaSolicitacao.getIdUsuario())) {
 				throw new CadastroEmCaronaPreferencialException();
 			}
 		}
@@ -753,10 +749,11 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @throws CadastroEmCaronaPreferencialException 
 	 */
 	public Solicitacao addSolicitacao(String origem, String destino,
-			Usuario donoDaCarona, Usuario donoDaSolicitacao, String ponto) throws CadastroEmCaronaPreferencialException {
+			Usuario donoDaCarona, Usuario donoDaSolicitacao, String ponto,
+			List<Integer> listaIdsUsuariosPreferenciais) throws CadastroEmCaronaPreferencialException {
 		if(validaPontoEncontro(donoDaSolicitacao, ponto)) {
 			if(this.isCaronaPreferencial()) {
-				if(!this.listaUsuariosPreferenciais.contains(donoDaSolicitacao)) {
+				if(!listaIdsUsuariosPreferenciais.contains(donoDaSolicitacao.getIdUsuario())) {
 					throw new CadastroEmCaronaPreferencialException();
 				}
 			}
@@ -776,7 +773,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return mapa
 	 */
-	public Map<Integer, EnumCaronaReview> getMapDonoReviewCaroneiro() {
+	public Map<Integer, EnumCaronaReview> getMapIdDonoReviewCaroneiro() {
 		return this.mapDonoReviewCaroneiro;
 	}
 
@@ -790,10 +787,10 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @param review
 	 * 
 	 */
-	public void setDonoReviewCaroneiro(Integer idCaroneiro, String review) {
-		EnumCaronaReview e = getReview(review);
-		this.mapCaroneiroReviewDono.put(idCaroneiro, e);
-		
+	public EnumCaronaReview setCaroneiroReviewDono(Integer idCaroneiro, String review) {
+		EnumCaronaReview eReview = getReview(review);
+		this.mapIdCaroneiroReviewDono.put(idCaroneiro, eReview);
+		return eReview;
 	}
 
 	/**
@@ -806,8 +803,8 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 */
 	public void setReviewVagaEmCarona(Integer idCaroneiro, String review) {
-		EnumCaronaReview e = getReview(review);
-		this.mapDonoReviewCaroneiro.put(idCaroneiro, e);
+		EnumCaronaReview eReview = getReview(review);
+		this.mapDonoReviewCaroneiro.put(idCaroneiro, eReview);
 	}
 
 	/**
@@ -837,8 +834,8 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return mapIdUsuarioReview
 	 */
-	public Map<Integer, EnumCaronaReview> getMapCaroneiroReviewDono() {
-		return this.mapCaroneiroReviewDono;
+	public Map<Integer, EnumCaronaReview> getMapIdCaroneiroReviewDono() {
+		return this.mapIdCaroneiroReviewDono;
 	}
 
 	/**
@@ -1037,7 +1034,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @return numero correspondente ao review dado
 	 */
 	public Integer getDonoReviewCaroneiro(Integer idCaroneiro) {
-		EnumCaronaReview review = getMapDonoReviewCaroneiro().get(idCaroneiro); 
+		EnumCaronaReview review = getMapIdDonoReviewCaroneiro().get(idCaroneiro); 
 		if (review == EnumCaronaReview.FALTOU) {
 			return 0;
 		}
@@ -1053,7 +1050,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @return numero correspondente ao review dado
 	 */
 	public Integer getCaroneiroReviewDono(Integer idDonoDaCarona) {
-		EnumCaronaReview review = getMapCaroneiroReviewDono().get(idDonoDaCarona); 
+		EnumCaronaReview review = getMapIdCaroneiroReviewDono().get(idDonoDaCarona); 
 		if (review == EnumCaronaReview.NAO_FUNCIONOU) {
 			return 0;
 		}
@@ -1084,9 +1081,8 @@ public class Carona implements Comparable<Carona>, Serializable {
 	/**
 	 * Define carona como preferencial. 
 	 */
-	public void definirCaronaComoPreferencial(List<Usuario> listaDeUsuariosPreferenciais) {
+	public void definirCaronaComoPreferencial() {
 		setTipoDeCarona(TipoDeCarona.PREFERENCIAL);
-		setListaDeUsuariosPreferenciais(listaDeUsuariosPreferenciais);
 		iniciaIntervaloDeTempoParaCadastroDeUsuariosPreferenciais();
 	}
 	
@@ -1094,18 +1090,6 @@ public class Carona implements Comparable<Carona>, Serializable {
 		threadIntervaloPreferencial =
 				new ThreadIntervaloDeTempoParaRegistroEmCaronaPreferencial("Intervalo de tempo para carona preferencial", this);
 		threadIntervaloPreferencial.start();
-	}
-
-	/**
-	 * Configura lista de usuarios preferenciais para esta carona.
-	 * 
-	 * @param listaDeUsuariosPreferenciais
-	 */
-	private void setListaDeUsuariosPreferenciais(
-			List<Usuario> listaDeUsuariosPreferenciais) {
-		if(listaDeUsuariosPreferenciais == null)
-			throw new IllegalArgumentException("Lista de usuarios preferenciais inválida");
-		this.listaUsuariosPreferenciais = listaDeUsuariosPreferenciais;
 	}
 
 	/**
@@ -1173,26 +1157,4 @@ public class Carona implements Comparable<Carona>, Serializable {
 	public void setCaronaEmEstadoDeEspera() throws CaronaInvalidaException, EstadoCaronaException {
 		estadoDaCarona.esperar(this);
 	}
-	
-	/**
-	 * Retorna lista de usuarios preferencias dessa carona.
-	 * 
-	 * @return lista de usuarios preferenciais
-	 */
-	public List<Usuario> getUsuariosPreferenciaisCarona() {
-		return listaUsuariosPreferenciais ;
-	}
-
-	/**
-	 * Configura a variavel que indica
-	 * se o tempo de espera para cadastro
-	 * dos usuarios preferenciais está finalizado
-	 * ou nao.
-	 * 
-	 * @param b
-	 */
-	public void setIsFinalizedTimeInterval(boolean b) {
-		this.isFinalizedTimeIntervalParaCaronaPreferencial = b;
-	}
-
 }

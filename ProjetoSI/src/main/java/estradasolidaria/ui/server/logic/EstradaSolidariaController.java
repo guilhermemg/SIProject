@@ -147,11 +147,6 @@ public class EstradaSolidariaController implements Serializable {
 		if (senha == null || senha.equals(""))
 			throw new IllegalArgumentException("Senha inválida");
 		
-		//TODO fazer busca por sessao aberta
-//		Sessao sessaoAberta = buscaSessaoAberta(login);
-//		if(sessaoAberta != null)
-//			return sessaoAberta;
-		
 		// Iterator Pattern
 		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
 		while (iteratorIdUsuario.hasNext()) {
@@ -167,21 +162,6 @@ public class EstradaSolidariaController implements Serializable {
 			}
 		}
 		throw new UsuarioInexistenteException();
-	}
-
-	private Sessao buscaSessaoAberta(String login) {
-		iteratorIdSessao = mapIdSessao.values().iterator();
-		iteratorIdUsuario = mapIdUsuario.values().iterator();
-		while(iteratorIdSessao.hasNext()) {
-			Sessao s = iteratorIdSessao.next();
-			while(iteratorIdUsuario.hasNext()) {
-				Usuario u = iteratorIdUsuario.next();
-				if(u.getLogin().equals(login)) {
-					return s;
-				}
-			}
-		}
-		return null;
 	}
 
 	/**
@@ -512,7 +492,7 @@ public class EstradaSolidariaController implements Serializable {
 				idSessao).getIdUser());
 		Solicitacao solicitacao = donoDaCarona
 				.aceitarSolicitacao(idSolicitacao);
-
+		
 		Integer idUsuarioDonoDaCarona = solicitacao.getDonoDaCarona()
 				.getIdUsuario();
 		Integer idUsuarioDonoDaSolicitacao = solicitacao.getDonoDaSolicitacao()
@@ -521,6 +501,7 @@ public class EstradaSolidariaController implements Serializable {
 
 		Carona carona = this.mapIdUsuario.get(idUsuarioDonoDaCarona)
 				.getMapIdCaronasOferecidas().get(solicitacao.getIdCarona());
+		
 		this.mapIdUsuario.get(idUsuarioDonoDaSolicitacao)
 				.adicionarIdCaronaPega(idCarona, carona);
 	}
@@ -720,7 +701,7 @@ public class EstradaSolidariaController implements Serializable {
 	 * devem aparecer no perfil do motorista
 	 * 
 	 * @param idSessao
-	 *            : id do caroneiro
+	 *            : id da sessao do caroneiro
 	 * @param idCarona
 	 *            : id da carona pega por ele (caroneiro)
 	 * @param review
@@ -750,8 +731,30 @@ public class EstradaSolidariaController implements Serializable {
 			throw new IllegalArgumentException(
 					"Usuário não possui vaga na carona.");
 		}
-
-		caroneiro.setReviewCarona(idCaroneiro, idCarona, review);
+		
+		
+		
+		EnumCaronaReview eReview = caroneiro.setReviewCarona(idCaroneiro, idCarona, review);
+		if(eReview.equals(EnumCaronaReview.SEGURA_E_TRANQUILA)) {
+			Usuario donoDaCarona = getUsuarioAPartirDeIdCarona(idCarona);
+			donoDaCarona.addCaroneiroPreferencial(idCaroneiro);
+		}
+	}
+	
+	private Usuario getUsuarioAPartirDeIdCarona(Integer idCarona) {
+		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+		Usuario donoDaCarona;
+		while(iteratorIdUsuario.hasNext()) {
+			donoDaCarona = iteratorIdUsuario.next();
+			Iterator<Carona> iteratorIdCarona = donoDaCarona.getMapIdCaronasOferecidas().values().iterator();
+			while(iteratorIdCarona.hasNext()) {
+				Carona c = iteratorIdCarona.next();
+				if(c.getIdCarona().equals(idCarona)) {
+					return donoDaCarona;
+				}
+			}
+		}
+		throw new IllegalArgumentException("IdCarona inválido");
 	}
 
 	/**
@@ -1345,8 +1348,6 @@ public class EstradaSolidariaController implements Serializable {
 	public Integer getMinimoCaroneiros(Integer idCarona) throws CaronaInexistenteException, CaronaInvalidaException {
 		if(idCarona == null)
 			throw new CaronaInvalidaException();
-		if(idCarona.equals(""))
-			throw new CaronaInexistenteException();
 		
 		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
 		Usuario donoDaCarona;
@@ -1428,6 +1429,8 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param idCarona
 	 */
 	public void definirCaronaPreferencial(Integer idCarona) {
+		boolean flag = true;
+		//Iterator pattern
 		Usuario donoDaCarona;
 		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
 		while(iteratorIdUsuario.hasNext()) {
@@ -1436,33 +1439,13 @@ public class EstradaSolidariaController implements Serializable {
 			while(iteratorCaronas.hasNext()) {
 				Carona carona = iteratorCaronas.next();
 				if(carona.getIdCarona().equals(idCarona)) {
-					carona.definirCaronaComoPreferencial(getListaUsuariosPreferenciais(donoDaCarona, carona));
+					donoDaCarona.definirCaronaComoPreferencial(idCarona);
+					flag = flag ? true : true;
 				}
 			}
 		}
-		throw new IllegalArgumentException("IdCarona inválido");
-	}
-	
-	/**
-	 * Retorna lista de usuarios preferenciais
-	 * desse usuario.
-	 * 
-	 * @param idDonoDaCarona
-	 * @param idCarona
-	 * @return lista de usuarios preferenciais
-	 */
-	private List<Usuario> getListaUsuariosPreferenciais(Usuario donoDaCarona, Carona carona) {
-		List<Usuario> listaUsuariosPreferenciais = new LinkedList<Usuario>();
-		Iterator<Integer> iteratorIdCaroneiros = carona.getMapCaroneiroReviewDono().keySet().iterator();
-		while(iteratorIdCaroneiros.hasNext()) {
-			Integer idCaroneiro = iteratorIdCaroneiros.next();
-			EnumCaronaReview review = carona.getMapCaroneiroReviewDono().get(idCaroneiro);
-			if(review.equals(EnumCaronaReview.SEGURA_E_TRANQUILA)) {
-				Usuario caroneiro = getUsuarioAPartirDeIDUsuario(idCaroneiro);
-				listaUsuariosPreferenciais.add(caroneiro);
-			}
-		}
-		return listaUsuariosPreferenciais;
+		if(!flag)
+			throw new IllegalArgumentException("IdCarona inválido");
 	}
 	
 	/**
@@ -1488,24 +1471,46 @@ public class EstradaSolidariaController implements Serializable {
 	}
 	
 	/**
-	 * Retorna lista de usuarios preferenciais.
+	 * Retorna lista de usuarios preferenciais associada
+	 * a carona identificada por idCarona.
 	 * 
 	 * @param idCarona
 	 * @return lista de usuarios
 	 * @throws CaronaInexistenteException 
 	 */
-	public List<Usuario> getUsuariosPreferenciaisCarona(Integer idCarona) throws CaronaInexistenteException {
+	public List<Sessao> getUsuariosPreferenciaisCarona(Integer idCarona) throws CaronaInexistenteException {
+		List<Integer> listaUsuarios = new LinkedList<Integer>();
 		Usuario donoDaCarona;
 		iteratorIdUsuario = mapIdUsuario.values().iterator();
 		while(iteratorIdUsuario.hasNext()) {
 			donoDaCarona = iteratorIdUsuario.next();
 			if(donoDaCarona.getMapIdCaronasOferecidas().containsKey(idCarona)) {
-				return donoDaCarona.getUsuariosPreferenciaisCarona(idCarona);
+				listaUsuarios = donoDaCarona.getListaIdsUsuariosPreferenciais();
 			}
 		}
-		throw new UsuarioInexistenteException();
+		if(listaUsuarios == null)
+			throw new UsuarioInexistenteException();
+		else
+			return getListaIdsSessoesDeUsuarios(listaUsuarios);
+		
 	}
 	
+	private List<Sessao> getListaIdsSessoesDeUsuarios(List<Integer> listaUsuarios) {
+		List<Sessao> listaIdsSessoes = new LinkedList<Sessao>();
+		Iterator<Integer> iteratorUsuarios = listaUsuarios.iterator();
+		while(iteratorUsuarios.hasNext()) {
+			Integer idUsuario = iteratorUsuarios.next();
+			iteratorIdSessao = mapIdSessao.values().iterator();
+			while(iteratorIdSessao.hasNext()) {
+				Sessao s = iteratorIdSessao.next();
+				if(s.getIdUser().equals(idUsuario)) {
+					listaIdsSessoes.add(s);
+				}
+			}
+		}
+		return listaIdsSessoes;
+	}
+
 	/**
 	 * Retorna lista de usuarios ranqueados segundo
 	 * avaliacoes feitas por outros usuario e registradas

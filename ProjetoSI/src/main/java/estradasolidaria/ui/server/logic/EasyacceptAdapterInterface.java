@@ -531,7 +531,7 @@ public interface EasyacceptAdapterInterface {
 	 * @throws CaronaInexistenteException 
 	 * @throws CaronaInvalidaException 
 	 */
-	public List<Usuario> getUsuariosPreferenciaisCarona(String idCarona) throws CaronaInexistenteException, CaronaInvalidaException;
+	public String getUsuariosPreferenciaisCarona(String idCarona) throws CaronaInexistenteException, CaronaInvalidaException;
 	
 	/**
 	 * Cadastra carona relampago no sistema.

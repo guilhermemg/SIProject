@@ -1271,7 +1271,7 @@ public class EasyacceptEstradaSolidariaAdapter implements EasyacceptAdapterInter
 	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#getUsuariosPreferenciaisCarona(java.lang.Integer)
 	 */
 	@Override
-	public List<Usuario> getUsuariosPreferenciaisCarona(String idCarona) throws CaronaInexistenteException, CaronaInvalidaException {
+	public String getUsuariosPreferenciaisCarona(String idCarona) throws CaronaInexistenteException, CaronaInvalidaException {
 		if(idCarona == null)
 			throw new CaronaInvalidaException();
 		if(idCarona.equals(""))
@@ -1282,6 +1282,13 @@ public class EasyacceptEstradaSolidariaAdapter implements EasyacceptAdapterInter
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return sistema.getUsuariosPreferenciaisCarona(idCarona2);
+		List<Sessao> listaSessoes = sistema.getUsuariosPreferenciaisCarona(idCarona2);
+		List<String> listaIdsUsuarios = new SpecialLinkedListBrackets<String>();
+		Iterator<Sessao> itSessoes = listaSessoes.iterator();
+		while(itSessoes.hasNext()) {
+			Sessao s = itSessoes.next();
+			listaIdsUsuarios.add(s.getIdSessao().toString());
+		}
+		return listaIdsUsuarios.toString();
 	}
 }
