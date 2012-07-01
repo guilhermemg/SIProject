@@ -1291,4 +1291,26 @@ public class EasyacceptEstradaSolidariaAdapter implements EasyacceptAdapterInter
 		}
 		return listaIdsUsuarios.toString();
 	}
+
+	@Override
+	public String getRankingUsuarios(String ordem) {
+		if(ordem == null || ordem.equals(""))
+			throw new IllegalArgumentException("Opção inválida.");
+		
+		List<Usuario> listaUsuarios = sistema.getRankingUsuarios(ordem);
+//		return listaUsuarios;
+		List<Integer> listaIdsSessoesDeUsuarios = new SpecialLinkedListBrackets<Integer>();
+		Iterator<Usuario> itUsuarios = listaUsuarios.iterator();
+		while(itUsuarios.hasNext()) {
+			Usuario u = itUsuarios.next();
+			Iterator<Sessao> idSessao = sistema.getMapIdSessao().values().iterator();
+			while(idSessao.hasNext()) {
+				Sessao s = idSessao.next();
+				if(s.getIdUser().equals(u.getIdUsuario())) {
+					listaIdsSessoesDeUsuarios.add(s.getIdSessao());
+				}
+			}
+		}
+		return listaIdsSessoesDeUsuarios.toString();
+	}
 }

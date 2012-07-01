@@ -687,7 +687,17 @@ public class EstradaSolidariaController implements Serializable {
 					"Usuário não possui vaga na carona.");
 		}
 
-		donoDaCarona.reviewVagaEmCarona(idCarona, idCaroneiro, review);
+		EnumCaronaReview eReview = donoDaCarona.reviewVagaEmCarona(idCarona, idCaroneiro, review);
+		
+		if(eReview.equals(EnumCaronaReview.NAO_FALTOU)) {
+			caroneiro.addCaroneiroPreferencial(idCaroneiro);
+			caroneiro.setPontuacao(donoDaCarona.getPontuacao() + 1);
+		}
+		else if(eReview.equals(EnumCaronaReview.FALTOU)){
+			caroneiro.setPontuacao(donoDaCarona.getPontuacao() + 0);
+		}
+		else
+			throw new IllegalArgumentException("Review inválido");
 	}
 
 	/**
@@ -738,7 +748,14 @@ public class EstradaSolidariaController implements Serializable {
 		if(eReview.equals(EnumCaronaReview.SEGURA_E_TRANQUILA)) {
 			Usuario donoDaCarona = getUsuarioAPartirDeIdCarona(idCarona);
 			donoDaCarona.addCaroneiroPreferencial(idCaroneiro);
+			donoDaCarona.setPontuacao(donoDaCarona.getPontuacao() + 1);
 		}
+		else if(eReview.equals(EnumCaronaReview.NAO_FUNCIONOU)){
+			Usuario donoDaCarona = getUsuarioAPartirDeIdCarona(idCarona);
+			donoDaCarona.setPontuacao(donoDaCarona.getPontuacao() + 0);
+		}
+		else
+			throw new IllegalArgumentException("Review inválido");
 	}
 	
 	private Usuario getUsuarioAPartirDeIdCarona(Integer idCarona) {
@@ -1520,17 +1537,25 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return lista de usuarios
 	 */
 	public List<Usuario> getRankingUsuarios(String ordem) {
-		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
-		List<Usuario> listaUsuarios = new SpecialLinkedListBrackets<Usuario>();
-		if(ordem.equals(EnumOrdemParaRanking.CRESCENTE.getOrdem())) {
-			while(iteratorIdUsuario.hasNext()) {
-				Usuario u = iteratorIdUsuario.next();
-				listaUsuarios.add(u);
-			}
-		}
-		Collections.sort(listaUsuarios);
+		if(ordem == null || ordem.equals(""))
+			throw new IllegalArgumentException("Opção inválida.");
 		
-		return listaUsuarios;
+		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+		List<Usuario> listaUsuarios = new LinkedList<Usuario>();
+		while(iteratorIdUsuario.hasNext()) {
+			listaUsuarios.add(iteratorIdUsuario.next());
+		}
+		
+		Collections.sort(listaUsuarios);
+		if(ordem.equals(EnumOrdemParaRanking.CRESCENTE.getOrdem())) {
+			return listaUsuarios;
+		}
+		else if(ordem.equals(EnumOrdemParaRanking.DECRESCENTE.getOrdem())){
+			Collections.reverse(listaUsuarios);
+			return listaUsuarios;
+		}
+		else
+			throw new IllegalArgumentException("Opção inválida.");
 	}
 	
 	/**

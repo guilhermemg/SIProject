@@ -296,6 +296,14 @@ public class Interesse implements Serializable {
 					return (getHoraInicio().getTimeInMillis() <= timeDaCarona.getTimeInMillis())
 							&& (getHoraFim().getTimeInMillis() >= timeDaCarona.getTimeInMillis());
 				}
+				else if(getHoraFim() != null && getHoraInicio() == null) {
+					Calendar timeDaCarona = carona.getHora();
+					return getHoraFim().getTimeInMillis() >= timeDaCarona.getTimeInMillis();
+				}
+				else if(getHoraInicio() != null && getHoraFim() == null) {
+					Calendar timeDaCarona = carona.getHora();
+					return getHoraInicio().getTimeInMillis() <= timeDaCarona.getTimeInMillis();
+				}
 				return true; // nao precisa especificar hora
 			}
 		} 
@@ -306,6 +314,14 @@ public class Interesse implements Serializable {
 					Long timeDaCarona = carona.getHora().getTimeInMillis();
 					return getHoraInicio().getTimeInMillis() <= timeDaCarona && 
 							getHoraFim().getTimeInMillis() >= timeDaCarona;
+				}
+				else if(getHoraFim() != null && getHoraInicio() == null) {
+					Calendar timeDaCarona = carona.getHora();
+					return getHoraFim().getTimeInMillis() >= timeDaCarona.getTimeInMillis();
+				}
+				else if(getHoraInicio() != null && getHoraFim() == null) {
+					Calendar timeDaCarona = carona.getHora();
+					return getHoraInicio().getTimeInMillis() <= timeDaCarona.getTimeInMillis();
 				}
 				return true;
 			}

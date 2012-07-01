@@ -800,11 +800,13 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @param idCaroneiro
 	 * @param review
+	 * @return 
 	 * 
 	 */
-	public void setReviewVagaEmCarona(Integer idCaroneiro, String review) {
+	public EnumCaronaReview setReviewVagaEmCarona(Integer idCaroneiro, String review) {
 		EnumCaronaReview eReview = getReview(review);
 		this.mapDonoReviewCaroneiro.put(idCaroneiro, eReview);
+		return eReview;
 	}
 
 	/**

@@ -33,7 +33,9 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	private String nome;
 	private String endereco;
 	private String email;
-
+	
+	private Integer pontuacao;
+	
 	private List<String> mensagensPerfil = new LinkedList<String>();
 
 	private Map<Integer, Carona> mapIdCaronasOferecidas = new TreeMap<Integer, Carona>();
@@ -73,6 +75,8 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		setNome(nome);
 		setEndereco(endereco);
 		setEmail(email);
+		
+		setPontuacao(0);
 	}
 
 	/**
@@ -744,15 +748,16 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param idUsuario
 	 * @param idCarona
 	 * @param loginCaroneiro
+	 * @return 
 	 * 
 	 */
-	public void reviewVagaEmCarona(Integer idCarona, Integer idCaroneiro,
+	public EnumCaronaReview reviewVagaEmCarona(Integer idCarona, Integer idCaroneiro,
 			String review) {
 		Carona c = this.mapIdCaronasOferecidas.get(idCarona);
 		if (c == null)
 			throw new IllegalArgumentException(
 					"Identificador do carona é inválido");
-		c.setReviewVagaEmCarona(idCaroneiro, review);
+		return c.setReviewVagaEmCarona(idCaroneiro, review);
 	}
 
 	/**
@@ -1189,27 +1194,17 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	}
 	
 	/**
-	 * Retorna pontuacao obtida
-	 * pelo usuario de acordo com os reviews
-	 * que ele recebeu pelas caronas que ele
-	 * deu e nas quais ele foi.
-	 * 
-	 * @return pontuacao
+	 * @return the pontuacao
 	 */
-	public int getPontuacao() {
-		int sumPontuacaoEmCaronasPegas = 0;
-		iteratorIdCaronasPegas = this.mapIdCaronasPegas.values().iterator();
-		while(iteratorIdCaronasPegas.hasNext()) {
-			Carona caronaPega = iteratorIdCaronasPegas.next();
-			sumPontuacaoEmCaronasPegas += caronaPega.getDonoReviewCaroneiro(this.getIdUsuario());
-		}
-		int sumPontuacaoEmCaronasOferecidas = 0;
-		iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas.values().iterator();
-		while(iteratorIdCaronasOferecidas.hasNext()) {
-			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
-			sumPontuacaoEmCaronasOferecidas += caronaOferecida.getCaroneiroReviewDono(this.getIdUsuario());
-		}
-		return sumPontuacaoEmCaronasOferecidas + sumPontuacaoEmCaronasPegas;
+	public Integer getPontuacao() {
+		return pontuacao;
+	}
+
+	/**
+	 * @param pontuacao the pontuacao to set
+	 */
+	public void setPontuacao(Integer pontuacao) {
+		this.pontuacao = pontuacao;
 	}
 
 	/**
