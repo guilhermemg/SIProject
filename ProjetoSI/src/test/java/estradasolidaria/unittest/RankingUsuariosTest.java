@@ -78,8 +78,8 @@ public class RankingUsuariosTest {
 		List<Integer> listaIdsSessoes2 = getListaIdsSessoes(listaUsuarios2);
 		List<Integer> listaDeProva2 = new SpecialLinkedListBrackets<Integer>();
 		listaDeProva2.add(idSessaoAnakin);
-		listaDeProva2.add(idSessaoBill);
 		listaDeProva2.add(idSessaoVader);
+		listaDeProva2.add(idSessaoBill);
 		listaDeProva2.add(idSessaoMark);
 		
 		assertEquals(listaDeProva2.toString(), listaIdsSessoes2.toString());
