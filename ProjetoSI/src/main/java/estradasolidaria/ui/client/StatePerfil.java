@@ -123,6 +123,7 @@ public class StatePerfil extends Composite {
 		photoPerfil.setSize("126px", "132px");
 		
 		final TextBox txtbxPesquisarPorUsurio = new TextBox();
+		txtbxPesquisarPorUsurio.setStyleName("gwt-LabelEstradaSolidaria8");
 		txtbxPesquisarPorUsurio.setText("Pesquisar por usuário");
 		headerPanel.add(txtbxPesquisarPorUsurio, 583, 10);
 		txtbxPesquisarPorUsurio.setSize("286px", "13px");

@@ -44,34 +44,39 @@ public class StateCaronasEncontradas extends Composite {
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
-		absolutePanel.setSize("659px", "491px");
+		absolutePanel.setSize("885px", "547px");
 		
 		Label lblCaronasEncontradas = new Label("Caronas Encontradas:");
 		lblCaronasEncontradas.setStyleName("gwt-LabelEstradaSolidaria2");
 		absolutePanel.add(lblCaronasEncontradas, 10, 24);
 		
 		AbsolutePanel absolutePanel_1 = new AbsolutePanel();
-		absolutePanel.add(absolutePanel_1, 80, 74);
-		absolutePanel_1.setSize("477px", "96px");
+		absolutePanel.add(absolutePanel_1, 80, 64);
+		absolutePanel_1.setSize("797px", "106px");
 		
 		Label lblNewLabel = new Label("Sugira um local de encontro: (Opcional)");
-		absolutePanel_1.add(lblNewLabel, 10, 10);
+		lblNewLabel.setStyleName("gwt-LabelEstradaSolidaria8");
+		absolutePanel_1.add(lblNewLabel, 47, 46);
 		
 		textBox = new TextBox();
-		absolutePanel_1.add(textBox, 10, 32);
-		textBox.setSize("217px", "16px");
+		absolutePanel_1.add(textBox, 294, 46);
+		textBox.setSize("260px", "16px");
 		
-		TextButton txtbtnRequisitarVaga = new TextButton("Requisitar Vaga em carona");
-		absolutePanel_1.add(txtbtnRequisitarVaga, 267, 28);
+		TextButton txtbtnRequisitarVaga = new TextButton("Requisitar ");
+		absolutePanel_1.add(txtbtnRequisitarVaga, 579, 42);
 		
 		lblMensagemdeerro = new Label("MensagemDeErro");
 		lblMensagemdeerro.setStyleName("gwt-LabelEstradaSolidaria5");
 		lblMensagemdeerro.setVisible(false);
-		absolutePanel_1.add(lblMensagemdeerro, 10, 70);
+		absolutePanel_1.add(lblMensagemdeerro, 294, 76);
+		
+		Label lblNewLabel_1 = new Label("Requisitar Vaga em carona");
+		lblNewLabel_1.setStyleName("gwt-LabelEstradaSolidaria4");
+		absolutePanel_1.add(lblNewLabel_1, 47, 24);
 		
 		dataGrid_1 = new DataGrid<GWTCarona>();
-		absolutePanel.add(dataGrid_1, 78, 184);
-		dataGrid_1.setSize("571px", "280px");
+		absolutePanel.add(dataGrid_1, 80, 176);
+		dataGrid_1.setSize("797px", "257px");
 		
 		selectionModel = new MultiSelectionModel<GWTCarona>();
 		dataGrid_1.setSelectionModel(selectionModel);
