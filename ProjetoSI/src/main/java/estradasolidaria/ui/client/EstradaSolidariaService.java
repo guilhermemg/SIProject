@@ -414,7 +414,7 @@ public interface EstradaSolidariaService extends RemoteService {
 
 	public abstract List<GWTInteresse> getInteresses(Integer idSessao) throws GWTException;
 	
-	public abstract List<String> pesquisaUsuariosNoSistema(String nome) throws GWTException;
+	public abstract List<GWTUsuario> pesquisaUsuariosNoSistema(String nome) throws GWTException;
 
 	public abstract List<String> getUsuarioNoSistema(Integer idUsuario) throws GWTException;
 

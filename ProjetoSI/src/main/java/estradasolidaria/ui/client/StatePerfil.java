@@ -269,14 +269,14 @@ public class StatePerfil extends Composite {
 	}
 
 	protected void pesquisarUsuarioGUI(String text) {
-		estradaSolidariaService.pesquisaUsuariosNoSistema(text, new AsyncCallback<List<String>>(){ 
+		estradaSolidariaService.pesquisaUsuariosNoSistema(text, new AsyncCallback<List<GWTUsuario>>(){ 
 			@Override
 			public void onFailure(Throwable caught) {
 				Window.alert(caught.getMessage()); 
 			}
 
 			@Override
-			public void onSuccess(List<String> result) {
+			public void onSuccess(List<GWTUsuario> result) {
 				bodyPanel.clear();
 				Widget pesquisarCarona = new StateUsuariosEncontrados(estrada, estradaSolidariaService, result);
 				bodyPanel.add(pesquisarCarona);

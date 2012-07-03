@@ -133,7 +133,7 @@ public interface EstradaSolidariaServiceAsync {
 			AsyncCallback<List<GWTInteresse>> callback);
 	
 	void pesquisaUsuariosNoSistema(String nome,
-			AsyncCallback<List<String>> callback);
+			AsyncCallback<List<GWTUsuario>> callback);
 	
 	void getUsuarioNoSistema(Integer idUsuario,
 			AsyncCallback<List<String>> callback);

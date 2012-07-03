@@ -12,6 +12,7 @@ import estradasolidaria.ui.client.EstradaSolidariaService;
 import estradasolidaria.ui.client.GWTCarona;
 import estradasolidaria.ui.client.GWTException;
 import estradasolidaria.ui.client.GWTInteresse;
+import estradasolidaria.ui.client.GWTUsuario;
 import estradasolidaria.ui.server.adder.Adder;
 import estradasolidaria.ui.server.logic.Carona;
 import estradasolidaria.ui.server.logic.CaronaInexistenteException;
@@ -625,12 +626,18 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	@Override
-	public List<String> pesquisaUsuariosNoSistema(String nome) throws GWTException {
+	public List<GWTUsuario> pesquisaUsuariosNoSistema(String nome) throws GWTException {
 		try {
 			List<Usuario> listaDeUsuarios = controller.pesquisaUsuariosNoSistema(nome);
-			List<String> resultado = new LinkedList<String>();
+			List<GWTUsuario> resultado = new LinkedList<GWTUsuario>();
 			for(Usuario u : listaDeUsuarios){
-				resultado.add(u.getNome());
+				GWTUsuario gwt_u = new GWTUsuario();
+				gwt_u.setNome(u.getNome());
+				gwt_u.setEmail(u.getEmail());
+				gwt_u.setEndereco(u.getEndereco());
+				gwt_u.setIdUsuario(u.getIdUsuario().toString());
+				gwt_u.setLogin(u.getLogin());
+				resultado.add(gwt_u);
 			}
 			return resultado;
 		}
