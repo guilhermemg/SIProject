@@ -278,7 +278,7 @@ public class StatePerfil extends Composite {
 			@Override
 			public void onSuccess(List<GWTUsuario> result) {
 				bodyPanel.clear();
-				Widget pesquisarCarona = new StateUsuariosEncontrados(estrada, estradaSolidariaService, result);
+				Widget pesquisarCarona = new StateUsuariosEncontrados(estrada, estradaSolidariaService, result, bodyPanel);
 				bodyPanel.add(pesquisarCarona);
 				bodyPanel.setVisible(true);
 				pesquisarCarona.setSize("100%", "100%");

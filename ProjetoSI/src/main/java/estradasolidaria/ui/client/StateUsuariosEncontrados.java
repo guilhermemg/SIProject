@@ -5,39 +5,35 @@ import java.util.List;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.google.gwt.user.cellview.client.AbstractPager;
 import com.google.gwt.user.cellview.client.CellList;
-import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy.KeyboardPagingPolicy;
-import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.HasRows;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import estradasolidaria.ui.resources.Resources;
-import com.google.gwt.cell.client.Cell.Context;
-import com.google.gwt.event.dom.client.ScrollEvent;
-import com.google.gwt.event.dom.client.ScrollHandler;
+import com.google.gwt.widget.client.TextButton;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
 
 public class StateUsuariosEncontrados extends Composite {
 	
 	private EstradaSolidaria estrada;
 	private EstradaSolidariaServiceAsync estradaService;
 	private List<GWTUsuario> listaUsuarios;
+	private AbsolutePanel bodyPanel;
 
-	public StateUsuariosEncontrados(EstradaSolidaria estrada, EstradaSolidariaServiceAsync estradaSolidariaService, List<GWTUsuario> result) {
+	public StateUsuariosEncontrados(EstradaSolidaria estrada, EstradaSolidariaServiceAsync estradaSolidariaService, List<GWTUsuario> result, AbsolutePanel panel) {
 		this.estrada = estrada;
 		this.estradaService = estradaSolidariaService;
 		this.listaUsuarios = result;
+		this.bodyPanel = panel;
 
 		Resources resources = GWT.create(Resources.class);
 		ImageResource images = resources.getGenericLittleUserImage();
@@ -45,7 +41,7 @@ public class StateUsuariosEncontrados extends Composite {
 
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
-		absolutePanel.setSize("533px", "390px");
+		absolutePanel.setSize("590px", "390px");
 		
 	    ScrollPanel scrollPanel = new ScrollPanel();
 	    absolutePanel.add(scrollPanel, 38, 120);
@@ -54,6 +50,10 @@ public class StateUsuariosEncontrados extends Composite {
 		Label lblUsuariosEncontrados = new Label("Usuários Encontrados:");
 		lblUsuariosEncontrados.setStyleName("gwt-LabelEstradaSolidaria2");
 		absolutePanel.add(lblUsuariosEncontrados, 10, 10);
+		
+	    Label label = new Label("Mostrando " + listaUsuarios.size() + " usuários encontrados.");
+	    label.setStyleName("gwt-LabelEstradaSolidaria8");
+	    absolutePanel.add(label, 38, 85);
 
 	    CellList<GWTUsuario> cellList = new CellList<GWTUsuario>(new AbstractCell<GWTUsuario>(){
 	    	@Override
@@ -94,6 +94,18 @@ public class StateUsuariosEncontrados extends Composite {
 	    cellList.setSelectionModel(selectionModel);
 	    cellList.setRowCount(listaUsuarios.size(), true);
 	    cellList.setRowData(listaUsuarios);
+	    
+	    TextButton txtbtnNewButton = new TextButton("Visualizar perfil");
+	    txtbtnNewButton.addClickHandler(new ClickHandler() {
+	    	public void onClick(ClickEvent event) {
+				bodyPanel.clear();
+				Widget perfil = new StateVisualizarPerfilAlheio();
+				bodyPanel.add(perfil);
+				bodyPanel.setVisible(true);
+				perfil.setSize("100%", "100%");
+	    	}
+	    });
+	    absolutePanel.add(txtbtnNewButton, 427, 120);
 	    
 	}
 }

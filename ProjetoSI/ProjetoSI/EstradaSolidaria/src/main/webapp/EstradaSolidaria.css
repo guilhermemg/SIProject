@@ -153,8 +153,9 @@ h2 {
 	font-weight: bold;
 }
 .gwt-LabelEstradaSolidaria8 {
-	color: Black;
-	font-weight: bold;
+	color: slategrey;
+	font-size: 12px;
+	font-family: @Microsoft YaHei;
 }
 .gwt-LabelEstradaSolidaria9 {
 	color: blue;
