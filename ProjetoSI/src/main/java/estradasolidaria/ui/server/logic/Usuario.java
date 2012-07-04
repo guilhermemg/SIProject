@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.TreeMap;
 
 import javax.mail.MessagingException;
@@ -37,7 +38,9 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	private Integer pontuacao;
 	
 	private List<String> mensagensPerfil = new LinkedList<String>();
-
+	
+	private Queue<Mensagem> listaDeMensagens = new LinkedList<Mensagem>();
+	
 	private Map<Integer, Carona> mapIdCaronasOferecidas = new TreeMap<Integer, Carona>();
 	private Iterator<Carona> iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas
 			.values().iterator();
@@ -1470,5 +1473,23 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 */
 	public List<Integer> getListaIdsUsuariosPreferenciais() {
 		return this.listaIdsUsuariosPreferenciais;
+	}
+
+	/**
+	 * @return the listaDeMensagens
+	 */
+	public Queue<Mensagem> getListaDeMensagens() {
+		return listaDeMensagens;
+	}
+
+	/**
+	 * Adiciona mensagem a lista de
+	 * mensagens deste usuario.
+	 * 
+	 * @param texto
+	 * @param remetente
+	 */
+	public void addMensagem(Mensagem mensagem) {
+		listaDeMensagens.add(mensagem);
 	}
 }

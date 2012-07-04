@@ -1,7 +1,7 @@
 #User Story Extra - Rank de usuarios
 # 
-# Usuarios possuem pontos +1 para cada avaliacao segura e tranquila e -1 para nao funcionou.
-# Da mesma forma, ele recebe +1 se levou presença numa carona em que pediiu vaga e -1 se faltou.
+# Usuarios possuem pontos +1 para cada avaliacao segura e tranquila e 0 para nao funcionou.
+# Da mesma forma, ele recebe +1 se levou presença numa carona em que pediu vaga e 0 se faltou.
 # Sistema deve ordenar usuarios com mais ou menos pontos de acordo com a ordem desejada: crescente, decrescente
 #
 

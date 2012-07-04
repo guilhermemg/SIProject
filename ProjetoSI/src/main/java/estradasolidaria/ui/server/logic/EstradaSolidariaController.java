@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.TreeMap;
 
 import javax.mail.MessagingException;
@@ -40,6 +41,8 @@ public class EstradaSolidariaController implements Serializable {
 
 	private GerenciadorDeDados gerenciadorDeDados = GerenciadorDeDados
 			.getInstance(this.mapIdUsuario);
+
+	private SenderMessage senderMessage = new SenderMessage();
 
 	private static volatile EstradaSolidariaController uniqueInstance;
 
@@ -316,33 +319,30 @@ public class EstradaSolidariaController implements Serializable {
 		if (donoDaSugestao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 		
-		Sugestao sugestaoFeita = procuraCarona(idCarona).addSugestaoPontoEncontro(pontos); 
-		
-		donoDaSugestao.addSugestaoFeita(sugestaoFeita);
-		
-		return sugestaoFeita;
-	}
-
-	/**
-	 * Procura carona no usuario indicado por idSessao.
-	 * 
-	 * @param idSessao
-	 * @param idCarona
-	 * @return carona
-	 */
-	private Carona procuraCarona(Integer idCarona) {
-		for (Iterator<Usuario> itUsuario = getMapIdUsuario().values()
-				.iterator(); itUsuario.hasNext();) {
-			Usuario u = itUsuario.next();
-			for (Iterator<Carona> itCarona = u.getMapIdCaronasOferecidas()
-					.values().iterator(); itCarona.hasNext();) {
-				Carona c = itCarona.next();
-				if (c.getIdCarona().equals(idCarona)) {
-					return c;
+		Usuario donoDaCarona = null;
+		Carona carona = null;
+		for (Iterator<Usuario> itUsuario = getMapIdUsuario().values().iterator(); itUsuario.hasNext();) {
+			donoDaCarona = itUsuario.next();
+			for (Iterator<Carona> itCarona = donoDaCarona.getMapIdCaronasOferecidas().values().iterator(); itCarona.hasNext();) {
+				carona = itCarona.next();
+				if (carona.getIdCarona().equals(idCarona)) {
+					break;
 				}
 			}
 		}
-		throw new IllegalArgumentException("Carona Inexistente");
+		if(carona == null)
+			throw new IllegalArgumentException("Carona Inexistente");
+		if(donoDaCarona == null)
+			throw new UsuarioInexistenteException();
+		
+		Sugestao sugestaoFeita = carona.addSugestaoPontoEncontro(pontos); 
+		
+		donoDaSugestao.addSugestaoFeita(sugestaoFeita);
+		
+		senderMessage.sendMessage(donoDaSugestao, donoDaCarona, donoDaSugestao.getNome() 
+				+ " sugeriu um ponto de encontro para a carona " + carona.getTrajeto() + ": " + sugestaoFeita.getPontoSugerido());
+		
+		return sugestaoFeita;
 	}
 
 	/**
@@ -970,8 +970,24 @@ public class EstradaSolidariaController implements Serializable {
 			throw new IllegalArgumentException("Sessão inválida");
 		if (idCarona == null )
 			throw new IllegalArgumentException("IdCarona inválida");
-
-		return procuraCarona(idCarona).getPontosSugeridos();
+		
+		Usuario donoDaCarona = null;
+		Carona carona = null;
+		for (Iterator<Usuario> itUsuario = getMapIdUsuario().values().iterator(); itUsuario.hasNext();) {
+			donoDaCarona = itUsuario.next();
+			for (Iterator<Carona> itCarona = donoDaCarona.getMapIdCaronasOferecidas().values().iterator(); itCarona.hasNext();) {
+				carona = itCarona.next();
+				if (carona.getIdCarona().equals(idCarona)) {
+					break;
+				}
+			}
+		}
+		if(carona == null)
+			throw new IllegalArgumentException("Carona Inexistente");
+		if(donoDaCarona == null)
+			throw new UsuarioInexistenteException();
+		
+		return carona.getPontosSugeridos();
 	}
 
 	/**
@@ -1786,5 +1802,29 @@ public class EstradaSolidariaController implements Serializable {
 			throw new CaronaInvalidaException();
 		Usuario donoDaCarona = getUsuarioAPartirDeIDSessao(idSessao);
 		donoDaCarona.cancelarCarona(idCarona);
+	}
+
+	/**
+	 * Retorna lista de mensagens do
+	 * usuario identificado por idsessao.
+	 * 
+	 * @param idSessao
+	 * @return lista de mensagens
+	 */
+	public Queue<Mensagem> getListaDeMensagens(Integer idSessao) {
+		Usuario donoDasMensagens = null;
+		iteratorIdSessao = mapIdSessao.values().iterator();
+		while(iteratorIdSessao.hasNext()) {
+			Sessao s = iteratorIdSessao.next(); 
+			if(s.getIdSessao().equals(idSessao)) {
+				donoDasMensagens = mapIdUsuario.get(s.getIdUser());
+				break;
+			}
+			
+		}
+		if(donoDasMensagens == null)
+			throw new UsuarioInexistenteException();
+		
+		return donoDasMensagens.getListaDeMensagens();
 	}
 }
