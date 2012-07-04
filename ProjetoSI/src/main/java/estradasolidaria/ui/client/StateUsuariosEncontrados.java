@@ -21,6 +21,8 @@ import estradasolidaria.ui.resources.Resources;
 import com.google.gwt.widget.client.TextButton;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.view.client.RangeChangeEvent.Handler;
+import com.google.gwt.view.client.RangeChangeEvent;
 
 public class StateUsuariosEncontrados extends Composite {
 	
@@ -28,9 +30,11 @@ public class StateUsuariosEncontrados extends Composite {
 	private EstradaSolidariaServiceAsync estradaService;
 	private List<GWTUsuario> listaUsuarios;
 	private AbsolutePanel bodyPanel;
+	private GWTUsuario u;
+	private Label lblSelecioneUmItem;
 
-	public StateUsuariosEncontrados(EstradaSolidaria estrada, EstradaSolidariaServiceAsync estradaSolidariaService, List<GWTUsuario> result, AbsolutePanel panel) {
-		this.estrada = estrada;
+	public StateUsuariosEncontrados(EstradaSolidaria entryPoint, EstradaSolidariaServiceAsync estradaSolidariaService, List<GWTUsuario> result, AbsolutePanel panel) {
+		this.estrada = entryPoint;
 		this.estradaService = estradaSolidariaService;
 		this.listaUsuarios = result;
 		this.bodyPanel = panel;
@@ -55,6 +59,11 @@ public class StateUsuariosEncontrados extends Composite {
 	    label.setStyleName("gwt-LabelEstradaSolidaria8");
 	    absolutePanel.add(label, 38, 85);
 
+	    lblSelecioneUmItem = new Label("Selecione um item na lista.");
+	    absolutePanel.add(lblSelecioneUmItem, 427, 154);
+	    lblSelecioneUmItem.setStyleName("gwt-LabelEstradaSolidaria5");
+	    lblSelecioneUmItem.setVisible(false);
+	    
 	    CellList<GWTUsuario> cellList = new CellList<GWTUsuario>(new AbstractCell<GWTUsuario>(){
 	    	@Override
 	    	public void render(Context context, GWTUsuario value, SafeHtmlBuilder sb) {
@@ -82,11 +91,10 @@ public class StateUsuariosEncontrados extends Composite {
 	    // Add a selection model so we can select cells.
 	    final SingleSelectionModel<GWTUsuario> selectionModel = new SingleSelectionModel<GWTUsuario>();
 	    selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-	      public void onSelectionChange(SelectionChangeEvent event) {
-	        GWTUsuario u = selectionModel.getSelectedObject();
-	        Window.alert(u.toString());
-	      }
-	    });
+	        public void onSelectionChange(SelectionChangeEvent event) {
+	        	lblSelecioneUmItem.setVisible(false);
+	        }
+	      });
 	    
 	    scrollPanel.setWidget(cellList);
 	    scrollPanel.setAlwaysShowScrollBars(true);
@@ -98,11 +106,16 @@ public class StateUsuariosEncontrados extends Composite {
 	    TextButton txtbtnNewButton = new TextButton("Visualizar perfil");
 	    txtbtnNewButton.addClickHandler(new ClickHandler() {
 	    	public void onClick(ClickEvent event) {
-				bodyPanel.clear();
-				Widget perfil = new StateVisualizarPerfilAlheio();
-				bodyPanel.add(perfil);
-				bodyPanel.setVisible(true);
-				perfil.setSize("100%", "100%");
+	    		if(selectionModel.getSelectedObject() == null){
+	    			lblSelecioneUmItem.setVisible(true);
+	    		} else {
+		    		u = selectionModel.getSelectedObject();
+					bodyPanel.clear();
+					Widget perfil = new StateVisualizarPerfilAlheio(estrada, estradaService, u);
+					bodyPanel.add(perfil);
+					bodyPanel.setVisible(true);
+					perfil.setSize("100%", "100%");
+	    		}
 	    	}
 	    });
 	    absolutePanel.add(txtbtnNewButton, 427, 120);

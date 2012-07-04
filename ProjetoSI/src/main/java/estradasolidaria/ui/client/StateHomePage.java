@@ -53,7 +53,7 @@ public class StateHomePage extends Composite {
 		
 		AbsolutePanel absolutePanel_1 = new AbsolutePanel();
 		absolutePanel_1.setStylePrimaryName("gwt-LoginPanel");
-		absolutePanel.add(absolutePanel_1, 687, 222);
+		absolutePanel.add(absolutePanel_1, 706, 222);
 		absolutePanel_1.setSize("313px", "256px");
 		
 		Label label = new Label("Já é usuário? Faça Login.");
@@ -140,7 +140,7 @@ public class StateHomePage extends Composite {
 
 		AbsolutePanel absolutePanel_2 = new AbsolutePanel();
 		absolutePanel_2.setStyleName("h2");
-		absolutePanel.add(absolutePanel_2, 194, 222);
+		absolutePanel.add(absolutePanel_2, 24, 222);
 		absolutePanel_2.setSize("465px", "353px");
 		
 		Label lblNome = new Label("Nome:");
@@ -353,6 +353,7 @@ public class StateHomePage extends Composite {
 		
 		Label lblRepositrioDeDesenvolvimento = new Label("Repositório de desenvolvimento:");
 		absolutePanel_4.add(lblRepositrioDeDesenvolvimento, 437, 37);
+		lblRepositrioDeDesenvolvimento.setStyleName("gwt-LabelEstradaSolidaria");
 		
 		Anchor hprlnkRepositrioDeDesenvolvimento = new Anchor("https://github.com/guilhermemg/SIProject", false, "newHistoryToken");
 		hprlnkRepositrioDeDesenvolvimento.addClickHandler(new ClickHandler() {
@@ -366,6 +367,7 @@ public class StateHomePage extends Composite {
 		Label lblAssinaturaDoSistema = new Label("Estrada Solidária foi desenvolvido por Guilherme Monteiro, Hemã Vidal, Ítalo Silva e Leonardo Santos.");
 		absolutePanel_4.add(lblAssinaturaDoSistema, 381, 10);
 		lblAssinaturaDoSistema.setSize("706px", "24px");
+		lblAssinaturaDoSistema.setStyleName("gwt-LabelEstradaSolidaria");
 		
 	}
 	
