@@ -6,6 +6,8 @@ import java.util.List;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextButtonCell;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -15,9 +17,11 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
@@ -29,6 +33,7 @@ import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.gwt.widget.client.TextButton;
 
 public class StateMinhasCaronas extends AbsolutePanel {
 	final EstradaSolidaria estrada;
@@ -70,6 +75,8 @@ public class StateMinhasCaronas extends AbsolutePanel {
 	private MenuBar subMenuAcoesDaCarona;
 	private ScrollPanel scrollPanelCaronas;
 	private Column<GWTCarona, Boolean> checkBoxColumn;
+	protected Integer idCaronaEscolhida;
+	private PopupInfo popupInfo;
 
 	public StateMinhasCaronas(EstradaSolidaria estrada,
 			EstradaSolidariaServiceAsync estradaSolidariaService) {
@@ -77,6 +84,9 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		this.estradaSolidariaService = estradaSolidariaService;
 		idSessao = EstradaSolidaria.getIdSessaoAberta();
 
+//		Inicia o popup para dialogo com o cliente
+		popupInfo = new PopupInfo();
+		
 		setSize("950px", "493px");
 		
 		// Inicia Menu de Ações
@@ -157,7 +167,11 @@ public class StateMinhasCaronas extends AbsolutePanel {
 
 		mntmCarona = new MenuItem("Carona", false, subMenuAcoesDaCarona);
 
-		mntmEncerrar = new MenuItem("Encerrar", false, (Command) null);
+		mntmEncerrar = new MenuItem("Encerrar", false, new Command() {
+			public void execute() {
+				encerrarCarona();
+			}
+		});
 		subMenuAcoesDaCarona.addItem(mntmEncerrar);
 
 		mntmCancelar = new MenuItem("Cancelar", false, (Command) null);
@@ -180,6 +194,34 @@ public class StateMinhasCaronas extends AbsolutePanel {
 				(Command) null);
 		subMenuPontoDeEncontro.addItem(mntmVisualizarSugestes);
 		menuBar.addItem(mntmPontoDeEncontro);
+	}
+
+	private void encerrarCarona() {
+		Integer idSessao = EstradaSolidaria.getIdSessaoAberta();
+		if (idCaronaEscolhida != null) {
+			estradaSolidariaService.encerrarCarona(idSessao, idCaronaEscolhida, new AsyncCallback<Void>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					popupInfo.setMensagem(caught.getMessage());
+					popupInfo.center();
+					popupInfo.show();
+					
+				}
+
+				@Override
+				public void onSuccess(Void result) {
+					popupInfo.setMensagem("Carona encerrada!");
+					popupInfo.center();
+					popupInfo.show();
+					
+				}
+			});
+		} else {
+			popupInfo.setMensagem("Escolha uma carona!");
+			popupInfo.center();
+			popupInfo.show();
+		}
 	}
 
 	private void zerarCaronasCellTable() {
@@ -233,27 +275,6 @@ public class StateMinhasCaronas extends AbsolutePanel {
 					}
 				});
 	}
-	
-	private void atualizaListaGWTCaronas(List<List<String>> result) {
-		// ZERA LISTA
-		caronasGWT = new LinkedList<GWTCarona>();
-		// ADICIONA AS CARONAS GWT
-		for (List<String> carona : result) {
-			GWTCarona gwt_c = new GWTCarona();
-
-			gwt_c.idDono = carona.get(0);
-			gwt_c.origem = carona.get(1);
-			gwt_c.destino = carona.get(2);
-			gwt_c.data = carona.get(3);
-			gwt_c.hora = carona.get(4);
-			gwt_c.vagas = carona.get(5);
-			gwt_c.pontoEncontro = carona.get(6);
-			gwt_c.nomeDono = carona.get(7);
-			gwt_c.idCarona = carona.get(8);
-
-			caronasGWT.add(gwt_c);
-		}
-	}
 
 	private void iniciarColunas() {
 		buttomColumn = new Column<GWTCarona, String>(new TextButtonCell()) {
@@ -282,6 +303,22 @@ public class StateMinhasCaronas extends AbsolutePanel {
 				return selectionModel.isSelected(carona);
 			}
 		};
+		checkBoxColumn.setFieldUpdater(new FieldUpdater<GWTCarona, Boolean>() {
+			
+			@Override
+			public void update(int index, GWTCarona carona, Boolean value) {
+				try {
+					if (value) {
+						idCaronaEscolhida = Integer.parseInt(carona.getIdCarona());
+					} else {
+						idCaronaEscolhida = null;
+					}
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+				}
+				
+			}
+		});
 		checkBoxColumn
 				.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		

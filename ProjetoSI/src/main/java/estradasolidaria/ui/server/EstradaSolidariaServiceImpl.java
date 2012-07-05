@@ -16,6 +16,8 @@ import estradasolidaria.ui.client.GWTUsuario;
 import estradasolidaria.ui.server.adder.Adder;
 import estradasolidaria.ui.server.logic.Carona;
 import estradasolidaria.ui.server.logic.CaronaInexistenteException;
+import estradasolidaria.ui.server.logic.CaronaInvalidaException;
+import estradasolidaria.ui.server.logic.EstadoCaronaException;
 import estradasolidaria.ui.server.logic.EstradaSolidariaController;
 import estradasolidaria.ui.server.logic.Interesse;
 import estradasolidaria.ui.server.logic.Solicitacao;
@@ -668,6 +670,18 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		} catch (Exception e) {
 			throw new GWTException(e.getMessage());
 		}
+	}
+
+	@Override
+	public void encerrarCarona(Integer idSessao, Integer idCarona) throws GWTException {
+		try {
+			controller.encerrarCarona(idSessao, idCarona);
+		} catch (CaronaInvalidaException e) {
+			throw new GWTException(e.getMessage());
+		} catch (EstadoCaronaException e) {
+			throw new GWTException(e.getMessage());
+		}
+		
 	}
 	
 }

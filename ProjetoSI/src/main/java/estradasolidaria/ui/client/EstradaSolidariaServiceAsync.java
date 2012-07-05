@@ -140,4 +140,7 @@ public interface EstradaSolidariaServiceAsync {
 
 	void deletarInteresse(Integer idSessao, Integer idInteresse,
 			AsyncCallback<Void> asyncCallback);
+
+	void encerrarCarona(Integer idSessao, Integer idCaronaEscolhida,
+			AsyncCallback<Void> asyncCallback);
 }
