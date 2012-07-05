@@ -3,21 +3,19 @@ package estradasolidaria.ui.client;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class GWTCarona implements IsSerializable {
-	protected String nomeDono;
-	protected String idDono;
-	protected String origem;
-	protected String destino;
-	protected String data;
-	protected String hora;
-	protected String vagas;
-	protected String review;
-	protected String pontoEncontro;
-	protected String idCarona;
+	private String nomeDono;
+	private String idDono;
+	private String origem;
+	private String destino;
+	private String data;
+	private String hora;
+	private String vagas;
+	private String review;
+	private String pontoEncontro;
+	private String idCarona;
+	private String estado;
 
-	@Override
-	public String toString() {
-		return nomeDono +", "+origem+", " + destino + ", " + data +", " +vagas +", "+ review +", "+pontoEncontro;
-	}
+	
 
 	public String getNomeDono() {
 		return nomeDono;
@@ -99,5 +97,17 @@ public class GWTCarona implements IsSerializable {
 		this.idCarona = idCarona;
 	}
 
+	public String getEstado() {
+		return estado;
+	}
+	
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+	
+	@Override
+	public String toString() {
+		return nomeDono +", "+origem+", " + destino + ", " + data +", " +vagas +", "+ review +", "+pontoEncontro;
+	}
 	
 }

@@ -53,7 +53,7 @@ public class StateMinhasCaronas extends AbsolutePanel {
 	private TextColumn<GWTCarona> horaColumn;
 	private TextColumn<GWTCarona> vagasColumn;
 	private Column<GWTCarona, String> reviewColumn;
-	private HasHorizontalAlignment pontoDeEncontroColumn;
+	private TextColumn<GWTCarona> pontoDeEncontroColumn;
 	private Integer idSessao;
 	private FlexTable tabPegas;
 	private TabPanel tabPanel;
@@ -77,6 +77,7 @@ public class StateMinhasCaronas extends AbsolutePanel {
 	private Column<GWTCarona, Boolean> checkBoxColumn;
 	protected Integer idCaronaEscolhida;
 	private PopupInfo popupInfo;
+	private TextColumn<GWTCarona> estadoColumn;
 
 	public StateMinhasCaronas(EstradaSolidaria estrada,
 			EstradaSolidariaServiceAsync estradaSolidariaService) {
@@ -174,7 +175,11 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		});
 		subMenuAcoesDaCarona.addItem(mntmEncerrar);
 
-		mntmCancelar = new MenuItem("Cancelar", false, (Command) null);
+		mntmCancelar = new MenuItem("Cancelar", false, new Command() {
+			public void execute() {
+				cancelarCarona();
+			}
+		});
 		subMenuAcoesDaCarona.addItem(mntmCancelar);
 
 		mntmCaronaPreferencial = new MenuItem("Marcar como Preferencial",
@@ -194,6 +199,34 @@ public class StateMinhasCaronas extends AbsolutePanel {
 				(Command) null);
 		subMenuPontoDeEncontro.addItem(mntmVisualizarSugestes);
 		menuBar.addItem(mntmPontoDeEncontro);
+	}
+
+	private void cancelarCarona() {
+		Integer idSessao = EstradaSolidaria.getIdSessaoAberta();
+		if (idCaronaEscolhida != null) {
+			estradaSolidariaService.cancelarCarona(idSessao, idCaronaEscolhida, new AsyncCallback<Void>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					popupInfo.setMensagem(caught.getMessage());
+					popupInfo.center();
+					popupInfo.show();
+					
+				}
+
+				@Override
+				public void onSuccess(Void result) {
+					popupInfo.setMensagem("Carona cancelada!");
+					popupInfo.center();
+					popupInfo.show();
+					
+				}
+			});
+		} else {
+			popupInfo.setMensagem("Escolha uma carona!");
+			popupInfo.center();
+			popupInfo.show();
+		}
 	}
 
 	private void encerrarCarona() {
@@ -326,7 +359,7 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		donoDaCaronaColumn = new TextColumn<GWTCarona>() {
 			@Override
 			public String getValue(GWTCarona carona) {
-				return carona.nomeDono;
+				return carona.getNomeDono();
 			}
 		};
 		donoDaCaronaColumn
@@ -336,7 +369,7 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		origemColumn = new TextColumn<GWTCarona>() {
 			@Override
 			public String getValue(GWTCarona carona) {
-				return carona.origem;
+				return carona.getOrigem();
 			}
 		};
 		origemColumn
@@ -346,7 +379,7 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		destinoColumn = new TextColumn<GWTCarona>() {
 			@Override
 			public String getValue(GWTCarona carona) {
-				return carona.destino;
+				return carona.getDestino();
 			}
 		};
 		destinoColumn
@@ -356,7 +389,7 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		dataColumn = new TextColumn<GWTCarona>() {
 			@Override
 			public String getValue(GWTCarona carona) {
-				return carona.data;
+				return carona.getData();
 			}
 		};
 		dataColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -365,7 +398,7 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		horaColumn = new TextColumn<GWTCarona>() {
 			@Override
 			public String getValue(GWTCarona carona) {
-				return carona.hora;
+				return carona.getHora();
 			}
 		};
 		horaColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -374,11 +407,29 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		vagasColumn = new TextColumn<GWTCarona>() {
 			@Override
 			public String getValue(GWTCarona carona) {
-				return carona.vagas;
+				return carona.getVagas();
 			}
 		};
 		vagasColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
+		// Coluna de pontos de encontro das Caronas
+		pontoDeEncontroColumn = new TextColumn<GWTCarona>() {
+			@Override
+			public String getValue(GWTCarona carona) {
+				return carona.getPontoEncontro();
+			}
+		};
+		pontoDeEncontroColumn
+				.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+				
+		//Coluna de estados das caronas
+		estadoColumn = new TextColumn<GWTCarona>() {
+			@Override
+			public String getValue(GWTCarona carona) {
+				return carona.getEstado();
+			}
+		};
+		
 		// Coluna de reviews das Caronas
 		reviewColumn = new Column<GWTCarona, String>(new TextButtonCell()) {
 			@Override
@@ -392,22 +443,12 @@ public class StateMinhasCaronas extends AbsolutePanel {
 			public void update(int index, GWTCarona carona, String value) {
 				PopupPanel popupPanelEditarReview = new PopUpEditarReview(
 						estrada, estradaSolidariaService, isOferecida,
-						carona.idCarona);
+						carona.getIdCarona());
 				popupPanelEditarReview.center();
 				popupPanelEditarReview.show();
 			}
 		});
 		reviewColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
-
-		// Coluna de pontos de encontro das Caronas
-		pontoDeEncontroColumn = new TextColumn<GWTCarona>() {
-			@Override
-			public String getValue(GWTCarona carona) {
-				return carona.pontoEncontro;
-			}
-		};
-		pontoDeEncontroColumn
-				.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
 	}
 
@@ -434,6 +475,12 @@ public class StateMinhasCaronas extends AbsolutePanel {
 
 		caronasCellTable.addColumn(vagasColumn, "Vagas");
 		caronasCellTable.setColumnWidth(vagasColumn, "100%");
+		
+		caronasCellTable.addColumn(pontoDeEncontroColumn, "Ponto de Encontro");
+		caronasCellTable.setColumnWidth(pontoDeEncontroColumn, "100%");
+		
+		caronasCellTable.addColumn(estadoColumn, "Estado");
+		caronasCellTable.setColumnWidth(estadoColumn, "100%");
 
 		caronasCellTable.addColumn(reviewColumn, "Review");
 		caronasCellTable.setColumnWidth(reviewColumn, "100%");

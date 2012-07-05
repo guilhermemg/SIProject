@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.mail.MessagingException;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import estradasolidaria.ui.client.EstradaSolidariaService;
@@ -677,6 +679,20 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		try {
 			controller.encerrarCarona(idSessao, idCarona);
 		} catch (CaronaInvalidaException e) {
+			throw new GWTException(e.getMessage());
+		} catch (EstadoCaronaException e) {
+			throw new GWTException(e.getMessage());
+		}
+		
+	}
+
+	@Override
+	public void cancelarCarona(Integer idSessao, Integer idCarona) throws GWTException {
+		try {
+			controller.cancelarCarona(idSessao, idCarona);
+		} catch (CaronaInvalidaException e) {
+			throw new GWTException(e.getMessage());
+		} catch (MessagingException e) {
 			throw new GWTException(e.getMessage());
 		} catch (EstadoCaronaException e) {
 			throw new GWTException(e.getMessage());

@@ -45,12 +45,10 @@ public class PopupInfo extends PopupPanel{
 		absPanel_2.add(txtbtnNewButton, 70, 0);
 		flexTable.setWidget(1, 0, absPanel_2);
 		
-		
 	}
 	
-	public void setMensagem(String msg){
+	public void setMensagem(String msg) {
 		lblNewLabel.setText(msg);
-		
 	}
 
 }

@@ -421,4 +421,6 @@ public interface EstradaSolidariaService extends RemoteService {
 	void deletarInteresse(Integer idSessao, Integer idInteresse) throws GWTException;
 
 	void encerrarCarona(Integer idSessao, Integer idCaronaEscolhida) throws GWTException;
+
+	void cancelarCarona(Integer idSessao, Integer idCaronaEscolhida) throws GWTException;
 }
