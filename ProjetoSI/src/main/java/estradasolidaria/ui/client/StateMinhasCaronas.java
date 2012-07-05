@@ -86,7 +86,6 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		idSessao = EstradaSolidaria.getIdSessaoAberta();
 
 //		Inicia o popup para dialogo com o cliente
-		popupInfo = new PopupInfo();
 		
 		setSize("950px", "493px");
 		
@@ -183,7 +182,11 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		subMenuAcoesDaCarona.addItem(mntmCancelar);
 
 		mntmCaronaPreferencial = new MenuItem("Marcar como Preferencial",
-				false, (Command) null);
+				false, new Command() {
+			public void execute() {
+				marcarCaronaComoPreferencial();
+			}
+		});
 		subMenuAcoesDaCarona.addItem(mntmCaronaPreferencial);
 		menuBar.addItem(mntmCarona);
 
@@ -192,7 +195,11 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		mntmPontoDeEncontro = new MenuItem("Ponto de Encontro", false,
 				subMenuPontoDeEncontro);
 
-		mntmSugerirPontoDe = new MenuItem("Sugerir", false, (Command) null);
+		mntmSugerirPontoDe = new MenuItem("Sugerir", false, new Command() {
+			public void execute() {
+				sugerirPontoDeEncontro();
+			}
+		});
 		subMenuPontoDeEncontro.addItem(mntmSugerirPontoDe);
 
 		mntmVisualizarSugestes = new MenuItem("Visualizar Sugestões", false,
@@ -201,31 +208,61 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		menuBar.addItem(mntmPontoDeEncontro);
 	}
 
-	private void cancelarCarona() {
+	private void sugerirPontoDeEncontro() {
+		if (idCaronaEscolhida != null) {
+			PopupSugerirPonto p = new PopupSugerirPonto(estradaSolidariaService, idCaronaEscolhida);
+			p.center();
+			p.show();
+			
+		} else {
+			exibirPopupInfo("Escolha uma carona!");
+		}
+		
+	}
+
+	private void marcarCaronaComoPreferencial() {
 		Integer idSessao = EstradaSolidaria.getIdSessaoAberta();
 		if (idCaronaEscolhida != null) {
-			estradaSolidariaService.cancelarCarona(idSessao, idCaronaEscolhida, new AsyncCallback<Void>() {
+			estradaSolidariaService.marcarCaronaComoPreferencial(idSessao, idCaronaEscolhida, new AsyncCallback<Void>() {
 
 				@Override
 				public void onFailure(Throwable caught) {
-					popupInfo.setMensagem(caught.getMessage());
-					popupInfo.center();
-					popupInfo.show();
+					exibirPopupInfo(caught.getMessage());
 					
 				}
 
 				@Override
 				public void onSuccess(Void result) {
-					popupInfo.setMensagem("Carona cancelada!");
-					popupInfo.center();
-					popupInfo.show();
+					exibirPopupInfo("Carona Marcada como preferencial!");
 					
 				}
 			});
 		} else {
-			popupInfo.setMensagem("Escolha uma carona!");
-			popupInfo.center();
-			popupInfo.show();
+			exibirPopupInfo("Escolha uma carona!");
+		}
+		
+	}
+
+	private void cancelarCarona() {
+		
+		if (idCaronaEscolhida != null) {
+			estradaSolidariaService.cancelarCarona(idSessao, idCaronaEscolhida, new AsyncCallback<Void>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					exibirPopupInfo(caught.getMessage());
+					
+				}
+
+				@Override
+				public void onSuccess(Void result) {
+					exibirPopupInfo("Carona cancelada!");
+					
+				}
+			});
+		} else {
+			exibirPopupInfo("Escolha uma carona!");
+			
 		}
 	}
 
@@ -236,24 +273,19 @@ public class StateMinhasCaronas extends AbsolutePanel {
 
 				@Override
 				public void onFailure(Throwable caught) {
-					popupInfo.setMensagem(caught.getMessage());
-					popupInfo.center();
-					popupInfo.show();
+					exibirPopupInfo(caught.getMessage());
 					
 				}
 
 				@Override
 				public void onSuccess(Void result) {
-					popupInfo.setMensagem("Carona encerrada!");
-					popupInfo.center();
-					popupInfo.show();
+					exibirPopupInfo("Carona encerrada!");
 					
 				}
 			});
 		} else {
-			popupInfo.setMensagem("Escolha uma carona!");
-			popupInfo.center();
-			popupInfo.show();
+			exibirPopupInfo("Escolha uma carona!");
+			
 		}
 	}
 
@@ -529,5 +561,11 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		gerarListaDeCaronasPegas(idSessao);
 		tabPegas.setWidget(0, 0, absolutePanelAcoes);
 		colocarColunasEmCaronasCellTablePegas();
+	}
+
+	private void exibirPopupInfo(String mensagem) {
+		popupInfo = new PopupInfo(mensagem);
+		popupInfo.center();
+		popupInfo.show();
 	}
 }

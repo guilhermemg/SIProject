@@ -117,7 +117,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @param pontos
 	 * @return id da sugestao feita
 	 */
-	public abstract String sugerirPontoEncontro(Integer idSessao,
+	public abstract void sugerirPontoEncontro(Integer idSessao,
 			Integer idCarona, String pontos)  throws GWTException;
 
 	/**
@@ -423,4 +423,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	void encerrarCarona(Integer idSessao, Integer idCaronaEscolhida) throws GWTException;
 
 	void cancelarCarona(Integer idSessao, Integer idCaronaEscolhida) throws GWTException;
+
+	void marcarCaronaComoPreferencial(Integer idSessao,
+			Integer idCaronaEscolhida);
 }
