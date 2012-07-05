@@ -290,7 +290,10 @@ public class StatePerfil extends Composite {
 
 	protected void inicio() {
 		bodyPanel.clear();
-		//TODO fazer Inicio
+		Widget inicio = new StateInicio(estrada, estradaSolidariaService);
+		bodyPanel.add(inicio);
+		bodyPanel.setVisible(true);
+		inicio.setSize("100%", "100%");
 	}
 
 	protected void cadastrarCaronaGUI() {

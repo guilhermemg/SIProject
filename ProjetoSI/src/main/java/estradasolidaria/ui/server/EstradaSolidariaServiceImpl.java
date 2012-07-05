@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import javax.mail.MessagingException;
 
@@ -14,6 +15,7 @@ import estradasolidaria.ui.client.EstradaSolidariaService;
 import estradasolidaria.ui.client.GWTCarona;
 import estradasolidaria.ui.client.GWTException;
 import estradasolidaria.ui.client.GWTInteresse;
+import estradasolidaria.ui.client.GWTMensagem;
 import estradasolidaria.ui.client.GWTUsuario;
 import estradasolidaria.ui.server.adder.Adder;
 import estradasolidaria.ui.server.logic.Carona;
@@ -22,6 +24,7 @@ import estradasolidaria.ui.server.logic.CaronaInvalidaException;
 import estradasolidaria.ui.server.logic.EstadoCaronaException;
 import estradasolidaria.ui.server.logic.EstradaSolidariaController;
 import estradasolidaria.ui.server.logic.Interesse;
+import estradasolidaria.ui.server.logic.Mensagem;
 import estradasolidaria.ui.server.logic.Solicitacao;
 import estradasolidaria.ui.server.logic.Usuario;
 import estradasolidaria.ui.server.logic.UsuarioInexistenteException;
@@ -704,6 +707,21 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 			Integer idCarona) {
 		controller.definirCaronaPreferencial(idCarona);
 		
+	}
+	
+	@Override
+	public List<GWTMensagem> getListaDeMensagens(Integer idSessao) {
+		Queue<Mensagem> mensagems = controller.getListaDeMensagens(idSessao);
+		List<GWTMensagem> gwt_mensagems = new LinkedList<GWTMensagem>();
+		while(!mensagems.isEmpty()){
+			GWTMensagem gwt_m = new GWTMensagem();
+			Mensagem m = mensagems.remove();
+			gwt_m.setDestinatario(m.getDestinatario().getNome());
+			gwt_m.setRemetente(m.getRemetente().getNome());
+			gwt_m.setTexto(m.getTexto());
+			gwt_mensagems.add(gwt_m);
+		}
+		return gwt_mensagems;
 	}
 	
 }

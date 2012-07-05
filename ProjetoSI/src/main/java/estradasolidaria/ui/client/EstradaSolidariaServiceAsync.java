@@ -149,4 +149,6 @@ public interface EstradaSolidariaServiceAsync {
 
 	void marcarCaronaComoPreferencial(Integer idSessao,
 			Integer idCaronaEscolhida, AsyncCallback<Void> asyncCallback);
+	
+	void getListaDeMensagens(Integer idSessao, AsyncCallback<List<GWTMensagem>> asyncCallback);
 }
