@@ -423,4 +423,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	void encerrarCarona(Integer idSessao, Integer idCaronaEscolhida) throws GWTException;
 
 	void cancelarCarona(Integer idSessao, Integer idCaronaEscolhida) throws GWTException;
+
+	void marcarCaronaComoPreferencial(Integer idSessao,
+			Integer idCaronaEscolhida);
 }

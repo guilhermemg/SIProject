@@ -183,7 +183,11 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		subMenuAcoesDaCarona.addItem(mntmCancelar);
 
 		mntmCaronaPreferencial = new MenuItem("Marcar como Preferencial",
-				false, (Command) null);
+				false, new Command() {
+			public void execute() {
+				marcarCaronaComoPreferencial();
+			}
+		});
 		subMenuAcoesDaCarona.addItem(mntmCaronaPreferencial);
 		menuBar.addItem(mntmCarona);
 
@@ -201,31 +205,49 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		menuBar.addItem(mntmPontoDeEncontro);
 	}
 
-	private void cancelarCarona() {
+	private void marcarCaronaComoPreferencial() {
 		Integer idSessao = EstradaSolidaria.getIdSessaoAberta();
 		if (idCaronaEscolhida != null) {
-			estradaSolidariaService.cancelarCarona(idSessao, idCaronaEscolhida, new AsyncCallback<Void>() {
+			estradaSolidariaService.marcarCaronaComoPreferencial(idSessao, idCaronaEscolhida, new AsyncCallback<Void>() {
 
 				@Override
 				public void onFailure(Throwable caught) {
-					popupInfo.setMensagem(caught.getMessage());
-					popupInfo.center();
-					popupInfo.show();
+					exibirPopupInfo(caught.getMessage());
 					
 				}
 
 				@Override
 				public void onSuccess(Void result) {
-					popupInfo.setMensagem("Carona cancelada!");
-					popupInfo.center();
-					popupInfo.show();
+					exibirPopupInfo("Carona Marcada como preferencial!");
 					
 				}
 			});
 		} else {
-			popupInfo.setMensagem("Escolha uma carona!");
-			popupInfo.center();
-			popupInfo.show();
+			exibirPopupInfo("Escolha uma carona!");
+		}
+		
+	}
+
+	private void cancelarCarona() {
+		
+		if (idCaronaEscolhida != null) {
+			estradaSolidariaService.cancelarCarona(idSessao, idCaronaEscolhida, new AsyncCallback<Void>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					exibirPopupInfo(caught.getMessage());
+					
+				}
+
+				@Override
+				public void onSuccess(Void result) {
+					exibirPopupInfo("Carona cancelada!");
+					
+				}
+			});
+		} else {
+			exibirPopupInfo("Escolha uma carona!");
+			
 		}
 	}
 
@@ -236,24 +258,19 @@ public class StateMinhasCaronas extends AbsolutePanel {
 
 				@Override
 				public void onFailure(Throwable caught) {
-					popupInfo.setMensagem(caught.getMessage());
-					popupInfo.center();
-					popupInfo.show();
+					exibirPopupInfo(caught.getMessage());
 					
 				}
 
 				@Override
 				public void onSuccess(Void result) {
-					popupInfo.setMensagem("Carona encerrada!");
-					popupInfo.center();
-					popupInfo.show();
+					exibirPopupInfo("Carona encerrada!");
 					
 				}
 			});
 		} else {
-			popupInfo.setMensagem("Escolha uma carona!");
-			popupInfo.center();
-			popupInfo.show();
+			exibirPopupInfo("Escolha uma carona!");
+			
 		}
 	}
 
@@ -529,5 +546,11 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		gerarListaDeCaronasPegas(idSessao);
 		tabPegas.setWidget(0, 0, absolutePanelAcoes);
 		colocarColunasEmCaronasCellTablePegas();
+	}
+
+	private void exibirPopupInfo(String mensagem) {
+		popupInfo.setMensagem(mensagem);
+		popupInfo.center();
+		popupInfo.show();
 	}
 }

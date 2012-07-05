@@ -146,4 +146,7 @@ public interface EstradaSolidariaServiceAsync {
 
 	void cancelarCarona(Integer idSessao, Integer idCaronaEscolhida,
 			AsyncCallback<Void> asyncCallback);
+
+	void marcarCaronaComoPreferencial(Integer idSessao,
+			Integer idCaronaEscolhida, AsyncCallback<Void> asyncCallback);
 }

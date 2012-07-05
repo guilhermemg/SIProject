@@ -699,5 +699,12 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		}
 		
 	}
+
+	@Override
+	public void marcarCaronaComoPreferencial(Integer idSessao,
+			Integer idCarona) {
+		controller.definirCaronaPreferencial(idCarona);
+		
+	}
 	
 }
