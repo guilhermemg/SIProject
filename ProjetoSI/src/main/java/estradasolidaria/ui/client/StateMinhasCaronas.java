@@ -86,7 +86,6 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		idSessao = EstradaSolidaria.getIdSessaoAberta();
 
 //		Inicia o popup para dialogo com o cliente
-		popupInfo = new PopupInfo();
 		
 		setSize("950px", "493px");
 		
@@ -196,13 +195,29 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		mntmPontoDeEncontro = new MenuItem("Ponto de Encontro", false,
 				subMenuPontoDeEncontro);
 
-		mntmSugerirPontoDe = new MenuItem("Sugerir", false, (Command) null);
+		mntmSugerirPontoDe = new MenuItem("Sugerir", false, new Command() {
+			public void execute() {
+				sugerirPontoDeEncontro();
+			}
+		});
 		subMenuPontoDeEncontro.addItem(mntmSugerirPontoDe);
 
 		mntmVisualizarSugestes = new MenuItem("Visualizar Sugestões", false,
 				(Command) null);
 		subMenuPontoDeEncontro.addItem(mntmVisualizarSugestes);
 		menuBar.addItem(mntmPontoDeEncontro);
+	}
+
+	private void sugerirPontoDeEncontro() {
+		if (idCaronaEscolhida != null) {
+			PopupSugerirPonto p = new PopupSugerirPonto(estradaSolidariaService, idCaronaEscolhida);
+			p.center();
+			p.show();
+			
+		} else {
+			exibirPopupInfo("Escolha uma carona!");
+		}
+		
 	}
 
 	private void marcarCaronaComoPreferencial() {
@@ -549,7 +564,7 @@ public class StateMinhasCaronas extends AbsolutePanel {
 	}
 
 	private void exibirPopupInfo(String mensagem) {
-		popupInfo.setMensagem(mensagem);
+		popupInfo = new PopupInfo(mensagem);
 		popupInfo.center();
 		popupInfo.show();
 	}

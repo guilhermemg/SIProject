@@ -192,10 +192,9 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public String sugerirPontoEncontro(Integer idSessao, Integer idCarona,
-			String pontos) throws GWTException {
-		// TODO Auto-generated method stub
-		return null;
+	public void sugerirPontoEncontro(Integer idSessao, Integer idCarona,
+			String ponto) throws GWTException {
+		controller.sugerirPontoEncontro(idSessao, idCarona, ponto);
 	}
 
 	@Override
