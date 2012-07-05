@@ -90,6 +90,8 @@ public class EstradaSolidariaController implements Serializable {
 
 		Usuario user = new Usuario(login, senha, nome, endereco, email);
 		this.mapIdUsuario.put(user.getIdUsuario(), user);
+		
+		senderMessage.sendMessage(user, "Seja bem vindo ao Estrada Solidária, a sua rede social de caroneiros.");
 	}
 
 	/**

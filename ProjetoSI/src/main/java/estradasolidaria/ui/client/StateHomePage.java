@@ -340,7 +340,7 @@ public class StateHomePage extends Composite {
 		label_9.setStyleName("gwt-LabelEstradaSolidaria2");
 		label_9.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		label_9.setSize("216px", "29px");
-		absolutePanel_3.add(label_9, 48, 24);
+		absolutePanel_3.add(label_9, 48, 10);
 		
 		Label lblASuaRede = new Label("A sua rede social de caroneiros.");
 		lblASuaRede.setStyleName("gwt-LabelEstradaSolidaria");
@@ -368,9 +368,13 @@ public class StateHomePage extends Composite {
 		
 		absolutePanel_4.add(hprlnkRepositrioDeDesenvolvimento, 664, 37);
 		
-		Label lblAssinaturaDoSistema = new Label("Estrada Solidária foi desenvolvido por Guilherme Monteiro, Hemã Vidal, Ítalo Silva e Leonardo Santos.");
+		Label lblAssinaturaDoSistema = new Label("Estrada Solidária (Beta) ©2012 foi desenvolvido por Guilherme Monteiro, Hemã Vidal, Ítalo Silva e Leonardo Santos.");
 		absolutePanel_4.add(lblAssinaturaDoSistema, 381, 10);
-		lblAssinaturaDoSistema.setSize("706px", "24px");
+		lblAssinaturaDoSistema.setSize("763px", "24px");
+		
+		Label lblBeta = new Label("Beta!");
+		absolutePanel.add(lblBeta, 489, 59);
+		lblBeta.setStyleName("gwt-beta");
 		//lblAssinaturaDoSistema.setStyleName("gwt-LabelEstradaSolidaria");
 		
 	}

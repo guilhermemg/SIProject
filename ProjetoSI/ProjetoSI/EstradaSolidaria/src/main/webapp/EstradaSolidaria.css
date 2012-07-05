@@ -58,6 +58,13 @@ h2 {
 	font-size: 19px;
 }
 
+.gwt-beta {
+	color: #FF0000;
+	font-size: 24px;
+	font-family: @Dotum;
+	font-weight: bold;
+}
+
 .menu {
 	aligner: center;	
 }
