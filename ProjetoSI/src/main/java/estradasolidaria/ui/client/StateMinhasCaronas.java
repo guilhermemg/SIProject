@@ -318,12 +318,12 @@ public class StateMinhasCaronas extends AbsolutePanel {
 			}
 		};
 		buttomColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
-		buttomColumn.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+		buttomColumn.setVerticalAlignment(HasVerticalAlignment.ALIGN_BOTTOM);
 		buttomColumn.setFieldUpdater(new FieldUpdater<GWTCarona, String>() {
 			
 			@Override
 			public void update(int index, GWTCarona carona, String value) {
-				PopupPanel p = new PopupSolicitacoes(estrada, estradaSolidariaService, carona.idCarona);
+				PopupPanel p = new PopupSolicitacoes(estrada, estradaSolidariaService, carona.getIdCarona());
 				p.center();
 				p.show();
 			}
@@ -456,7 +456,7 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		zerarCaronasCellTable();
 
 		caronasCellTable.addColumn(buttomColumn);
-		caronasCellTable.setColumnWidth(buttomColumn, "100%");
+		caronasCellTable.setColumnWidth(buttomColumn, "122px");
 
 		caronasCellTable.addColumn(checkBoxColumn);
 		caronasCellTable.setColumnWidth(checkBoxColumn, "45px");
@@ -468,19 +468,19 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		caronasCellTable.setColumnWidth(destinoColumn, "100%");
 
 		caronasCellTable.addColumn(dataColumn, "Data");
-		caronasCellTable.setColumnWidth(dataColumn, "100%");
+		caronasCellTable.setColumnWidth(dataColumn, "83px");
 
 		caronasCellTable.addColumn(horaColumn, "Hora-Saída");
 		caronasCellTable.setColumnWidth(horaColumn, "100%");
 
 		caronasCellTable.addColumn(vagasColumn, "Vagas");
-		caronasCellTable.setColumnWidth(vagasColumn, "100%");
+		caronasCellTable.setColumnWidth(vagasColumn, "60px");
 		
 		caronasCellTable.addColumn(pontoDeEncontroColumn, "Ponto de Encontro");
 		caronasCellTable.setColumnWidth(pontoDeEncontroColumn, "100%");
 		
 		caronasCellTable.addColumn(estadoColumn, "Estado");
-		caronasCellTable.setColumnWidth(estadoColumn, "100%");
+		caronasCellTable.setColumnWidth(estadoColumn, "84px");
 
 		caronasCellTable.addColumn(reviewColumn, "Review");
 		caronasCellTable.setColumnWidth(reviewColumn, "100%");
