@@ -84,7 +84,7 @@
 			      <goal>compile</goal>
 			    </goals>
 			    <configuration>
-			        <runTarget>EstradaSolidaria.html</runTarget>
+			        <runTarget>ProjetoSI/EstradaSolidaria/src/main/webapp/EstradaSolidaria.html</runTarget>
 			    </configuration>
 			        
 			  </execution>

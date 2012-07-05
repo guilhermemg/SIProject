@@ -1,6 +1,7 @@
 package estradasolidaria.ui.server.logic;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.GregorianCalendar;
@@ -11,8 +12,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import javax.mail.MessagingException;
-
-import com.ibm.icu.text.SimpleDateFormat;
 
 import estradasolidaria.ui.server.util.DateUtil;
 import estradasolidaria.ui.server.util.SpecialLinkedListBrackets;

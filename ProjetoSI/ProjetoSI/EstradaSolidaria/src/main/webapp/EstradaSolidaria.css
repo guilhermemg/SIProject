@@ -42,7 +42,7 @@ h1 {
 
 .gwt-LoginPanel {
 	border: 10px #005522;
-	background-color: lightcyan;
+	background-color: #cccccc;
 }
 
 .gwt-ButtonDestaque {
@@ -51,7 +51,7 @@ h1 {
 
 .gwt-AssinaturaPanel {
 	border: 10px #005522;
-	background-color: lightcyan;
+	background-color: #cccccc;
 }
 
 h2 {
@@ -110,16 +110,16 @@ h2 {
 }
 
 .gwt-LabelEstradaSolidaria {
-	color: Teal;
-	font-family: Gisha;
+	color: Blue;
+	font-family: @Dotum;
 	font-weight: bold;
 }
 
 .gwt-LabelEstradaSolidaria2 {
-	color: cornflowerblue;
+	color: Navy;
 	font-size: 24px;
-	font-family: Gisha;
-	font-weight: normal;
+	font-family: @Dotum;
+	font-weight: bold;
 }
 
 .gwt-LabelEstradaSolidaria3 {
