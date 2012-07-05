@@ -413,7 +413,7 @@ public class EasyacceptEstradaSolidariaAdapter implements EasyacceptAdapterInter
 	 */
 	@Override
 	public void responderSugestaoPontoEncontro(String idSessao,
-			String idCarona, String idSugestao, String pontos) {
+			String idCarona, String idSugestao, String pontos) throws CaronaInexistenteException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 		if (idCarona == null || idCarona.equals(""))

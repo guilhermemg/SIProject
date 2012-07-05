@@ -66,9 +66,11 @@ public class Carona implements Comparable<Carona>, Serializable {
 	// contem o mapeamento de cada usuario presente para o review q o dono da
 	// carona faz dele.
 	private Map<Integer, EnumCaronaReview> mapDonoReviewCaroneiro = new TreeMap<Integer, EnumCaronaReview>();
-	private Map<Integer, Sugestao> mapSugestoesPontoDeEncontro = new TreeMap<Integer, Sugestao>();
+	private Map<Integer, Sugestao> mapIdSugestoesPontoDeEncontro = new TreeMap<Integer, Sugestao>();
 
 	private Thread threadIntervaloPreferencial;
+
+	private Iterator<Sugestao> iteratorIdSugestoes;
 
 	// ------------------------------------------------------------------------------------------------------
 
@@ -500,8 +502,8 @@ public class Carona implements Comparable<Carona>, Serializable {
 						: mapDonoReviewCaroneiro.hashCode());
 		result = prime
 				* result
-				+ ((mapSugestoesPontoDeEncontro == null) ? 0
-						: mapSugestoesPontoDeEncontro.hashCode());
+				+ ((mapIdSugestoesPontoDeEncontro == null) ? 0
+						: mapIdSugestoesPontoDeEncontro.hashCode());
 		result = prime * result + ((origem == null) ? 0 : origem.hashCode());
 		result = prime * result
 				+ ((pontoEncontro == null) ? 0 : pontoEncontro.hashCode());
@@ -567,11 +569,11 @@ public class Carona implements Comparable<Carona>, Serializable {
 		} else if (!mapDonoReviewCaroneiro
 				.equals(other.mapDonoReviewCaroneiro))
 			return false;
-		if (mapSugestoesPontoDeEncontro == null) {
-			if (other.mapSugestoesPontoDeEncontro != null)
+		if (mapIdSugestoesPontoDeEncontro == null) {
+			if (other.mapIdSugestoesPontoDeEncontro != null)
 				return false;
-		} else if (!mapSugestoesPontoDeEncontro
-				.equals(other.mapSugestoesPontoDeEncontro))
+		} else if (!mapIdSugestoesPontoDeEncontro
+				.equals(other.mapIdSugestoesPontoDeEncontro))
 			return false;
 		if (origem == null) {
 			if (other.origem != null)
@@ -603,6 +605,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 
 	/**
 	 * Retorna o id da sugestao de ponto de encontro adicionada.
+	 * @param donoDaSugestao 
 	 * 
 	 * @param idDonoDaCarona
 	 * @param idDonoDaSolicitacao
@@ -613,9 +616,9 @@ public class Carona implements Comparable<Carona>, Serializable {
 		if (ponto == null || ponto.equals("")) {
 			throw new IllegalArgumentException("Ponto Inválido");
 		}
-		Sugestao s = new Sugestao(ponto);
-		mapSugestoesPontoDeEncontro.put(s.getIdSugestao(), s);
-		return s;
+		Sugestao sugestao = new Sugestao(ponto);
+		mapIdSugestoesPontoDeEncontro.put(sugestao.getIdSugestao(), sugestao);
+		return sugestao;
 	}
 
 	
@@ -696,21 +699,25 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @param ponto
 	 * 
 	 */
-	public void setSolicitacaoPontoEncontro(Integer idSugestao, String ponto) {
+	public Sugestao setSolicitacaoPontoEncontro(Integer idSugestao, String ponto) {
 		if (ponto == null)
 			throw new IllegalArgumentException("Ponto Inválido");
 		if (ponto.equals(""))
 			throw new IllegalArgumentException("Ponto Inválido");
 
+		Sugestao sugestao = null;
 		// Iterator Pattern
-		iteratorIdSolicitacoes = this.mapIdSolicitacoes.values().iterator();
-		while (iteratorIdSolicitacoes.hasNext()) {
-			Solicitacao s = iteratorIdSolicitacoes.next();
-			if (s.getIdSolicitacao().equals(idSugestao)) {
-				s.setPontoEncontroCaronaSolicitacao(ponto);
+		iteratorIdSugestoes = this.mapIdSugestoesPontoDeEncontro.values().iterator();
+		while (iteratorIdSugestoes.hasNext()) {
+			sugestao = iteratorIdSugestoes.next();
+			if (sugestao.getIdSugestao().equals(idSugestao)) {
+				sugestao.setSugestaoPontoEncontro(ponto);
 				break;
 			}
 		}
+		if(sugestao == null)
+			throw new IllegalArgumentException("Solicitacao inexistente");
+		return sugestao;
 	}
 
 	/**
@@ -757,8 +764,9 @@ public class Carona implements Comparable<Carona>, Serializable {
 					throw new CadastroEmCaronaPreferencialException();
 				}
 			}
+			Sugestao sugestao = new Sugestao(ponto);
 			Solicitacao s = new Solicitacao(getIdCarona(), origem, destino, donoDaCarona,
-					donoDaSolicitacao, ponto, EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
+					donoDaSolicitacao, sugestao, EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
 			this.mapIdSolicitacoes.put(s.getIdSolicitacao(), s);
 			return s;
 			
@@ -933,10 +941,12 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @throws EstadoSolicitacaoException 
 	 * @throws CaronaInexistenteException 
 	 */
-	public void desistirRequisicao(Integer idSolicitacao) throws EstadoSolicitacaoException, CaronaInexistenteException {
+	public Solicitacao desistirRequisicao(Integer idSolicitacao) throws EstadoSolicitacaoException, CaronaInexistenteException {
 		if(idSolicitacao == null)
 			throw new IllegalArgumentException("Id solicitacao inválido");
-		this.mapIdSolicitacoes.get(idSolicitacao).cancelar(this);
+		Solicitacao solicitacao = this.mapIdSolicitacoes.get(idSolicitacao);
+		solicitacao.cancelar(this);
+		return solicitacao;
 	}
 
 	/**
@@ -1024,7 +1034,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @return mapa de sugestoes
 	 */
 	public Map<Integer, Sugestao> getMapSugestoesPontoDeEncontro() {
-		return mapSugestoesPontoDeEncontro;
+		return mapIdSugestoesPontoDeEncontro;
 	}
 	
 	/**

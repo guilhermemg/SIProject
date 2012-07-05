@@ -18,16 +18,18 @@ public class Sugestao implements Serializable {
 	private String sugestaoPontoDeEncontro;
 	private Integer idSugestao;
 	private String resposta;
+
 	/**
 	 * Cria uma nova sugestão.
 	 * 
-	 * @param sugestao
+	 * @param ponto
+	 * @param donoDaSugestao 
 	 */
-	public Sugestao(String sugestao) {
-		this.sugestaoPontoDeEncontro = sugestao;
+	public Sugestao(String ponto) {
+		this.sugestaoPontoDeEncontro = ponto;
 		this.idSugestao = hashCode();
 	}
-
+	
 	/**
 	 * Retorna a sugestão do ponto de encontro.
 	 * 
@@ -88,4 +90,13 @@ public class Sugestao implements Serializable {
 		return true;
 	}
 
+	/**
+	 * Configura ponto de encontro
+	 * para a carona.
+	 * 
+	 * @param ponto
+	 */
+	public void setSugestaoPontoEncontro(String ponto) {
+		this.sugestaoPontoDeEncontro = ponto;
+	}
 }

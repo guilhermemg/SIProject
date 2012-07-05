@@ -148,9 +148,10 @@ public interface EasyacceptAdapterInterface {
 	 * @param idSugestao
 	 * @param pontos
 	 *            : ponto de encontro escolhido ate o momento para a carona
+	 * @throws CaronaInexistenteException 
 	 */
 	public abstract void responderSugestaoPontoEncontro(String idSessao,
-			String idCarona, String idSugestao, String pontos);
+			String idCarona, String idSugestao, String pontos) throws CaronaInexistenteException;
 
 	/**
 	 * Solicita vaga e sugere um ponto de encontro para a carona.

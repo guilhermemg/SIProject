@@ -17,19 +17,15 @@ public class Solicitacao implements Serializable {
 	
 	private String origemCaronaSolicitacao;
 	private String destinoCaronaSolicitacao;
-	private String pontoEncontroCaronaSolicitacao;
-	
-	private String respostaPontoEncontro;
-	
 	private Usuario donoDaCaronaSolicitacao;
 	private Usuario donoDaSolicitacao;
-	
 	private Integer idSolicitacao;
-	
 	private EstadoSolicitacaoInterface estado;
 	private Integer idCarona;
 
 	private EnumTipoSolicitacao tipoSolicitacao;
+	
+	private Sugestao sugestaoDePontoEncontro;
 	
 	/**
 	 * Construtor 1 da classe Solicitacao.
@@ -41,13 +37,13 @@ public class Solicitacao implements Serializable {
 	 * @param solicitacaoComPontoEncontro 
 	 */
 	public Solicitacao(Integer idCarona, String origem, String destino, Usuario donoDaCarona, 
-			Usuario donoDaSolicitacao, String ponto, EnumTipoSolicitacao solicitacaoComPontoEncontro) {
+			Usuario donoDaSolicitacao, Sugestao sugestao, EnumTipoSolicitacao solicitacaoComPontoEncontro) {
 		setIdCarona(idCarona);
 		setOrigemCaronaSolicitacao(origem); // id da sess�o do usuario requerente
 		setDestinoCaronaSolicitacao(destino);
 		setDonoDaCarona(donoDaCarona);
 		setDonoDaSolicitacao(donoDaSolicitacao);
-		setPontoEncontroCaronaSolicitacao(ponto);
+		setSugestaoPontoEncontroParaCarona(sugestao);
 		setEstado(new EstadoSolicitacaoPendente());
 		setTipoSolicitacao(solicitacaoComPontoEncontro);
 		
@@ -107,7 +103,6 @@ public class Solicitacao implements Serializable {
 				+ origemCaronaSolicitacao + ", destinoCaronaSolicitacao="
 				+ destinoCaronaSolicitacao
 				+ ", pontoEncontroCaronaSolicitacao="
-				+ pontoEncontroCaronaSolicitacao
 				+ ", idDonoDaCaronaSolicitacao=" + donoDaCaronaSolicitacao
 				+ ", idDonoDaSolicitacao=" + donoDaSolicitacao
 				+ ", idSolicitacao=" + idSolicitacao + "]";
@@ -158,9 +153,6 @@ public class Solicitacao implements Serializable {
 		return this.donoDaCaronaSolicitacao;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -188,20 +180,13 @@ public class Solicitacao implements Serializable {
 						: origemCaronaSolicitacao.hashCode());
 		result = prime
 				* result
-				+ ((pontoEncontroCaronaSolicitacao == null) ? 0
-						: pontoEncontroCaronaSolicitacao.hashCode());
-		result = prime
-				* result
-				+ ((respostaPontoEncontro == null) ? 0 : respostaPontoEncontro
-						.hashCode());
+				+ ((sugestaoDePontoEncontro == null) ? 0
+						: sugestaoDePontoEncontro.hashCode());
 		result = prime * result
 				+ ((tipoSolicitacao == null) ? 0 : tipoSolicitacao.hashCode());
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -249,16 +234,11 @@ public class Solicitacao implements Serializable {
 		} else if (!origemCaronaSolicitacao
 				.equals(other.origemCaronaSolicitacao))
 			return false;
-		if (pontoEncontroCaronaSolicitacao == null) {
-			if (other.pontoEncontroCaronaSolicitacao != null)
+		if (sugestaoDePontoEncontro == null) {
+			if (other.sugestaoDePontoEncontro != null)
 				return false;
-		} else if (!pontoEncontroCaronaSolicitacao
-				.equals(other.pontoEncontroCaronaSolicitacao))
-			return false;
-		if (respostaPontoEncontro == null) {
-			if (other.respostaPontoEncontro != null)
-				return false;
-		} else if (!respostaPontoEncontro.equals(other.respostaPontoEncontro))
+		} else if (!sugestaoDePontoEncontro
+				.equals(other.sugestaoDePontoEncontro))
 			return false;
 		if (tipoSolicitacao != other.tipoSolicitacao)
 			return false;
@@ -302,15 +282,25 @@ public class Solicitacao implements Serializable {
 	 * @return ponto de encontro
 	 */
 	public String getPontoEncontro() {
-		return pontoEncontroCaronaSolicitacao;
+		return sugestaoDePontoEncontro.getPontoSugerido();
 	}
 
 	/**
 	 * Configura ponto de encontro.
-	 * @param pontoEncontro
+	 * @param sugestao
 	 */
-	public void setPontoEncontroCaronaSolicitacao(String pontoEncontro) {
-		this.pontoEncontroCaronaSolicitacao = pontoEncontro;
+	public void setSugestaoPontoEncontroParaCarona(Sugestao sugestao) {
+		this.sugestaoDePontoEncontro = sugestao;
+	}
+	
+	/**
+	 * Retorna sugestao de ponto de encontro
+	 * para carona.
+	 * 
+	 * @return sugestao
+	 */
+	public Sugestao getSugestaoPontoEncontroParaCarona() {
+		return this.sugestaoDePontoEncontro;
 	}
 
 	/**
@@ -398,7 +388,7 @@ public class Solicitacao implements Serializable {
 	 * @return respostaPontoEncontro
 	 */
 	public String getRespostaPontoEncontro() {
-		return respostaPontoEncontro;
+		return sugestaoDePontoEncontro.getResposta();
 	}
 	
 	/**
@@ -408,10 +398,26 @@ public class Solicitacao implements Serializable {
 	 * @param respostaPontoEncontro
 	 */
 	public void setRespostaPontoEncontro(String respostaPontoEncontro) {
-		this.respostaPontoEncontro = respostaPontoEncontro;
+		sugestaoDePontoEncontro.setResposta(respostaPontoEncontro);
 	}
 
+	/**
+	 * Retorna id da carona
+	 * a qual essa solicitacao pertence.
+	 * 
+	 * @return id
+	 */
 	public Integer getIdCarona() {
 		return idCarona;
+	}
+
+	/**
+	 * Trajeto da carona a que pertence essa
+	 * solicitacao.
+	 * 
+	 * @return trajeto
+	 */
+	public String getTrajeto() {
+		return getOrigem() + " - " + getDestino();
 	}
 }

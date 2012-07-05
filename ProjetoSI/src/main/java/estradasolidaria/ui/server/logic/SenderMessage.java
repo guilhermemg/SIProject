@@ -14,4 +14,17 @@ public class SenderMessage {
 		destinatario.addMensagem(m);
 		return true;
 	}
+
+	/**
+	 * 
+	 * 
+	 * @param destinatario
+	 * @param msg
+	 * @return
+	 */
+	public boolean sendMessage(Usuario destinatario, String msg) {
+		Mensagem m = new Mensagem(destinatario, msg);
+		destinatario.addMensagem(m);
+		return true;
+	}
 }

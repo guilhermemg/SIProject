@@ -11,14 +11,36 @@ package estradasolidaria.ui.server.logic;
  *
  */
 public class Mensagem {
-	private final String texto;
-	private final Usuario destinatario;
-	private final Usuario remetente;
+	private String texto;
+	private Usuario destinatario;
+	private Usuario remetente;
 
+	/**
+	 * Primeiro construtor para mensagem.
+	 * 
+	 * @param destinatario
+	 * @param remetente
+	 * @param texto
+	 */
 	public Mensagem(Usuario destinatario, Usuario remetente, String texto) {
 		this.destinatario = destinatario;
 		this.remetente = remetente;
 		this.texto = texto;
+	}
+
+	/**
+	 * Segundo construtor para mensagem,
+	 * ele eh usado quando o sistema manda
+	 * mensagens para o usuario.
+	 * 
+	 * NOTE: o campo de remetente fica null.
+	 * 
+	 * @param destinatario
+	 * @param msg
+	 */
+	public Mensagem(Usuario destinatario, String msg) {
+		this.destinatario = destinatario;
+		this.texto = msg;
 	}
 
 	/**

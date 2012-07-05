@@ -380,9 +380,10 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param idCarona: id da carona
 	 * @param idSugestao: id da sugestao
 	 * @param pontos: ponto sugerido
+	 * @throws CaronaInexistenteException 
 	 */
-	public void responderSugestaoPontoEncontro(Integer idCarona,
-			Integer idSugestao, String pontos) {
+	public Sugestao responderSugestaoPontoEncontro(Integer idCarona,
+			Integer idSugestao, String pontos) throws CaronaInexistenteException {
 		if (pontos.equals(""))
 			throw new IllegalArgumentException("Ponto Inválido");
 		// Iterator Pattern
@@ -391,9 +392,10 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		while (iteratorIdCaronasOferecidas.hasNext()) {
 			Carona c = iteratorIdCaronasOferecidas.next();
 			if (c.getIdCarona().equals(idCarona)) {
-				c.setSolicitacaoPontoEncontro(idSugestao, pontos);
+				return c.setSolicitacaoPontoEncontro(idSugestao, pontos);
 			}
 		}
+		throw new CaronaInexistenteException();
 	}
 
 	/**
@@ -560,7 +562,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @throws EstadoSolicitacaoException 
 	 * 
 	 */
-	public void rejeitarSolicitacao(Integer idSolicitacao) throws CaronaInexistenteException, EstadoSolicitacaoException {
+	public Solicitacao rejeitarSolicitacao(Integer idSolicitacao) throws CaronaInexistenteException, EstadoSolicitacaoException {
 		// Iterator Pattern
 		iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas.values()
 				.iterator();
@@ -572,10 +574,11 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 				Solicitacao s = it.next();
 				if (s.getIdSolicitacao().equals(idSolicitacao)) {
 					s.rejeitar(c);
-					break;
+					return s;
 				}
 			}
 		}
+		throw new IllegalArgumentException("Solicitação inexistente");
 	}
 
 	/**
@@ -1030,14 +1033,15 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * 
 	 * @param idCarona
 	 * @param idSolicitacao
+	 * @return 
 	 * @throws CaronaInexistenteException 
 	 * @throws EstadoSolicitacaoException 
 	 */
-	public void desistirRequisicao(Integer idCarona, Integer idSolicitacao) throws CaronaInexistenteException, EstadoSolicitacaoException {
+	public Solicitacao desistirRequisicao(Integer idCarona, Integer idSolicitacao) throws CaronaInexistenteException, EstadoSolicitacaoException {
 		if(idCarona == null)
 			throw new CaronaInexistenteException();
 		Carona c = this.mapIdCaronasPegas.get(idCarona);
-		c.desistirRequisicao(idSolicitacao);
+		return c.desistirRequisicao(idSolicitacao);
 	}
 
 	/**
@@ -1049,9 +1053,9 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param listaCaronas
 	 *            : lista de caronas resultado da busca feita no sistema
 	 */
-	public void atualizaPerfilUsuarioInteressado(Carona carona,
+	public String atualizaPerfilUsuarioInteressado(Carona carona,
 			String emailDonoDaCarona) {
-		notificaPerfil(carona, emailDonoDaCarona);
+		return notificaPerfil(carona, emailDonoDaCarona);
 	}
 
 	/**
@@ -1063,15 +1067,18 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * 
 	 * @param carona
 	 * @param emailDonoDaCarona
+	 * @return mensagem adicionada a lista de mensagens
 	 */
-	public void notificaPerfil(Carona carona, String emailDonoDaCarona) {
+	public String notificaPerfil(Carona carona, String emailDonoDaCarona) {
 		SimpleDateFormat formatterData = new SimpleDateFormat("dd/MM/yyyy");
 		SimpleDateFormat formatterHora = new SimpleDateFormat("HH:mm");
-		mensagensPerfil.add(new String("Carona cadastrada no dia "
+		String msg = new String("Carona cadastrada no dia "
 				+ formatterData.format(carona.getData().getTime()) + ", " 
 				+ "às " + formatterHora.format(carona.getHora().getTime())
 				+ " de acordo com os seus interesses registrados. "
-				+ "Entrar em contato com " + emailDonoDaCarona));
+				+ "Entrar em contato com " + emailDonoDaCarona);
+		mensagensPerfil.add(msg);
+		return msg;
 	}
 
 	/**

@@ -340,7 +340,7 @@ public class EstradaSolidariaController implements Serializable {
 		donoDaSugestao.addSugestaoFeita(sugestaoFeita);
 		
 		senderMessage.sendMessage(donoDaSugestao, donoDaCarona, donoDaSugestao.getNome() 
-				+ " sugeriu um ponto de encontro para a carona " + carona.getTrajeto() + ": " + sugestaoFeita.getPontoSugerido());
+				+ " sugeriu um ponto de encontro para a carona " + carona.getTrajeto() + ": " + sugestaoFeita.getPontoSugerido() + ".");
 		
 		return sugestaoFeita;
 	}
@@ -359,9 +359,10 @@ public class EstradaSolidariaController implements Serializable {
 	 *             obs.: o ponto encontro da carona eh setado como esse q eh
 	 *             respondido pelo dono da carona. O ponto pode ser identico ou
 	 *             nao ao ponto sugerido pelo usuario solicitante.
+	 * @throws CaronaInexistenteException 
 	 */
 	public void responderSugestaoPontoEncontro(Integer idSessao,
-			Integer idCarona, Integer idSugestao, String pontos) {
+			Integer idCarona, Integer idSugestao, String pontos) throws CaronaInexistenteException {
 		if (idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 		if (idCarona == null)
@@ -371,17 +372,47 @@ public class EstradaSolidariaController implements Serializable {
 			throw new IllegalArgumentException("Id de sugestão inválido");
 		if (pontos == null || pontos.equals(""))
 			throw new IllegalArgumentException("Ponto Inválido");
-
+		
+		Sugestao sugestaoFeitaPeloDonoDaCarona = null;
+		Usuario donoDaCarona = null;
 		// Iterator Pattern
 		iteratorIdSessao = this.mapIdSessao.values().iterator();
 		while (iteratorIdSessao.hasNext()) { // procura donoDaCarona
 			Sessao s = iteratorIdSessao.next();
 			if (s.getIdSessao().equals(idSessao)) {
-				Usuario donoDaCarona = this.mapIdUsuario.get(s.getIdUser());
-				donoDaCarona.responderSugestaoPontoEncontro(idCarona,
+				donoDaCarona = this.mapIdUsuario.get(s.getIdUser());
+				sugestaoFeitaPeloDonoDaCarona = donoDaCarona.responderSugestaoPontoEncontro(idCarona,
 						idSugestao, pontos);
 			}
 		}
+		
+		if(sugestaoFeitaPeloDonoDaCarona == null)
+			throw new IllegalArgumentException("Solicitacao inexistente");
+		if(donoDaCarona == null)
+			throw new UsuarioInexistenteException();
+		
+		Carona carona = donoDaCarona.getCarona(idCarona);
+		Usuario donoDaSugestao = getUsuarioAPartirDeIDSugestao(idSugestao);
+		senderMessage.sendMessage(donoDaSugestao, donoDaCarona,
+				donoDaCarona.getNome() + " respondeu a sua sugestão de ponto de encontro para a carona" 
+						+ carona.getTrajeto() + ". O ponto" +
+						"de encontro proposto por ele é: " + sugestaoFeitaPeloDonoDaCarona.getResposta() + ".");
+	}
+
+	private Usuario getUsuarioAPartirDeIDSugestao(Integer idSugestao) {
+		Usuario donoDaSugestao;
+		iteratorIdUsuario = mapIdUsuario.values().iterator();
+		while(iteratorIdUsuario.hasNext()) {
+			donoDaSugestao = iteratorIdUsuario.next();
+			Iterator<Sugestao> iteratorIdSugestoes = donoDaSugestao.getMapIdSugestoesFeitas().values().iterator();
+			while(iteratorIdSugestoes.hasNext()) {
+				Sugestao sugestao = iteratorIdSugestoes.next();
+				if(sugestao.getIdSugestao().equals(idSugestao)) {
+					return donoDaSugestao;
+				}
+			}
+		}
+		throw new IllegalArgumentException("IdSugestao inválido");
 	}
 
 	/**
@@ -433,6 +464,10 @@ public class EstradaSolidariaController implements Serializable {
 		
 		solicitante.addSolicitacaoFeita(solicitacaoFeita);
 		
+		senderMessage.sendMessage(donoDaCarona, solicitante, 
+				solicitante.getNome() + " fez uma solicitação a você na carona " + solicitacaoFeita.getTrajeto() + 
+				"E propos o seguinte ponto de encontro para a carona: " + solicitacaoFeita.getPontoEncontro() + ".");
+		
 		return solicitacaoFeita;
 	}
 
@@ -470,6 +505,10 @@ public class EstradaSolidariaController implements Serializable {
 		
 		this.mapIdUsuario.get(idUsuarioDonoDaSolicitacao)
 				.adicionarIdCaronaPega(idCarona, carona);
+		
+		senderMessage.sendMessage(solicitacao.getDonoDaSolicitacao(), donoDaCarona,
+				donoDaCarona.getNome() + " aceitou sua solicitação de vaga com sugestão de ponto de encontro para a carona " + carona.getTrajeto() + 
+				"com o seguinte ponto encontro: " + carona.getPontoEncontro() + ".");
 	}
 
 	/**
@@ -504,6 +543,9 @@ public class EstradaSolidariaController implements Serializable {
 		
 		this.mapIdUsuario.get(idUsuarioDonoDaSolicitacao)
 				.adicionarIdCaronaPega(idCarona, carona);
+		
+		senderMessage.sendMessage(solicitacao.getDonoDaSolicitacao(), donoDaCarona,
+				donoDaCarona.getNome() + " aceitou sua solicitação de vaga na carona " + carona.getTrajeto() + ".");
 	}
 
 	/**
@@ -558,6 +600,9 @@ public class EstradaSolidariaController implements Serializable {
 		
 		solicitante.addSolicitacaoFeita(solicitacaoFeita);
 		
+		senderMessage.sendMessage(donoDaCarona, solicitante, 
+				solicitante.getNome() + " fez uma solicitação a você na carona " + solicitacaoFeita.getTrajeto() + ".");
+		
 		return solicitacaoFeita;
 	}
 
@@ -575,17 +620,25 @@ public class EstradaSolidariaController implements Serializable {
 			throw new IllegalArgumentException("Sessão inválida");
 		if (idSolicitacao == null)
 			throw new IllegalArgumentException("Id solicitação inválido");
-
+		
+		Solicitacao solicitacao = null;
 		// Iterator Pattern
 		iteratorIdSessao = this.mapIdSessao.values().iterator();
 		while (iteratorIdSessao.hasNext()) { // procura pelo donoDaCarona
 			Sessao s = iteratorIdSessao.next();
 			if (s.getIdSessao().equals(idSessao)) {
 				Usuario donoDaCarona = this.mapIdUsuario.get(s.getIdUser());
-				donoDaCarona.rejeitarSolicitacao(idSolicitacao);
+				solicitacao = donoDaCarona.rejeitarSolicitacao(idSolicitacao);
 				break;
 			}
 		}
+		
+		if(solicitacao == null)
+			throw new IllegalArgumentException("Solicitacao inexistente");
+		
+		Usuario donoDaCarona = solicitacao.getDonoDaCarona(), donoDaSolicitacao = solicitacao.getDonoDaSolicitacao(); 
+		senderMessage.sendMessage(donoDaSolicitacao, donoDaCarona, 
+				donoDaCarona.getNome() + " rejeitou o seu pedido de vaga na carona " + solicitacao.getTrajeto());
 	}
 
 	/**
@@ -611,7 +664,11 @@ public class EstradaSolidariaController implements Serializable {
 
 		Usuario donoDaSolicitacao = this.mapIdUsuario.get(this.mapIdSessao.get(
 				idSessao).getIdUser()); // O(logm + logn)
-		donoDaSolicitacao.desistirRequisicao(idCarona, idSolicitacao);
+		Solicitacao solicitacao = donoDaSolicitacao.desistirRequisicao(idCarona, idSolicitacao);
+		
+		Usuario donoDaCarona = solicitacao.getDonoDaCarona();
+		senderMessage.sendMessage(donoDaCarona, donoDaSolicitacao, 
+				donoDaSolicitacao.getNome() + " desistiu da vaga na carona " + solicitacao.getTrajeto());
 	}
 
 	/**
@@ -1097,7 +1154,8 @@ public class EstradaSolidariaController implements Serializable {
 		for(Usuario u : mapIdUsuario.values()) {
 			for(Interesse i : u.getMapIdInteresse().values()) {
 				if(i.verificaCorrespondencia(novaCarona)) {
-					u.atualizaPerfilUsuarioInteressado(novaCarona, getEmailDonoDeCarona(novaCarona));
+					String msg = u.atualizaPerfilUsuarioInteressado(novaCarona, getEmailDonoDeCarona(novaCarona));
+					senderMessage.sendMessage(u, msg);
 				}
 			}
 		}
