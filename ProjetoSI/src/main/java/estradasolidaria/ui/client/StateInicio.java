@@ -6,6 +6,7 @@ import java.util.Queue;
 
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.CheckboxCell;
+import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.cellview.client.Column;
@@ -16,6 +17,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -94,6 +96,14 @@ public class StateInicio extends Composite {
 				return "Ver";
 			}
 		};
+		column.setFieldUpdater(new FieldUpdater<GWTMensagem, String>() {
+			@Override
+			public void update(int index, GWTMensagem object, String value) {
+				DialogBox dialogBox = new DialogBoxVerMensagem(object);
+				dialogBox.center();
+				dialogBox.show();
+			}
+		});
 		dataGrid.addColumn(column, "");
 		
 		MenuBar menuBar = new MenuBar(false);
