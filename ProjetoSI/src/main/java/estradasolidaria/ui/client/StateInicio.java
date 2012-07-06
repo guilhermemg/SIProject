@@ -72,19 +72,19 @@ public class StateInicio extends Composite {
 		};
 		dataGrid.addColumn(columnTexto, "Mensagem");
 		
-//		getListaDeMensagemsGUI();
-		GWTMensagem m = new GWTMensagem();
-		GWTMensagem n = new GWTMensagem();
-		m.setRemetente("Italo");
-		m.setTexto("A civilização minoica surgiu durante a Idade do Bronze Grega em Creta, a maior ilha do Mar Egeu, " +
-				"e floresceu aproximadamente entre os séculos XXX e XV a.C");
-		n.setRemetente("Cara Legal ;)");
-		n.setTexto("Sport Club Corinthians Paulista conquista a Copa Libertadores da América de 2012.");
-		List<GWTMensagem> lista = new LinkedList<GWTMensagem>();
-		lista.add(m);
-		lista.add(n);
-		dataGrid.setRowCount(lista.size(), true);
-		dataGrid.setRowData(lista);
+		getListaDeMensagemsGUI();
+//		GWTMensagem m = new GWTMensagem();
+//		GWTMensagem n = new GWTMensagem();
+//		m.setRemetente("Italo");
+//		m.setTexto("A civilização minoica surgiu durante a Idade do Bronze Grega em Creta, a maior ilha do Mar Egeu, " +
+//				"e floresceu aproximadamente entre os séculos XXX e XV a.C");
+//		n.setRemetente("Cara Legal ;)");
+//		n.setTexto("Sport Club Corinthians Paulista conquista a Copa Libertadores da América de 2012.");
+//		List<GWTMensagem> lista = new LinkedList<GWTMensagem>();
+//		lista.add(m);
+//		lista.add(n);
+//		dataGrid.setRowCount(lista.size(), true);
+//		dataGrid.setRowData(lista);
 		
 	}
 
