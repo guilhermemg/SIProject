@@ -12,4 +12,7 @@ public interface Resources extends ClientBundle {
 	
 	@Source("genericLittleUserImage.jpg")
 	ImageResource getGenericLittleUserImage();
+	
+	@Source("icone_fechar.jpg")
+	ImageResource getCloseIcon();
 }
