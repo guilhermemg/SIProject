@@ -1,6 +1,8 @@
 package estradasolidaria.ui.client;
 
-public class GWTMensagem {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class GWTMensagem implements IsSerializable {
 
 	private String destinatario;
 	private String remetente;

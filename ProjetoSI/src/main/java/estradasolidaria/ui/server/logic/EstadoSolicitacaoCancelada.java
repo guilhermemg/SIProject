@@ -1,5 +1,7 @@
 package estradasolidaria.ui.server.logic;
 
+import java.io.Serializable;
+
 /**
  * Classe que representa o estado de uma solicitacao cancelada.
  * 
@@ -9,8 +11,10 @@ package estradasolidaria.ui.server.logic;
  * @author Italo Silva
  *
  */
-public class EstadoSolicitacaoCancelada implements EstadoSolicitacaoInterface {
+public class EstadoSolicitacaoCancelada implements EstadoSolicitacaoInterface, Serializable {
 	
+	private static final long serialVersionUID = -382738758617685771L;
+
 	/**
 	 * Tenta modificar o estado de uma Solicitação Cancelada para Aceita.
 	 * 

@@ -15,8 +15,6 @@ public class GWTCarona implements IsSerializable {
 	private String idCarona;
 	private String estado;
 
-	
-
 	public String getNomeDono() {
 		return nomeDono;
 	}

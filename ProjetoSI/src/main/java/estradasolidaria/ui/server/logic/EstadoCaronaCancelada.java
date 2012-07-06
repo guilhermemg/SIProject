@@ -1,5 +1,7 @@
 package estradasolidaria.ui.server.logic;
 
+import java.io.Serializable;
+
 /**
  * Classe que representa o estado
  * de uma carona cancelada.
@@ -10,7 +12,9 @@ package estradasolidaria.ui.server.logic;
  * @author Italo Silva
  *
  */
-public class EstadoCaronaCancelada implements EstadoCaronaInterface {
+public class EstadoCaronaCancelada implements EstadoCaronaInterface, Serializable {
+
+	private static final long serialVersionUID = 5933862229846100408L;
 
 	/* (non-Javadoc)
 	 * @see estradasolidaria.ui.server.logic.EstadoCaronaInterface#confirmar(estradasolidaria.ui.server.logic.Carona)

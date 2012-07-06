@@ -468,7 +468,7 @@ public class EstradaSolidariaController implements Serializable {
 		
 		senderMessage.sendMessage(donoDaCarona, solicitante, 
 				solicitante.getNome() + " fez uma solicitação a você na carona " + solicitacaoFeita.getTrajeto() + 
-				"E propos o seguinte ponto de encontro para a carona: " + solicitacaoFeita.getPontoEncontro() + ".");
+				" .E propos o seguinte ponto de encontro para a carona: " + solicitacaoFeita.getPontoEncontro() + ".");
 		
 		return solicitacaoFeita;
 	}
@@ -1880,7 +1880,6 @@ public class EstradaSolidariaController implements Serializable {
 				donoDasMensagens = mapIdUsuario.get(s.getIdUser());
 				break;
 			}
-			
 		}
 		if(donoDasMensagens == null)
 			throw new UsuarioInexistenteException();

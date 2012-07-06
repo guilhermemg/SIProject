@@ -1,5 +1,6 @@
 package estradasolidaria.ui.server.logic;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -24,8 +25,9 @@ import estradasolidaria.ui.server.util.DateUtil;
  *
  */
 public class ThreadIntervaloDeTempoParaRegistroEmCaronaRelampago extends Thread 
- 	implements Runnable {
+ 	implements Runnable, Serializable {
 	
+	private static final long serialVersionUID = -4981017787489907261L;
 	private Carona carona;
 	private DateUtil dateUtil = new DateUtil(new GregorianCalendar()); 
 

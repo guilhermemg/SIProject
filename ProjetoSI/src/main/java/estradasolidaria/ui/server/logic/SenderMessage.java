@@ -1,6 +1,22 @@
 package estradasolidaria.ui.server.logic;
 
-public class SenderMessage {
+import java.io.Serializable;
+
+/**
+ * Classe que representa o
+ * enviador de mensagens do
+ * sistema, ele tambem eh usado no
+ * envio de mensagens entre usuarios.
+ * 
+ * @author Guilherme Monteiro
+ * @author Leonardo Santos
+ * @author Hema Vidal
+ * @author Italo Silva
+ *
+ */
+public class SenderMessage implements Serializable {
+	private static final long serialVersionUID = -3174997058762030389L;
+
 	/**
 	 * Envia um mensagem para usuario. 
 	 * 

@@ -1,5 +1,7 @@
 package estradasolidaria.ui.server.logic;
 
+import java.io.Serializable;
+
 /**
  * Classe que representa o tipo de uma carona.
  * 
@@ -9,6 +11,6 @@ package estradasolidaria.ui.server.logic;
  * @author Italo Silva
  *
  */
-public enum TipoDeCarona {
+public enum TipoDeCarona implements Serializable {
 	COMUM, RELAMPAGO, MUNICIPAL, PREFERENCIAL
 }

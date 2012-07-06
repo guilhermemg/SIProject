@@ -704,24 +704,29 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public void marcarCaronaComoPreferencial(Integer idSessao,
-			Integer idCarona) {
+			Integer idCarona) throws GWTException{
 		controller.definirCaronaPreferencial(idCarona);
 		
 	}
 	
 	@Override
-	public List<GWTMensagem> getListaDeMensagens(Integer idSessao) {
-		Queue<Mensagem> mensagems = controller.getListaDeMensagens(idSessao);
-		List<GWTMensagem> gwt_mensagems = new LinkedList<GWTMensagem>();
-		while(!mensagems.isEmpty()){
-			GWTMensagem gwt_m = new GWTMensagem();
-			Mensagem m = mensagems.remove();
-			gwt_m.setDestinatario(m.getDestinatario().getNome());
-			gwt_m.setRemetente(m.getRemetente().getNome());
-			gwt_m.setTexto(m.getTexto());
-			gwt_mensagems.add(gwt_m);
+	public Queue<GWTMensagem> getListaDeMensagens(Integer idSessao) throws GWTException {
+		try {
+			Queue<Mensagem> mensagems = controller.getListaDeMensagens(idSessao);
+			Queue<GWTMensagem> gwt_mensagems = new LinkedList<GWTMensagem>();
+			while(!mensagems.isEmpty()){
+				GWTMensagem gwt_m = new GWTMensagem();
+				Mensagem m = mensagems.remove();
+				gwt_m.setDestinatario(m.getDestinatario().getNome());
+				gwt_m.setRemetente(m.getRemetente().getNome());
+				gwt_m.setTexto(m.getTexto());
+				gwt_mensagems.add(gwt_m);
+			}
+			return gwt_mensagems;
 		}
-		return gwt_mensagems;
+		catch(Exception e) {
+			throw new GWTException(e.getMessage());
+		}
 	}
 	
 }

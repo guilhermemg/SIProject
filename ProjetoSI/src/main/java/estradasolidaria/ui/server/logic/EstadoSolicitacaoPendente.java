@@ -1,5 +1,7 @@
 package estradasolidaria.ui.server.logic;
 
+import java.io.Serializable;
+
 /**
  * Classe que representa o estado de uma solicitacao pendente.
  * 
@@ -9,8 +11,10 @@ package estradasolidaria.ui.server.logic;
  * @author Italo Silva
  *
  */
-public class EstadoSolicitacaoPendente implements EstadoSolicitacaoInterface {
+public class EstadoSolicitacaoPendente implements EstadoSolicitacaoInterface, Serializable {
 	
+	private static final long serialVersionUID = 4855270304451748319L;
+
 	/**
 	 * Tenta modificar o estado de uma Solicitação Pendente para Aceita.
 	 * 

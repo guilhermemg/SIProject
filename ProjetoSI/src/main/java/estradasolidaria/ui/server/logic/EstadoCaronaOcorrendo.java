@@ -1,5 +1,7 @@
 package estradasolidaria.ui.server.logic;
 
+import java.io.Serializable;
+
 import javax.mail.MessagingException;
 
 /**
@@ -12,7 +14,9 @@ import javax.mail.MessagingException;
  * @author Italo Silva
  *
  */
-public class EstadoCaronaOcorrendo implements EstadoCaronaInterface {
+public class EstadoCaronaOcorrendo implements EstadoCaronaInterface, Serializable {
+
+	private static final long serialVersionUID = -450750401068334562L;
 
 	/* (non-Javadoc)
 	 * @see estradasolidaria.ui.server.logic.EstadoCaronaInterface#confirmar(estradasolidaria.ui.server.logic.Carona)

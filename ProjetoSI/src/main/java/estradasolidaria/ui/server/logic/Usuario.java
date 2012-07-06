@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.TreeMap;
 
@@ -38,7 +39,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	
 	private List<String> mensagensPerfil = new LinkedList<String>();
 	
-	private Queue<Mensagem> listaDeMensagens = new LinkedList<Mensagem>();
+	private Queue<Mensagem> listaDeMensagens = new PriorityQueue<Mensagem>();
 	
 	private Map<Integer, Carona> mapIdCaronasOferecidas = new TreeMap<Integer, Carona>();
 	private Iterator<Carona> iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas

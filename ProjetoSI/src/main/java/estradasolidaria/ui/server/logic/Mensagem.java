@@ -1,5 +1,7 @@
 package estradasolidaria.ui.server.logic;
 
+import java.io.Serializable;
+
 /**
  * Classe que representa um mensagem enviada
  * para um usuario vinda de outro usuario.
@@ -10,7 +12,8 @@ package estradasolidaria.ui.server.logic;
  * @author Italo Silva
  *
  */
-public class Mensagem {
+public class Mensagem implements Serializable {
+	private static final long serialVersionUID = -1900764470719850618L;
 	private String texto;
 	private Usuario destinatario;
 	private Usuario remetente;

@@ -1,5 +1,6 @@
 package estradasolidaria.ui.server.logic;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 /**
@@ -18,7 +19,9 @@ import java.util.Calendar;
  * @author Italo Silva
  *
  */
-public class ThreadIntervaloDeTempoParaRegistroEmCaronaPreferencial extends Thread implements Runnable {
+public class ThreadIntervaloDeTempoParaRegistroEmCaronaPreferencial extends Thread 
+	implements Runnable, Serializable {
+	private static final long serialVersionUID = -3593260910123320831L;
 	private Carona carona;
 	
 	public ThreadIntervaloDeTempoParaRegistroEmCaronaPreferencial(String name, Carona carona) {

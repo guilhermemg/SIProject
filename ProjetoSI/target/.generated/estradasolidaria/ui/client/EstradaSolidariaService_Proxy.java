@@ -13,7 +13,7 @@ import com.google.gwt.user.client.rpc.impl.RpcStatsContext;
 
 public class EstradaSolidariaService_Proxy extends RemoteServiceProxy implements estradasolidaria.ui.client.EstradaSolidariaServiceAsync {
   private static final String REMOTE_SERVICE_INTERFACE_NAME = "estradasolidaria.ui.client.EstradaSolidariaService";
-  private static final String SERIALIZATION_POLICY ="E93862F3A895BFD49C1C8CF1FB98DD47";
+  private static final String SERIALIZATION_POLICY ="64D3201572284EBF87E4FE822AA67D13";
   private static final estradasolidaria.ui.client.EstradaSolidariaService_TypeSerializer SERIALIZER = new estradasolidaria.ui.client.EstradaSolidariaService_TypeSerializer();
   
   public EstradaSolidariaService_Proxy() {
@@ -133,6 +133,20 @@ public class EstradaSolidariaService_Proxy extends RemoteServiceProxy implements
     }
   }
   
+  public void cancelarCarona(java.lang.Integer idSessao, java.lang.Integer idCaronaEscolhida, com.google.gwt.user.client.rpc.AsyncCallback asyncCallback) {
+    com.google.gwt.user.client.rpc.impl.RemoteServiceProxy.ServiceHelper helper = new com.google.gwt.user.client.rpc.impl.RemoteServiceProxy.ServiceHelper("EstradaSolidariaService_Proxy", "cancelarCarona");
+    try {
+      SerializationStreamWriter streamWriter = helper.start(REMOTE_SERVICE_INTERFACE_NAME, 2);
+      streamWriter.writeString("java.lang.Integer/3438268394");
+      streamWriter.writeString("java.lang.Integer/3438268394");
+      streamWriter.writeObject(idSessao);
+      streamWriter.writeObject(idCaronaEscolhida);
+      helper.finish(asyncCallback, ResponseReader.VOID);
+    } catch (SerializationException ex) {
+      asyncCallback.onFailure(ex);
+    }
+  }
+  
   public void criarUsuario(java.lang.String login, java.lang.String senha, java.lang.String nome, java.lang.String endereco, java.lang.String email, com.google.gwt.user.client.rpc.AsyncCallback callback) {
     com.google.gwt.user.client.rpc.impl.RemoteServiceProxy.ServiceHelper helper = new com.google.gwt.user.client.rpc.impl.RemoteServiceProxy.ServiceHelper("EstradaSolidariaService_Proxy", "criarUsuario");
     try {
@@ -150,6 +164,20 @@ public class EstradaSolidariaService_Proxy extends RemoteServiceProxy implements
       helper.finish(callback, ResponseReader.VOID);
     } catch (SerializationException ex) {
       callback.onFailure(ex);
+    }
+  }
+  
+  public void deletarInteresse(java.lang.Integer idSessao, java.lang.Integer idInteresse, com.google.gwt.user.client.rpc.AsyncCallback asyncCallback) {
+    com.google.gwt.user.client.rpc.impl.RemoteServiceProxy.ServiceHelper helper = new com.google.gwt.user.client.rpc.impl.RemoteServiceProxy.ServiceHelper("EstradaSolidariaService_Proxy", "deletarInteresse");
+    try {
+      SerializationStreamWriter streamWriter = helper.start(REMOTE_SERVICE_INTERFACE_NAME, 2);
+      streamWriter.writeString("java.lang.Integer/3438268394");
+      streamWriter.writeString("java.lang.Integer/3438268394");
+      streamWriter.writeObject(idSessao);
+      streamWriter.writeObject(idInteresse);
+      helper.finish(asyncCallback, ResponseReader.VOID);
+    } catch (SerializationException ex) {
+      asyncCallback.onFailure(ex);
     }
   }
   
@@ -239,6 +267,20 @@ public class EstradaSolidariaService_Proxy extends RemoteServiceProxy implements
     }
   }
   
+  public void encerrarCarona(java.lang.Integer idSessao, java.lang.Integer idCaronaEscolhida, com.google.gwt.user.client.rpc.AsyncCallback asyncCallback) {
+    com.google.gwt.user.client.rpc.impl.RemoteServiceProxy.ServiceHelper helper = new com.google.gwt.user.client.rpc.impl.RemoteServiceProxy.ServiceHelper("EstradaSolidariaService_Proxy", "encerrarCarona");
+    try {
+      SerializationStreamWriter streamWriter = helper.start(REMOTE_SERVICE_INTERFACE_NAME, 2);
+      streamWriter.writeString("java.lang.Integer/3438268394");
+      streamWriter.writeString("java.lang.Integer/3438268394");
+      streamWriter.writeObject(idSessao);
+      streamWriter.writeObject(idCaronaEscolhida);
+      helper.finish(asyncCallback, ResponseReader.VOID);
+    } catch (SerializationException ex) {
+      asyncCallback.onFailure(ex);
+    }
+  }
+  
   public void encerrarSessao(java.lang.String login, com.google.gwt.user.client.rpc.AsyncCallback callback) {
     com.google.gwt.user.client.rpc.impl.RemoteServiceProxy.ServiceHelper helper = new com.google.gwt.user.client.rpc.impl.RemoteServiceProxy.ServiceHelper("EstradaSolidariaService_Proxy", "encerrarSessao");
     try {
@@ -283,7 +325,7 @@ public class EstradaSolidariaService_Proxy extends RemoteServiceProxy implements
       SerializationStreamWriter streamWriter = helper.start(REMOTE_SERVICE_INTERFACE_NAME, 1);
       streamWriter.writeString("java.lang.Integer/3438268394");
       streamWriter.writeObject(idCarona);
-      helper.finish(callback, ResponseReader.STRING);
+      helper.finish(callback, ResponseReader.OBJECT);
     } catch (SerializationException ex) {
       callback.onFailure(ex);
     }
@@ -314,6 +356,18 @@ public class EstradaSolidariaService_Proxy extends RemoteServiceProxy implements
       helper.finish(asyncCallback, ResponseReader.OBJECT);
     } catch (SerializationException ex) {
       asyncCallback.onFailure(ex);
+    }
+  }
+  
+  public void getInteresses(java.lang.Integer idSessao, com.google.gwt.user.client.rpc.AsyncCallback callback) {
+    com.google.gwt.user.client.rpc.impl.RemoteServiceProxy.ServiceHelper helper = new com.google.gwt.user.client.rpc.impl.RemoteServiceProxy.ServiceHelper("EstradaSolidariaService_Proxy", "getInteresses");
+    try {
+      SerializationStreamWriter streamWriter = helper.start(REMOTE_SERVICE_INTERFACE_NAME, 1);
+      streamWriter.writeString("java.lang.Integer/3438268394");
+      streamWriter.writeObject(idSessao);
+      helper.finish(callback, ResponseReader.OBJECT);
+    } catch (SerializationException ex) {
+      callback.onFailure(ex);
     }
   }
   
@@ -395,15 +449,15 @@ public class EstradaSolidariaService_Proxy extends RemoteServiceProxy implements
     }
   }
   
-  public void getTodasCaronasUsuario(java.lang.Integer idSessao, com.google.gwt.user.client.rpc.AsyncCallback callback) {
+  public void getTodasCaronasUsuario(java.lang.Integer idSessao, com.google.gwt.user.client.rpc.AsyncCallback asyncCallback) {
     com.google.gwt.user.client.rpc.impl.RemoteServiceProxy.ServiceHelper helper = new com.google.gwt.user.client.rpc.impl.RemoteServiceProxy.ServiceHelper("EstradaSolidariaService_Proxy", "getTodasCaronasUsuario");
     try {
       SerializationStreamWriter streamWriter = helper.start(REMOTE_SERVICE_INTERFACE_NAME, 1);
       streamWriter.writeString("java.lang.Integer/3438268394");
       streamWriter.writeObject(idSessao);
-      helper.finish(callback, ResponseReader.OBJECT);
+      helper.finish(asyncCallback, ResponseReader.OBJECT);
     } catch (SerializationException ex) {
-      callback.onFailure(ex);
+      asyncCallback.onFailure(ex);
     }
   }
   
@@ -428,6 +482,18 @@ public class EstradaSolidariaService_Proxy extends RemoteServiceProxy implements
       helper.finish(asyncCallback, ResponseReader.OBJECT);
     } catch (SerializationException ex) {
       asyncCallback.onFailure(ex);
+    }
+  }
+  
+  public void getUsuarioNoSistema(java.lang.Integer idUsuario, com.google.gwt.user.client.rpc.AsyncCallback callback) {
+    com.google.gwt.user.client.rpc.impl.RemoteServiceProxy.ServiceHelper helper = new com.google.gwt.user.client.rpc.impl.RemoteServiceProxy.ServiceHelper("EstradaSolidariaService_Proxy", "getUsuarioNoSistema");
+    try {
+      SerializationStreamWriter streamWriter = helper.start(REMOTE_SERVICE_INTERFACE_NAME, 1);
+      streamWriter.writeString("java.lang.Integer/3438268394");
+      streamWriter.writeObject(idUsuario);
+      helper.finish(callback, ResponseReader.OBJECT);
+    } catch (SerializationException ex) {
+      callback.onFailure(ex);
     }
   }
   
@@ -473,6 +539,18 @@ public class EstradaSolidariaService_Proxy extends RemoteServiceProxy implements
       streamWriter.writeString(cidade);
       streamWriter.writeString(origem);
       streamWriter.writeString(destino);
+      helper.finish(callback, ResponseReader.OBJECT);
+    } catch (SerializationException ex) {
+      callback.onFailure(ex);
+    }
+  }
+  
+  public void pesquisaUsuariosNoSistema(java.lang.String nome, com.google.gwt.user.client.rpc.AsyncCallback callback) {
+    com.google.gwt.user.client.rpc.impl.RemoteServiceProxy.ServiceHelper helper = new com.google.gwt.user.client.rpc.impl.RemoteServiceProxy.ServiceHelper("EstradaSolidariaService_Proxy", "pesquisaUsuariosNoSistema");
+    try {
+      SerializationStreamWriter streamWriter = helper.start(REMOTE_SERVICE_INTERFACE_NAME, 1);
+      streamWriter.writeString("java.lang.String/2004016611");
+      streamWriter.writeString(nome);
       helper.finish(callback, ResponseReader.OBJECT);
     } catch (SerializationException ex) {
       callback.onFailure(ex);

@@ -2,6 +2,7 @@ package estradasolidaria.ui.client;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.dom.client.Style.Unit;
@@ -89,7 +90,7 @@ public class StateInicio extends Composite {
 	}
 
 	private void getListaDeMensagemsGUI() {
-		estradaSolidariaService.getListaDeMensagens(idSessao, new AsyncCallback<List<GWTMensagem>>() { 
+		estradaSolidariaService.getListaDeMensagens(idSessao, new AsyncCallback<Queue<GWTMensagem>>() { 
 			@Override
 			public void onFailure(Throwable caught) {
 				// Show the RPC error message to the user
@@ -97,9 +98,9 @@ public class StateInicio extends Composite {
 			}
 
 			@Override
-			public void onSuccess(List<GWTMensagem> result) {
+			public void onSuccess(Queue<GWTMensagem> result) {
 				dataGrid.setRowCount(result.size(), true);
-				dataGrid.setRowData(result);
+				dataGrid.setRowData((List<? extends GWTMensagem>) result);
 			}
 		  });
 		

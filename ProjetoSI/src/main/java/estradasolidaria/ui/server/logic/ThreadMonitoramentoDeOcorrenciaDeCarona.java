@@ -1,5 +1,6 @@
 package estradasolidaria.ui.server.logic;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -16,7 +17,8 @@ import estradasolidaria.ui.server.util.DateUtil;
  * @author Italo Silva
  * 
  */
-public class ThreadMonitoramentoDeOcorrenciaDeCarona extends Thread implements Runnable {
+public class ThreadMonitoramentoDeOcorrenciaDeCarona extends Thread implements Runnable,Serializable {
+	private static final long serialVersionUID = -3458100740729617717L;
 	private Carona carona;
 	private DateUtil dateUtil = new DateUtil(new GregorianCalendar());
 	

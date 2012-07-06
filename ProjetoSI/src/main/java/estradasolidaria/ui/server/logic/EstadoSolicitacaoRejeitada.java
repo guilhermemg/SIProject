@@ -1,5 +1,7 @@
 package estradasolidaria.ui.server.logic;
 
+import java.io.Serializable;
+
 /**
  * Classe que representa o estado de uma solicitacao rejeitada.
  * 
@@ -9,7 +11,9 @@ package estradasolidaria.ui.server.logic;
  * @author Italo Silva
  *
  */
-public class EstadoSolicitacaoRejeitada implements EstadoSolicitacaoInterface {
+public class EstadoSolicitacaoRejeitada implements EstadoSolicitacaoInterface, Serializable {
+
+	private static final long serialVersionUID = -2055112586094479784L;
 
 	/**
 	 * Tenta modificar o estado de uma Solicitação Rejeitada para Aceita.
