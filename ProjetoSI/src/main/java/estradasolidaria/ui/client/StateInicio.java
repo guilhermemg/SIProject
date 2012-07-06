@@ -42,11 +42,11 @@ public class StateInicio extends Composite {
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
-		absolutePanel.setSize("847px", "486px");
+		absolutePanel.setSize("901px", "486px");
 		
 		dataGrid = new DataGrid<GWTMensagem>();
 		absolutePanel.add(dataGrid, 10, 104);
-		dataGrid.setSize("827px", "339px");
+		dataGrid.setSize("881px", "339px");
 		
 		selectionModel = new SingleSelectionModel<GWTMensagem>();
 		dataGrid.setSelectionModel(selectionModel);
@@ -73,7 +73,7 @@ public class StateInicio extends Composite {
 		TextColumn<GWTMensagem> columnTexto = new TextColumn<GWTMensagem>() {
 			@Override
 			public String getValue(GWTMensagem mensagem) {
-				return mensagem.getTexto();
+				return mensagem.getTexto().substring(0, 20) + "...";
 			}
 		};
 		dataGrid.addColumn(columnTexto, "Mensagem");
@@ -99,6 +99,8 @@ public class StateInicio extends Composite {
 		column.setFieldUpdater(new FieldUpdater<GWTMensagem, String>() {
 			@Override
 			public void update(int index, GWTMensagem object, String value) {
+				object.setMensagemLida(true);
+				atualizarGrid();
 				DialogBox dialogBox = new DialogBoxVerMensagem(object);
 				dialogBox.center();
 				dialogBox.show();
@@ -107,7 +109,7 @@ public class StateInicio extends Composite {
 		dataGrid.addColumn(column, "");
 		
 		MenuBar menuBar = new MenuBar(false);
-		absolutePanel.add(menuBar, 760, 10);
+		absolutePanel.add(menuBar, 814, 10);
 		MenuBar menuBar_1 = new MenuBar(true);
 		
 		MenuItem mntmOpes = new MenuItem("Opções:", false, menuBar_1);
@@ -145,8 +147,21 @@ public class StateInicio extends Composite {
 		n.setTexto("Sport Club Corinthians Paulista conquista a Copa Libertadores da América de 2012.");
 		n.setMensagemLida(false);
 		p.setRemetente("Lola");
-		p.setTexto("O termo Princípio da imparcialidade é por vezes representado pela sigla NPOV que é a sigla da expressão em inglês " +
-				"para neutral point of view (em português, ponto de vista neutro).");
+		p.setTexto("Armstrong nasceu numa família muito pobre. Passou a sua juventude na pobreza num " +
+						"bairro de Nova Orleans, conhecido como 'as costas da cidade'. O seu pai, William " +
+						"Armstrong, abandonou a família quando Louis ainda era criança e casou-se " +
+						"com outra mulher. A sua mãe, Mary Albert Armstrong, deixou Louis com a sua tia, " +
+						"o seu tio e a sua avó. Aos cinco anos ele voltou a viver com a sua mãe e via " +
+						"o pai muito raramente. Ele esteve na Fisk School for Boys onde pela primeira " +
+						"vez entrou em contacto com a música. Levou algum dinheiro para casa como " +
+						"entrega-jornais e sapateiro ambulante. Contudo, isso não era suficiente para " +
+						"manter a sua mãe longe da prostituição. Passou a entrar à socapa em bares de " +
+						"música perto de sua casa para ouvir e ver os cantores.Conheceu dias muito difíceis, " +
+						"e olhava para a sua juventude como o pior momento da sua vida e, por vezes, até " +
+						"retirava inspiração dela: Every time I close my eyes blowing that trumpet of mine" +
+						"I look right in the heart of good old New Orleans...It has given me something to live for" +
+						"Todas as vezes que eu fecho os meus olhos tocando aquele meu trompete, eu olho logo no coração da boa " +
+						"velha Nova Orleans... Ela deu-me algo pelo que viver.");
 		p.setMensagemLida(false);
 		lista = new LinkedList<GWTMensagem>();
 		lista.add(m);

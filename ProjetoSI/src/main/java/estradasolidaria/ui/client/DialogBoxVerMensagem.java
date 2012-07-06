@@ -24,9 +24,11 @@ public class DialogBoxVerMensagem extends DialogBox {
 		absolutePanel.setSize("543px", "385px");
 		
 		Label lblDe = new Label("De:");
+		lblDe.setStyleName("gwt-LabelEstradaSolidaria4");
 		absolutePanel.add(lblDe, 10, 10);
 		
 		Label lblPara = new Label("Para:");
+		lblPara.setStyleName("gwt-LabelEstradaSolidaria4");
 		absolutePanel.add(lblPara, 10, 38);
 		
 		PushButton pshbtnFechar = new PushButton("Fechar");
@@ -38,9 +40,11 @@ public class DialogBoxVerMensagem extends DialogBox {
 		absolutePanel.add(pshbtnFechar, 481, 10);
 		
 		Label lblRemetente = new Label(mensagem.getRemetente());
+		lblRemetente.setStyleName("gwt-LabelEstradaSolidaria8");
 		absolutePanel.add(lblRemetente, 54, 10);
 		
 		Label lblDestinatario = new Label(mensagem.getDestinatario());
+		lblDestinatario.setStyleName("gwt-LabelEstradaSolidaria8");
 		absolutePanel.add(lblDestinatario, 54, 38);
 		
 		ScrollPanel scrollPanel = new ScrollPanel();
@@ -48,6 +52,7 @@ public class DialogBoxVerMensagem extends DialogBox {
 		scrollPanel.setSize("523px", "295px");
 		
 		Label label = new Label(mensagem.getTexto());
+		label.setStyleName("gwt-LabelEstradaSolidaria8");
 		scrollPanel.setWidget(label);
 		label.setSize("523px", "295px");
 	}
