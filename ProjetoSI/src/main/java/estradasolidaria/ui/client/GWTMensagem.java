@@ -7,6 +7,7 @@ public class GWTMensagem implements IsSerializable {
 	private String destinatario;
 	private String remetente;
 	private String texto;
+	private boolean mensagemLida;
 	
 	public String getDestinatario() {
 		return destinatario;
@@ -25,5 +26,11 @@ public class GWTMensagem implements IsSerializable {
 	}
 	public void setTexto(String texto) {
 		this.texto = texto;
+	}
+	public boolean isMensagemLida() {
+		return mensagemLida;
+	}
+	public void setMensagemLida(boolean mensagemLida) {
+		this.mensagemLida = mensagemLida;
 	}
 }
