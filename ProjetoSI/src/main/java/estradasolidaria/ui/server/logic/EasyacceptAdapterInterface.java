@@ -14,9 +14,10 @@ public interface EasyacceptAdapterInterface {
 	 * @param nome
 	 * @param endereco
 	 * @param email
+	 * @throws MessageException 
 	 */
 	public abstract void criarUsuario(String login, String senha, String nome,
-			String endereco, String email);
+			String endereco, String email) throws MessageException;
 
 	/**
 	 * Cadastra carona na listaDeCaronasOferecidas do usuario cadastrante e no
@@ -32,11 +33,12 @@ public interface EasyacceptAdapterInterface {
 	 * @throws EstadoCaronaException 
 	 * @throws CaronaInvalidaException 
 	 * @throws MessagingException 
+	 * @throws MessageException 
 	 * 
 	 * @see Usuario, SistemaCaronas
 	 */
 	public abstract String cadastrarCarona(String idSessao, String origem,
-			String destino, String data, String hora, String vagas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException;
+			String destino, String data, String hora, String vagas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException, MessageException;
 
 	/**
 	 * Abre sessao para usuario identificado por login e senha.
@@ -136,9 +138,10 @@ public interface EasyacceptAdapterInterface {
 	 * @param idCarona
 	 * @param pontos
 	 * @return id da sugestao feita
+	 * @throws MessageException 
 	 */
 	public abstract String sugerirPontoEncontro(String idSessao,
-			String idCarona, String pontos);
+			String idCarona, String pontos) throws MessageException;
 
 	/**
 	 * Responde a uma sugestao feita por outro usuario.
@@ -149,9 +152,10 @@ public interface EasyacceptAdapterInterface {
 	 * @param pontos
 	 *            : ponto de encontro escolhido ate o momento para a carona
 	 * @throws CaronaInexistenteException 
+	 * @throws MessageException 
 	 */
 	public abstract void responderSugestaoPontoEncontro(String idSessao,
-			String idCarona, String idSugestao, String pontos) throws CaronaInexistenteException;
+			String idCarona, String idSugestao, String pontos) throws CaronaInexistenteException, MessageException;
 
 	/**
 	 * Solicita vaga e sugere um ponto de encontro para a carona.
@@ -163,9 +167,10 @@ public interface EasyacceptAdapterInterface {
 	 * @throws CaronaInvalidaException
 	 * @throws CaronaInexistenteException 
 	 * @throws CadastroEmCaronaPreferencialException 
+	 * @throws MessageException 
 	 */
 	public abstract String solicitarVagaPontoEncontro(String idSessao,
-			String idCarona, String ponto) throws CaronaInvalidaException, CaronaInexistenteException, CadastroEmCaronaPreferencialException;
+			String idCarona, String ponto) throws CaronaInvalidaException, CaronaInexistenteException, CadastroEmCaronaPreferencialException, MessageException;
 
 	/**
 	 * Aceita uma solicitacão.
@@ -176,9 +181,10 @@ public interface EasyacceptAdapterInterface {
 	 * @throws CaronaInexistenteException 
 	 * @throws EstadoSolicitacaoException 
 	 * @throws IllegalArgumentException 
+	 * @throws MessageException 
 	 */
 	public abstract void aceitarSolicitacaoPontoEncontro(String idSessao,
-			String idSolicitacao) throws CaronaInexistenteException, IllegalArgumentException, EstadoSolicitacaoException;
+			String idSolicitacao) throws CaronaInexistenteException, IllegalArgumentException, EstadoSolicitacaoException, MessageException;
 
 	/**
 	 * Aceita solicitacao
@@ -189,9 +195,10 @@ public interface EasyacceptAdapterInterface {
 	 * @throws CaronaInexistenteException 
 	 * @throws IllegalArgumentException 
 	 * @throws EstadoSolicitacaoException 
+	 * @throws MessageException 
 	 */
 	public abstract void aceitarSolicitacao(String idSessao,
-			String idSolicitacao) throws IllegalArgumentException, CaronaInexistenteException, EstadoSolicitacaoException;
+			String idSolicitacao) throws IllegalArgumentException, CaronaInexistenteException, EstadoSolicitacaoException, MessageException;
 
 	/**
 	 * Adiciona solicitacao a lista de solicitacoes associadas a uma carona,
@@ -204,9 +211,10 @@ public interface EasyacceptAdapterInterface {
 	 * @throws CaronaInvalidaException
 	 * @throws CadastroEmCaronaPreferencialException 
 	 * @throws IllegalArgumentException 
+	 * @throws MessageException 
 	 */
 	public abstract String solicitarVaga(String idSessao, String idCarona)
-			throws CaronaInvalidaException, IllegalArgumentException, CadastroEmCaronaPreferencialException;
+			throws CaronaInvalidaException, IllegalArgumentException, CadastroEmCaronaPreferencialException, MessageException;
 
 	/**
 	 * Usuario dono da carona, indicado por idSessao, rejeita solicitacao,
@@ -216,9 +224,10 @@ public interface EasyacceptAdapterInterface {
 	 * @param idSolicitacao
 	 * @throws CaronaInexistenteException 
 	 * @throws EstadoSolicitacaoException 
+	 * @throws MessageException 
 	 */
 	public abstract void rejeitarSolicitacao(String idSessao,
-			String idSolicitacao) throws CaronaInexistenteException, EstadoSolicitacaoException;
+			String idSolicitacao) throws CaronaInexistenteException, EstadoSolicitacaoException, MessageException;
 
 	/**
 	 * Remove a solicitacao, indicada por idSolicitacao, da lista de
@@ -231,9 +240,10 @@ public interface EasyacceptAdapterInterface {
 	 * @throws CaronaInvalidaException
 	 * @throws CaronaInexistenteException 
 	 * @throws EstadoSolicitacaoException 
+	 * @throws MessageException 
 	 */
 	public abstract void desistirRequisicao(String idSessao, String idCarona,
-			String idSolicitacao) throws CaronaInvalidaException, CaronaInexistenteException, EstadoSolicitacaoException;
+			String idSolicitacao) throws CaronaInvalidaException, CaronaInexistenteException, EstadoSolicitacaoException, MessageException;
 
 	/**
 	 * Pega usuario associado a sessao indicada por idSessao e pega o perfil
@@ -308,10 +318,11 @@ public interface EasyacceptAdapterInterface {
 	 * @throws EstadoCaronaException 
 	 * @throws CaronaInvalidaException 
 	 * @throws MessagingException 
+	 * @throws MessageException 
 	 */
 	public abstract String cadastrarCaronaMunicipal(String idSessao,
 			String origem, String destino, String cidade, String data,
-			String hora, String vagas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException;
+			String hora, String vagas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException, MessageException;
 
 	/**
 	 * Pesquisa entre as caronas oferecidas por todos os usuarios as que sao

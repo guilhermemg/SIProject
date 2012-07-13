@@ -1,7 +1,6 @@
 package estradasolidaria.ui.client;
 
 import java.util.List;
-import java.util.Queue;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -151,5 +150,5 @@ public interface EstradaSolidariaServiceAsync {
 	void marcarCaronaComoPreferencial(Integer idSessao,
 			Integer idCaronaEscolhida, AsyncCallback<Void> asyncCallback);
 	
-	void getListaDeMensagens(Integer idSessao, AsyncCallback<Queue<GWTMensagem>> asyncCallback);
+	void getListaDeMensagens(Integer idSessao, AsyncCallback<List<GWTMensagem>> asyncCallback);
 }

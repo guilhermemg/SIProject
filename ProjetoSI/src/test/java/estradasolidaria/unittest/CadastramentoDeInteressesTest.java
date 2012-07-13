@@ -12,6 +12,7 @@ import org.junit.Test;
 import estradasolidaria.ui.server.logic.CaronaInvalidaException;
 import estradasolidaria.ui.server.logic.EstadoCaronaException;
 import estradasolidaria.ui.server.logic.EstradaSolidariaController;
+import estradasolidaria.ui.server.logic.MessageException;
 import estradasolidaria.ui.server.logic.Usuario;
 import estradasolidaria.ui.server.util.SpecialLinkedListBrackets;
 
@@ -35,7 +36,7 @@ public class CadastramentoDeInteressesTest {
 	Integer idSessaoMarcio;
 	
 	@Before
-	public void setup() {
+	public void setup() throws MessageException {
 		controller.criarUsuario("zezyt0", "z3z1t0", "Jose de zito", "Rua belarmina pereira 452, João Pessoa", "zezyto@gmail.com");
 		controller.criarUsuario("manelito", "w4n3l1t0", "Manel da Silva", "Rua adamastor pitaco 24, João Pessoa", "manel@yahoo.com.br");
 		controller.criarUsuario("jucaPeroba", "juqinha", "Juca Peroba", "Rua 13 de maio, Caruaru", "jucaPeroba@gmail.com");
@@ -62,7 +63,7 @@ public class CadastramentoDeInteressesTest {
 	 */
 	
 	@Test
-	public void cadastramentoDeInteresses() throws CaronaInvalidaException, MessagingException, EstadoCaronaException {
+	public void cadastramentoDeInteresses() throws CaronaInvalidaException, MessagingException, EstadoCaronaException, MessageException {
 		controller.cadastrarInteresse(idSessaoZezito, "João Pessoa", "Campina Grande", "23/06/2013", "06:00", "16:00");
 		controller.cadastrarInteresse(idSessaoManelito, "Campina Grande", "João Pessoa", "25/06/2013", "11:00", "18:00");
 		controller.cadastrarInteresse(idSessaoMariano, "Campina Grande", "João Pessoa", "23/06/2013", "", "18:00");

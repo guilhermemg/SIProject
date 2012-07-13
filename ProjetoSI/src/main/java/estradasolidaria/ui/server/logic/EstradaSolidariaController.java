@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
+import java.util.Stack;
 import java.util.TreeMap;
 
 import javax.mail.MessagingException;
@@ -42,8 +42,6 @@ public class EstradaSolidariaController implements Serializable {
 	private GerenciadorDeDados gerenciadorDeDados = GerenciadorDeDados
 			.getInstance(this.mapIdUsuario);
 
-	private SenderMessage senderMessage = new SenderMessage();
-
 	private static volatile EstradaSolidariaController uniqueInstance;
 
 	private EstradaSolidariaController() {
@@ -72,9 +70,10 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param nome
 	 * @param endereco
 	 * @param email
+	 * @throws MessageException 
 	 */
 	public void criarUsuario(String login, String senha, String nome,
-			String endereco, String email) {
+			String endereco, String email) throws MessageException {
 		// Iterator Pattern
 		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
 		while (iteratorIdUsuario.hasNext()) {
@@ -91,7 +90,8 @@ public class EstradaSolidariaController implements Serializable {
 		Usuario user = new Usuario(login, senha, nome, endereco, email);
 		this.mapIdUsuario.put(user.getIdUsuario(), user);
 		
-		senderMessage.sendMessage(user, "Seja bem vindo ao Estrada Solidária, a sua rede social de caroneiros.");
+		Mensagem msg = new Mensagem(user, "Seja bem vindo ao Estrada Solidária, a sua rede social de caroneiros.");
+		user.addMensagem(msg);
 	}
 
 	/**
@@ -108,11 +108,12 @@ public class EstradaSolidariaController implements Serializable {
 	 * @throws EstadoCaronaException 
 	 * @throws CaronaInvalidaException 
 	 * @throws MessagingException 
+	 * @throws MessageException 
 	 * 
 	 * @see Usuario
 	 */
 	public Carona cadastrarCarona(Integer idSessao, String origem,
-			String destino, String data, String hora, Integer vagas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
+			String destino, String data, String hora, Integer vagas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException, MessageException {
 		if (idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 
@@ -308,9 +309,10 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param pontos
 	 *            : ponto de encontro sugerido
 	 * @return id da sugestao feita
+	 * @throws MessageException 
 	 */
 	public Sugestao sugerirPontoEncontro(Integer idSessao, Integer idCarona,
-			String pontos) {
+			String pontos) throws MessageException {
 		if (idSessao == null)
 			throw new IllegalArgumentException("Ponto Inválido"); // "Ponto Inválido"
 		if (idCarona == null)
@@ -341,8 +343,9 @@ public class EstradaSolidariaController implements Serializable {
 		
 		donoDaSugestao.addSugestaoFeita(sugestaoFeita);
 		
-		senderMessage.sendMessage(donoDaSugestao, donoDaCarona, donoDaSugestao.getNome() 
-				+ " sugeriu um ponto de encontro para a carona " + carona.getTrajeto() + ": " + sugestaoFeita.getPontoSugerido() + ".");
+		Mensagem mensagem = new Mensagem(donoDaSugestao, donoDaCarona, donoDaSugestao.getNome() 
+				+ " sugeriu um ponto de encontro para a carona " + carona.getTrajeto()[0] + " - " + carona.getTrajeto()[1] + ": " + sugestaoFeita.getPontoSugerido() + ".");
+		donoDaSugestao.addMensagem(mensagem);
 		
 		return sugestaoFeita;
 	}
@@ -362,9 +365,10 @@ public class EstradaSolidariaController implements Serializable {
 	 *             respondido pelo dono da carona. O ponto pode ser identico ou
 	 *             nao ao ponto sugerido pelo usuario solicitante.
 	 * @throws CaronaInexistenteException 
+	 * @throws MessageException 
 	 */
 	public void responderSugestaoPontoEncontro(Integer idSessao,
-			Integer idCarona, Integer idSugestao, String pontos) throws CaronaInexistenteException {
+			Integer idCarona, Integer idSugestao, String pontos) throws CaronaInexistenteException, MessageException {
 		if (idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 		if (idCarona == null)
@@ -395,10 +399,11 @@ public class EstradaSolidariaController implements Serializable {
 		
 		Carona carona = donoDaCarona.getCarona(idCarona);
 		Usuario donoDaSugestao = getUsuarioAPartirDeIDSugestao(idSugestao);
-		senderMessage.sendMessage(donoDaSugestao, donoDaCarona,
-				donoDaCarona.getNome() + " respondeu a sua sugestão de ponto de encontro para a carona" 
-						+ carona.getTrajeto() + ". O ponto" +
-						"de encontro proposto por ele é: " + sugestaoFeitaPeloDonoDaCarona.getResposta() + ".");
+		
+		Mensagem mensagem = new Mensagem(donoDaSugestao, donoDaCarona, donoDaCarona.getNome() + " respondeu a sua sugestão de ponto de encontro para a carona" 
+				+ carona.getTrajeto()[0] + " - " + carona.getTrajeto()[1] + ". O ponto" +
+				"de encontro proposto por ele é: " + sugestaoFeitaPeloDonoDaCarona.getResposta() + ".");
+		donoDaSugestao.addMensagem(mensagem);
 	}
 
 	private Usuario getUsuarioAPartirDeIDSugestao(Integer idSugestao) {
@@ -430,9 +435,10 @@ public class EstradaSolidariaController implements Serializable {
 	 * @throws CaronaInvalidaException 
 	 * @throws CaronaInexistenteException 
 	 * @throws CadastroEmCaronaPreferencialException 
+	 * @throws MessageException 
 	 */
 	public Solicitacao solicitarVagaPontoEncontro(Integer idSessao,
-			Integer idCarona, String ponto) throws CaronaInvalidaException, CaronaInexistenteException, CadastroEmCaronaPreferencialException {
+			Integer idCarona, String ponto) throws CaronaInvalidaException, CaronaInexistenteException, CadastroEmCaronaPreferencialException, MessageException {
 		if (idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 
@@ -466,9 +472,10 @@ public class EstradaSolidariaController implements Serializable {
 		
 		solicitante.addSolicitacaoFeita(solicitacaoFeita);
 		
-		senderMessage.sendMessage(donoDaCarona, solicitante, 
-				solicitante.getNome() + " fez uma solicitação a você na carona " + solicitacaoFeita.getTrajeto() + 
-				" .E propos o seguinte ponto de encontro para a carona: " + solicitacaoFeita.getPontoEncontro() + ".");
+		Mensagem mensagem = new Mensagem(donoDaCarona, solicitante, solicitante.getNome() + " fez uma solicitação a você na carona " + solicitacaoFeita.getTrajeto() + 
+				". E propos o seguinte ponto de encontro para a carona: " + solicitacaoFeita.getPontoEncontro() + ".");
+		
+		donoDaCarona.addMensagem(mensagem);
 		
 		return solicitacaoFeita;
 	}
@@ -482,9 +489,10 @@ public class EstradaSolidariaController implements Serializable {
 	 * @throws CaronaInexistenteException 
 	 * @throws EstadoSolicitacaoException 
 	 * @throws IllegalArgumentException 
+	 * @throws MessageException 
 	 */
 	public void aceitarSolicitacaoPontoEncontro(Integer idSessao,
-			Integer idSolicitacao) throws CaronaInexistenteException, IllegalArgumentException, EstadoSolicitacaoException {
+			Integer idSolicitacao) throws CaronaInexistenteException, IllegalArgumentException, EstadoSolicitacaoException, MessageException {
 		if (idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 		
@@ -508,9 +516,9 @@ public class EstradaSolidariaController implements Serializable {
 		this.mapIdUsuario.get(idUsuarioDonoDaSolicitacao)
 				.adicionarIdCaronaPega(idCarona, carona);
 		
-		senderMessage.sendMessage(solicitacao.getDonoDaSolicitacao(), donoDaCarona,
-				donoDaCarona.getNome() + " aceitou sua solicitação de vaga com sugestão de ponto de encontro para a carona " + carona.getTrajeto() + 
-				"com o seguinte ponto encontro: " + carona.getPontoEncontro() + ".");
+		Mensagem msg = new Mensagem(solicitacao.getDonoDaSolicitacao(), donoDaCarona,donoDaCarona.getNome() + " aceitou sua solicitação de vaga com sugestão de ponto de encontro para a carona " + carona.getTrajeto()[0] + " - " + carona.getTrajeto()[1] + 
+				"com o seguinte ponto encontro: " + carona.getPontoEncontro() + "." );
+		solicitacao.getDonoDaSolicitacao().addMensagem(msg);
 	}
 
 	/**
@@ -522,8 +530,9 @@ public class EstradaSolidariaController implements Serializable {
 	 * @throws CaronaInexistenteException 
 	 * @throws IllegalArgumentException 
 	 * @throws EstadoSolicitacaoException 
+	 * @throws MessageException 
 	 */
-	public void aceitarSolicitacao(Integer idSessao, Integer idSolicitacao) throws IllegalArgumentException, CaronaInexistenteException, EstadoSolicitacaoException {
+	public void aceitarSolicitacao(Integer idSessao, Integer idSolicitacao) throws IllegalArgumentException, CaronaInexistenteException, EstadoSolicitacaoException, MessageException {
 		if (idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 		if(idSolicitacao == null)
@@ -546,8 +555,9 @@ public class EstradaSolidariaController implements Serializable {
 		this.mapIdUsuario.get(idUsuarioDonoDaSolicitacao)
 				.adicionarIdCaronaPega(idCarona, carona);
 		
-		senderMessage.sendMessage(solicitacao.getDonoDaSolicitacao(), donoDaCarona,
-				donoDaCarona.getNome() + " aceitou sua solicitação de vaga na carona " + carona.getTrajeto() + ".");
+		Mensagem msg = new Mensagem(solicitacao.getDonoDaSolicitacao(), donoDaCarona,
+				donoDaCarona.getNome() + " aceitou sua solicitação de vaga na carona " + carona.getTrajeto()[0] + " - " + carona.getTrajeto()[1] + ".");
+		solicitacao.getDonoDaSolicitacao().addMensagem(msg);
 	}
 
 	/**
@@ -561,8 +571,9 @@ public class EstradaSolidariaController implements Serializable {
 	 * @throws CaronaInvalidaException 
 	 * @throws CadastroEmCaronaPreferencialException 
 	 * @throws IllegalArgumentException 
+	 * @throws MessageException 
 	 */
-	public Solicitacao solicitarVaga(Integer idSessao, Integer idCarona) throws CaronaInvalidaException, IllegalArgumentException, CadastroEmCaronaPreferencialException {
+	public Solicitacao solicitarVaga(Integer idSessao, Integer idCarona) throws CaronaInvalidaException, IllegalArgumentException, CadastroEmCaronaPreferencialException, MessageException {
 		if (idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 		if(idCarona == null)
@@ -602,8 +613,9 @@ public class EstradaSolidariaController implements Serializable {
 		
 		solicitante.addSolicitacaoFeita(solicitacaoFeita);
 		
-		senderMessage.sendMessage(donoDaCarona, solicitante, 
+		Mensagem msg = new Mensagem(donoDaCarona, solicitante, 
 				solicitante.getNome() + " fez uma solicitação a você na carona " + solicitacaoFeita.getTrajeto() + ".");
+		donoDaCarona.addMensagem(msg);
 		
 		return solicitacaoFeita;
 	}
@@ -616,8 +628,9 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param idSolicitacao
 	 * @throws CaronaInexistenteException 
 	 * @throws EstadoSolicitacaoException 
+	 * @throws MessageException 
 	 */
-	public void rejeitarSolicitacao(Integer idSessao, Integer idSolicitacao) throws CaronaInexistenteException, EstadoSolicitacaoException {
+	public void rejeitarSolicitacao(Integer idSessao, Integer idSolicitacao) throws CaronaInexistenteException, EstadoSolicitacaoException, MessageException {
 		if (idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 		if (idSolicitacao == null)
@@ -638,9 +651,10 @@ public class EstradaSolidariaController implements Serializable {
 		if(solicitacao == null)
 			throw new IllegalArgumentException("Solicitacao inexistente");
 		
-		Usuario donoDaCarona = solicitacao.getDonoDaCarona(), donoDaSolicitacao = solicitacao.getDonoDaSolicitacao(); 
-		senderMessage.sendMessage(donoDaSolicitacao, donoDaCarona, 
+		Usuario donoDaCarona = solicitacao.getDonoDaCarona(), donoDaSolicitacao = solicitacao.getDonoDaSolicitacao();
+		Mensagem msg = new Mensagem(donoDaSolicitacao, donoDaCarona, 
 				donoDaCarona.getNome() + " rejeitou o seu pedido de vaga na carona " + solicitacao.getTrajeto());
+		donoDaSolicitacao.addMensagem(msg);
 	}
 
 	/**
@@ -654,9 +668,10 @@ public class EstradaSolidariaController implements Serializable {
 	 * @throws CaronaInvalidaException
 	 * @throws CaronaInexistenteException 
 	 * @throws EstadoSolicitacaoException 
+	 * @throws MessageException 
 	 */
 	public void desistirRequisicao(Integer idSessao, Integer idCarona,
-			Integer idSolicitacao) throws CaronaInvalidaException, CaronaInexistenteException, EstadoSolicitacaoException {
+			Integer idSolicitacao) throws CaronaInvalidaException, CaronaInexistenteException, EstadoSolicitacaoException, MessageException {
 		if (idSessao == null )
 			throw new IllegalArgumentException("Sessão inválida");
 		if (idCarona == null )
@@ -669,8 +684,9 @@ public class EstradaSolidariaController implements Serializable {
 		Solicitacao solicitacao = donoDaSolicitacao.desistirRequisicao(idCarona, idSolicitacao);
 		
 		Usuario donoDaCarona = solicitacao.getDonoDaCarona();
-		senderMessage.sendMessage(donoDaCarona, donoDaSolicitacao, 
+		Mensagem msg = new Mensagem(donoDaCarona, donoDaSolicitacao, 
 				donoDaSolicitacao.getNome() + " desistiu da vaga na carona " + solicitacao.getTrajeto());
+		donoDaCarona.addMensagem(msg);
 	}
 
 	/**
@@ -845,10 +861,11 @@ public class EstradaSolidariaController implements Serializable {
 	 * @throws EstadoCaronaException 
 	 * @throws CaronaInvalidaException 
 	 * @throws MessagingException 
+	 * @throws MessageException 
 	 */
 	public Carona cadastrarCaronaMunicipal(Integer idSessao, String origem,
 			String destino, String cidade, String data, String hora,
-			Integer vagas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
+			Integer vagas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException, MessageException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("IdSessao inválido");
 		if (vagas == null || vagas.equals(""))
@@ -1148,8 +1165,9 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param idNovaCarona
 	 *            : id da nova carona cadastrada no sistema
 	 * @throws CaronaInvalidaException 
+	 * @throws MessageException 
 	 */
-	private void atualizaMensagensEmPerfis(Carona novaCarona) throws CaronaInvalidaException {
+	private void atualizaMensagensEmPerfis(Carona novaCarona) throws CaronaInvalidaException, MessageException {
 		if(novaCarona == null)
 			throw new CaronaInvalidaException();
 		
@@ -1157,7 +1175,8 @@ public class EstradaSolidariaController implements Serializable {
 			for(Interesse i : u.getMapIdInteresse().values()) {
 				if(i.verificaCorrespondencia(novaCarona)) {
 					String msg = u.atualizaPerfilUsuarioInteressado(novaCarona, getEmailDonoDeCarona(novaCarona));
-					senderMessage.sendMessage(u, msg);
+					Mensagem mensagem = new Mensagem(u, msg);
+					u.addMensagem(mensagem);
 				}
 			}
 		}
@@ -1283,8 +1302,9 @@ public class EstradaSolidariaController implements Serializable {
 	 * @throws EstadoCaronaException 
 	 * @throws CaronaInvalidaException 
 	 * @throws MessagingException 
+	 * @throws MessageException 
 	 */
-	public void adicionaUsuarioECaronasAutomaticamente() throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
+	public void adicionaUsuarioECaronasAutomaticamente() throws MessagingException, CaronaInvalidaException, EstadoCaronaException, MessageException {
 		Adder adder = new Adder(uniqueInstance);
 		adder.addElements();
 	}
@@ -1871,7 +1891,7 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param idSessao
 	 * @return lista de mensagens
 	 */
-	public Queue<Mensagem> getListaDeMensagens(Integer idSessao) {
+	public List<Mensagem> getListaDeMensagens(Integer idSessao) {
 		Usuario donoDasMensagens = null;
 		iteratorIdSessao = mapIdSessao.values().iterator();
 		while(iteratorIdSessao.hasNext()) {
@@ -1884,6 +1904,10 @@ public class EstradaSolidariaController implements Serializable {
 		if(donoDasMensagens == null)
 			throw new UsuarioInexistenteException();
 		
-		return donoDasMensagens.getListaDeMensagens();
+		Stack<Mensagem> pilhaDeMensagens = donoDasMensagens.getListaDeMensagens();
+		List<Mensagem> listaDeMensagens = new LinkedList<Mensagem>();
+		listaDeMensagens.addAll(pilhaDeMensagens);
+		
+		return listaDeMensagens;
 	}
 }

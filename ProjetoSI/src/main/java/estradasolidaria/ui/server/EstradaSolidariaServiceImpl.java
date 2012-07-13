@@ -3,9 +3,9 @@ package estradasolidaria.ui.server;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 import javax.mail.MessagingException;
 
@@ -25,6 +25,7 @@ import estradasolidaria.ui.server.logic.EstadoCaronaException;
 import estradasolidaria.ui.server.logic.EstradaSolidariaController;
 import estradasolidaria.ui.server.logic.Interesse;
 import estradasolidaria.ui.server.logic.Mensagem;
+import estradasolidaria.ui.server.logic.MessageException;
 import estradasolidaria.ui.server.logic.Solicitacao;
 import estradasolidaria.ui.server.logic.Usuario;
 import estradasolidaria.ui.server.logic.UsuarioInexistenteException;
@@ -197,7 +198,11 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public void sugerirPontoEncontro(Integer idSessao, Integer idCarona,
 			String ponto) throws GWTException {
-		controller.sugerirPontoEncontro(idSessao, idCarona, ponto);
+		try {
+			controller.sugerirPontoEncontro(idSessao, idCarona, ponto);
+		} catch (MessageException e) {
+			throw new GWTException(e.getMessage());
+		}
 	}
 
 	@Override
@@ -653,7 +658,7 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	@Override
-	public List<String> getUsuarioNoSistema(Integer idUsuario) throws GWTException{
+	public List<String> getUsuarioNoSistema(Integer idUsuario) throws GWTException {
 		try {
 			Usuario u = controller.getUsuarioAPartirDeIDUsuario(idUsuario);
 			List<String> dadosUsuario = new LinkedList<String>();
@@ -685,7 +690,6 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		} catch (EstadoCaronaException e) {
 			throw new GWTException(e.getMessage());
 		}
-		
 	}
 
 	@Override
@@ -706,27 +710,35 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	public void marcarCaronaComoPreferencial(Integer idSessao,
 			Integer idCarona) throws GWTException{
 		controller.definirCaronaPreferencial(idCarona);
-		
 	}
 	
 	@Override
-	public Queue<GWTMensagem> getListaDeMensagens(Integer idSessao) throws GWTException {
+	public List<GWTMensagem> getListaDeMensagens(Integer idSessao) throws GWTException {
 		try {
-			Queue<Mensagem> mensagems = controller.getListaDeMensagens(idSessao);
-			Queue<GWTMensagem> gwt_mensagems = new LinkedList<GWTMensagem>();
-			while(!mensagems.isEmpty()){
+			List<Mensagem> mensagens = controller.getListaDeMensagens(idSessao);
+			List<GWTMensagem> gwt_mensagens = new LinkedList<GWTMensagem>();
+			Iterator<Mensagem> itMensagens = mensagens.iterator();
+			while(itMensagens.hasNext()){
+				Mensagem m = itMensagens.next();
+				
 				GWTMensagem gwt_m = new GWTMensagem();
-				Mensagem m = mensagems.remove();
 				gwt_m.setDestinatario(m.getDestinatario().getNome());
-				gwt_m.setRemetente(m.getRemetente().getNome());
+				Usuario remetente = m.getRemetente();
+				if(remetente != null) {
+					gwt_m.setRemetente(remetente.getNome());
+				}
+				else {
+					gwt_m.setRemetente("-");
+				}
 				gwt_m.setTexto(m.getTexto());
-				gwt_mensagems.add(gwt_m);
+				gwt_m.setMensagemLida(m.getLida().getName().equals("Lida"));
+				
+				gwt_mensagens.add(gwt_m);
 			}
-			return gwt_mensagems;
+			return gwt_mensagens;
 		}
 		catch(Exception e) {
 			throw new GWTException(e.getMessage());
 		}
 	}
-	
 }

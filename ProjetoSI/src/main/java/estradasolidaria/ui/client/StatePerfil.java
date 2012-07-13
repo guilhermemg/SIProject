@@ -224,7 +224,7 @@ public class StatePerfil extends Composite {
 		rightSidebarPanel.add(image_5, 125, 212);
 		image_5.setSize("76px", "74px");
 		
-		//inicio(); TODO inicio eh chamado assim q se abre o perfil
+		inicio();
 		
 		btnInicio.addClickHandler(new ClickHandler() {
 			@Override
@@ -290,6 +290,7 @@ public class StatePerfil extends Composite {
 
 	protected void inicio() {
 		bodyPanel.clear();
+		scrollPanel.clear();
 		Widget inicio = new StateInicio(estrada, estradaSolidariaService);
 		bodyPanel.add(inicio);
 		bodyPanel.setVisible(true);

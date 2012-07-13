@@ -16,6 +16,7 @@ import estradasolidaria.ui.server.logic.CaronaInvalidaException;
 import estradasolidaria.ui.server.logic.EstadoCaronaException;
 import estradasolidaria.ui.server.logic.EstadoSolicitacaoException;
 import estradasolidaria.ui.server.logic.EstradaSolidariaController;
+import estradasolidaria.ui.server.logic.MessageException;
 import estradasolidaria.ui.server.logic.Sessao;
 import estradasolidaria.ui.server.logic.Usuario;
 import estradasolidaria.ui.server.util.SpecialLinkedListBrackets;
@@ -31,7 +32,7 @@ public class RankingUsuariosTest {
 	private Integer idCarona1;
 	
 	@Before
-	public void criaUsuarios() {
+	public void criaUsuarios() throws MessageException {
 		controller.criarUsuario("mark", "m@rk", "Mark Zuckerberg",
 				"Palo Alto, Caifornia", "mark@facebook.com");
 		controller.criarUsuario("bill", "bilz@o", "William Henry Gates III",
@@ -48,7 +49,7 @@ public class RankingUsuariosTest {
 	}
 
 	@Test
-	public void getRanking1() throws MessagingException, CaronaInvalidaException, EstadoCaronaException, IllegalArgumentException, CadastroEmCaronaPreferencialException, CaronaInexistenteException, EstadoSolicitacaoException {
+	public void getRanking1() throws MessagingException, CaronaInvalidaException, EstadoCaronaException, IllegalArgumentException, CadastroEmCaronaPreferencialException, CaronaInexistenteException, EstadoSolicitacaoException, MessageException {
 		List<Usuario> listaUsuarios1 = controller.getRankingUsuarios("crescente");
 		List<Integer> listaIdsSessoes1 = getListaIdsSessoes(listaUsuarios1);
 		List<Integer> listaDeProva1 = new SpecialLinkedListBrackets<Integer>();

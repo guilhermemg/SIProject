@@ -7,8 +7,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.Stack;
 import java.util.TreeMap;
 
 import javax.mail.MessagingException;
@@ -39,7 +38,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	
 	private List<String> mensagensPerfil = new LinkedList<String>();
 	
-	private Queue<Mensagem> listaDeMensagens = new PriorityQueue<Mensagem>();
+	private Stack<Mensagem> pilhaDeMensagens = new Stack<Mensagem>();
 	
 	private Map<Integer, Carona> mapIdCaronasOferecidas = new TreeMap<Integer, Carona>();
 	private Iterator<Carona> iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas
@@ -1483,10 +1482,10 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	}
 
 	/**
-	 * @return the listaDeMensagens
+	 * @return the pilhaDeMensagens
 	 */
-	public Queue<Mensagem> getListaDeMensagens() {
-		return listaDeMensagens;
+	public Stack<Mensagem> getListaDeMensagens() {
+		return pilhaDeMensagens;
 	}
 
 	/**
@@ -1495,8 +1494,15 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * 
 	 * @param texto
 	 * @param remetente
+	 * @throws MessageException 
 	 */
-	public void addMensagem(Mensagem mensagem) {
-		listaDeMensagens.add(mensagem);
+	public void addMensagem(Mensagem mensagem) throws MessageException {
+		try {
+			pilhaDeMensagens.addElement(mensagem);
+			System.out.println("Mensagem adicionanda: " + pilhaDeMensagens.peek().getTexto());
+		}
+		catch(Exception e) {
+			throw new MessageException();
+		}
 	}
 }

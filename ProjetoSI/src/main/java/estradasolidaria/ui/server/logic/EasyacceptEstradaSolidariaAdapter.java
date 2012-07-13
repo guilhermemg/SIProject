@@ -44,7 +44,7 @@ public class EasyacceptEstradaSolidariaAdapter implements EasyacceptAdapterInter
 	 */
 	@Override
 	public void criarUsuario(String login, String senha, String nome,
-			String endereco, String email) {
+			String endereco, String email) throws MessageException {
 		sistema.criarUsuario(login, senha, nome, endereco, email);
 	}
 
@@ -53,7 +53,7 @@ public class EasyacceptEstradaSolidariaAdapter implements EasyacceptAdapterInter
 	 */
 	@Override
 	public String cadastrarCarona(String idSessao, String origem,
-			String destino, String data, String hora, String vagas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
+			String destino, String data, String hora, String vagas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException, MessageException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 		
@@ -385,7 +385,7 @@ public class EasyacceptEstradaSolidariaAdapter implements EasyacceptAdapterInter
 	 */
 	@Override
 	public String sugerirPontoEncontro(String idSessao, String idCarona,
-			String pontos) {
+			String pontos) throws MessageException {
 
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Ponto Inválido"); // "Ponto Inválido"
@@ -410,7 +410,7 @@ public class EasyacceptEstradaSolidariaAdapter implements EasyacceptAdapterInter
 	 */
 	@Override
 	public void responderSugestaoPontoEncontro(String idSessao,
-			String idCarona, String idSugestao, String pontos) throws CaronaInexistenteException {
+			String idCarona, String idSugestao, String pontos) throws CaronaInexistenteException, MessageException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 		if (idCarona == null || idCarona.equals(""))
@@ -439,7 +439,7 @@ public class EasyacceptEstradaSolidariaAdapter implements EasyacceptAdapterInter
 	 */
 	@Override
 	public String solicitarVagaPontoEncontro(String idSessao, String idCarona,
-			String ponto) throws CaronaInvalidaException, CaronaInexistenteException, CadastroEmCaronaPreferencialException {
+			String ponto) throws CaronaInvalidaException, CaronaInexistenteException, CadastroEmCaronaPreferencialException, MessageException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 		if(idCarona == null || idCarona.equals(""))
@@ -462,7 +462,7 @@ public class EasyacceptEstradaSolidariaAdapter implements EasyacceptAdapterInter
 	 */
 	@Override
 	public void aceitarSolicitacaoPontoEncontro(String idSessao,
-			String idSolicitacao) throws CaronaInexistenteException, IllegalArgumentException, EstadoSolicitacaoException {
+			String idSolicitacao) throws CaronaInexistenteException, IllegalArgumentException, EstadoSolicitacaoException, MessageException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 
@@ -484,7 +484,7 @@ public class EasyacceptEstradaSolidariaAdapter implements EasyacceptAdapterInter
 	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#aceitarSolicitacao(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public void aceitarSolicitacao(String idSessao, String idSolicitacao) throws IllegalArgumentException, CaronaInexistenteException, EstadoSolicitacaoException {
+	public void aceitarSolicitacao(String idSessao, String idSolicitacao) throws IllegalArgumentException, CaronaInexistenteException, EstadoSolicitacaoException, MessageException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 		if (idSolicitacao == null || idSolicitacao.equals(""))
@@ -506,7 +506,7 @@ public class EasyacceptEstradaSolidariaAdapter implements EasyacceptAdapterInter
 	 */
 	@Override
 	public String solicitarVaga(String idSessao, String idCarona)
-			throws CaronaInvalidaException, IllegalArgumentException, CadastroEmCaronaPreferencialException {
+			throws CaronaInvalidaException, IllegalArgumentException, CadastroEmCaronaPreferencialException, MessageException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 		if (idCarona == null || idCarona.equals(""))
@@ -528,7 +528,7 @@ public class EasyacceptEstradaSolidariaAdapter implements EasyacceptAdapterInter
 	 * @see estradasolidaria.ui.server.logic.EasyacceptAdapterInterface#rejeitarSolicitacao(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public void rejeitarSolicitacao(String idSessao, String idSolicitacao) throws CaronaInexistenteException, EstadoSolicitacaoException {
+	public void rejeitarSolicitacao(String idSessao, String idSolicitacao) throws CaronaInexistenteException, EstadoSolicitacaoException, MessageException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 		if (idSolicitacao == null || idSolicitacao.equals(""))
@@ -550,7 +550,7 @@ public class EasyacceptEstradaSolidariaAdapter implements EasyacceptAdapterInter
 	 */
 	@Override
 	public void desistirRequisicao(String idSessao, String idCarona,
-			String idSolicitacao) throws CaronaInvalidaException, CaronaInexistenteException, EstadoSolicitacaoException {
+			String idSolicitacao) throws CaronaInvalidaException, CaronaInexistenteException, EstadoSolicitacaoException, MessageException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 		if (idCarona == null || idCarona.equals(""))
@@ -713,7 +713,7 @@ public class EasyacceptEstradaSolidariaAdapter implements EasyacceptAdapterInter
 	@Override
 	public String cadastrarCaronaMunicipal(String idSessao, String origem,
 			String destino, String cidade, String data, String hora,
-			String vagas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
+			String vagas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException, MessageException {
 		if (idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("IdSessao inválido");
 		if (vagas == null || vagas.equals(""))
