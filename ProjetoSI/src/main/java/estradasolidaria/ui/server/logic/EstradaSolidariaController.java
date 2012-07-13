@@ -344,7 +344,7 @@ public class EstradaSolidariaController implements Serializable {
 		donoDaSugestao.addSugestaoFeita(sugestaoFeita);
 		
 		Mensagem mensagem = new Mensagem(donoDaSugestao, donoDaCarona, donoDaSugestao.getNome() 
-				+ " sugeriu um ponto de encontro para a carona " + carona.getTrajeto()[0] + " - " + carona.getTrajeto()[1] + ": " + sugestaoFeita.getPontoSugerido() + ".");
+				+ " sugeriu um ponto de encontro para a carona " + carona.toString() + ": " + sugestaoFeita.getPontoSugerido() + ".");
 		donoDaSugestao.addMensagem(mensagem);
 		
 		return sugestaoFeita;
@@ -401,7 +401,7 @@ public class EstradaSolidariaController implements Serializable {
 		Usuario donoDaSugestao = getUsuarioAPartirDeIDSugestao(idSugestao);
 		
 		Mensagem mensagem = new Mensagem(donoDaSugestao, donoDaCarona, donoDaCarona.getNome() + " respondeu a sua sugestão de ponto de encontro para a carona" 
-				+ carona.getTrajeto()[0] + " - " + carona.getTrajeto()[1] + ". O ponto" +
+				+ carona.toString() + ". O ponto" +
 				"de encontro proposto por ele é: " + sugestaoFeitaPeloDonoDaCarona.getResposta() + ".");
 		donoDaSugestao.addMensagem(mensagem);
 	}
@@ -471,8 +471,9 @@ public class EstradaSolidariaController implements Serializable {
 				solicitante, ponto);
 		
 		solicitante.addSolicitacaoFeita(solicitacaoFeita);
+		Carona carona = getCarona(solicitacaoFeita.getIdCarona());
 		
-		Mensagem mensagem = new Mensagem(donoDaCarona, solicitante, solicitante.getNome() + " fez uma solicitação a você na carona " + solicitacaoFeita.getTrajeto() + 
+		Mensagem mensagem = new Mensagem(donoDaCarona, solicitante, solicitante.getNome() + " fez uma solicitação a você na carona " + carona.toString() + 
 				". E propos o seguinte ponto de encontro para a carona: " + solicitacaoFeita.getPontoEncontro() + ".");
 		
 		donoDaCarona.addMensagem(mensagem);
@@ -516,8 +517,8 @@ public class EstradaSolidariaController implements Serializable {
 		this.mapIdUsuario.get(idUsuarioDonoDaSolicitacao)
 				.adicionarIdCaronaPega(idCarona, carona);
 		
-		Mensagem msg = new Mensagem(solicitacao.getDonoDaSolicitacao(), donoDaCarona,donoDaCarona.getNome() + " aceitou sua solicitação de vaga com sugestão de ponto de encontro para a carona " + carona.getTrajeto()[0] + " - " + carona.getTrajeto()[1] + 
-				"com o seguinte ponto encontro: " + carona.getPontoEncontro() + "." );
+		Mensagem msg = new Mensagem(solicitacao.getDonoDaSolicitacao(), donoDaCarona,donoDaCarona.getNome() + " aceitou sua solicitação de vaga com sugestão de ponto de encontro para a carona "
+		+ carona.toString() + "com o seguinte ponto encontro: " + carona.getPontoEncontro() + "." );
 		solicitacao.getDonoDaSolicitacao().addMensagem(msg);
 	}
 
@@ -556,7 +557,7 @@ public class EstradaSolidariaController implements Serializable {
 				.adicionarIdCaronaPega(idCarona, carona);
 		
 		Mensagem msg = new Mensagem(solicitacao.getDonoDaSolicitacao(), donoDaCarona,
-				donoDaCarona.getNome() + " aceitou sua solicitação de vaga na carona " + carona.getTrajeto()[0] + " - " + carona.getTrajeto()[1] + ".");
+				donoDaCarona.getNome() + " aceitou sua solicitação de vaga na carona " + carona.toString() + ".");
 		solicitacao.getDonoDaSolicitacao().addMensagem(msg);
 	}
 
@@ -613,8 +614,9 @@ public class EstradaSolidariaController implements Serializable {
 		
 		solicitante.addSolicitacaoFeita(solicitacaoFeita);
 		
+		Carona carona = getCarona(solicitacaoFeita.getIdCarona());
 		Mensagem msg = new Mensagem(donoDaCarona, solicitante, 
-				solicitante.getNome() + " fez uma solicitação a você na carona " + solicitacaoFeita.getTrajeto() + ".");
+				solicitante.getNome() + " fez uma solicitação a você na carona " + carona.toString() + ".");
 		donoDaCarona.addMensagem(msg);
 		
 		return solicitacaoFeita;
@@ -651,9 +653,10 @@ public class EstradaSolidariaController implements Serializable {
 		if(solicitacao == null)
 			throw new IllegalArgumentException("Solicitacao inexistente");
 		
+		Carona carona = getCarona(solicitacao.getIdCarona());
 		Usuario donoDaCarona = solicitacao.getDonoDaCarona(), donoDaSolicitacao = solicitacao.getDonoDaSolicitacao();
 		Mensagem msg = new Mensagem(donoDaSolicitacao, donoDaCarona, 
-				donoDaCarona.getNome() + " rejeitou o seu pedido de vaga na carona " + solicitacao.getTrajeto());
+				donoDaCarona.getNome() + " rejeitou o seu pedido de vaga na carona " + carona.toString());
 		donoDaSolicitacao.addMensagem(msg);
 	}
 
@@ -683,9 +686,10 @@ public class EstradaSolidariaController implements Serializable {
 				idSessao).getIdUser()); // O(logm + logn)
 		Solicitacao solicitacao = donoDaSolicitacao.desistirRequisicao(idCarona, idSolicitacao);
 		
+		Carona carona = getCarona(solicitacao.getIdCarona());
 		Usuario donoDaCarona = solicitacao.getDonoDaCarona();
 		Mensagem msg = new Mensagem(donoDaCarona, donoDaSolicitacao, 
-				donoDaSolicitacao.getNome() + " desistiu da vaga na carona " + solicitacao.getTrajeto());
+				donoDaSolicitacao.getNome() + " desistiu da vaga na carona " + carona.toString());
 		donoDaCarona.addMensagem(msg);
 	}
 
