@@ -90,7 +90,7 @@ public class EstradaSolidariaController implements Serializable {
 		Usuario user = new Usuario(login, senha, nome, endereco, email);
 		this.mapIdUsuario.put(user.getIdUsuario(), user);
 		
-		Mensagem msg = new Mensagem(user, "Seja bem vindo ao Estrada Solidária, a sua rede social de caroneiros.");
+		Mensagem msg = new Mensagem(user, "Olá, " + user.getNome() + "! Seja bem vindo ao Estrada Solidária, a sua rede social de caroneiros.");
 		user.addMensagem(msg);
 	}
 
@@ -1910,8 +1910,11 @@ public class EstradaSolidariaController implements Serializable {
 		
 		Stack<Mensagem> pilhaDeMensagens = donoDasMensagens.getListaDeMensagens();
 		List<Mensagem> listaDeMensagens = new LinkedList<Mensagem>();
-		listaDeMensagens.addAll(pilhaDeMensagens);
 		
+		Iterator<Mensagem> itMensagens = pilhaDeMensagens.iterator();
+		while(itMensagens.hasNext()) {
+			listaDeMensagens.add(pilhaDeMensagens.pop());
+		}
 		return listaDeMensagens;
 	}
 }

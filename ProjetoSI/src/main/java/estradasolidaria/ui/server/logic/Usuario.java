@@ -1498,8 +1498,8 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 */
 	public void addMensagem(Mensagem mensagem) throws MessageException {
 		try {
-			pilhaDeMensagens.addElement(mensagem);
-			System.out.println("Mensagem adicionanda: " + pilhaDeMensagens.peek().getTexto());
+			pilhaDeMensagens.push(mensagem);
+			System.out.println("Mensagem adicionada: " + pilhaDeMensagens.peek().getTexto());
 		}
 		catch(Exception e) {
 			throw new MessageException();
