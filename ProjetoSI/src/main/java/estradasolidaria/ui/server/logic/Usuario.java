@@ -1499,7 +1499,6 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	public void addMensagem(Mensagem mensagem) throws MessageException {
 		try {
 			pilhaDeMensagens.push(mensagem);
-			System.out.println("Mensagem adicionada: " + pilhaDeMensagens.peek().getTexto());
 		}
 		catch(Exception e) {
 			throw new MessageException();

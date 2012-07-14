@@ -1911,9 +1911,9 @@ public class EstradaSolidariaController implements Serializable {
 		Stack<Mensagem> pilhaDeMensagens = donoDasMensagens.getListaDeMensagens();
 		List<Mensagem> listaDeMensagens = new LinkedList<Mensagem>();
 		
-		Iterator<Mensagem> itMensagens = pilhaDeMensagens.iterator();
-		while(itMensagens.hasNext()) {
-			listaDeMensagens.add(pilhaDeMensagens.pop());
+		for (int i = pilhaDeMensagens.size() - 1; i >= 0; i--) {
+			Mensagem m = pilhaDeMensagens.get(i);
+			listaDeMensagens.add(m);
 		}
 		return listaDeMensagens;
 	}
