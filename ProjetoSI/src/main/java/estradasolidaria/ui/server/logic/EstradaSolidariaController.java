@@ -76,24 +76,30 @@ public class EstradaSolidariaController implements Serializable {
 	 */
 	public void criarUsuario(String login, String senha, String nome,
 			String endereco, String email) throws MessageException {
-		// Iterator Pattern
-		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
-		while (iteratorIdUsuario.hasNext()) {
-			Usuario u = iteratorIdUsuario.next();
-			if (u.getLogin().equals(login))
-				throw new IllegalArgumentException(
-						"Já existe um usuário com este login");
+		try {
+			lockMapIdUsuario.lock();
+			
+			// Iterator Pattern
+			iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+			while (iteratorIdUsuario.hasNext()) {
+				Usuario u = iteratorIdUsuario.next();
+				if (u.getLogin().equals(login))
+					throw new IllegalArgumentException(
+							"Já existe um usuário com este login");
 
-			if (u.getEmail().equals(email))
-				throw new IllegalArgumentException(
-						"Já existe um usuário com este email");
+				if (u.getEmail().equals(email))
+					throw new IllegalArgumentException(
+							"Já existe um usuário com este email");
+			}
+
+			Usuario user = new Usuario(login, senha, nome, endereco, email);
+			this.mapIdUsuario.put(user.getIdUsuario(), user);
+			
+			Mensagem msg = new Mensagem(user, "Olá, " + user.getNome() + "! Seja bem vindo ao Estrada Solidária, a sua rede social de caroneiros.");
+			user.addMensagem(msg);
+		} finally {
+			lockMapIdUsuario.unlock();
 		}
-
-		Usuario user = new Usuario(login, senha, nome, endereco, email);
-		this.mapIdUsuario.put(user.getIdUsuario(), user);
-		
-		Mensagem msg = new Mensagem(user, "Olá, " + user.getNome() + "! Seja bem vindo ao Estrada Solidária, a sua rede social de caroneiros.");
-		user.addMensagem(msg);
 	}
 
 	/**
@@ -121,23 +127,30 @@ public class EstradaSolidariaController implements Serializable {
 
 		if (!this.mapIdSessao.containsKey(idSessao))
 			throw new IllegalArgumentException("Sessão inexistente");
-
-		Usuario donoDaCarona = this.mapIdUsuario.get(this.mapIdSessao.get(
-				idSessao).getIdUser());
-
-		if (donoDaCarona == null)
-			throw new IllegalArgumentException("Usuário não encontrado");
-
-		Carona carona = donoDaCarona.cadastrarCarona(
-				donoDaCarona.getIdUsuario(), origem, destino, data, hora,
-				vagas, ordemParaCaronas++);
 		
-		if (carona != null) {
-			atualizaMensagensEmPerfis(carona);
-			return carona;
-		} 
-		else
-			throw new IllegalArgumentException("Carona Inválida");
+		try {
+			lockMapIdUsuario.lock();
+			lockMapIdSessao.lock();
+			Usuario donoDaCarona = this.mapIdUsuario.get(this.mapIdSessao.get(
+					idSessao).getIdUser());
+
+			if (donoDaCarona == null)
+				throw new IllegalArgumentException("Usuário não encontrado");
+
+			Carona carona = donoDaCarona.cadastrarCarona(
+					donoDaCarona.getIdUsuario(), origem, destino, data, hora,
+					vagas, ordemParaCaronas++);
+			
+			if (carona != null) {
+				atualizaMensagensEmPerfis(carona);
+				return carona;
+			} 
+			else
+				throw new IllegalArgumentException("Carona Inválida");
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 
 	/**
@@ -155,21 +168,29 @@ public class EstradaSolidariaController implements Serializable {
 		if (senha == null || senha.equals(""))
 			throw new IllegalArgumentException("Senha inválida");
 		
-		// Iterator Pattern
-		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
-		while (iteratorIdUsuario.hasNext()) {
-			Usuario u = iteratorIdUsuario.next();
-			if (u.getLogin().equals(login)) {
-				user = u;
-				if (user.validaSenha(senha)) {
-					s = new Sessao(user.getIdUsuario());
-					this.mapIdSessao.put(s.getIdSessao(), s);
-					return s;
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			// Iterator Pattern
+			iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+			while (iteratorIdUsuario.hasNext()) {
+				Usuario u = iteratorIdUsuario.next();
+				if (u.getLogin().equals(login)) {
+					user = u;
+					if (user.validaSenha(senha)) {
+						s = new Sessao(user.getIdUsuario());
+						this.mapIdSessao.put(s.getIdSessao(), s);
+						return s;
+					}
+					throw new IllegalArgumentException("Senha inválida");
 				}
-				throw new IllegalArgumentException("Senha inválida");
 			}
+			throw new UsuarioInexistenteException();
+		} 
+		finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
 		}
-		throw new UsuarioInexistenteException();
 	}
 
 	/**
@@ -192,22 +213,29 @@ public class EstradaSolidariaController implements Serializable {
 				|| (!destino.equals("") && destino.toUpperCase()
 						.equals(destino)))
 			throw new IllegalArgumentException("Destino inválido");
-
-		List<Carona> listaCaronas = new LinkedList<Carona>();
 		
-		//Iterator Pattern
-		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
-		while (iteratorIdUsuario.hasNext()) {
-			Usuario u = iteratorIdUsuario.next();
-			Iterator<Carona> it = u.localizarCarona(origem, destino).iterator();
-			while (it.hasNext()) {
-				listaCaronas.add(it.next());
+		try {
+			lockMapIdUsuario.lock();
+			
+			List<Carona> listaCaronas = new LinkedList<Carona>();
+			
+			//Iterator Pattern
+			iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+			while (iteratorIdUsuario.hasNext()) {
+				Usuario u = iteratorIdUsuario.next();
+				Iterator<Carona> it = u.localizarCarona(origem, destino).iterator();
+				while (it.hasNext()) {
+					listaCaronas.add(it.next());
+				}
 			}
-		}
 
-		Collections.sort(listaCaronas); // ordena lista pela ordem de insercao
-										// das caronas no sistema
-		return listaCaronas;
+			Collections.sort(listaCaronas); // ordena lista pela ordem de insercao
+											// das caronas no sistema
+			return listaCaronas;
+			
+		} finally {
+			lockMapIdUsuario.unlock();
+		}
 	}
 
 	/**
@@ -220,15 +248,20 @@ public class EstradaSolidariaController implements Serializable {
 	public String[] getTrajeto(Integer idCarona) {
 		if (idCarona == null)
 			throw new IllegalArgumentException("Trajeto Inválida");
-
-		// Iterator Pattern
-		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
-		while (iteratorIdUsuario.hasNext()) {
-			Usuario u = iteratorIdUsuario.next();
-			if (u.getMapIdCaronasOferecidas().containsKey(idCarona))
-				return u.getTrajeto(idCarona);
+		
+		try {
+			lockMapIdUsuario.lock();
+			// Iterator Pattern
+			iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+			while (iteratorIdUsuario.hasNext()) {
+				Usuario u = iteratorIdUsuario.next();
+				if (u.getMapIdCaronasOferecidas().containsKey(idCarona))
+					return u.getTrajeto(idCarona);
+			}
+			throw new IllegalArgumentException("Trajeto Inexistente");
+		} finally {
+			lockMapIdUsuario.unlock();
 		}
-		throw new IllegalArgumentException("Trajeto Inexistente");
 	}
 
 	/**
@@ -241,15 +274,20 @@ public class EstradaSolidariaController implements Serializable {
 	public Carona getCarona(Integer idCarona) {
 		if (idCarona == null)
 			throw new IllegalArgumentException("Carona Inválida");
-
-		// Iterator Pattern
-		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
-		while (iteratorIdUsuario.hasNext()) {
-			Usuario u = iteratorIdUsuario.next();
-			if (u.getMapIdCaronasOferecidas().containsKey(idCarona))
-				return u.getCarona(idCarona);
+		
+		try {
+			lockMapIdUsuario.lock();
+			// Iterator Pattern
+			iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+			while (iteratorIdUsuario.hasNext()) {
+				Usuario u = iteratorIdUsuario.next();
+				if (u.getMapIdCaronasOferecidas().containsKey(idCarona))
+					return u.getCarona(idCarona);
+			}
+			throw new IllegalArgumentException("Carona Inexistente");
+		} finally {
+			lockMapIdUsuario.unlock();
 		}
-		throw new IllegalArgumentException("Carona Inexistente");
 	}
 
 	/**
@@ -258,13 +296,19 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param login
 	 */
 	public void encerrarSessao(String login) {
-		Iterator<Sessao> it = this.mapIdSessao.values().iterator();
-		while (it.hasNext()) {
-			if (this.mapIdUsuario.get(it.next().getIdUser()).getLogin()
-					.equals(login)) {
-				it.remove();
-				break;
+		try {
+			lockMapIdSessao.lock();
+			
+			Iterator<Sessao> it = this.mapIdSessao.values().iterator();
+			while (it.hasNext()) {
+				if (this.mapIdUsuario.get(it.next().getIdUser()).getLogin()
+						.equals(login)) {
+					it.remove();
+					break;
+				}
 			}
+		} finally {
+			lockMapIdSessao.unlock();
 		}
 	}
 
@@ -273,31 +317,49 @@ public class EstradaSolidariaController implements Serializable {
 	 * sistema.
 	 */
 	public void zerarSistema() {
-		this.mapIdUsuario.clear();
-		this.mapIdSessao.clear();
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			this.mapIdUsuario.clear();
+			this.mapIdSessao.clear();
 
-		// Iterator Pattern
-		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
-		while (iteratorIdUsuario.hasNext()) {
-			Usuario u = iteratorIdUsuario.next();
-			u.zerarSistema();
+			// Iterator Pattern
+			iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+			while (iteratorIdUsuario.hasNext()) {
+				Usuario u = iteratorIdUsuario.next();
+				u.zerarSistema();
+			}
+			gerenciadorDeDados.zerarSistema();
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
 		}
-		gerenciadorDeDados.zerarSistema();
 	}
 
 	/**
 	 * Persiste os dados do sistema e limpa mapa atual.
 	 */
 	public void encerrarSistema() {
-		gerenciadorDeDados.encerrarSistema();
-		this.mapIdUsuario.clear();
+		try {
+			lockMapIdUsuario.lock();
+			gerenciadorDeDados.encerrarSistema();
+			this.mapIdUsuario.clear();
+		} finally {
+			lockMapIdUsuario.unlock();
+		}
 	}
 
 	/**
 	 * Repovoa o mapa de usuario do sistema.
 	 */
 	public void reiniciarSistema() {
-		mapIdUsuario = gerenciadorDeDados.reiniciarSistema();
+		try {
+			lockMapIdUsuario.lock();
+			mapIdUsuario = gerenciadorDeDados.reiniciarSistema();
+		} finally {
+			lockMapIdUsuario.unlock();
+		}
 	}
 
 	/**
@@ -319,37 +381,44 @@ public class EstradaSolidariaController implements Serializable {
 			throw new IllegalArgumentException("Ponto Inválido"); // "Ponto Inválido"
 		if (idCarona == null)
 			throw new IllegalArgumentException("IdCarona inválido");
-
-		Usuario donoDaSugestao = getMapIdUsuario().get(
-				getMapIdSessao().get(idSessao).getIdUser());
-		if (donoDaSugestao == null)
-			throw new IllegalArgumentException("Sessão inválida");
 		
-		Usuario donoDaCarona = null;
-		Carona carona = null;
-		for (Iterator<Usuario> itUsuario = getMapIdUsuario().values().iterator(); itUsuario.hasNext();) {
-			donoDaCarona = itUsuario.next();
-			for (Iterator<Carona> itCarona = donoDaCarona.getMapIdCaronasOferecidas().values().iterator(); itCarona.hasNext();) {
-				carona = itCarona.next();
-				if (carona.getIdCarona().equals(idCarona)) {
-					break;
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			Usuario donoDaSugestao = getMapIdUsuario().get(
+					getMapIdSessao().get(idSessao).getIdUser());
+			if (donoDaSugestao == null)
+				throw new IllegalArgumentException("Sessão inválida");
+			
+			Usuario donoDaCarona = null;
+			Carona carona = null;
+			for (Iterator<Usuario> itUsuario = getMapIdUsuario().values().iterator(); itUsuario.hasNext();) {
+				donoDaCarona = itUsuario.next();
+				for (Iterator<Carona> itCarona = donoDaCarona.getMapIdCaronasOferecidas().values().iterator(); itCarona.hasNext();) {
+					carona = itCarona.next();
+					if (carona.getIdCarona().equals(idCarona)) {
+						break;
+					}
 				}
 			}
+			if(carona == null)
+				throw new IllegalArgumentException("Carona Inexistente");
+			if(donoDaCarona == null)
+				throw new UsuarioInexistenteException();
+			
+			Sugestao sugestaoFeita = carona.addSugestaoPontoEncontro(pontos); 
+			
+			donoDaSugestao.addSugestaoFeita(sugestaoFeita);
+			
+			Mensagem mensagem = new Mensagem(donoDaSugestao, donoDaCarona, donoDaSugestao.getNome() 
+					+ " sugeriu um ponto de encontro para a carona " + carona.toString() + ": " + sugestaoFeita.getPontoSugerido() + ".");
+			donoDaSugestao.addMensagem(mensagem);
+			
+			return sugestaoFeita;
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
 		}
-		if(carona == null)
-			throw new IllegalArgumentException("Carona Inexistente");
-		if(donoDaCarona == null)
-			throw new UsuarioInexistenteException();
-		
-		Sugestao sugestaoFeita = carona.addSugestaoPontoEncontro(pontos); 
-		
-		donoDaSugestao.addSugestaoFeita(sugestaoFeita);
-		
-		Mensagem mensagem = new Mensagem(donoDaSugestao, donoDaCarona, donoDaSugestao.getNome() 
-				+ " sugeriu um ponto de encontro para a carona " + carona.toString() + ": " + sugestaoFeita.getPontoSugerido() + ".");
-		donoDaSugestao.addMensagem(mensagem);
-		
-		return sugestaoFeita;
 	}
 
 	/**
@@ -381,47 +450,59 @@ public class EstradaSolidariaController implements Serializable {
 		if (pontos == null || pontos.equals(""))
 			throw new IllegalArgumentException("Ponto Inválido");
 		
-		Sugestao sugestaoFeitaPeloDonoDaCarona = null;
-		Usuario donoDaCarona = null;
-		// Iterator Pattern
-		iteratorIdSessao = this.mapIdSessao.values().iterator();
-		while (iteratorIdSessao.hasNext()) { // procura donoDaCarona
-			Sessao s = iteratorIdSessao.next();
-			if (s.getIdSessao().equals(idSessao)) {
-				donoDaCarona = this.mapIdUsuario.get(s.getIdUser());
-				sugestaoFeitaPeloDonoDaCarona = donoDaCarona.responderSugestaoPontoEncontro(idCarona,
-						idSugestao, pontos);
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			Sugestao sugestaoFeitaPeloDonoDaCarona = null;
+			Usuario donoDaCarona = null;
+			// Iterator Pattern
+			iteratorIdSessao = this.mapIdSessao.values().iterator();
+			while (iteratorIdSessao.hasNext()) { // procura donoDaCarona
+				Sessao s = iteratorIdSessao.next();
+				if (s.getIdSessao().equals(idSessao)) {
+					donoDaCarona = this.mapIdUsuario.get(s.getIdUser());
+					sugestaoFeitaPeloDonoDaCarona = donoDaCarona.responderSugestaoPontoEncontro(idCarona,
+							idSugestao, pontos);
+				}
 			}
+			
+			if(sugestaoFeitaPeloDonoDaCarona == null)
+				throw new IllegalArgumentException("Solicitacao inexistente");
+			if(donoDaCarona == null)
+				throw new UsuarioInexistenteException();
+			
+			Carona carona = donoDaCarona.getCarona(idCarona);
+			Usuario donoDaSugestao = getUsuarioAPartirDeIDSugestao(idSugestao);
+			
+			Mensagem mensagem = new Mensagem(donoDaSugestao, donoDaCarona, donoDaCarona.getNome() + " respondeu a sua sugestão de ponto de encontro para a carona" 
+					+ carona.toString() + ". O ponto" +
+					"de encontro proposto por ele é: " + sugestaoFeitaPeloDonoDaCarona.getResposta() + ".");
+			donoDaSugestao.addMensagem(mensagem);
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
 		}
-		
-		if(sugestaoFeitaPeloDonoDaCarona == null)
-			throw new IllegalArgumentException("Solicitacao inexistente");
-		if(donoDaCarona == null)
-			throw new UsuarioInexistenteException();
-		
-		Carona carona = donoDaCarona.getCarona(idCarona);
-		Usuario donoDaSugestao = getUsuarioAPartirDeIDSugestao(idSugestao);
-		
-		Mensagem mensagem = new Mensagem(donoDaSugestao, donoDaCarona, donoDaCarona.getNome() + " respondeu a sua sugestão de ponto de encontro para a carona" 
-				+ carona.toString() + ". O ponto" +
-				"de encontro proposto por ele é: " + sugestaoFeitaPeloDonoDaCarona.getResposta() + ".");
-		donoDaSugestao.addMensagem(mensagem);
 	}
 
 	private Usuario getUsuarioAPartirDeIDSugestao(Integer idSugestao) {
-		Usuario donoDaSugestao;
-		iteratorIdUsuario = mapIdUsuario.values().iterator();
-		while(iteratorIdUsuario.hasNext()) {
-			donoDaSugestao = iteratorIdUsuario.next();
-			Iterator<Sugestao> iteratorIdSugestoes = donoDaSugestao.getMapIdSugestoesFeitas().values().iterator();
-			while(iteratorIdSugestoes.hasNext()) {
-				Sugestao sugestao = iteratorIdSugestoes.next();
-				if(sugestao.getIdSugestao().equals(idSugestao)) {
-					return donoDaSugestao;
+		try {
+			lockMapIdUsuario.lock();
+			Usuario donoDaSugestao;
+			iteratorIdUsuario = mapIdUsuario.values().iterator();
+			while(iteratorIdUsuario.hasNext()) {
+				donoDaSugestao = iteratorIdUsuario.next();
+				Iterator<Sugestao> iteratorIdSugestoes = donoDaSugestao.getMapIdSugestoesFeitas().values().iterator();
+				while(iteratorIdSugestoes.hasNext()) {
+					Sugestao sugestao = iteratorIdSugestoes.next();
+					if(sugestao.getIdSugestao().equals(idSugestao)) {
+						return donoDaSugestao;
+					}
 				}
 			}
+			throw new IllegalArgumentException("IdSugestao inválido");
+		} finally {
+			lockMapIdUsuario.unlock();
 		}
-		throw new IllegalArgumentException("IdSugestao inválido");
 	}
 
 	/**
@@ -446,41 +527,49 @@ public class EstradaSolidariaController implements Serializable {
 
 		if(idCarona == null)
 			throw new CaronaInvalidaException();
+		
+		try {
+			lockMapIdUsuario.lock();
+			lockMapIdSessao.lock();
+			
+			Usuario solicitante = this.mapIdUsuario.get(this.mapIdSessao.get(
+					idSessao).getIdUser());
+			if (solicitante == null)
+				throw new IllegalArgumentException("Id solicitação inválido");
 
-		Usuario solicitante = this.mapIdUsuario.get(this.mapIdSessao.get(
-				idSessao).getIdUser());
-		if (solicitante == null)
-			throw new IllegalArgumentException("Id solicitação inválido");
+			Usuario donoDaCarona = null;
 
-		Usuario donoDaCarona = null;
-
-		// Iterator Pattern
-		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
-		while (iteratorIdUsuario.hasNext()) { // procura pelo donoDaCarona
-			Usuario u = iteratorIdUsuario.next();
-			if (u.getMapIdCaronasOferecidas().containsKey(idCarona)) {
-				donoDaCarona = u;
-				if(u.getIdUsuario().equals(solicitante.getIdUsuario()))
-					throw new IllegalArgumentException("Você não pode solicitar uma vaga em sua própria carona.");
-				break;
+			// Iterator Pattern
+			iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+			while (iteratorIdUsuario.hasNext()) { // procura pelo donoDaCarona
+				Usuario u = iteratorIdUsuario.next();
+				if (u.getMapIdCaronasOferecidas().containsKey(idCarona)) {
+					donoDaCarona = u;
+					if(u.getIdUsuario().equals(solicitante.getIdUsuario()))
+						throw new IllegalArgumentException("Você não pode solicitar uma vaga em sua própria carona.");
+					break;
+				}
 			}
+
+			if (donoDaCarona == null)
+				throw new IllegalArgumentException("Usuário inexistente");
+
+			Solicitacao solicitacaoFeita = donoDaCarona.solicitarVagaPontoEncontro(idCarona, donoDaCarona,
+					solicitante, ponto);
+			
+			solicitante.addSolicitacaoFeita(solicitacaoFeita);
+			Carona carona = getCarona(solicitacaoFeita.getIdCarona());
+			
+			Mensagem mensagem = new Mensagem(donoDaCarona, solicitante, solicitante.getNome() + " fez uma solicitação a você na carona " + carona.toString() + 
+					". E propos o seguinte ponto de encontro para a carona: " + solicitacaoFeita.getPontoEncontro() + ".");
+			
+			donoDaCarona.addMensagem(mensagem);
+			
+			return solicitacaoFeita;
+		} finally {
+			lockMapIdUsuario.unlock();
+			lockMapIdSessao.unlock();
 		}
-
-		if (donoDaCarona == null)
-			throw new IllegalArgumentException("Usuário inexistente");
-
-		Solicitacao solicitacaoFeita = donoDaCarona.solicitarVagaPontoEncontro(idCarona, donoDaCarona,
-				solicitante, ponto);
-		
-		solicitante.addSolicitacaoFeita(solicitacaoFeita);
-		Carona carona = getCarona(solicitacaoFeita.getIdCarona());
-		
-		Mensagem mensagem = new Mensagem(donoDaCarona, solicitante, solicitante.getNome() + " fez uma solicitação a você na carona " + carona.toString() + 
-				". E propos o seguinte ponto de encontro para a carona: " + solicitacaoFeita.getPontoEncontro() + ".");
-		
-		donoDaCarona.addMensagem(mensagem);
-		
-		return solicitacaoFeita;
 	}
 
 	/**
@@ -501,27 +590,35 @@ public class EstradaSolidariaController implements Serializable {
 		
 		if (idSolicitacao == null)
 			throw new IllegalArgumentException("Solicitação inexistente");
-
-		Usuario donoDaCarona = this.mapIdUsuario.get(this.mapIdSessao.get(
-				idSessao).getIdUser());
-		Solicitacao solicitacao = donoDaCarona
-				.aceitarSolicitacaoPontoEncontro(idSolicitacao);
-
-		Integer idUsuarioDonoDaCarona = solicitacao.getDonoDaCarona()
-				.getIdUsuario();
-		Integer idUsuarioDonoDaSolicitacao = solicitacao.getDonoDaSolicitacao()
-				.getIdUsuario();
-		Integer idCarona = solicitacao.getIdCarona();
-
-		Carona carona = this.mapIdUsuario.get(idUsuarioDonoDaCarona)
-				.getMapIdCaronasOferecidas().get(solicitacao.getIdCarona());
 		
-		this.mapIdUsuario.get(idUsuarioDonoDaSolicitacao)
-				.adicionarIdCaronaPega(idCarona, carona);
-		
-		Mensagem msg = new Mensagem(solicitacao.getDonoDaSolicitacao(), donoDaCarona,donoDaCarona.getNome() + " aceitou sua solicitação de vaga com sugestão de ponto de encontro para a carona "
-		+ carona.toString() + "com o seguinte ponto encontro: " + carona.getPontoEncontro() + "." );
-		solicitacao.getDonoDaSolicitacao().addMensagem(msg);
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDaCarona = this.mapIdUsuario.get(this.mapIdSessao.get(
+					idSessao).getIdUser());
+			Solicitacao solicitacao = donoDaCarona
+					.aceitarSolicitacaoPontoEncontro(idSolicitacao);
+
+			Integer idUsuarioDonoDaCarona = solicitacao.getDonoDaCarona()
+					.getIdUsuario();
+			Integer idUsuarioDonoDaSolicitacao = solicitacao.getDonoDaSolicitacao()
+					.getIdUsuario();
+			Integer idCarona = solicitacao.getIdCarona();
+
+			Carona carona = this.mapIdUsuario.get(idUsuarioDonoDaCarona)
+					.getMapIdCaronasOferecidas().get(solicitacao.getIdCarona());
+			
+			this.mapIdUsuario.get(idUsuarioDonoDaSolicitacao)
+					.adicionarIdCaronaPega(idCarona, carona);
+			
+			Mensagem msg = new Mensagem(solicitacao.getDonoDaSolicitacao(), donoDaCarona,donoDaCarona.getNome() + " aceitou sua solicitação de vaga com sugestão de ponto de encontro para a carona "
+			+ carona.toString() + "com o seguinte ponto encontro: " + carona.getPontoEncontro() + "." );
+			solicitacao.getDonoDaSolicitacao().addMensagem(msg);
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 
 	/**
@@ -540,27 +637,35 @@ public class EstradaSolidariaController implements Serializable {
 			throw new IllegalArgumentException("Sessão inválida");
 		if(idSolicitacao == null)
 			throw new IllegalArgumentException("Solicitação inexistente");
+		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDaCarona = this.mapIdUsuario.get(this.mapIdSessao.get(
+					idSessao).getIdUser());
+			Solicitacao solicitacao = donoDaCarona
+					.aceitarSolicitacao(idSolicitacao);
+			
+			Integer idUsuarioDonoDaCarona = solicitacao.getDonoDaCarona()
+					.getIdUsuario();
+			Integer idUsuarioDonoDaSolicitacao = solicitacao.getDonoDaSolicitacao()
+					.getIdUsuario();
+			Integer idCarona = solicitacao.getIdCarona();
 
-		Usuario donoDaCarona = this.mapIdUsuario.get(this.mapIdSessao.get(
-				idSessao).getIdUser());
-		Solicitacao solicitacao = donoDaCarona
-				.aceitarSolicitacao(idSolicitacao);
-		
-		Integer idUsuarioDonoDaCarona = solicitacao.getDonoDaCarona()
-				.getIdUsuario();
-		Integer idUsuarioDonoDaSolicitacao = solicitacao.getDonoDaSolicitacao()
-				.getIdUsuario();
-		Integer idCarona = solicitacao.getIdCarona();
-
-		Carona carona = this.mapIdUsuario.get(idUsuarioDonoDaCarona)
-				.getMapIdCaronasOferecidas().get(solicitacao.getIdCarona());
-		
-		this.mapIdUsuario.get(idUsuarioDonoDaSolicitacao)
-				.adicionarIdCaronaPega(idCarona, carona);
-		
-		Mensagem msg = new Mensagem(solicitacao.getDonoDaSolicitacao(), donoDaCarona,
-				donoDaCarona.getNome() + " aceitou sua solicitação de vaga na carona " + carona.toString() + ".");
-		solicitacao.getDonoDaSolicitacao().addMensagem(msg);
+			Carona carona = this.mapIdUsuario.get(idUsuarioDonoDaCarona)
+					.getMapIdCaronasOferecidas().get(solicitacao.getIdCarona());
+			
+			this.mapIdUsuario.get(idUsuarioDonoDaSolicitacao)
+					.adicionarIdCaronaPega(idCarona, carona);
+			
+			Mensagem msg = new Mensagem(solicitacao.getDonoDaSolicitacao(), donoDaCarona,
+					donoDaCarona.getNome() + " aceitou sua solicitação de vaga na carona " + carona.toString() + ".");
+			solicitacao.getDonoDaSolicitacao().addMensagem(msg);
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 
 	/**
@@ -582,46 +687,54 @@ public class EstradaSolidariaController implements Serializable {
 		if(idCarona == null)
 			throw new CaronaInvalidaException();
 
-		Usuario solicitante = null;
-		// Iterator Pattern
-		iteratorIdSessao = this.mapIdSessao.values().iterator();
-		while (iteratorIdSessao.hasNext()) { // procura pelo usuario solicitante
-												// dentre os usuarios
-			Sessao s = iteratorIdSessao.next();
-			if (s.getIdSessao().equals(idSessao)) {
-				solicitante = this.mapIdUsuario.get(s.getIdUser());
-				break;
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario solicitante = null;
+			// Iterator Pattern
+			iteratorIdSessao = this.mapIdSessao.values().iterator();
+			while (iteratorIdSessao.hasNext()) { // procura pelo usuario solicitante
+													// dentre os usuarios
+				Sessao s = iteratorIdSessao.next();
+				if (s.getIdSessao().equals(idSessao)) {
+					solicitante = this.mapIdUsuario.get(s.getIdUser());
+					break;
+				}
 			}
-		}
-		if (solicitante == null)
-			throw new IllegalArgumentException("Usuário inexistente");
+			if (solicitante == null)
+				throw new IllegalArgumentException("Usuário inexistente");
 
-		Usuario donoDaCarona = null;
-		// Iterator Pattern
-		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
-		while (iteratorIdUsuario.hasNext()) { // procura pelo donoDaCarona
-			Usuario u = iteratorIdUsuario.next();
-			if (u.getMapIdCaronasOferecidas().containsKey(idCarona)) {
-				donoDaCarona = u;
-				if(u.getIdUsuario().equals(solicitante.getIdUsuario()))
-					throw new IllegalArgumentException("Você não pode solicitar uma vaga em sua própria carona.");
-				break;
+			Usuario donoDaCarona = null;
+			// Iterator Pattern
+			iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+			while (iteratorIdUsuario.hasNext()) { // procura pelo donoDaCarona
+				Usuario u = iteratorIdUsuario.next();
+				if (u.getMapIdCaronasOferecidas().containsKey(idCarona)) {
+					donoDaCarona = u;
+					if(u.getIdUsuario().equals(solicitante.getIdUsuario()))
+						throw new IllegalArgumentException("Você não pode solicitar uma vaga em sua própria carona.");
+					break;
+				}
 			}
-		}
-		if (donoDaCarona == null)
-			throw new IllegalArgumentException("Usuário inexistente");
+			if (donoDaCarona == null)
+				throw new IllegalArgumentException("Usuário inexistente");
 
-		Solicitacao solicitacaoFeita =
-				donoDaCarona.solicitarVaga(idCarona, donoDaCarona, solicitante);
-		
-		solicitante.addSolicitacaoFeita(solicitacaoFeita);
-		
-		Carona carona = getCarona(solicitacaoFeita.getIdCarona());
-		Mensagem msg = new Mensagem(donoDaCarona, solicitante, 
-				solicitante.getNome() + " fez uma solicitação a você na carona " + carona.toString() + ".");
-		donoDaCarona.addMensagem(msg);
-		
-		return solicitacaoFeita;
+			Solicitacao solicitacaoFeita =
+					donoDaCarona.solicitarVaga(idCarona, donoDaCarona, solicitante);
+			
+			solicitante.addSolicitacaoFeita(solicitacaoFeita);
+			
+			Carona carona = getCarona(solicitacaoFeita.getIdCarona());
+			Mensagem msg = new Mensagem(donoDaCarona, solicitante, 
+					solicitante.getNome() + " fez uma solicitação a você na carona " + carona.toString() + ".");
+			donoDaCarona.addMensagem(msg);
+			
+			return solicitacaoFeita;
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 
 	/**
@@ -640,26 +753,34 @@ public class EstradaSolidariaController implements Serializable {
 		if (idSolicitacao == null)
 			throw new IllegalArgumentException("Id solicitação inválido");
 		
-		Solicitacao solicitacao = null;
-		// Iterator Pattern
-		iteratorIdSessao = this.mapIdSessao.values().iterator();
-		while (iteratorIdSessao.hasNext()) { // procura pelo donoDaCarona
-			Sessao s = iteratorIdSessao.next();
-			if (s.getIdSessao().equals(idSessao)) {
-				Usuario donoDaCarona = this.mapIdUsuario.get(s.getIdUser());
-				solicitacao = donoDaCarona.rejeitarSolicitacao(idSolicitacao);
-				break;
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Solicitacao solicitacao = null;
+			// Iterator Pattern
+			iteratorIdSessao = this.mapIdSessao.values().iterator();
+			while (iteratorIdSessao.hasNext()) { // procura pelo donoDaCarona
+				Sessao s = iteratorIdSessao.next();
+				if (s.getIdSessao().equals(idSessao)) {
+					Usuario donoDaCarona = this.mapIdUsuario.get(s.getIdUser());
+					solicitacao = donoDaCarona.rejeitarSolicitacao(idSolicitacao);
+					break;
+				}
 			}
+			
+			if(solicitacao == null)
+				throw new IllegalArgumentException("Solicitacao inexistente");
+			
+			Carona carona = getCarona(solicitacao.getIdCarona());
+			Usuario donoDaCarona = solicitacao.getDonoDaCarona(), donoDaSolicitacao = solicitacao.getDonoDaSolicitacao();
+			Mensagem msg = new Mensagem(donoDaSolicitacao, donoDaCarona, 
+					donoDaCarona.getNome() + " rejeitou o seu pedido de vaga na carona " + carona.toString());
+			donoDaSolicitacao.addMensagem(msg);
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
 		}
-		
-		if(solicitacao == null)
-			throw new IllegalArgumentException("Solicitacao inexistente");
-		
-		Carona carona = getCarona(solicitacao.getIdCarona());
-		Usuario donoDaCarona = solicitacao.getDonoDaCarona(), donoDaSolicitacao = solicitacao.getDonoDaSolicitacao();
-		Mensagem msg = new Mensagem(donoDaSolicitacao, donoDaCarona, 
-				donoDaCarona.getNome() + " rejeitou o seu pedido de vaga na carona " + carona.toString());
-		donoDaSolicitacao.addMensagem(msg);
 	}
 
 	/**
@@ -683,16 +804,24 @@ public class EstradaSolidariaController implements Serializable {
 			throw new CaronaInvalidaException();
 		if (idSolicitacao == null )
 			throw new IllegalArgumentException("Id solicitação inválido");
-
-		Usuario donoDaSolicitacao = this.mapIdUsuario.get(this.mapIdSessao.get(
-				idSessao).getIdUser()); // O(logm + logn)
-		Solicitacao solicitacao = donoDaSolicitacao.desistirRequisicao(idCarona, idSolicitacao);
 		
-		Carona carona = getCarona(solicitacao.getIdCarona());
-		Usuario donoDaCarona = solicitacao.getDonoDaCarona();
-		Mensagem msg = new Mensagem(donoDaCarona, donoDaSolicitacao, 
-				donoDaSolicitacao.getNome() + " desistiu da vaga na carona " + carona.toString());
-		donoDaCarona.addMensagem(msg);
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDaSolicitacao = this.mapIdUsuario.get(this.mapIdSessao.get(
+					idSessao).getIdUser()); // O(logm + logn)
+			Solicitacao solicitacao = donoDaSolicitacao.desistirRequisicao(idCarona, idSolicitacao);
+			
+			Carona carona = getCarona(solicitacao.getIdCarona());
+			Usuario donoDaCarona = solicitacao.getDonoDaCarona();
+			Mensagem msg = new Mensagem(donoDaCarona, donoDaSolicitacao, 
+					donoDaSolicitacao.getNome() + " desistiu da vaga na carona " + carona.toString());
+			donoDaCarona.addMensagem(msg);
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 
 	/**
@@ -706,16 +835,21 @@ public class EstradaSolidariaController implements Serializable {
 	public Usuario visualizarPerfil(Integer idSessao, String login) {
 		if (idSessao == null )
 			throw new IllegalArgumentException("IdSessao inválido");
-
-		// Iterator Pattern
-		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
-		while (iteratorIdUsuario.hasNext()) {
-			Usuario u = iteratorIdUsuario.next();
-			if (u.getLogin().equals(login))
-				return u.visualizarPerfil();
+		
+		try {
+			lockMapIdUsuario.lock();
+			
+			// Iterator Pattern
+			iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+			while (iteratorIdUsuario.hasNext()) {
+				Usuario u = iteratorIdUsuario.next();
+				if (u.getLogin().equals(login))
+					return u.visualizarPerfil();
+			}
+			throw new IllegalArgumentException("Login inválido");
+		} finally {
+			lockMapIdUsuario.unlock();
 		}
-		throw new IllegalArgumentException("Login inválido");
-
 	}
 
 	/**
@@ -742,43 +876,51 @@ public class EstradaSolidariaController implements Serializable {
 
 		if (idCarona == null )
 			throw new CaronaInvalidaException();
-
-		Usuario donoDaCarona = this.mapIdUsuario.get(this.mapIdSessao.get(
-				idSessao).getIdUser());
-
-		if (donoDaCarona == null)
-			throw new UsuarioInexistenteException();
-
-		Integer idCaroneiro = null;
-
-		// Iterator Pattern
-		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
-		while (iteratorIdUsuario.hasNext()) {
-			Usuario u = iteratorIdUsuario.next();
-			if (u.getLogin().equals(loginCaroneiro)) {
-				idCaroneiro = u.getIdUsuario();
-			}
-		}
-		if (idCaroneiro == null)
-			throw new UsuarioInexistenteException();
-
-		Usuario caroneiro = this.mapIdUsuario.get(idCaroneiro);
-		if (!caroneiro.getMapIdCaronasPegas().containsKey(idCarona)) {
-			throw new IllegalArgumentException(
-					"Usuário não possui vaga na carona.");
-		}
-
-		EnumCaronaReview eReview = donoDaCarona.reviewVagaEmCarona(idCarona, idCaroneiro, review);
 		
-		if(eReview.equals(EnumCaronaReview.NAO_FALTOU)) {
-			caroneiro.addCaroneiroPreferencial(idCaroneiro);
-			caroneiro.setPontuacao(donoDaCarona.getPontuacao() + 1);
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDaCarona = this.mapIdUsuario.get(this.mapIdSessao.get(
+					idSessao).getIdUser());
+
+			if (donoDaCarona == null)
+				throw new UsuarioInexistenteException();
+
+			Integer idCaroneiro = null;
+
+			// Iterator Pattern
+			iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+			while (iteratorIdUsuario.hasNext()) {
+				Usuario u = iteratorIdUsuario.next();
+				if (u.getLogin().equals(loginCaroneiro)) {
+					idCaroneiro = u.getIdUsuario();
+				}
+			}
+			if (idCaroneiro == null)
+				throw new UsuarioInexistenteException();
+
+			Usuario caroneiro = this.mapIdUsuario.get(idCaroneiro);
+			if (!caroneiro.getMapIdCaronasPegas().containsKey(idCarona)) {
+				throw new IllegalArgumentException(
+						"Usuário não possui vaga na carona.");
+			}
+
+			EnumCaronaReview eReview = donoDaCarona.reviewVagaEmCarona(idCarona, idCaroneiro, review);
+			
+			if(eReview.equals(EnumCaronaReview.NAO_FALTOU)) {
+				caroneiro.addCaroneiroPreferencial(idCaroneiro);
+				caroneiro.setPontuacao(donoDaCarona.getPontuacao() + 1);
+			}
+			else if(eReview.equals(EnumCaronaReview.FALTOU)){
+				caroneiro.setPontuacao(donoDaCarona.getPontuacao() + 0);
+			}
+			else
+				throw new IllegalArgumentException("Review inválido");
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
 		}
-		else if(eReview.equals(EnumCaronaReview.FALTOU)){
-			caroneiro.setPontuacao(donoDaCarona.getPontuacao() + 0);
-		}
-		else
-			throw new IllegalArgumentException("Review inválido");
 	}
 
 	/**
@@ -805,54 +947,68 @@ public class EstradaSolidariaController implements Serializable {
 		if(idCarona == null)
 			throw new IllegalArgumentException("Carona inválida");
 		
-		Sessao s = this.mapIdSessao.get(idSessao);
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Sessao s = this.mapIdSessao.get(idSessao);
 
-		if (s == null) {
-			throw new IllegalArgumentException("Sessão inválida");
+			if (s == null) {
+				throw new IllegalArgumentException("Sessão inválida");
+			}
+
+			Integer idCaroneiro = mapIdSessao.get(idSessao).getIdUser();
+
+			if (idCaroneiro == null)
+				throw new UsuarioInexistenteException();
+
+			Usuario caroneiro = mapIdUsuario.get(idCaroneiro);
+
+			if (!caroneiro.getMapIdCaronasPegas().containsKey(idCarona)) { // garante  que o caroneiro foi aceito pelo dono da carona
+				throw new IllegalArgumentException(
+						"Usuário não possui vaga na carona.");
+			}
+			
+			
+			
+			EnumCaronaReview eReview = caroneiro.setReviewCarona(idCaroneiro, idCarona, review);
+			if(eReview.equals(EnumCaronaReview.SEGURA_E_TRANQUILA)) {
+				Usuario donoDaCarona = getUsuarioAPartirDeIdCarona(idCarona);
+				donoDaCarona.addCaroneiroPreferencial(idCaroneiro);
+				donoDaCarona.setPontuacao(donoDaCarona.getPontuacao() + 1);
+			}
+			else if(eReview.equals(EnumCaronaReview.NAO_FUNCIONOU)){
+				Usuario donoDaCarona = getUsuarioAPartirDeIdCarona(idCarona);
+				donoDaCarona.setPontuacao(donoDaCarona.getPontuacao() + 0);
+			}
+			else
+				throw new IllegalArgumentException("Review inválido");
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
 		}
-
-		Integer idCaroneiro = mapIdSessao.get(idSessao).getIdUser();
-
-		if (idCaroneiro == null)
-			throw new UsuarioInexistenteException();
-
-		Usuario caroneiro = mapIdUsuario.get(idCaroneiro);
-
-		if (!caroneiro.getMapIdCaronasPegas().containsKey(idCarona)) { // garante  que o caroneiro foi aceito pelo dono da carona
-			throw new IllegalArgumentException(
-					"Usuário não possui vaga na carona.");
-		}
-		
-		
-		
-		EnumCaronaReview eReview = caroneiro.setReviewCarona(idCaroneiro, idCarona, review);
-		if(eReview.equals(EnumCaronaReview.SEGURA_E_TRANQUILA)) {
-			Usuario donoDaCarona = getUsuarioAPartirDeIdCarona(idCarona);
-			donoDaCarona.addCaroneiroPreferencial(idCaroneiro);
-			donoDaCarona.setPontuacao(donoDaCarona.getPontuacao() + 1);
-		}
-		else if(eReview.equals(EnumCaronaReview.NAO_FUNCIONOU)){
-			Usuario donoDaCarona = getUsuarioAPartirDeIdCarona(idCarona);
-			donoDaCarona.setPontuacao(donoDaCarona.getPontuacao() + 0);
-		}
-		else
-			throw new IllegalArgumentException("Review inválido");
 	}
 	
 	private Usuario getUsuarioAPartirDeIdCarona(Integer idCarona) {
-		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
-		Usuario donoDaCarona;
-		while(iteratorIdUsuario.hasNext()) {
-			donoDaCarona = iteratorIdUsuario.next();
-			Iterator<Carona> iteratorIdCarona = donoDaCarona.getMapIdCaronasOferecidas().values().iterator();
-			while(iteratorIdCarona.hasNext()) {
-				Carona c = iteratorIdCarona.next();
-				if(c.getIdCarona().equals(idCarona)) {
-					return donoDaCarona;
+		try {
+			lockMapIdUsuario.lock();
+			
+			iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+			Usuario donoDaCarona;
+			while(iteratorIdUsuario.hasNext()) {
+				donoDaCarona = iteratorIdUsuario.next();
+				Iterator<Carona> iteratorIdCarona = donoDaCarona.getMapIdCaronasOferecidas().values().iterator();
+				while(iteratorIdCarona.hasNext()) {
+					Carona c = iteratorIdCarona.next();
+					if(c.getIdCarona().equals(idCarona)) {
+						return donoDaCarona;
+					}
 				}
 			}
+			throw new IllegalArgumentException("IdCarona inválido");
+		} finally {
+			lockMapIdUsuario.unlock();
 		}
-		throw new IllegalArgumentException("IdCarona inválido");
 	}
 
 	/**
@@ -876,20 +1032,28 @@ public class EstradaSolidariaController implements Serializable {
 			throw new IllegalArgumentException("IdSessao inválido");
 		if (vagas == null || vagas.equals(""))
 			throw new IllegalArgumentException("Vagas inválida");
+		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDaCarona = mapIdUsuario.get(mapIdSessao.get(idSessao)
+					.getIdUser());
 
-		Usuario donoDaCarona = mapIdUsuario.get(mapIdSessao.get(idSessao)
-				.getIdUser());
+			if (donoDaCarona == null)
+				throw new IllegalArgumentException("Usuário inexistente");
 
-		if (donoDaCarona == null)
-			throw new IllegalArgumentException("Usuário inexistente");
-
-		Carona caronaMunicipal = donoDaCarona.cadastrarCaronaMunicipal(origem,
-				destino, cidade, data, hora, vagas, ordemParaCaronas++);
-		if (caronaMunicipal != null) {
-			atualizaMensagensEmPerfis(caronaMunicipal);
-			return caronaMunicipal;
-		} else
-			throw new IllegalArgumentException("Carona Inválida");
+			Carona caronaMunicipal = donoDaCarona.cadastrarCaronaMunicipal(origem,
+					destino, cidade, data, hora, vagas, ordemParaCaronas++);
+			if (caronaMunicipal != null) {
+				atualizaMensagensEmPerfis(caronaMunicipal);
+				return caronaMunicipal;
+			} else
+				throw new IllegalArgumentException("Carona Inválida");
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 
 	/**
@@ -913,23 +1077,28 @@ public class EstradaSolidariaController implements Serializable {
 				|| (!destino.equals("") && destino.toUpperCase()
 						.equals(destino)))
 			throw new IllegalArgumentException("Destino inválido");
-
-		List<Carona> listaCaronas = new LinkedList<Carona>();
 		
-		//Iterator Pattern
-		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
-		while (iteratorIdUsuario.hasNext()) {
-			Usuario u = iteratorIdUsuario.next();
-			Iterator<Carona> it = u.localizarCaronaMunicipal(origem, destino, cidade).iterator();
-			while (it.hasNext()) {
-				Carona carona = it.next();
-				listaCaronas.add(carona);
+		try {
+			lockMapIdUsuario.lock();
+			List<Carona> listaCaronas = new LinkedList<Carona>();
+			
+			//Iterator Pattern
+			iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+			while (iteratorIdUsuario.hasNext()) {
+				Usuario u = iteratorIdUsuario.next();
+				Iterator<Carona> it = u.localizarCaronaMunicipal(origem, destino, cidade).iterator();
+				while (it.hasNext()) {
+					Carona carona = it.next();
+					listaCaronas.add(carona);
+				}
 			}
-		}
-		
-		Collections.sort(listaCaronas);
+			
+			Collections.sort(listaCaronas);
 
-		return listaCaronas;
+			return listaCaronas;
+		} finally {
+			lockMapIdUsuario.unlock();
+		}
 	}
 
 	/**
@@ -945,21 +1114,26 @@ public class EstradaSolidariaController implements Serializable {
 		if (idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 
-		List<Carona> listaCaronas = new LinkedList<Carona>();
-		
-		//Iterator Pattern
-		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
-		while (iteratorIdUsuario.hasNext()) {
-			Usuario u = iteratorIdUsuario.next();
-			Iterator<Carona> it = u.localizarCaronaMunicipal(cidade).iterator();
-			while (it.hasNext()) {
-				Carona carona = it.next();
-				listaCaronas.add(carona);
+		try {
+			lockMapIdUsuario.lock();
+			List<Carona> listaCaronas = new LinkedList<Carona>();
+			
+			//Iterator Pattern
+			iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+			while (iteratorIdUsuario.hasNext()) {
+				Usuario u = iteratorIdUsuario.next();
+				Iterator<Carona> it = u.localizarCaronaMunicipal(cidade).iterator();
+				while (it.hasNext()) {
+					Carona carona = it.next();
+					listaCaronas.add(carona);
+				}
 			}
+			
+			Collections.sort(listaCaronas);
+			return listaCaronas;
+		} finally {
+			lockMapIdUsuario.unlock();
 		}
-		
-		Collections.sort(listaCaronas);
-		return listaCaronas;
 	}
 
 	/**
@@ -974,10 +1148,17 @@ public class EstradaSolidariaController implements Serializable {
 	public Carona getCaronaUsuario(Integer idSessao, int indexCarona) {
 		if (idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
-
-		Usuario usuario = this.mapIdUsuario.get(this.mapIdSessao.get(idSessao)
-				.getIdUser());
-		return usuario.getCaronaUsuario(indexCarona);
+		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario usuario = this.mapIdUsuario.get(this.mapIdSessao.get(idSessao).getIdUser());
+			return usuario.getCaronaUsuario(indexCarona);
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 
 	/**
@@ -990,10 +1171,16 @@ public class EstradaSolidariaController implements Serializable {
 	public List<Carona> getTodasCaronasUsuario(Integer idSessao) {
 		if (idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
-
-		Usuario usuario = this.mapIdUsuario.get(this.mapIdSessao.get(idSessao)
-				.getIdUser());
-		return usuario.getTodasCaronasUsuario();
+		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			Usuario usuario = this.mapIdUsuario.get(this.mapIdSessao.get(idSessao).getIdUser());
+			return usuario.getTodasCaronasUsuario();
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 
 	/**
@@ -1010,10 +1197,17 @@ public class EstradaSolidariaController implements Serializable {
 			throw new IllegalArgumentException("Sessão inválida");
 		if (idCarona == null)
 			throw new IllegalArgumentException("IdCarona inválida");
-
-		Usuario donoDaCarona = this.mapIdUsuario.get(this.mapIdSessao.get(
-				idSessao).getIdUser());
-		return donoDaCarona.getSolicitacoesConfirmadas(idCarona);
+		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			Usuario donoDaCarona = this.mapIdUsuario.get(this.mapIdSessao.get(
+					idSessao).getIdUser());
+			return donoDaCarona.getSolicitacoesConfirmadas(idCarona);
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 
 	/**
@@ -1032,9 +1226,16 @@ public class EstradaSolidariaController implements Serializable {
 		if (idCarona == null )
 			throw new CaronaInvalidaException();
 
-		Usuario donoDaCarona = this.mapIdUsuario.get(this.mapIdSessao.get(
-				idSessao).getIdUser());
-		return donoDaCarona.getSolicitacoesPendentes(idCarona);
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			Usuario donoDaCarona = this.mapIdUsuario.get(this.mapIdSessao.get(
+					idSessao).getIdUser());
+			return donoDaCarona.getSolicitacoesPendentes(idCarona);
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 
 	/**
@@ -1053,23 +1254,18 @@ public class EstradaSolidariaController implements Serializable {
 		if (idCarona == null )
 			throw new IllegalArgumentException("IdCarona inválida");
 		
-		Usuario donoDaCarona = null;
-		Carona carona = null;
-		for (Iterator<Usuario> itUsuario = getMapIdUsuario().values().iterator(); itUsuario.hasNext();) {
-			donoDaCarona = itUsuario.next();
-			for (Iterator<Carona> itCarona = donoDaCarona.getMapIdCaronasOferecidas().values().iterator(); itCarona.hasNext();) {
-				carona = itCarona.next();
-				if (carona.getIdCarona().equals(idCarona)) {
-					break;
-				}
-			}
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDaCarona = getUsuarioAPartirDeIDSessao(idSessao);
+			Carona carona = donoDaCarona.getCarona(idCarona);
+			return carona.getPontosSugeridos();
+
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
 		}
-		if(carona == null)
-			throw new IllegalArgumentException("Carona Inexistente");
-		if(donoDaCarona == null)
-			throw new UsuarioInexistenteException();
-		
-		return carona.getPontosSugeridos();
 	}
 
 	/**
@@ -1086,10 +1282,17 @@ public class EstradaSolidariaController implements Serializable {
 			throw new IllegalArgumentException("Sessão inválida");
 		if (idCarona == null )
 			throw new CaronaInvalidaException();
-
-		Usuario donoDaCarona = this.mapIdUsuario.get(this.mapIdSessao.get(
-				idSessao).getIdUser());
-		return donoDaCarona.getPontosEncontro(idCarona);
+		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDaCarona = getUsuarioAPartirDeIDSessao(idSessao);
+			return donoDaCarona.getPontosEncontro(idCarona);
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 
 	/**
@@ -1115,22 +1318,28 @@ public class EstradaSolidariaController implements Serializable {
 	 */
 	public Interesse cadastrarInteresse(Integer idSessao, String origem,
 			String destino, String data, String horaInicio, String horaFim) throws CaronaInvalidaException {
-		if (idSessao == null || idSessao.equals(""))
+		if (idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
-
-		Usuario donoDoInteresse = this.mapIdUsuario.get(this.mapIdSessao.get(
-				idSessao).getIdUser());
-
-		Interesse interesse = donoDoInteresse.cadastrarInteresseUsuario(origem, destino,
-				data, horaInicio, horaFim);
 		
-		Iterator<Carona> itCaronas = buscaCaronasCorrespondentes(interesse).iterator();
-		while (itCaronas.hasNext()) {
-			Carona carona = itCaronas.next();
-			donoDoInteresse.atualizaPerfilUsuarioInteressado(carona,
-					getEmailDonoDeCarona(carona));
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDoInteresse = getUsuarioAPartirDeIDSessao(idSessao);
+			Interesse interesse = donoDoInteresse.cadastrarInteresseUsuario(origem, destino,
+					data, horaInicio, horaFim);
+				
+			Iterator<Carona> itCaronas = buscaCaronasCorrespondentes(interesse).iterator();
+			while (itCaronas.hasNext()) {
+				Carona carona = itCaronas.next();
+				donoDoInteresse.atualizaPerfilUsuarioInteressado(carona,
+						getEmailDonoDeCarona(carona));
+			}
+			return interesse;
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
 		}
-		return interesse;
 	}
 
 	/**
@@ -1144,22 +1353,27 @@ public class EstradaSolidariaController implements Serializable {
 		if(carona == null)
 			throw new CaronaInvalidaException();
 		
-		String emailDonoDaCarona = null;
+		try {
+			lockMapIdUsuario.lock();
+			String emailDonoDaCarona = null;
 
-		// Iterator Pattern
-		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
-		while (iteratorIdUsuario.hasNext()) {
-			Usuario u = iteratorIdUsuario.next();
-			Iterator<Carona> it = u.getMapIdCaronasOferecidas().values().iterator();
-			while (it.hasNext()) {
-				Carona c = it.next();
-				if (c.getIdCarona().equals(carona.getIdCarona())) {
-					emailDonoDaCarona = u.getEmail();
-					break;
+			// Iterator Pattern
+			iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+			while (iteratorIdUsuario.hasNext()) {
+				Usuario u = iteratorIdUsuario.next();
+				Iterator<Carona> it = u.getMapIdCaronasOferecidas().values().iterator();
+				while (it.hasNext()) {
+					Carona c = it.next();
+					if (c.getIdCarona().equals(carona.getIdCarona())) {
+						emailDonoDaCarona = u.getEmail();
+						break;
+					}
 				}
 			}
+			return emailDonoDaCarona;
+		} finally {
+			lockMapIdUsuario.unlock();
 		}
-		return emailDonoDaCarona;
 	}
 
 	/**
@@ -1177,14 +1391,19 @@ public class EstradaSolidariaController implements Serializable {
 		if(novaCarona == null)
 			throw new CaronaInvalidaException();
 		
-		for(Usuario u : mapIdUsuario.values()) {
-			for(Interesse i : u.getMapIdInteresse().values()) {
-				if(i.verificaCorrespondencia(novaCarona)) {
-					String msg = u.atualizaPerfilUsuarioInteressado(novaCarona, getEmailDonoDeCarona(novaCarona));
-					Mensagem mensagem = new Mensagem(u, msg);
-					u.addMensagem(mensagem);
+		try {
+			lockMapIdUsuario.lock();
+			for(Usuario u : mapIdUsuario.values()) {
+				for(Interesse i : u.getMapIdInteresse().values()) {
+					if(i.verificaCorrespondencia(novaCarona)) {
+						String msg = u.atualizaPerfilUsuarioInteressado(novaCarona, getEmailDonoDeCarona(novaCarona));
+						Mensagem mensagem = new Mensagem(u, msg);
+						u.addMensagem(mensagem);
+					}
 				}
 			}
+		} finally {
+			lockMapIdUsuario.unlock();
 		}
 	}
 
@@ -1204,20 +1423,25 @@ public class EstradaSolidariaController implements Serializable {
 	private List<Carona> buscaCaronasCorrespondentes(Interesse interesse) {
 		List<Carona> listaCaronas = new LinkedList<Carona>();
 		
-		// Iterator Pattern
-		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
-		while (iteratorIdUsuario.hasNext()) {
-			Usuario u = iteratorIdUsuario.next();
-			Iterator<Carona> itCaronas = u.getMapIdCaronasOferecidas().values()
-					.iterator();
-			while (itCaronas.hasNext()) {
-				Carona carona = itCaronas.next();
-				if (interesse.verificaCorrespondencia(carona)) {
-					listaCaronas.add(carona);
+		try {
+			lockMapIdUsuario.lock();
+			// Iterator Pattern
+			iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+			while (iteratorIdUsuario.hasNext()) {
+				Usuario u = iteratorIdUsuario.next();
+				Iterator<Carona> itCaronas = u.getMapIdCaronasOferecidas().values()
+						.iterator();
+				while (itCaronas.hasNext()) {
+					Carona carona = itCaronas.next();
+					if (interesse.verificaCorrespondencia(carona)) {
+						listaCaronas.add(carona);
+					}
 				}
 			}
+			return listaCaronas;
+		} finally {
+			lockMapIdUsuario.unlock();
 		}
-		return listaCaronas;
 	}
 
 	/**
@@ -1228,12 +1452,16 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return mensagens
 	 */
 	public List<String> verificarMensagensPerfil(Integer idSessao) {
-		if (idSessao == null )
-			throw new IllegalArgumentException("Sessão inválida");
-
-		Usuario usuario = this.mapIdUsuario.get(this.mapIdSessao.get(idSessao)
-				.getIdUser());
-		return usuario.verificarMensagensPerfil();
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario usuario = getUsuarioAPartirDeIDSessao(idSessao);
+			return usuario.verificarMensagensPerfil();
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 
 	/**
@@ -1248,12 +1476,16 @@ public class EstradaSolidariaController implements Serializable {
 	 */
 	public boolean enviarEmail(Integer idSessao, String destino, String message)
 			throws MessagingException {
-		if(idSessao == null)
-			throw new IllegalArgumentException("Sessão inválida");
-		
-		Usuario remetente = this.mapIdUsuario.get(this.mapIdSessao
-				.get(idSessao).getIdUser());
-		return remetente.enviarEmail(destino, message);
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario remetente = getUsuarioAPartirDeIDSessao(idSessao);
+			return remetente.enviarEmail(destino, message);
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 
 	/**
@@ -1262,7 +1494,12 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return mapIdSessao
 	 */
 	public Map<Integer, Sessao> getMapIdSessao() {
-		return this.mapIdSessao;
+		try {
+			lockMapIdSessao.lock();
+			return this.mapIdSessao;
+		} finally {
+			lockMapIdSessao.unlock();
+		}
 	}
 
 	/**
@@ -1271,7 +1508,12 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return mapIdUsuario
 	 */
 	public Map<Integer, Usuario> getMapIdUsuario() {
-		return this.mapIdUsuario;
+		try {
+			lockMapIdUsuario.lock();
+			return this.mapIdUsuario;
+		} finally {
+			lockMapIdUsuario.unlock();
+		}
 	}
 
 	/**
@@ -1279,7 +1521,7 @@ public class EstradaSolidariaController implements Serializable {
 	 * 
 	 * @return gerenciadorDeDados
 	 */
-	public GerenciadorDeDados getGerenciadorDeDados() {
+	public synchronized GerenciadorDeDados getGerenciadorDeDados() {
 		return gerenciadorDeDados;
 	}
 
@@ -1293,13 +1535,20 @@ public class EstradaSolidariaController implements Serializable {
 		if(idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 		
-		Sessao s = getMapIdSessao().get(idSessao);
-		Usuario u = getMapIdUsuario().get(s.getIdUser());
-		List<Carona> caronasPegas = new LinkedList<Carona>();
-		
-		caronasPegas.addAll(u.getMapIdCaronasPegas().values());
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
 			
-		return caronasPegas;
+			Usuario u = getUsuarioAPartirDeIDSessao(idSessao);
+			List<Carona> caronasPegas = new LinkedList<Carona>();
+				
+			caronasPegas.addAll(u.getMapIdCaronasPegas().values());
+					
+			return caronasPegas;
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1310,7 +1559,7 @@ public class EstradaSolidariaController implements Serializable {
 	 * @throws MessagingException 
 	 * @throws MessageException 
 	 */
-	public void adicionaUsuarioECaronasAutomaticamente() throws MessagingException, CaronaInvalidaException, EstadoCaronaException, MessageException {
+	public synchronized void adicionaUsuarioECaronasAutomaticamente() throws MessagingException, CaronaInvalidaException, EstadoCaronaException, MessageException {
 		Adder adder = new Adder(uniqueInstance);
 		adder.addElements();
 	}
@@ -1322,10 +1571,16 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param novaSenha
 	 */
 	public void setSenha(Integer idSessao, String novaSenha) {
-		Sessao s = getMapIdSessao().get(idSessao);
-		Usuario u = getMapIdUsuario().get(s.getIdUser());
-		u.setSenha(novaSenha);
-		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario u = getUsuarioAPartirDeIDSessao(idSessao);
+			u.setSenha(novaSenha);
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1336,8 +1591,16 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return mapa de solicitacoes feitas
 	 */
 	public Map<Integer, Solicitacao> getMapaSolicitacoesFeitas(Integer idSessao) {
-		Usuario u = this.mapIdUsuario.get(this.mapIdSessao.get(idSessao).getIdUser());
-		return u.getMapIdSolicitacoesFeitas();
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario u = getUsuarioAPartirDeIDSessao(idSessao);
+			return u.getMapIdSolicitacoesFeitas();
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1347,7 +1610,24 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return usuario
 	 */
 	public Usuario getUsuarioAPartirDeIDSessao(Integer idSessao) {
-		return this.mapIdUsuario.get(this.mapIdSessao.get(idSessao).getIdUser());
+		if(idSessao == null)
+			throw new IllegalArgumentException("Sessão inválida");
+		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario u = this.mapIdUsuario.get(this.mapIdSessao.get(idSessao).getIdUser()); 
+			
+			if( u == null)
+				throw new UsuarioInexistenteException();
+			
+			return u;
+			
+		} finally{
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1357,7 +1637,12 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return usuario
 	 */
 	public Usuario getUsuarioAPartirDeIDUsuario(Integer idUsuario) {
-		return this.mapIdUsuario.get(idUsuario);
+		try {
+			lockMapIdUsuario.lock();
+			return this.mapIdUsuario.get(idUsuario);
+		} finally {
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1368,8 +1653,16 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return mapa de sugestoes
 	 */
 	public Map<Integer, Sugestao> getMapSugestoesFeitas(Integer idSessao) {
-		Usuario u = this.mapIdUsuario.get(this.mapIdSessao.get(idSessao).getIdUser());
-		return u.getMapIdSugestoesFeitas();
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario u = this.mapIdUsuario.get(this.mapIdSessao.get(idSessao).getIdUser());
+			return u.getMapIdSugestoesFeitas();
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1379,10 +1672,16 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param novoNome
 	 */
 	public void setNome(Integer idSessao, String novoNome) {
-		Sessao s = getMapIdSessao().get(idSessao);
-		Usuario u = getMapIdUsuario().get(s.getIdUser());
-		u.setNome(novoNome);
-		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario u = getUsuarioAPartirDeIDSessao(idSessao);
+			u.setNome(novoNome);
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1392,10 +1691,16 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param novoEmail
 	 */
 	public void setEmail(Integer idSessao, String novoEmail) {
-		Sessao s = getMapIdSessao().get(idSessao);
-		Usuario u = getMapIdUsuario().get(s.getIdUser());
-		u.setEmail(novoEmail);
-		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario u = getUsuarioAPartirDeIDSessao(idSessao);
+			u.setEmail(novoEmail);
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1405,10 +1710,17 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param novoEndereco
 	 */
 	public void setEndereco(Integer idSessao, String novoEndereco) {
-		Sessao s = getMapIdSessao().get(idSessao);
-		Usuario u = getMapIdUsuario().get(s.getIdUser());
-		u.setEndereco(novoEndereco);
 		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario u = getUsuarioAPartirDeIDSessao(idSessao);
+			u.setEndereco(novoEndereco);
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1418,10 +1730,16 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param novoLogin
 	 */
 	public void setLogin(Integer idSessao, String novoLogin) {
-		Sessao s = getMapIdSessao().get(idSessao);
-		Usuario u = getMapIdUsuario().get(s.getIdUser());
-		u.setLogin(novoLogin);
-		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario u = getUsuarioAPartirDeIDSessao(idSessao);
+			u.setLogin(novoLogin);
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1446,13 +1764,19 @@ public class EstradaSolidariaController implements Serializable {
 			String hora, Integer vagas, Integer minimoCaroneiros) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
 		if(idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
-		Usuario donoDaCarona = this.mapIdUsuario.get(this.mapIdSessao.get(idSessao).getIdUser());
 		
-		if(donoDaCarona == null)
-			throw new UsuarioInexistenteException();
-		
-		return donoDaCarona.cadastrarCaronaRelampago(donoDaCarona.getIdUsuario(), 
-				origem, destino, dataIda, dataVolta, hora, vagas,minimoCaroneiros, ordemParaCaronas++).getIdCarona();
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDaCarona = getUsuarioAPartirDeIDSessao(idSessao);
+				
+			return donoDaCarona.cadastrarCaronaRelampago(donoDaCarona.getIdUsuario(), 
+					origem, destino, dataIda, dataVolta, hora, vagas,minimoCaroneiros, ordemParaCaronas++).getIdCarona();
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1468,19 +1792,25 @@ public class EstradaSolidariaController implements Serializable {
 		if(idCarona == null)
 			throw new CaronaInvalidaException();
 		
-		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
-		Usuario donoDaCarona;
-		while(iteratorIdUsuario.hasNext()) {
-			donoDaCarona = iteratorIdUsuario.next();
-			Iterator<Carona> iteratorIdCarona = donoDaCarona.getMapIdCaronasOferecidas().values().iterator();
-			while(iteratorIdCarona.hasNext()) {
-				Carona c = iteratorIdCarona.next();
-				if(c.getIdCarona().equals(idCarona)) {
-					return c.getMinimoCaroneiros();
+		try {
+			lockMapIdUsuario.lock();
+			iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+			Usuario donoDaCarona;
+			while(iteratorIdUsuario.hasNext()) {
+				donoDaCarona = iteratorIdUsuario.next();
+				Iterator<Carona> iteratorIdCarona = donoDaCarona.getMapIdCaronasOferecidas().values().iterator();
+				while(iteratorIdCarona.hasNext()) {
+					Carona c = iteratorIdCarona.next();
+					if(c.getIdCarona().equals(idCarona)) {
+						return c.getMinimoCaroneiros();
+					}
 				}
 			}
+			throw new IllegalArgumentException("IdCarona inválido");
+			
+		} finally { 
+			lockMapIdUsuario.unlock();
 		}
-		throw new IllegalArgumentException("IdCarona inválido");
 	}
 	
 	/**
@@ -1494,19 +1824,24 @@ public class EstradaSolidariaController implements Serializable {
 		if(idCarona == null)
 			throw new CaronaInvalidaException();
 		
-		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
-		Usuario donoDaCarona;
-		while(iteratorIdUsuario.hasNext()) {
-			donoDaCarona = iteratorIdUsuario.next();
-			Iterator<Carona> iteratorCarona = donoDaCarona.getMapIdCaronasOferecidas().values().iterator();
-			while(iteratorCarona.hasNext()) {
-				Carona carona = iteratorCarona.next();
-				if(carona.getIdCarona().equals(idCarona)) {
-					return carona;
+		try {
+			lockMapIdUsuario.lock();
+			iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+			Usuario donoDaCarona;
+			while(iteratorIdUsuario.hasNext()) {
+				donoDaCarona = iteratorIdUsuario.next();
+				Iterator<Carona> iteratorCarona = donoDaCarona.getMapIdCaronasOferecidas().values().iterator();
+				while(iteratorCarona.hasNext()) {
+					Carona carona = iteratorCarona.next();
+					if(carona.getIdCarona().equals(idCarona)) {
+						return carona;
+					}
 				}
 			}
+			throw new IllegalArgumentException("IdCarona inválido");
+		} finally {
+			lockMapIdUsuario.unlock();
 		}
-		throw new IllegalArgumentException("IdCarona inválido");
 	}
 	
 	/**
@@ -1526,20 +1861,25 @@ public class EstradaSolidariaController implements Serializable {
 		if(idCarona.equals(""))
 			throw new CaronaInexistenteException();
 		
-		Usuario donoDaCarona;
-		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
-		while(iteratorIdUsuario.hasNext()) {
-			donoDaCarona = iteratorIdUsuario.next();
-			Iterator<Carona> iteratorCaronas = donoDaCarona.getMapIdCaronasOferecidas().values().iterator();
-			while(iteratorCaronas.hasNext()) {
-				Carona caronaRelampago = iteratorCaronas.next();
-				if(caronaRelampago.getIdCarona().equals(idCarona)) {
-					caronaRelampago.setExpired(true);
-					return caronaRelampago;
+		try {
+			lockMapIdUsuario.lock();
+			Usuario donoDaCarona;
+			iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+			while(iteratorIdUsuario.hasNext()) {
+				donoDaCarona = iteratorIdUsuario.next();
+				Iterator<Carona> iteratorCaronas = donoDaCarona.getMapIdCaronasOferecidas().values().iterator();
+				while(iteratorCaronas.hasNext()) {
+					Carona caronaRelampago = iteratorCaronas.next();
+					if(caronaRelampago.getIdCarona().equals(idCarona)) {
+						caronaRelampago.setExpired(true);
+						return caronaRelampago;
+					}
 				}
 			}
+			throw new IllegalArgumentException("IdCarona inválido");
+		} finally{
+			lockMapIdUsuario.unlock();
 		}
-		throw new IllegalArgumentException("IdCarona inválido");
 	}
 	
 	/**
@@ -1548,23 +1888,29 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param idCarona
 	 */
 	public void definirCaronaPreferencial(Integer idCarona) {
-		boolean flag = true;
-		//Iterator pattern
-		Usuario donoDaCarona;
-		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
-		while(iteratorIdUsuario.hasNext()) {
-			donoDaCarona = iteratorIdUsuario.next();
-			Iterator<Carona> iteratorCaronas = donoDaCarona.getMapIdCaronasOferecidas().values().iterator();
-			while(iteratorCaronas.hasNext()) {
-				Carona carona = iteratorCaronas.next();
-				if(carona.getIdCarona().equals(idCarona)) {
-					donoDaCarona.definirCaronaComoPreferencial(idCarona);
-					flag = flag ? true : true;
+		try {
+			lockMapIdUsuario.lock();
+			
+			boolean flag = true;
+			//Iterator pattern
+			Usuario donoDaCarona;
+			iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+			while(iteratorIdUsuario.hasNext()) {
+				donoDaCarona = iteratorIdUsuario.next();
+				Iterator<Carona> iteratorCaronas = donoDaCarona.getMapIdCaronasOferecidas().values().iterator();
+				while(iteratorCaronas.hasNext()) {
+					Carona carona = iteratorCaronas.next();
+					if(carona.getIdCarona().equals(idCarona)) {
+						donoDaCarona.definirCaronaComoPreferencial(idCarona);
+						flag = flag ? true : true;
+					}
 				}
 			}
+			if(!flag)
+				throw new IllegalArgumentException("IdCarona inválido");
+		} finally {
+			lockMapIdUsuario.unlock();
 		}
-		if(!flag)
-			throw new IllegalArgumentException("IdCarona inválido");
 	}
 	
 	/**
@@ -1574,19 +1920,25 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return true se carona eh preferencial
 	 */
 	public boolean isCaronaPreferencial(Integer idCarona) {
-		Usuario donoDaCarona;
-		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
-		while(iteratorIdUsuario.hasNext()) {
-			donoDaCarona = iteratorIdUsuario.next();
-			Iterator<Carona> iteratorCaronas = donoDaCarona.getMapIdCaronasOferecidas().values().iterator();
-			while(iteratorCaronas.hasNext()) {
-				Carona carona = iteratorCaronas.next();
-				if(carona.getIdCarona().equals(idCarona)) {
-					return carona.isCaronaPreferencial();
+		
+		try {
+			lockMapIdUsuario.lock();
+			Usuario donoDaCarona;
+			iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+			while(iteratorIdUsuario.hasNext()) {
+				donoDaCarona = iteratorIdUsuario.next();
+				Iterator<Carona> iteratorCaronas = donoDaCarona.getMapIdCaronasOferecidas().values().iterator();
+				while(iteratorCaronas.hasNext()) {
+					Carona carona = iteratorCaronas.next();
+					if(carona.getIdCarona().equals(idCarona)) {
+						return carona.isCaronaPreferencial();
+					}
 				}
 			}
+			throw new IllegalArgumentException("IdCarona inválido");
+		} finally {
+			lockMapIdUsuario.unlock();
 		}
-		throw new IllegalArgumentException("IdCarona inválido");
 	}
 	
 	/**
@@ -1598,36 +1950,47 @@ public class EstradaSolidariaController implements Serializable {
 	 * @throws CaronaInexistenteException 
 	 */
 	public List<Sessao> getUsuariosPreferenciaisCarona(Integer idCarona) throws CaronaInexistenteException {
-		List<Integer> listaUsuarios = new LinkedList<Integer>();
-		Usuario donoDaCarona;
-		iteratorIdUsuario = mapIdUsuario.values().iterator();
-		while(iteratorIdUsuario.hasNext()) {
-			donoDaCarona = iteratorIdUsuario.next();
-			if(donoDaCarona.getMapIdCaronasOferecidas().containsKey(idCarona)) {
-				listaUsuarios = donoDaCarona.getListaIdsUsuariosPreferenciais();
+		try {
+			lockMapIdUsuario.lock();
+			
+			List<Integer> listaUsuarios = new LinkedList<Integer>();
+			Usuario donoDaCarona;
+			iteratorIdUsuario = mapIdUsuario.values().iterator();
+			while(iteratorIdUsuario.hasNext()) {
+				donoDaCarona = iteratorIdUsuario.next();
+				if(donoDaCarona.getMapIdCaronasOferecidas().containsKey(idCarona)) {
+					listaUsuarios = donoDaCarona.getListaIdsUsuariosPreferenciais();
+				}
 			}
+			if(listaUsuarios == null)
+				throw new UsuarioInexistenteException();
+			else
+				return getListaIdsSessoesDeUsuarios(listaUsuarios);
+		} finally {
+			lockMapIdUsuario.unlock();
 		}
-		if(listaUsuarios == null)
-			throw new UsuarioInexistenteException();
-		else
-			return getListaIdsSessoesDeUsuarios(listaUsuarios);
-		
 	}
 	
 	private List<Sessao> getListaIdsSessoesDeUsuarios(List<Integer> listaUsuarios) {
-		List<Sessao> listaIdsSessoes = new LinkedList<Sessao>();
-		Iterator<Integer> iteratorUsuarios = listaUsuarios.iterator();
-		while(iteratorUsuarios.hasNext()) {
-			Integer idUsuario = iteratorUsuarios.next();
-			iteratorIdSessao = mapIdSessao.values().iterator();
-			while(iteratorIdSessao.hasNext()) {
-				Sessao s = iteratorIdSessao.next();
-				if(s.getIdUser().equals(idUsuario)) {
-					listaIdsSessoes.add(s);
+		try {
+			lockMapIdSessao.lock();
+			
+			List<Sessao> listaIdsSessoes = new LinkedList<Sessao>();
+			Iterator<Integer> iteratorUsuarios = listaUsuarios.iterator();
+			while(iteratorUsuarios.hasNext()) {
+				Integer idUsuario = iteratorUsuarios.next();
+				iteratorIdSessao = mapIdSessao.values().iterator();
+				while(iteratorIdSessao.hasNext()) {
+					Sessao s = iteratorIdSessao.next();
+					if(s.getIdUser().equals(idUsuario)) {
+						listaIdsSessoes.add(s);
+					}
 				}
 			}
+			return listaIdsSessoes;
+		} finally {
+			lockMapIdSessao.unlock();
 		}
-		return listaIdsSessoes;
 	}
 
 	/**
@@ -1642,22 +2005,28 @@ public class EstradaSolidariaController implements Serializable {
 		if(ordem == null || ordem.equals(""))
 			throw new IllegalArgumentException("Opção inválida.");
 		
-		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
-		List<Usuario> listaUsuarios = new LinkedList<Usuario>();
-		while(iteratorIdUsuario.hasNext()) {
-			listaUsuarios.add(iteratorIdUsuario.next());
+		try {
+			lockMapIdUsuario.lock();
+			
+			iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+			List<Usuario> listaUsuarios = new LinkedList<Usuario>();
+			while(iteratorIdUsuario.hasNext()) {
+				listaUsuarios.add(iteratorIdUsuario.next());
+			}
+			
+			Collections.sort(listaUsuarios);
+			if(ordem.equals(EnumOrdemParaRanking.CRESCENTE.getOrdem())) {
+				return listaUsuarios;
+			}
+			else if(ordem.equals(EnumOrdemParaRanking.DECRESCENTE.getOrdem())){
+				Collections.reverse(listaUsuarios);
+				return listaUsuarios;
+			}
+			else
+				throw new IllegalArgumentException("Opção inválida.");
+		} finally {
+			lockMapIdUsuario.unlock();
 		}
-		
-		Collections.sort(listaUsuarios);
-		if(ordem.equals(EnumOrdemParaRanking.CRESCENTE.getOrdem())) {
-			return listaUsuarios;
-		}
-		else if(ordem.equals(EnumOrdemParaRanking.DECRESCENTE.getOrdem())){
-			Collections.reverse(listaUsuarios);
-			return listaUsuarios;
-		}
-		else
-			throw new IllegalArgumentException("Opção inválida.");
 	}
 	
 	/**
@@ -1667,15 +2036,21 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return lista de usuarios
 	 */
 	public List<Usuario> pesquisaUsuariosNoSistema(String nome){
-		iteratorIdUsuario = this.mapIdUsuario.values().iterator();
-		List<Usuario> result = new SpecialLinkedListBrackets<Usuario>();
-		while(iteratorIdUsuario.hasNext()) {
-			Usuario u = iteratorIdUsuario.next();
-			if(u.getNome().toLowerCase().contains(nome.toLowerCase())){
-				result.add(u);
+		try {
+			lockMapIdUsuario.lock();
+			
+			iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+			List<Usuario> result = new SpecialLinkedListBrackets<Usuario>();
+			while(iteratorIdUsuario.hasNext()) {
+				Usuario u = iteratorIdUsuario.next();
+				if(u.getNome().toLowerCase().contains(nome.toLowerCase())){
+					result.add(u);
+				}
 			}
+			return result;
+		} finally {
+			lockMapIdUsuario.unlock();
 		}
-		return result;
 	}
 
 	/**
@@ -1690,8 +2065,17 @@ public class EstradaSolidariaController implements Serializable {
 			throw new IllegalArgumentException("Sessão inválida");
 		if(idInteresse == null)
 			throw new IllegalArgumentException("Interesse inválido");
-		Usuario donoDoInteresse = getUsuarioAPartirDeIDSessao(idSessao);
-		donoDoInteresse.deletarInteresse(idInteresse);
+		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDoInteresse = getUsuarioAPartirDeIDSessao(idSessao);
+			donoDoInteresse.deletarInteresse(idInteresse);
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1704,8 +2088,17 @@ public class EstradaSolidariaController implements Serializable {
 	public List<Carona> getListaCaronasOferecidas(Integer idSessao) {
 		if(idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
-		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
-		return donoDasCaronas.getListaCaronasOfercidas();
+		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
+			return donoDasCaronas.getListaCaronasOfercidas();
+		} finally{ 
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1718,8 +2111,17 @@ public class EstradaSolidariaController implements Serializable {
 	public List<Carona> getListaCaronasPegas(Integer idSessao) {
 		if(idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
-		Usuario donoDaSessao = getUsuarioAPartirDeIDSessao(idSessao);
-		return donoDaSessao.getListaCaronasPegas();
+		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDaSessao = getUsuarioAPartirDeIDSessao(idSessao);
+			return donoDaSessao.getListaCaronasPegas();
+		} finally{ 
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1733,8 +2135,17 @@ public class EstradaSolidariaController implements Serializable {
 	public List<Carona> getListaCaronasConfirmadas(Integer idSessao) {
 		if(idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
-		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
-		return donoDasCaronas.getListaCaronasConfirmadas();
+		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
+			return donoDasCaronas.getListaCaronasConfirmadas();
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1748,8 +2159,18 @@ public class EstradaSolidariaController implements Serializable {
 	public List<Carona> getListaCaronasCanceladas(Integer idSessao) {
 		if(idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
-		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
-		return donoDasCaronas.getListaCaronasCanceladas();
+		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
+			return donoDasCaronas.getListaCaronasCanceladas();
+		} 
+		finally{ 
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1763,8 +2184,17 @@ public class EstradaSolidariaController implements Serializable {
 	public List<Carona> getListaCaronasOcorrendo(Integer idSessao) {
 		if(idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
-		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
-		return donoDasCaronas.getListaCaronasOcorrendo();
+		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
+			return donoDasCaronas.getListaCaronasOcorrendo();
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1778,8 +2208,17 @@ public class EstradaSolidariaController implements Serializable {
 	public List<Carona> getListaCaronasEncerradas(Integer idSessao) {
 		if(idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
-		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
-		return donoDasCaronas.getListaCaronasEncerradas();
+		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
+			return donoDasCaronas.getListaCaronasEncerradas();
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1793,8 +2232,17 @@ public class EstradaSolidariaController implements Serializable {
 	public List<Carona> getListaCaronasExpired(Integer idSessao) {
 		if(idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
-		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
-		return donoDasCaronas.getListaCaronasExpired();
+		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
+			return donoDasCaronas.getListaCaronasExpired();
+		} finally{
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1807,8 +2255,17 @@ public class EstradaSolidariaController implements Serializable {
 	public List<Carona> getListaCaronasComuns(Integer idSessao) {
 		if(idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
-		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
-		return donoDasCaronas.getListaCaronasComuns();
+		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
+			return donoDasCaronas.getListaCaronasComuns();
+		} finally{ 
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1821,8 +2278,17 @@ public class EstradaSolidariaController implements Serializable {
 	public List<Carona> getListaCaronasMunicipais(Integer idSessao) {
 		if(idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
-		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
-		return donoDasCaronas.getListaCaronasMunicipais();
+		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
+			return donoDasCaronas.getListaCaronasMunicipais();
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1835,8 +2301,17 @@ public class EstradaSolidariaController implements Serializable {
 	public List<Carona> getListaCaronasRelampago(Integer idSessao) {
 		if(idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
-		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
-		return donoDasCaronas.getListaCaronasRelampago();
+		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
+			return donoDasCaronas.getListaCaronasRelampago();
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1849,8 +2324,17 @@ public class EstradaSolidariaController implements Serializable {
 	public List<Carona> getListaCaronasPreferenciais(Integer idSessao) {
 		if(idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
-		Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
-		return donoDasCaronas.getListaCaronasPreferenciais();
+		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDasCaronas = getUsuarioAPartirDeIDSessao(idSessao);
+			return donoDasCaronas.getListaCaronasPreferenciais();
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1866,8 +2350,17 @@ public class EstradaSolidariaController implements Serializable {
 			throw new IllegalArgumentException("Sessão inválida");
 		if(idCarona == null)
 			throw new CaronaInvalidaException();
-		Usuario donoDaCarona = getUsuarioAPartirDeIDSessao(idSessao);
-		donoDaCarona.encerrarCarona(idCarona);
+		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDaCarona = getUsuarioAPartirDeIDSessao(idSessao);
+			donoDaCarona.encerrarCarona(idCarona);
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1886,8 +2379,17 @@ public class EstradaSolidariaController implements Serializable {
 			throw new IllegalArgumentException("Sessão inválida");
 		if(idCarona == null)
 			throw new CaronaInvalidaException();
-		Usuario donoDaCarona = getUsuarioAPartirDeIDSessao(idSessao);
-		donoDaCarona.cancelarCarona(idCarona);
+		
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDaCarona = getUsuarioAPartirDeIDSessao(idSessao);
+			donoDaCarona.cancelarCarona(idCarona);
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 
 	/**
@@ -1898,25 +2400,16 @@ public class EstradaSolidariaController implements Serializable {
 	 * @return lista de mensagens
 	 */
 	public List<Mensagem> getListaDeMensagens(Integer idSessao) {
-		Usuario donoDasMensagens = null;
-		iteratorIdSessao = mapIdSessao.values().iterator();
-		while(iteratorIdSessao.hasNext()) {
-			Sessao s = iteratorIdSessao.next(); 
-			if(s.getIdSessao().equals(idSessao)) {
-				donoDasMensagens = mapIdUsuario.get(s.getIdUser());
-				break;
-			}
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDasMensagens = getUsuarioAPartirDeIDSessao(idSessao);
+			return donoDasMensagens.getListaDeMensagens();
+		} finally { 
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
 		}
-		if(donoDasMensagens == null)
-			throw new UsuarioInexistenteException();
-		
-		List<Mensagem> listaDeMensagens = donoDasMensagens.getListaDeMensagens();
-		List<Mensagem> listaDeMensagensInvertida = new LinkedList<Mensagem>();
-		
-		for (int i = listaDeMensagens.size() - 1; i >= 0; i--) {
-			listaDeMensagensInvertida.add(listaDeMensagens.get(i));
-		}
-		return listaDeMensagensInvertida;
 	}
 	
 	/**
@@ -1927,8 +2420,16 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param idMensagem
 	 */
 	public void apagarMensagem(Integer idSessao, Integer idMensagem) {
-		Usuario donoDaMensagem = getUsuarioAPartirDeIDSessao(idSessao);
-		donoDaMensagem.apagarMensagem(idMensagem);
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDaMensagem = getUsuarioAPartirDeIDSessao(idSessao);
+			donoDaMensagem.apagarMensagem(idMensagem);
+		} finally { 
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1939,8 +2440,16 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param idMensagem
 	 */
 	public void marcarMensagemComoLida(Integer idSessao, Integer idMensagem) {
-		Usuario donoDaMensagem = getUsuarioAPartirDeIDSessao(idSessao);
-		donoDaMensagem.marcarMensagemComoLida(idMensagem);
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario donoDaMensagem = getUsuarioAPartirDeIDSessao(idSessao);
+			donoDaMensagem.marcarMensagemComoLida(idMensagem);
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1952,11 +2461,19 @@ public class EstradaSolidariaController implements Serializable {
 	 * @throws MessagingException 
 	 */
 	public boolean convidarAmigo(Integer idSessao, String emailDoAmigo) throws MessagingException {
-		Usuario usuario = getUsuarioAPartirDeIDSessao(idSessao);
-		SenderMail.sendMail(usuario.getEmail(), emailDoAmigo, usuario.getNome() + " lhe convidou para o Estrada Solidária, a sua rede social de caroneiros." +
-				" Junte-se a ele nessa rede por um mundo mais solidário! " +
-				"\n\nAcesse http://estradasolidaria.appspot.com");
-		return true;
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			
+			Usuario usuario = getUsuarioAPartirDeIDSessao(idSessao);
+			SenderMail.sendMail(usuario.getEmail(), emailDoAmigo, usuario.getNome() + " lhe convidou para o Estrada Solidária, a sua rede social de caroneiros." +
+					" Junte-se a ele nessa rede por um mundo mais solidário! " +
+					"\n\nAcesse http://estradasolidaria.appspot.com");
+			return true;
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 	
 	/**
@@ -1967,8 +2484,13 @@ public class EstradaSolidariaController implements Serializable {
 	 * @throws SessaoInexistenteException 
 	 */
 	public void encerrarSessao(Integer idSessao) throws SessaoInexistenteException {
-		Sessao s = this.mapIdSessao.remove(idSessao);
-		if(s == null)
-			throw new SessaoInexistenteException();
+		try {
+			lockMapIdSessao.lock();
+			Sessao s = this.mapIdSessao.remove(idSessao);
+			if(s == null)
+				throw new SessaoInexistenteException();
+		} finally {
+			lockMapIdSessao.unlock();
+		}
 	}
 }

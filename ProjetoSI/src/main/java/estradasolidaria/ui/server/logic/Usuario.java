@@ -1828,7 +1828,13 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	public List<Mensagem> getListaDeMensagens() {
 		try {
 			lockListaDeMensagens.lock();
-			return listaDeMensagens;
+			
+			List<Mensagem> listaDeMensagensInvertida = new LinkedList<Mensagem>();
+			
+			for (int i = listaDeMensagens.size() - 1; i >= 0; i--) {
+				listaDeMensagensInvertida.add(listaDeMensagens.get(i));
+			}
+			return listaDeMensagensInvertida;
 		}
 		finally {
 			lockListaDeMensagens.unlock();
