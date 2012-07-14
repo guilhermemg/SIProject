@@ -85,12 +85,12 @@ public class StateInicio extends Composite {
 				}
 			}
 		};
-		dataGrid.addColumn(columnMensagemStatus, "");
+		dataGrid.addColumn(columnMensagemStatus, "Status");
 		
 		Column<GWTMensagem, String> column = new Column<GWTMensagem, String>(new ButtonCell()) {
 			@Override
 			public String getValue(GWTMensagem object) {
-				return "Ver";
+				return "Abrir";
 			}
 		};
 		column.setFieldUpdater(new FieldUpdater<GWTMensagem, String>() {

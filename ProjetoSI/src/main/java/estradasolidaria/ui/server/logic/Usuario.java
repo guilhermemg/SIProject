@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 import java.util.TreeMap;
 
 import javax.mail.MessagingException;
@@ -38,7 +37,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	
 	private List<String> mensagensPerfil = new LinkedList<String>();
 	
-	private Stack<Mensagem> pilhaDeMensagens = new Stack<Mensagem>();
+	private List<Mensagem> listaDeMensagens = new LinkedList<Mensagem>();
 	
 	private Map<Integer, Carona> mapIdCaronasOferecidas = new TreeMap<Integer, Carona>();
 	private Iterator<Carona> iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas
@@ -1484,8 +1483,8 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	/**
 	 * @return the pilhaDeMensagens
 	 */
-	public Stack<Mensagem> getListaDeMensagens() {
-		return pilhaDeMensagens;
+	public List<Mensagem> getListaDeMensagens() {
+		return listaDeMensagens;
 	}
 
 	/**
@@ -1498,10 +1497,42 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 */
 	public void addMensagem(Mensagem mensagem) throws MessageException {
 		try {
-			pilhaDeMensagens.push(mensagem);
+			listaDeMensagens.add(mensagem);
 		}
 		catch(Exception e) {
 			throw new MessageException();
 		}
+	}
+
+	/**
+	 * Apaga mensagem da lista de mensagens.
+	 * 
+	 * @param idMensagem
+	 */
+	public void apagarMensagem(Integer idMensagem) {
+		Iterator<Mensagem> itMensagens = listaDeMensagens.iterator();
+		while(itMensagens.hasNext()) {
+			Mensagem m = itMensagens.next();
+			if(m.getIdMensagem().equals(idMensagem)) {
+				listaDeMensagens.remove(m);
+			}
+		}
+		throw new IllegalArgumentException("Mensagem inexistente");
+	}
+
+	/**
+	 * Marca mensagem como lida.
+	 * 
+	 * @param idMensagem
+	 */
+	public void marcarMensagemComoLida(Integer idMensagem) {
+		Iterator<Mensagem> itMensagens = listaDeMensagens.iterator();
+		while(itMensagens.hasNext()) {
+			Mensagem m = itMensagens.next();
+			if(m.getIdMensagem().equals(idMensagem)) {
+				m.setLida(EnumLida.LIDA);
+			}
+		}
+		throw new IllegalArgumentException("Mensagem inexistente");
 	}
 }

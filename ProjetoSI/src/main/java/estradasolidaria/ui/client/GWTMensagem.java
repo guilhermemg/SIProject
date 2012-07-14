@@ -4,6 +4,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class GWTMensagem implements IsSerializable {
 
+	private Integer idMensagem;
 	private String destinatario;
 	private String remetente;
 	private String texto;
@@ -32,5 +33,17 @@ public class GWTMensagem implements IsSerializable {
 	}
 	public void setMensagemLida(boolean mensagemLida) {
 		this.mensagemLida = mensagemLida;
+	}
+	/**
+	 * @return the idMensagem
+	 */
+	public Integer getIdMensagem() {
+		return idMensagem;
+	}
+	/**
+	 * @param idMensagem the idMensagem to set
+	 */
+	public void setIdMensagem(Integer idMensagem) {
+		this.idMensagem = idMensagem;
 	}
 }

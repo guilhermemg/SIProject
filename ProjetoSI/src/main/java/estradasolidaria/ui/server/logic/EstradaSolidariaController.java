@@ -6,13 +6,13 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 import java.util.TreeMap;
 
 import javax.mail.MessagingException;
 
 import estradasolidaria.ui.server.adder.Adder;
 import estradasolidaria.ui.server.data.GerenciadorDeDados;
+import estradasolidaria.ui.server.util.SenderMail;
 import estradasolidaria.ui.server.util.SpecialLinkedListBrackets;
 
 
@@ -1908,13 +1908,52 @@ public class EstradaSolidariaController implements Serializable {
 		if(donoDasMensagens == null)
 			throw new UsuarioInexistenteException();
 		
-		Stack<Mensagem> pilhaDeMensagens = donoDasMensagens.getListaDeMensagens();
-		List<Mensagem> listaDeMensagens = new LinkedList<Mensagem>();
+		List<Mensagem> listaDeMensagens = donoDasMensagens.getListaDeMensagens();
+		List<Mensagem> listaDeMensagensInvertida = new LinkedList<Mensagem>();
 		
-		for (int i = pilhaDeMensagens.size() - 1; i >= 0; i--) {
-			Mensagem m = pilhaDeMensagens.get(i);
-			listaDeMensagens.add(m);
+		for (int i = listaDeMensagens.size() - 1; i >= 0; i--) {
+			listaDeMensagensInvertida.add(listaDeMensagens.get(i));
 		}
-		return listaDeMensagens;
+		return listaDeMensagensInvertida;
+	}
+	
+	/**
+	 * Apaga mensagem da lista de mensagens do usuario
+	 * identificado por idSessao.
+	 * 
+	 * @param idSessao
+	 * @param idMensagem
+	 */
+	public void apagarMensagem(Integer idSessao, Integer idMensagem) {
+		Usuario donoDaMensagem = getUsuarioAPartirDeIDSessao(idSessao);
+		donoDaMensagem.apagarMensagem(idMensagem);
+	}
+	
+	/**
+	 * Marca mensagem de usuario identificado
+	 * por idSessao como lida.
+	 * 
+	 * @param idSessao
+	 * @param idMensagem
+	 */
+	public void marcarMensagemComoLida(Integer idSessao, Integer idMensagem) {
+		Usuario donoDaMensagem = getUsuarioAPartirDeIDSessao(idSessao);
+		donoDaMensagem.marcarMensagemComoLida(idMensagem);
+	}
+	
+	/**
+	 * Convida amigo de fora do sistema.
+	 * 
+	 * @param idSessao
+	 * @param emailDoAmigo
+	 * @return true se email foi enviado com sucesso.
+	 * @throws MessagingException 
+	 */
+	public boolean convidarAmigo(Integer idSessao, String emailDoAmigo) throws MessagingException {
+		Usuario usuario = getUsuarioAPartirDeIDSessao(idSessao);
+		SenderMail.sendMail(usuario.getEmail(), emailDoAmigo, usuario.getNome() + " lhe convidou para o Estrada Solidária, a sua rede social de caroneiros." +
+				" Junte-se a ele nessa rede por um mundo mais solidário! " +
+				"\n\nAcesse http://estradasolidaria.appspot.com");
+		return true;
 	}
 }
