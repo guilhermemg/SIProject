@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.mail.MessagingException;
 
@@ -32,12 +34,12 @@ public class EstradaSolidariaController implements Serializable {
 	private Integer ordemParaCaronas = 0;
 
 	private Map<Integer, Sessao> mapIdSessao = new TreeMap<Integer, Sessao>(); // contem
-	private Iterator<Sessao> iteratorIdSessao = this.mapIdSessao.values()
-			.iterator();
+	private Iterator<Sessao> iteratorIdSessao = this.mapIdSessao.values().iterator();
+	private Lock lockMapIdSessao = new ReentrantLock();
 
 	private Map<Integer, Usuario> mapIdUsuario = new TreeMap<Integer, Usuario>();
-	private Iterator<Usuario> iteratorIdUsuario = this.mapIdUsuario.values()
-			.iterator();
+	private Iterator<Usuario> iteratorIdUsuario = this.mapIdUsuario.values().iterator();
+	private Lock lockMapIdUsuario = new ReentrantLock();
 
 	private GerenciadorDeDados gerenciadorDeDados = GerenciadorDeDados
 			.getInstance(this.mapIdUsuario);

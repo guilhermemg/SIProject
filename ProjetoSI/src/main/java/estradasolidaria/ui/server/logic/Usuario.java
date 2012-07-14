@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.mail.MessagingException;
 
@@ -36,26 +38,32 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	private Integer pontuacao;
 	
 	private List<String> mensagensPerfil = new LinkedList<String>();
+	private Lock lockMensagensPerfil = new ReentrantLock();
 	
 	private List<Mensagem> listaDeMensagens = new LinkedList<Mensagem>();
+	private Lock lockListaDeMensagens = new ReentrantLock();
 	
 	private Map<Integer, Carona> mapIdCaronasOferecidas = new TreeMap<Integer, Carona>();
-	private Iterator<Carona> iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas
-			.values().iterator();
+	private Iterator<Carona> iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas.values().iterator();
+	private Lock lockMapIdCaronasOferecidas = new ReentrantLock();
 
 	// contem dados temporarios (at� a carona acontecer de fato)
 	private Map<Integer, Carona> mapIdCaronasPegas = new TreeMap<Integer, Carona>();
-	private Iterator<Carona> iteratorIdCaronasPegas = this.mapIdCaronasPegas
-			.values().iterator();
+	private Iterator<Carona> iteratorIdCaronasPegas = this.mapIdCaronasPegas.values().iterator();
+	private Lock lockMapIdCaronasPegas = new ReentrantLock();
 
 	private Map<Integer, Interesse> mapIdInteresse = new TreeMap<Integer, Interesse>();
-
+	private Lock lockMapIdInteresse = new ReentrantLock();
+	
 	private Map<Integer, Solicitacao> mapIdSolicitacoesFeitas = new TreeMap<Integer, Solicitacao>();
+	private Lock lockMapIdSolicitacoesFeitas = new ReentrantLock();
 
 	private Map<Integer, Sugestao> mapIdSugestoesFeitas = new TreeMap<Integer, Sugestao>();
+	private Lock lockMapIdSugestoesFeitas = new ReentrantLock();
 	
 	private List<Integer> listaIdsUsuariosPreferenciais = new LinkedList<Integer>();
-
+	private Lock lockListaUsuariosPreferenciais = new ReentrantLock();
+	
 	/**
 	 * Construtor da classe Usuario.
 	 * 
@@ -68,16 +76,18 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 */
 	public Usuario(String login, String senha, String nome, String endereco,
 			String email) {
-		setLogin(login);
-		setSenha(senha);
-
-		setIdUsuario(this.hashCode());
-
-		setNome(nome);
-		setEndereco(endereco);
-		setEmail(email);
-		
-		setPontuacao(0);
+		synchronized (Usuario.class) {
+			setLogin(login);
+			setSenha(senha);
+	
+			setIdUsuario(this.hashCode());
+	
+			setNome(nome);
+			setEndereco(endereco);
+			setEmail(email);
+			
+			setPontuacao(0);
+		}
 	}
 
 	/**
@@ -85,7 +95,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * 
 	 * @param id
 	 */
-	private void setIdUsuario(Integer id) {
+	private synchronized void setIdUsuario(Integer id) {
 		this.idUsuario = id;
 	}
 
@@ -94,7 +104,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * 
 	 * @return idUsuario
 	 */
-	public Integer getIdUsuario() {
+	public synchronized Integer getIdUsuario() {
 		return idUsuario;
 	}
 
@@ -103,7 +113,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * 
 	 * @return
 	 */
-	public String getLogin() {
+	public synchronized String getLogin() {
 		return login;
 	}
 
@@ -113,7 +123,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param login
 	 * 
 	 */
-	public void setLogin(String login) {
+	public synchronized void setLogin(String login) {
 		if (login == null || login.equals(""))
 			throw new IllegalArgumentException("Login inválido");
 		this.login = login;
@@ -124,7 +134,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * 
 	 * @return email
 	 */
-	public String getEmail() {
+	public synchronized String getEmail() {
 		return this.email;
 	}
 
@@ -134,7 +144,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param email
 	 * 
 	 */
-	public void setEmail(String email) {
+	public synchronized void setEmail(String email) {
 		if (email == null || email.equals(""))
 			throw new IllegalArgumentException("Email inválido");
 		this.email = email;
@@ -145,7 +155,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * 
 	 * @return senha
 	 */
-	public String getSenha() {
+	public synchronized String getSenha() {
 		return senha;
 	}
 
@@ -155,7 +165,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param senha
 	 * 
 	 */
-	public void setSenha(String senha) {
+	public synchronized void setSenha(String senha) {
 		if (senha == null || senha.equals(""))
 			throw new IllegalArgumentException("Senha inválida");
 		this.senha = senha;
@@ -166,7 +176,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * 
 	 * @return
 	 */
-	public String getNome() {
+	public synchronized String getNome() {
 		return this.nome;
 	}
 
@@ -176,7 +186,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param nome
 	 * 
 	 */
-	public void setNome(String nome) {
+	public synchronized void setNome(String nome) {
 		if (nome == null || nome.equals(""))
 			throw new IllegalArgumentException("Nome inválido");
 		this.nome = nome;
@@ -187,7 +197,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * 
 	 * @return endere�o
 	 */
-	public String getEndereco() {
+	public synchronized String getEndereco() {
 		return this.endereco;
 	}
 
@@ -197,7 +207,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param endereco
 	 * 
 	 */
-	public void setEndereco(String endereco) {
+	public synchronized void setEndereco(String endereco) {
 		if (endereco == null || endereco.equals(""))
 			throw new IllegalArgumentException("Endereço inválido");
 		this.endereco = endereco;
@@ -224,11 +234,16 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	public Carona cadastrarCarona(Integer idUsuario, String origem,
 			String destino, String data, String hora, Integer vagas,
 			int ordemParaCaronas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
-
-		Carona carona = new Carona(idUsuario, origem, destino, data, hora,
-				vagas, ordemParaCaronas);
-		this.mapIdCaronasOferecidas.put(carona.getIdCarona(), carona);
-		return carona;
+		try {
+			lockMapIdCaronasOferecidas.lock();
+			Carona carona = new Carona(idUsuario, origem, destino, data, hora,
+					vagas, ordemParaCaronas);
+			this.mapIdCaronasOferecidas.put(carona.getIdCarona(), carona);
+			return carona;
+		}
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 
 	/**
@@ -237,7 +252,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param senha
 	 * @return true se senha eh valida
 	 */
-	public boolean validaSenha(String senha) {
+	public synchronized boolean validaSenha(String senha) {
 		return this.senha.equals(senha);
 	}
 
@@ -251,33 +266,40 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return lista de caronas
 	 */
 	public List<Carona> localizarCarona(String origem, String destino) {
-		List<Carona> caronas = new LinkedList<Carona>();
-
-		if (origem.equals("") && !destino.equals("")) {
-			for (Carona c : this.mapIdCaronasOferecidas.values()) {
-				if (c.getDestino().equals(destino)) {
+		try {
+			lockMapIdCaronasOferecidas.lock();
+			
+			List<Carona> caronas = new LinkedList<Carona>();
+			
+			if (origem.equals("") && !destino.equals("")) {
+				for (Carona c : this.mapIdCaronasOferecidas.values()) {
+					if (c.getDestino().equals(destino)) {
+						caronas.add(c);
+					}
+				}
+			} else if (!origem.equals("") && destino.equals("")) {
+				for (Carona c : this.mapIdCaronasOferecidas.values()) {
+					if (c.getOrigem().equals(origem)) {
+						caronas.add(c);
+					}
+				}
+			} else if (!origem.equals("") && !destino.equals("")) {
+				for (Carona c : this.mapIdCaronasOferecidas.values()) {
+					if (c.getOrigem().equals(origem)
+							&& c.getDestino().equals(destino)) {
+						caronas.add(c);
+					}
+				}
+			} else {
+				for (Carona c : this.mapIdCaronasOferecidas.values()) {
 					caronas.add(c);
 				}
 			}
-		} else if (!origem.equals("") && destino.equals("")) {
-			for (Carona c : this.mapIdCaronasOferecidas.values()) {
-				if (c.getOrigem().equals(origem)) {
-					caronas.add(c);
-				}
-			}
-		} else if (!origem.equals("") && !destino.equals("")) {
-			for (Carona c : this.mapIdCaronasOferecidas.values()) {
-				if (c.getOrigem().equals(origem)
-						&& c.getDestino().equals(destino)) {
-					caronas.add(c);
-				}
-			}
-		} else {
-			for (Carona c : this.mapIdCaronasOferecidas.values()) {
-				caronas.add(c);
-			}
+			return caronas;
 		}
-		return caronas;
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 
 	
@@ -295,12 +317,20 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 */
 	public Solicitacao sugerirPontoEncontro(String idCarona, Usuario donoDaCarona,
 			Usuario donoDaSolicitacao, String pontos) throws CadastroEmCaronaPreferencialException {
-		Carona c = this.mapIdCaronasOferecidas.get(idCarona);
-		if (c == null)
-			throw new IllegalArgumentException(
-					"Identificador do carona é inválido");
-		return c.addSolicitacao(c.getOrigem(), c.getDestino(), donoDaCarona,
-				donoDaSolicitacao, pontos, listaIdsUsuariosPreferenciais);
+		
+		try {
+			lockMapIdCaronasOferecidas.lock();
+			Carona c = this.mapIdCaronasOferecidas.get(idCarona);
+			
+			if (c == null)
+				throw new IllegalArgumentException(
+						"Identificador do carona é inválido");
+			return c.addSolicitacao(c.getOrigem(), c.getDestino(), donoDaCarona,
+					donoDaSolicitacao, pontos, listaIdsUsuariosPreferenciais);
+		}
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 
 	/**
@@ -317,12 +347,19 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 */
 	public Solicitacao solicitarVagaPontoEncontro(Integer idCarona,
 			Usuario donoDaCarona, Usuario donoDaSolicitacao, String pontos) throws CaronaInexistenteException, CadastroEmCaronaPreferencialException {
-		Carona carona = this.mapIdCaronasOferecidas.get(idCarona);
-		if(carona != null) {
-			return carona.addSolicitacao(carona.getOrigem(), carona.getDestino(), donoDaCarona,
-						donoDaSolicitacao, pontos, listaIdsUsuariosPreferenciais);
+		try {
+			lockMapIdCaronasOferecidas.lock();
+			Carona carona = this.mapIdCaronasOferecidas.get(idCarona);
+			
+			if(carona != null) {
+				return carona.addSolicitacao(carona.getOrigem(), carona.getDestino(), donoDaCarona,
+							donoDaSolicitacao, pontos, listaIdsUsuariosPreferenciais);
+			}
+			throw new CaronaInexistenteException();
 		}
-		throw new CaronaInexistenteException();
+		finally { 
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 
 	/**
@@ -331,7 +368,13 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return mapa de caronas
 	 */
 	public Map<Integer, Carona> getMapIdCaronasOferecidas() {
-		return this.mapIdCaronasOferecidas;
+		try {
+			lockMapIdCaronasOferecidas.lock();
+			return this.mapIdCaronasOferecidas;
+		}
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 
 	/**
@@ -341,11 +384,17 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return trajeto da carona
 	 * 
 	 */
-	public String[] getTrajeto(Integer idCarona) {
-		Carona c = this.mapIdCaronasOferecidas.get(idCarona);
-		if (c == null)
-			throw new IllegalArgumentException("Identificador do carona é inválido");
-		return c.getTrajeto();
+	public  String[] getTrajeto(Integer idCarona) {
+		try {
+			lockMapIdCaronasOferecidas.lock();
+			Carona c = this.mapIdCaronasOferecidas.get(idCarona);
+			
+			if (c == null)
+				throw new IllegalArgumentException("Identificador do carona é inválido");
+			return c.getTrajeto();
+		} finally { 
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 
 	/**
@@ -355,18 +404,33 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return Carona
 	 */
 	public Carona getCarona(Integer idCarona) {
-		Carona c = this.mapIdCaronasOferecidas.get(idCarona);
-		if (c == null)
-			throw new IllegalArgumentException("Identificador do carona é inválido");
-		return c.getCarona();
+		try {
+			lockMapIdCaronasOferecidas.lock();
+			Carona c = this.mapIdCaronasOferecidas.get(idCarona);
+			
+			if (c == null)
+				throw new IllegalArgumentException("Identificador do carona é inválido");
+			return c.getCarona();
+		} finally { 
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 
 	/**
 	 * Torna null objetos manipulados pelo sistema.
 	 */
 	public void zerarSistema() {
-		this.mapIdCaronasOferecidas.clear();
-		this.mapIdCaronasPegas.clear();
+		try {
+			lockMapIdCaronasOferecidas.lock();
+			lockMapIdCaronasPegas.lock();
+			
+			this.mapIdCaronasOferecidas.clear();
+			this.mapIdCaronasPegas.clear();
+		}
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+			lockMapIdCaronasPegas.unlock();
+		}
 	}
 
 	/**
@@ -384,16 +448,22 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 			Integer idSugestao, String pontos) throws CaronaInexistenteException {
 		if (pontos.equals(""))
 			throw new IllegalArgumentException("Ponto Inválido");
-		// Iterator Pattern
-		iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas.values()
-				.iterator();
-		while (iteratorIdCaronasOferecidas.hasNext()) {
-			Carona c = iteratorIdCaronasOferecidas.next();
-			if (c.getIdCarona().equals(idCarona)) {
-				return c.setSolicitacaoPontoEncontro(idSugestao, pontos);
+
+		try {
+			lockMapIdCaronasOferecidas.lock();
+			// Iterator Pattern
+			iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas.values().iterator();
+			while (iteratorIdCaronasOferecidas.hasNext()) {
+				Carona c = iteratorIdCaronasOferecidas.next();
+				if (c.getIdCarona().equals(idCarona)) {
+					return c.setSolicitacaoPontoEncontro(idSugestao, pontos);
+				}
 			}
+			
+			throw new CaronaInexistenteException();
+		} finally {
+			lockMapIdCaronasOferecidas.unlock();
 		}
-		throw new CaronaInexistenteException();
 	}
 
 	/**
@@ -407,24 +477,29 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 */
 	public Solicitacao aceitarSolicitacaoPontoEncontro(Integer idSolicitacao) throws IllegalArgumentException, CaronaInexistenteException, EstadoSolicitacaoException {
 
-		// Iterator Pattern
-		iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas.values()
-				.iterator();
-		while (iteratorIdCaronasOferecidas.hasNext()) {
-			Carona c = iteratorIdCaronasOferecidas.next();
+		try {
+			lockMapIdCaronasOferecidas.lock();
+			
 			// Iterator Pattern
-			Iterator<Solicitacao> it = c.getMapIdSolicitacao().values()
-					.iterator();
-			while (it.hasNext()) {
-				Solicitacao s = it.next();
-				if (s.getIdSolicitacao().equals(idSolicitacao) && s.getTipoSolicitacao().equals(EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO)) {
-					s.aceitar(c);
-					c.setPontoEncontro(s.getPontoEncontro()); // seta ponto de encontro para carona apos aceitar ponto encontro
-					return s;
+			iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas.values().iterator();
+			while (iteratorIdCaronasOferecidas.hasNext()) {
+				Carona c = iteratorIdCaronasOferecidas.next();
+				// Iterator Pattern
+				Iterator<Solicitacao> it = c.getMapIdSolicitacao().values().iterator();
+				while (it.hasNext()) {
+					Solicitacao s = it.next();
+					if (s.getIdSolicitacao().equals(idSolicitacao) && s.getTipoSolicitacao().equals(EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO)) {
+						s.aceitar(c);
+						c.setPontoEncontro(s.getPontoEncontro()); // seta ponto de encontro para carona apos aceitar ponto encontro
+						return s;
+					}
 				}
 			}
+			throw new IllegalArgumentException("Solicitação inexistente");
+			
+		} finally {
+			lockMapIdCaronasOferecidas.unlock();
 		}
-		throw new IllegalArgumentException("Solicitação inexistente");
 	}
 
 	/**
@@ -443,7 +518,14 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 			throw new IllegalArgumentException("IdCarona inválido");
 		if(carona == null)
 			throw new CaronaInexistenteException();
-		this.mapIdCaronasPegas.put(idCarona, carona);
+		
+		try {
+			lockMapIdCaronasPegas.lock();
+			this.mapIdCaronasPegas.put(idCarona, carona);
+		}
+		finally {
+			lockMapIdCaronasPegas.unlock();
+		}
 	}
 
 	/**
@@ -456,33 +538,40 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * 
 	 */
 	public Solicitacao aceitarSolicitacao(Integer idSolicitacao) throws IllegalArgumentException, CaronaInexistenteException, EstadoSolicitacaoException {
-//		// Iterator Pattern
-		iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas.values().iterator();
-		while (iteratorIdCaronasOferecidas.hasNext()) {
-			Carona carona = iteratorIdCaronasOferecidas.next();
-			Iterator<Solicitacao> itSolicitacoes = carona.getMapIdSolicitacao().values()
-					.iterator();
-			while (itSolicitacoes.hasNext()) {
-				Solicitacao s = itSolicitacoes.next();
-				if (s.getIdSolicitacao().equals(idSolicitacao) &&
-						s.getTipoSolicitacao().equals(EnumTipoSolicitacao.SOLICITACAO_SEM_PONTO_ENCONTRO)) {
-					// nao seta pontoEncontro da carona ==> fica null
-					carona.aceitarSolicitacao(s);
-					return s;
+		try {
+			lockMapIdCaronasOferecidas.lock();
+			
+			// Iterator Pattern
+			iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas.values().iterator();
+			while (iteratorIdCaronasOferecidas.hasNext()) {
+				Carona carona = iteratorIdCaronasOferecidas.next();
+				Iterator<Solicitacao> itSolicitacoes = carona.getMapIdSolicitacao().values()
+						.iterator();
+				while (itSolicitacoes.hasNext()) {
+					Solicitacao s = itSolicitacoes.next();
+					if (s.getIdSolicitacao().equals(idSolicitacao) &&
+							s.getTipoSolicitacao().equals(EnumTipoSolicitacao.SOLICITACAO_SEM_PONTO_ENCONTRO)) {
+						// nao seta pontoEncontro da carona ==> fica null
+						carona.aceitarSolicitacao(s);
+						return s;
+					}
 				}
 			}
+			throw new IllegalArgumentException("Solicitação inexistente");
 		}
-		throw new IllegalArgumentException("Solicitação inexistente");
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 
 	// pure fabrication
 	@Override
-	public String toString() {
+	public synchronized String toString() {
 		return "Usuario [idUsuario=" + idUsuario + ", login=" + getLogin() + "]";
 	}
 
-@Override
-	public int hashCode() {
+	@Override
+	public synchronized int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
@@ -495,7 +584,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public synchronized boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -543,12 +632,19 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 */
 	public Solicitacao solicitarVaga(Integer idCarona, Usuario donoDaCarona,
 			Usuario donoDaSolicitacao) throws IllegalArgumentException, CadastroEmCaronaPreferencialException {
-		Carona carona = this.mapIdCaronasOferecidas.get(idCarona);
-		if (carona != null) {
-			return carona.addSolicitacao(carona.getOrigem(), carona.getDestino(),
-					donoDaCarona, donoDaSolicitacao, this.listaIdsUsuariosPreferenciais);
+		try {
+			lockMapIdCaronasOferecidas.lock();
+			Carona carona = this.mapIdCaronasOferecidas.get(idCarona);
+			
+			if (carona != null) {
+				return carona.addSolicitacao(carona.getOrigem(), carona.getDestino(),
+						donoDaCarona, donoDaSolicitacao, this.listaIdsUsuariosPreferenciais);
+			}
+			throw new IllegalArgumentException("Identificador do carona é inválido");
+		} 
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
 		}
-		throw new IllegalArgumentException("Identificador do carona é inválido");
 	}
 
 	/**
@@ -561,22 +657,28 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * 
 	 */
 	public Solicitacao rejeitarSolicitacao(Integer idSolicitacao) throws CaronaInexistenteException, EstadoSolicitacaoException {
-		// Iterator Pattern
-		iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas.values()
-				.iterator();
-		while (iteratorIdCaronasOferecidas.hasNext()) {
-			Carona c = iteratorIdCaronasOferecidas.next();
-			Iterator<Solicitacao> it = c.getMapIdSolicitacao().values()
-					.iterator();
-			while (it.hasNext()) {
-				Solicitacao s = it.next();
-				if (s.getIdSolicitacao().equals(idSolicitacao)) {
-					s.rejeitar(c);
-					return s;
+		try {
+			lockMapIdCaronasOferecidas.lock();
+			
+			// Iterator Pattern
+			iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas.values().iterator();
+			while (iteratorIdCaronasOferecidas.hasNext()) {
+				Carona c = iteratorIdCaronasOferecidas.next();
+				Iterator<Solicitacao> it = c.getMapIdSolicitacao().values()
+						.iterator();
+				while (it.hasNext()) {
+					Solicitacao s = it.next();
+					if (s.getIdSolicitacao().equals(idSolicitacao)) {
+						s.rejeitar(c);
+						return s;
+					}
 				}
 			}
+			throw new IllegalArgumentException("Solicitação inexistente");
+		} 
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
 		}
-		throw new IllegalArgumentException("Solicitação inexistente");
 	}
 
 	/**
@@ -584,48 +686,8 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * 
 	 * @return idPerfil
 	 */
-	public Usuario visualizarPerfil() {
+	public synchronized Usuario visualizarPerfil() {
 		return this;
-	}
-
-	/**
-	 * Retorna atributo de acordo com par�metro fornecido.
-	 * 
-	 * @param atributo
-	 * @return
-	 * 
-	 */
-	public Object getAtributoPerfil(String atributo) {
-		if (atributo == null || atributo.equals(""))
-			throw new IllegalArgumentException("Atributo inexistente");
-
-		if (atributo.equals(EnumPerfil.NOME.getNomeAtributo()))
-			return getNome();
-		else if (atributo.equals(EnumPerfil.ENDERECO.getNomeAtributo()))
-			return getEndereco();
-		else if (atributo.equals(EnumPerfil.EMAIL.getNomeAtributo()))
-			return getEmail();
-		else if (atributo.equals(EnumPerfil.HISTORICO_DE_CARONAS
-				.getNomeAtributo())) {
-			return getHistoricoDeCaronas();
-		} else if (atributo.equals(EnumPerfil.HISTORICO_DE_VAGAS_EM_CARONAS
-				.getNomeAtributo())) {
-			return getHistoricoDeVagasEmCaronas();
-		} else if (atributo.equals(EnumPerfil.CARONAS_SEGURAS_E_TRANQUILAS
-				.getNomeAtributo())) {
-			return getCaronasSegurasETranquilas();
-		} else if (atributo.equals(EnumPerfil.CARONAS_QUE_NAO_FUNCIONARAM
-				.getNomeAtributo())) {
-			return getCaronasQueNaoFuncionaram();
-		} else if (atributo.equals(EnumPerfil.FALTAS_EM_VAGAS_DE_CARONAS
-				.getNomeAtributo())) {
-			return getFaltasEmVagasDeCaronas();
-		} else if (atributo.equals(EnumPerfil.PRESENCAS_EM_VAGAS_DE_CARONAS
-				.getNomeAtributo())) {
-			return getPresencasEmVagasDeCaronas();
-		}
-
-		throw new IllegalArgumentException("Atributo inexistente");
 	}
 
 	/**
@@ -634,21 +696,27 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return numero de presen�as
 	 */
 	public Integer getPresencasEmVagasDeCaronas() {
-		int sum = 0;
-		// Iterator Pattern
-		iteratorIdCaronasPegas = this.mapIdCaronasPegas.values().iterator();
-		while (iteratorIdCaronasPegas.hasNext()) {
-			Carona c = iteratorIdCaronasPegas.next();
-			Iterator<EnumCaronaReview> it = c.getMapIdDonoReviewCaroneiro()
-					.values().iterator();
-			while (it.hasNext()) {
-				EnumCaronaReview review = it.next();
-				if (review.equals(EnumCaronaReview.NAO_FALTOU)) {
-					sum++;
+		try {
+			int sum = 0;
+			
+			lockMapIdCaronasPegas.lock();
+			
+			// Iterator Pattern
+			iteratorIdCaronasPegas = this.mapIdCaronasPegas.values().iterator();
+			while (iteratorIdCaronasPegas.hasNext()) {
+				Carona c = iteratorIdCaronasPegas.next();
+				Iterator<EnumCaronaReview> it = c.getMapIdDonoReviewCaroneiro().values().iterator();
+				while (it.hasNext()) {
+					EnumCaronaReview review = it.next();
+					if (review.equals(EnumCaronaReview.NAO_FALTOU)) {
+						sum++;
+					}
 				}
 			}
+			return sum;
+		} finally {
+			lockMapIdCaronasPegas.unlock();
 		}
-		return sum;
 	}
 
 	/**
@@ -657,22 +725,27 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return numero de faltas
 	 */
 	public Integer getFaltasEmVagasDeCaronas() {
-		int sum = 0;
-
-		// Iterator Pattern
-		iteratorIdCaronasPegas = this.mapIdCaronasPegas.values().iterator();
-		while (iteratorIdCaronasPegas.hasNext()) {
-			Carona c = iteratorIdCaronasPegas.next();
-			Iterator<EnumCaronaReview> it = c.getMapIdDonoReviewCaroneiro()
-					.values().iterator();
-			while (it.hasNext()) {
-				EnumCaronaReview review = it.next();
-				if (review.equals(EnumCaronaReview.FALTOU)) {
-					sum++;
+		try {
+			int sum = 0;
+			lockMapIdCaronasPegas.lock();
+			
+			// Iterator Pattern
+			iteratorIdCaronasPegas = this.mapIdCaronasPegas.values().iterator();
+			while (iteratorIdCaronasPegas.hasNext()) {
+				Carona c = iteratorIdCaronasPegas.next();
+				Iterator<EnumCaronaReview> it = c.getMapIdDonoReviewCaroneiro()
+						.values().iterator();
+				while (it.hasNext()) {
+					EnumCaronaReview review = it.next();
+					if (review.equals(EnumCaronaReview.FALTOU)) {
+						sum++;
+					}
 				}
 			}
+			return sum;
+		} finally {
+			lockMapIdCaronasPegas.unlock();
 		}
-		return sum;
 	}
 
 	/**
@@ -681,21 +754,26 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return numero de caronas que nao funcionaram
 	 */
 	public Integer getCaronasQueNaoFuncionaram() {
-		int sum = 0;
-		// Iterator Pattern
-		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values()
-				.iterator();
-		while (iteratorIdCaronasOferecidas.hasNext()) {
-			Carona c = iteratorIdCaronasOferecidas.next();
-			Iterator<EnumCaronaReview> it = c.getMapIdCaroneiroReviewDono().values().iterator();
-			while (it.hasNext()) {
-				EnumCaronaReview review = it.next();
-				if (review.equals(EnumCaronaReview.NAO_FUNCIONOU)) {
-					sum++;
+		try {
+			int sum = 0;
+			lockMapIdCaronasOferecidas.lock();
+			
+			// Iterator Pattern
+			iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
+			while (iteratorIdCaronasOferecidas.hasNext()) {
+				Carona c = iteratorIdCaronasOferecidas.next();
+				Iterator<EnumCaronaReview> it = c.getMapIdCaroneiroReviewDono().values().iterator();
+				while (it.hasNext()) {
+					EnumCaronaReview review = it.next();
+					if (review.equals(EnumCaronaReview.NAO_FUNCIONOU)) {
+						sum++;
+					}
 				}
 			}
+			return sum;
+		} finally {
+			lockMapIdCaronasOferecidas.unlock();
 		}
-		return sum;
 	}
 
 	/**
@@ -704,21 +782,28 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return numero de caronas seguras
 	 */
 	public Integer getCaronasSegurasETranquilas() {
-		int sum = 0;
-		// Iterator Pattern
-		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values()
-				.iterator();
-		while (iteratorIdCaronasOferecidas.hasNext()) {
-			Carona c = iteratorIdCaronasOferecidas.next();
-			Iterator<EnumCaronaReview> it = c.getMapIdCaroneiroReviewDono().values().iterator();
-			while (it.hasNext()) {
-				EnumCaronaReview review = it.next();
-				if (review.equals(EnumCaronaReview.SEGURA_E_TRANQUILA)) {
-					sum++;
+		try {
+			int sum = 0;
+			lockMapIdCaronasOferecidas.lock();
+			
+			// Iterator Pattern
+			iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
+			while (iteratorIdCaronasOferecidas.hasNext()) {
+				Carona c = iteratorIdCaronasOferecidas.next();
+				Iterator<EnumCaronaReview> it = c.getMapIdCaroneiroReviewDono()
+						.values().iterator();
+				while (it.hasNext()) {
+					EnumCaronaReview review = it.next();
+					if (review.equals(EnumCaronaReview.SEGURA_E_TRANQUILA)) {
+						sum++;
+					}
 				}
 			}
+			return sum;
+		} 
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
 		}
-		return sum;
 	}
 
 	 /**
@@ -727,10 +812,16 @@ public class Usuario implements Serializable, Comparable<Usuario> {
      * @return string do historico
      */
     public List<Carona> getHistoricoDeVagasEmCaronas() {
-        List<Carona> caronasPegas = new LinkedList<Carona>(); 
-        caronasPegas.addAll(mapIdCaronasPegas.values());
-        Collections.sort(caronasPegas);
-        return caronasPegas;
+        try {
+        	List<Carona> caronasPegas = new LinkedList<Carona>(); 
+        	lockMapIdCaronasPegas.lock();
+        	caronasPegas.addAll(mapIdCaronasPegas.values());
+        	Collections.sort(caronasPegas);
+        	return caronasPegas;
+		}
+        finally {
+        	lockMapIdCaronasPegas.unlock();
+        }
     }
 
 	/**
@@ -739,10 +830,16 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return string do historico
 	 */
 	public List<Carona> getHistoricoDeCaronas() {
-		List<Carona> caronasOferecidas = new LinkedList<Carona>(); 
-        caronasOferecidas.addAll(mapIdCaronasOferecidas.values());
-        Collections.sort(caronasOferecidas);
-        return caronasOferecidas;
+        try {
+        	List<Carona> caronasOferecidas = new LinkedList<Carona>(); 
+        	lockMapIdCaronasOferecidas.lock();
+        	caronasOferecidas.addAll(mapIdCaronasOferecidas.values());
+        	Collections.sort(caronasOferecidas);
+        	return caronasOferecidas;
+		}
+        finally {
+        	lockMapIdCaronasOferecidas.unlock();
+        }
 	}
 
 	/**
@@ -757,11 +854,19 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 */
 	public EnumCaronaReview reviewVagaEmCarona(Integer idCarona, Integer idCaroneiro,
 			String review) {
-		Carona c = this.mapIdCaronasOferecidas.get(idCarona);
-		if (c == null)
-			throw new IllegalArgumentException(
-					"Identificador do carona é inválido");
-		return c.setReviewVagaEmCarona(idCaroneiro, review);
+		
+		try {
+			lockMapIdCaronasOferecidas.lock();
+			Carona c = this.mapIdCaronasOferecidas.get(idCarona);
+			if (c == null)
+				throw new IllegalArgumentException(
+						"Identificador do carona é inválido");
+			return c.setReviewVagaEmCarona(idCaroneiro, review);
+		} 
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
+		
 	}
 
 	/**
@@ -776,11 +881,17 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 */
 	public EnumCaronaReview setReviewCarona(Integer idCaroneiro, Integer idCarona,
 			String review) {
-		Carona c = mapIdCaronasPegas.get(idCarona);
-		if (c == null)
-			throw new IllegalArgumentException(
-					"Identificador do carona é inválido");
-		return c.setCaroneiroReviewDono(idCaroneiro, review);
+		try {
+			lockMapIdCaronasPegas.lock();
+			Carona c = mapIdCaronasPegas.get(idCarona);
+			if (c == null)
+				throw new IllegalArgumentException(
+						"Identificador do carona é inválido");
+			return c.setCaroneiroReviewDono(idCaroneiro, review);
+		}
+		finally {
+			lockMapIdCaronasPegas.unlock();
+		}
 	}
 
 	/**
@@ -789,7 +900,13 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return mapa de caronas
 	 */
 	public Map<Integer, Carona> getMapIdCaronasPegas() {
-		return this.mapIdCaronasPegas;
+		try {
+			lockMapIdCaronasPegas.lock();
+			return this.mapIdCaronasPegas;
+		}
+		finally {
+			lockMapIdCaronasPegas.unlock();
+		}
 	}
 
 	/**
@@ -808,44 +925,49 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		if (cidade == null || cidade.equals(""))
 			throw new IllegalArgumentException("Cidade inexistente");
 
-		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values()
-				.iterator();
+		try {
+			lockMapIdCaronasOferecidas.lock();
+			iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
 
-		if (origem.equals("") && !destino.equals("")) {
+			if (origem.equals("") && !destino.equals("")) {
 
-			// Iterator Pattern
-			while (iteratorIdCaronasOferecidas.hasNext()) {
-				Carona c = iteratorIdCaronasOferecidas.next();
-				if (c.getDestino().equals(destino) && c.isCaronaMunicipal()) {
+				// Iterator Pattern
+				while (iteratorIdCaronasOferecidas.hasNext()) {
+					Carona c = iteratorIdCaronasOferecidas.next();
+					if (c.getDestino().equals(destino) && c.isCaronaMunicipal()) {
+						caronas.add(c);
+					}
+				}
+			} else if (!origem.equals("") && destino.equals("")) {
+				// Iterator Pattern
+				while (iteratorIdCaronasOferecidas.hasNext()) {
+					Carona c = iteratorIdCaronasOferecidas.next();
+					if (c.getOrigem().equals(origem) && c.isCaronaMunicipal()) {
+						caronas.add(c);
+					}
+				}
+			} else if (!origem.equals("") && !destino.equals("")) {
+				// Iterator Pattern
+				while (iteratorIdCaronasOferecidas.hasNext()) {
+					Carona c = iteratorIdCaronasOferecidas.next();
+					if (c.getOrigem().equals(origem)
+							&& c.getDestino().equals(destino) && c.isCaronaMunicipal()) {
+						caronas.add(c);
+					}
+				}
+			} else {
+				// Iterator Pattern
+				while (iteratorIdCaronasOferecidas.hasNext()) {
+					Carona c = iteratorIdCaronasOferecidas.next();
 					caronas.add(c);
 				}
 			}
-		} else if (!origem.equals("") && destino.equals("")) {
-			// Iterator Pattern
-			while (iteratorIdCaronasOferecidas.hasNext()) {
-				Carona c = iteratorIdCaronasOferecidas.next();
-				if (c.getOrigem().equals(origem) && c.isCaronaMunicipal()) {
-					caronas.add(c);
-				}
-			}
-		} else if (!origem.equals("") && !destino.equals("")) {
-			// Iterator Pattern
-			while (iteratorIdCaronasOferecidas.hasNext()) {
-				Carona c = iteratorIdCaronasOferecidas.next();
-				if (c.getOrigem().equals(origem)
-						&& c.getDestino().equals(destino) && c.isCaronaMunicipal()) {
-					caronas.add(c);
-				}
-			}
-		} else {
-			// Iterator Pattern
-			while (iteratorIdCaronasOferecidas.hasNext()) {
-				Carona c = iteratorIdCaronasOferecidas.next();
-				caronas.add(c);
-			}
+			
+			return caronas;
 		}
-
-		return caronas;
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 
 	/**
@@ -861,17 +983,22 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		if (cidade == null || cidade.equals(""))
 			throw new IllegalArgumentException("Cidade inexistente");
 
-		// Iterator Pattern
-		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values()
-				.iterator();
-		while (iteratorIdCaronasOferecidas.hasNext()) {
-			Carona c = iteratorIdCaronasOferecidas.next();
-			if (c.isCaronaMunicipal() && c.getCidade().equals(cidade)) {
-				caronas.add(c);
+		try { 
+			lockMapIdCaronasOferecidas.lock();
+			// Iterator Pattern
+			iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
+			while (iteratorIdCaronasOferecidas.hasNext()) {
+				Carona c = iteratorIdCaronasOferecidas.next();
+				if (c.isCaronaMunicipal() && c.getCidade().equals(cidade)) {
+					caronas.add(c);
+				}
 			}
+			return caronas;
+		}
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
 		}
 
-		return caronas;
 	}
 
 	/**
@@ -898,8 +1025,15 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 			int ordemParaCaronas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
 		Carona cm = new Carona(getIdUsuario(), origem, destino, data, hora,
 				vagas, cidade, ordemParaCaronas);
-		mapIdCaronasOferecidas.put(cm.getIdCarona(), cm);
-		return cm;
+		
+		try {
+			lockMapIdCaronasOferecidas.lock();
+			mapIdCaronasOferecidas.put(cm.getIdCarona(), cm);
+			return cm;
+		}
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 
 	/**
@@ -915,16 +1049,21 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		}
 		List<Carona> listaCaronas = new LinkedList<Carona>();
 
-		// Iterator Pattern
-		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values()
-				.iterator();
-		while (iteratorIdCaronasOferecidas.hasNext()) {
-			Carona c = iteratorIdCaronasOferecidas.next();
-			listaCaronas.add(c);
+		try {
+			lockMapIdCaronasOferecidas.lock();
+			// Iterator Pattern
+			iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
+			while (iteratorIdCaronasOferecidas.hasNext()) {
+				Carona c = iteratorIdCaronasOferecidas.next();
+				listaCaronas.add(c);
+			}
+			
+			Collections.sort(listaCaronas);
+			return listaCaronas.get(indexCarona - 1);
 		}
-
-		Collections.sort(listaCaronas);
-		return listaCaronas.get(indexCarona - 1);
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 
 	/**
@@ -935,17 +1074,21 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	public List<Carona> getTodasCaronasUsuario() {
 		List<Carona> listaCaronasCadastradas = new LinkedList<Carona>();
 
-		// Iterator Pattern
-		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values()
-				.iterator();
-		while (iteratorIdCaronasOferecidas.hasNext()) {
-			Carona c = iteratorIdCaronasOferecidas.next();
-			listaCaronasCadastradas.add(c);
+		try {
+			lockMapIdCaronasOferecidas.lock();
+			// Iterator Pattern
+			iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
+			while (iteratorIdCaronasOferecidas.hasNext()) {
+				Carona c = iteratorIdCaronasOferecidas.next();
+				listaCaronasCadastradas.add(c);
+			}
+	
+			Collections.sort(listaCaronasCadastradas);
+			return listaCaronasCadastradas;
 		}
-
-		Collections.sort(listaCaronasCadastradas);
-
-		return listaCaronasCadastradas;
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 
 	/**
@@ -957,16 +1100,23 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 */
 	public List<Solicitacao> getSolicitacoesConfirmadas(Integer idCarona) {
 		List<Solicitacao> listaSolicitacoesConfirmadas = new LinkedList<Solicitacao>();
-		Carona c = this.mapIdCaronasOferecidas.get(idCarona);
 
-		// Iterator Pattern
-		Iterator<Solicitacao> it = c.getMapIdSolicitacao().values().iterator();
-		while (it.hasNext()) {
-			Solicitacao s = it.next();
-			if (s.isAceita()) // Utilizando instanceOf
-				listaSolicitacoesConfirmadas.add(s);
+		try { 
+			lockMapIdCaronasOferecidas.lock();
+			Carona c = this.mapIdCaronasOferecidas.get(idCarona);
+
+			// Iterator Pattern
+			Iterator<Solicitacao> it = c.getMapIdSolicitacao().values().iterator();
+			while (it.hasNext()) {
+				Solicitacao s = it.next();
+				if (s.isAceita()) // Utilizando instanceOf
+					listaSolicitacoesConfirmadas.add(s);
+			}
+			return listaSolicitacoesConfirmadas;
 		}
-		return listaSolicitacoesConfirmadas;
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 
 	/**
@@ -978,15 +1128,22 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 */
 	public List<Solicitacao> getSolicitacoesPendentes(Integer idCarona) {
 		List<Solicitacao> listaSolicitacoesPendentes = new LinkedList<Solicitacao>();
-		Carona c = this.mapIdCaronasOferecidas.get(idCarona);
-		// Iterator Pattern
-		Iterator<Solicitacao> it = c.getMapIdSolicitacao().values().iterator();
-		while (it.hasNext()) {
-			Solicitacao s = it.next();
-			if (s.isPendente()) // Utilizando instanceOf
-				listaSolicitacoesPendentes.add(s);
+		
+		try {
+			lockMapIdCaronasOferecidas.lock();
+			Carona c = this.mapIdCaronasOferecidas.get(idCarona);
+			// Iterator Pattern
+			Iterator<Solicitacao> it = c.getMapIdSolicitacao().values().iterator();
+			while (it.hasNext()) {
+				Solicitacao s = it.next();
+				if (s.isPendente()) // Utilizando instanceOf
+					listaSolicitacoesPendentes.add(s);
+			}
+			return listaSolicitacoesPendentes;
 		}
-		return listaSolicitacoesPendentes;
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 
 	/**
@@ -996,17 +1153,23 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return string com pontos sugeridos
 	 */
 	public List<String> getPontosSugeridos(Integer idCarona) {
-		List<String> pontosSugeridos = new LinkedList<String>();
-		Carona c = this.mapIdCaronasOferecidas.get(idCarona);
-
-		// Iterator Pattern
-		Iterator<Solicitacao> it = c.getMapIdSolicitacao().values().iterator();
-		while (it.hasNext()) {
-			Solicitacao s = it.next();
-			if (s.getPontoEncontro() != null)
-				pontosSugeridos.add(s.getPontoEncontro());
+		try {
+			lockMapIdCaronasOferecidas.lock();
+			List<String> pontosSugeridos = new LinkedList<String>();
+			Carona c = this.mapIdCaronasOferecidas.get(idCarona);
+	
+			// Iterator Pattern
+			Iterator<Solicitacao> it = c.getMapIdSolicitacao().values().iterator();
+			while (it.hasNext()) {
+				Solicitacao s = it.next();
+				if (s.getPontoEncontro() != null)
+					pontosSugeridos.add(s.getPontoEncontro());
+			}
+			return pontosSugeridos;
 		}
-		return pontosSugeridos;
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 
 	/**
@@ -1016,11 +1179,17 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return string com ponto de encontro
 	 */
 	public String getPontosEncontro(Integer idCarona) {
-		Carona c = this.mapIdCaronasOferecidas.get(idCarona);
-		if (c.getPontoEncontro() != null)
-			return "[" + c.getPontoEncontro() + "]";
-		else
-			return "[]";
+		try {
+			lockMapIdCaronasOferecidas.lock();
+			Carona c = this.mapIdCaronasOferecidas.get(idCarona);
+			if (c.getPontoEncontro() != null)
+				return "[" + c.getPontoEncontro() + "]";
+			else
+				return "[]";
+		}
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 
 	/**
@@ -1031,15 +1200,22 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * 
 	 * @param idCarona
 	 * @param idSolicitacao
-	 * @return 
+	 * @return solicitacao cancelada
 	 * @throws CaronaInexistenteException 
 	 * @throws EstadoSolicitacaoException 
 	 */
 	public Solicitacao desistirRequisicao(Integer idCarona, Integer idSolicitacao) throws CaronaInexistenteException, EstadoSolicitacaoException {
 		if(idCarona == null)
 			throw new CaronaInexistenteException();
-		Carona c = this.mapIdCaronasPegas.get(idCarona);
-		return c.desistirRequisicao(idSolicitacao);
+		
+		try {
+			lockMapIdCaronasPegas.lock();
+			Carona c = this.mapIdCaronasPegas.get(idCarona);
+			return c.desistirRequisicao(idSolicitacao);
+		}
+		finally {
+			lockMapIdCaronasPegas.unlock();
+		}
 	}
 
 	/**
@@ -1068,14 +1244,20 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return mensagem adicionada a lista de mensagens
 	 */
 	public String notificaPerfil(Carona carona, String emailDonoDaCarona) {
-		SimpleDateFormat formatterData = new SimpleDateFormat("dd/MM/yyyy");
-		SimpleDateFormat formatterHora = new SimpleDateFormat("HH:mm");
+			SimpleDateFormat formatterData = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat formatterHora = new SimpleDateFormat("HH:mm");
 		String msg = new String("Carona cadastrada no dia "
 				+ formatterData.format(carona.getData().getTime()) + ", " 
 				+ "às " + formatterHora.format(carona.getHora().getTime())
 				+ " de acordo com os seus interesses registrados. "
 				+ "Entrar em contato com " + emailDonoDaCarona);
-		mensagensPerfil.add(msg);
+		try {
+			lockMensagensPerfil.lock();
+			mensagensPerfil.add(msg);
+		}
+		finally {
+			lockMensagensPerfil.unlock();
+		}
 		return msg;
 	}
 
@@ -1090,7 +1272,15 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 			String horaInicio, String horaFim) {
 		Interesse interesse = new Interesse(origem, destino, data, horaInicio,
 				horaFim);
-		mapIdInteresse.put(interesse.getIdInteresse(), interesse);
+		
+		try {
+			lockMapIdInteresse.lock();
+			mapIdInteresse.put(interesse.getIdInteresse(), interesse);
+		}
+		finally {
+			lockMapIdInteresse.unlock();
+		}
+		
 		return interesse;
 	}
 
@@ -1101,7 +1291,13 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return string com mensagens
 	 */
 	public List<String> verificarMensagensPerfil() {
-		return this.mensagensPerfil;
+		try {
+			lockMensagensPerfil.lock();
+			return this.mensagensPerfil;
+		}
+		finally {
+			lockMensagensPerfil.unlock();
+		}
 	}
 	
 	/**
@@ -1110,7 +1306,9 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return mapIdInteresses
 	 */
 	public Map<Integer, Interesse> getMapIdInteresse() {
-		return this.mapIdInteresse;
+		synchronized (lockMapIdInteresse) {
+			return this.mapIdInteresse;
+		}
 	}
 
 	/**
@@ -1121,7 +1319,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return true se email foi enviado com sucesso
 	 * @throws MessagingException
 	 */
-	public boolean enviarEmail(String destino, String message)
+	public synchronized boolean enviarEmail(String destino, String message)
 			throws MessagingException {
 		SenderMail.sendMail(getEmail(), destino, message);
 		return true;
@@ -1134,7 +1332,13 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param solicitacaoFeita
 	 */
 	public void addSolicitacaoFeita(Solicitacao solicitacaoFeita) {
-		this.mapIdSolicitacoesFeitas .put(solicitacaoFeita.getIdSolicitacao(), solicitacaoFeita);
+		try {
+			lockMapIdSolicitacoesFeitas.lock();
+			this.mapIdSolicitacoesFeitas.put(solicitacaoFeita.getIdSolicitacao(), solicitacaoFeita);
+		} 
+		finally {
+			lockMapIdSolicitacoesFeitas.unlock();
+		}
 	}
 	
 	/**
@@ -1143,7 +1347,9 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return mapa de solicitacoes feitas
 	 */
 	public Map<Integer, Solicitacao> getMapIdSolicitacoesFeitas() {
-		return this.mapIdSolicitacoesFeitas;
+		synchronized (lockMapIdSolicitacoesFeitas) {
+			return this.mapIdSolicitacoesFeitas;
+		}
 	}
 	
 	/**
@@ -1152,7 +1358,9 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param sugestaoFeita
 	 */
 	public void addSugestaoFeita(Sugestao sugestaoFeita) {
-		this.mapIdSugestoesFeitas .put(sugestaoFeita.getIdSugestao(), sugestaoFeita);
+		synchronized (lockMapIdSugestoesFeitas) {
+			this.mapIdSugestoesFeitas.put(sugestaoFeita.getIdSugestao(), sugestaoFeita);
+		}
 	}
 	
 	/**
@@ -1162,7 +1370,9 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return mapa de sugestoes feitas
 	 */
 	public Map<Integer, Sugestao> getMapIdSugestoesFeitas() {
-		return this.mapIdSugestoesFeitas;
+		synchronized (lockMapIdSugestoesFeitas) {
+			return this.mapIdSugestoesFeitas;
+		}
 	}
 
 	/**
@@ -1189,29 +1399,38 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	public Carona cadastrarCaronaRelampago(Integer idDonoDaCarona,
 			String origem,String destino, String dataIda, String dataVolta, 
 			String hora, Integer vagas, Integer minimoCaroneiros, Integer posicaoNaInsercao) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
-			Carona caronaRelampago = new Carona(idDonoDaCarona, origem, 
+			
+		Carona caronaRelampago = new Carona(idDonoDaCarona, origem, 
 					destino, dataIda, dataVolta, hora, vagas, 
 					minimoCaroneiros, posicaoNaInsercao); 
+		
+		try {
+			lockMapIdCaronasOferecidas.lock();
 			this.mapIdCaronasOferecidas.put(caronaRelampago.getIdCarona(), caronaRelampago);
+		}
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
+		
 		return caronaRelampago;
 	}
 
 	@Override
-	public int compareTo(Usuario other) {
+	public synchronized int compareTo(Usuario other) {
 		return this.getPontuacao() - other.getPontuacao();
 	}
 	
 	/**
 	 * @return the pontuacao
 	 */
-	public Integer getPontuacao() {
+	public synchronized Integer getPontuacao() {
 		return pontuacao;
 	}
 
 	/**
 	 * @param pontuacao the pontuacao to set
 	 */
-	public void setPontuacao(Integer pontuacao) {
+	public synchronized void setPontuacao(Integer pontuacao) {
 		this.pontuacao = pontuacao;
 	}
 
@@ -1222,7 +1441,13 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param idInteresse
 	 */
 	public void deletarInteresse(Integer idInteresse) {
-		this.mapIdInteresse.remove(idInteresse);
+		try {
+			lockMapIdInteresse.lock();
+			this.mapIdInteresse.remove(idInteresse);
+		}
+		finally {
+			lockMapIdInteresse.unlock();
+		}
 	}
 
 	/**
@@ -1232,12 +1457,19 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return lista de caronas oferecidas
 	 */
 	public List<Carona> getListaCaronasOfercidas() {
-		List<Carona> listaCaronasOferecidas = new LinkedList<Carona>();
-		iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas.values().iterator();
-		while(iteratorIdCaronasOferecidas.hasNext()) {
-			listaCaronasOferecidas.add(iteratorIdCaronasOferecidas.next());
+		try {
+			List<Carona> listaCaronasOferecidas = new LinkedList<Carona>();
+			
+			lockMapIdCaronasOferecidas.lock();
+			iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas.values().iterator();
+			while(iteratorIdCaronasOferecidas.hasNext()) {
+				listaCaronasOferecidas.add(iteratorIdCaronasOferecidas.next());
+			}
+			return listaCaronasOferecidas;
 		}
-		return listaCaronasOferecidas;
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 
 	/**
@@ -1247,12 +1479,19 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return lista de caronas pegas
 	 */
 	public List<Carona> getListaCaronasPegas() {
-		List<Carona> listaCaronasPegas = new LinkedList<Carona>();
-		iteratorIdCaronasPegas = this.mapIdCaronasPegas.values().iterator();
-		while(iteratorIdCaronasPegas.hasNext()) {
-			listaCaronasPegas.add(iteratorIdCaronasPegas.next());
+		try {
+			List<Carona> listaCaronasPegas = new LinkedList<Carona>();
+			
+			lockMapIdCaronasPegas.lock();
+			iteratorIdCaronasPegas = this.mapIdCaronasPegas.values().iterator();
+			while(iteratorIdCaronasPegas.hasNext()) {
+				listaCaronasPegas.add(iteratorIdCaronasPegas.next());
+			}
+			return listaCaronasPegas;
 		}
-		return listaCaronasPegas;
+		finally {
+			lockMapIdCaronasPegas.unlock();
+		}
 	}
 
 	/**
@@ -1263,14 +1502,21 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return lista de caronas confirmadas
 	 */
 	public List<Carona> getListaCaronasConfirmadas() {
-		List<Carona> listaCaronasConfirmadas = new LinkedList<Carona>();
-		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
-		while(iteratorIdCaronasOferecidas.hasNext()) {
-			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
-			if(caronaOferecida.getEstadoDaCarona().getNomeEstado().equals(EnumNomeEstadoDaCarona.CONFIRMADA))
-				listaCaronasConfirmadas.add(caronaOferecida);
+		try { 
+			List<Carona> listaCaronasConfirmadas = new LinkedList<Carona>();
+			
+			lockMapIdCaronasOferecidas.lock();
+			iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
+			while(iteratorIdCaronasOferecidas.hasNext()) {
+				Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
+				if(caronaOferecida.getEstadoDaCarona().getNomeEstado().equals(EnumNomeEstadoDaCarona.CONFIRMADA))
+					listaCaronasConfirmadas.add(caronaOferecida);
+			}
+			return listaCaronasConfirmadas;
 		}
-		return listaCaronasConfirmadas;
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 	
 	/**
@@ -1281,14 +1527,21 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return lista de caronas canceladas
 	 */
 	public List<Carona> getListaCaronasCanceladas() {
-		List<Carona> listaCaronasCanceladas = new LinkedList<Carona>();
-		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
-		while(iteratorIdCaronasOferecidas.hasNext()) {
-			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
-			if(caronaOferecida.getEstadoDaCarona().getNomeEstado().equals(EnumNomeEstadoDaCarona.CANCELADA))
-				listaCaronasCanceladas.add(caronaOferecida);
+		try {
+			List<Carona> listaCaronasCanceladas = new LinkedList<Carona>();
+			
+			lockMapIdCaronasOferecidas.lock();
+			iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
+			while(iteratorIdCaronasOferecidas.hasNext()) {
+				Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
+				if(caronaOferecida.getEstadoDaCarona().getNomeEstado().equals(EnumNomeEstadoDaCarona.CANCELADA))
+					listaCaronasCanceladas.add(caronaOferecida);
+			}
+			return listaCaronasCanceladas;
 		}
-		return listaCaronasCanceladas;
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 	
 	/**
@@ -1299,14 +1552,21 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return lista de caronas expired
 	 */
 	public List<Carona> getListaCaronasExpired() {
-		List<Carona> listaCaronasExpired = new LinkedList<Carona>();
-		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
-		while(iteratorIdCaronasOferecidas.hasNext()) {
-			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
-			if(caronaOferecida.getEstadoDaCarona().getNomeEstado().equals(EnumNomeEstadoDaCarona.EXPIRED))
-				listaCaronasExpired.add(caronaOferecida);
+		try {
+			List<Carona> listaCaronasExpired = new LinkedList<Carona>();
+			
+			lockMapIdCaronasOferecidas.lock();
+			iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
+			while(iteratorIdCaronasOferecidas.hasNext()) {
+				Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
+				if(caronaOferecida.getEstadoDaCarona().getNomeEstado().equals(EnumNomeEstadoDaCarona.EXPIRED))
+					listaCaronasExpired.add(caronaOferecida);
+			}
+			return listaCaronasExpired;
 		}
-		return listaCaronasExpired;
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 	
 	/**
@@ -1317,14 +1577,22 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return lista de caronas ocorrendo
 	 */
 	public List<Carona> getListaCaronasOcorrendo() {
-		List<Carona> listaCaronasOcorrendo = new LinkedList<Carona>();
-		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
-		while(iteratorIdCaronasOferecidas.hasNext()) {
-			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
-			if(caronaOferecida.getEstadoDaCarona().getNomeEstado().equals(EnumNomeEstadoDaCarona.OCORRENDO))
-				listaCaronasOcorrendo.add(caronaOferecida);
+		try {
+			List<Carona> listaCaronasOcorrendo = new LinkedList<Carona>();
+			
+			lockMapIdCaronasOferecidas.lock();
+			iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
+			while(iteratorIdCaronasOferecidas.hasNext()) {
+				Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
+				if(caronaOferecida.getEstadoDaCarona().getNomeEstado().equals(EnumNomeEstadoDaCarona.OCORRENDO))
+					listaCaronasOcorrendo.add(caronaOferecida);
+			}
+			return listaCaronasOcorrendo;
 		}
-		return listaCaronasOcorrendo;
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
+		
 	}
 	
 	/**
@@ -1335,14 +1603,21 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return lista de caronas encerradas
 	 */
 	public List<Carona> getListaCaronasEncerradas() {
-		List<Carona> listaCaronasEncerradas = new LinkedList<Carona>();
-		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
-		while(iteratorIdCaronasOferecidas.hasNext()) {
-			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
-			if(caronaOferecida.getEstadoDaCarona().getNomeEstado().equals(EnumNomeEstadoDaCarona.ENCERRADA))
-				listaCaronasEncerradas.add(caronaOferecida);
+		try {
+			List<Carona> listaCaronasEncerradas = new LinkedList<Carona>();
+
+			lockMapIdCaronasOferecidas.lock();
+			iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
+			while(iteratorIdCaronasOferecidas.hasNext()) {
+				Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
+				if(caronaOferecida.getEstadoDaCarona().getNomeEstado().equals(EnumNomeEstadoDaCarona.ENCERRADA))
+					listaCaronasEncerradas.add(caronaOferecida);
+			}
+			return listaCaronasEncerradas;
 		}
-		return listaCaronasEncerradas;
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 
 	/**
@@ -1352,14 +1627,21 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return lista de caronas comuns
 	 */
 	public List<Carona> getListaCaronasComuns() {
-		List<Carona> listaCaronasComuns = new LinkedList<Carona>();
-		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
-		while(iteratorIdCaronasOferecidas.hasNext()) {
-			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
-			if(caronaOferecida.isCaronaComum())
-				listaCaronasComuns.add(caronaOferecida);
+		try {
+			List<Carona> listaCaronasComuns = new LinkedList<Carona>();
+			
+			lockMapIdCaronasOferecidas.lock();
+			iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
+			while(iteratorIdCaronasOferecidas.hasNext()) {
+				Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
+				if(caronaOferecida.isCaronaComum())
+					listaCaronasComuns.add(caronaOferecida);
+			}
+			return listaCaronasComuns;
 		}
-		return listaCaronasComuns;
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 	
 	/**
@@ -1369,14 +1651,22 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return lista de caronas comuns
 	 */
 	public List<Carona> getListaCaronasMunicipais() {
-		List<Carona> listaCaronasMunicipais = new LinkedList<Carona>();
-		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
-		while(iteratorIdCaronasOferecidas.hasNext()) {
-			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
-			if(caronaOferecida.isCaronaMunicipal())
-				listaCaronasMunicipais.add(caronaOferecida);
+		
+		try {
+			List<Carona> listaCaronasMunicipais = new LinkedList<Carona>();
+			
+			lockMapIdCaronasOferecidas.lock();
+			iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
+			while(iteratorIdCaronasOferecidas.hasNext()) {
+				Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
+				if(caronaOferecida.isCaronaMunicipal())
+					listaCaronasMunicipais.add(caronaOferecida);
+			}
+			return listaCaronasMunicipais;
 		}
-		return listaCaronasMunicipais;
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 	
 	/**
@@ -1386,14 +1676,22 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return lista de caronas relampago
 	 */
 	public List<Carona> getListaCaronasRelampago() {
-		List<Carona> listaCaronasRelampago = new LinkedList<Carona>();
-		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
-		while(iteratorIdCaronasOferecidas.hasNext()) {
-			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
-			if(caronaOferecida.isCaronaRelampago())
-				listaCaronasRelampago.add(caronaOferecida);
+		try {
+			List<Carona> listaCaronasRelampago = new LinkedList<Carona>();
+			
+			lockMapIdCaronasOferecidas.lock();
+			iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
+			while(iteratorIdCaronasOferecidas.hasNext()) {
+				Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
+				if(caronaOferecida.isCaronaRelampago())
+					listaCaronasRelampago.add(caronaOferecida);
+			}
+			return listaCaronasRelampago;
 		}
-		return listaCaronasRelampago;
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
+		
 	}
 	
 	/**
@@ -1403,14 +1701,22 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return lista de caronas preferenciais
 	 */
 	public List<Carona> getListaCaronasPreferenciais() {
-		List<Carona> listaCaronasComuns = new LinkedList<Carona>();
-		iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
-		while(iteratorIdCaronasOferecidas.hasNext()) {
-			Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
-			if(caronaOferecida.isCaronaPreferencial())
-				listaCaronasComuns.add(caronaOferecida);
+		try {
+			List<Carona> listaCaronasComuns = new LinkedList<Carona>();
+			
+			lockMapIdCaronasOferecidas.lock();
+			iteratorIdCaronasOferecidas = mapIdCaronasOferecidas.values().iterator();
+			while(iteratorIdCaronasOferecidas.hasNext()) {
+				Carona caronaOferecida = iteratorIdCaronasOferecidas.next();
+				if(caronaOferecida.isCaronaPreferencial())
+					listaCaronasComuns.add(caronaOferecida);
+			}
+			return listaCaronasComuns;
 		}
-		return listaCaronasComuns;
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
+		
 	}
 
 	/**
@@ -1421,8 +1727,14 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @throws CaronaInvalidaException 
 	 */
 	public void encerrarCarona(Integer idCarona) throws CaronaInvalidaException, EstadoCaronaException {
-		Carona carona = mapIdCaronasOferecidas.get(idCarona);
-		carona.encerrarCarona();
+		try {
+			lockMapIdCaronasOferecidas.lock();
+			Carona carona = mapIdCaronasOferecidas.get(idCarona);
+			carona.encerrarCarona();
+		}
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 
 	/**
@@ -1433,8 +1745,14 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @throws CaronaInvalidaException 
 	 */
 	public void cancelarCarona(Integer idCarona) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
-		Carona carona = mapIdCaronasOferecidas.get(idCarona);
-		carona.cancelarCarona();
+		try {
+			lockMapIdCaronasOferecidas.lock();
+			Carona carona = mapIdCaronasOferecidas.get(idCarona);
+			carona.cancelarCarona();
+		}
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 
 	/**
@@ -1446,7 +1764,13 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param idCaroneiro
 	 */
 	public void addCaroneiroPreferencial(Integer idCaroneiro) {
-		listaIdsUsuariosPreferenciais.add(idCaroneiro);
+		try {
+			lockListaUsuariosPreferenciais.lock();
+			listaIdsUsuariosPreferenciais.add(idCaroneiro);
+		}
+		finally {
+			lockListaUsuariosPreferenciais.unlock();
+		}
 	}
 	
 	/**
@@ -1457,8 +1781,14 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 */
 	public void definirCaronaComoPreferencial(
 			Integer idCarona) {
-		Carona carona = this.mapIdCaronasOferecidas.get(idCarona);
-		carona.definirCaronaComoPreferencial();
+		try {
+			lockMapIdCaronasOferecidas.lock();
+			Carona carona = this.mapIdCaronasOferecidas.get(idCarona);
+			carona.definirCaronaComoPreferencial();
+		}
+		finally {
+			lockMapIdCaronasOferecidas.unlock();
+		}
 	}
 	
 	/**
@@ -1467,7 +1797,13 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return lista de usuarios preferenciais
 	 */
 	public List<Integer> getUsuariosPreferenciaisCarona() {
-		return listaIdsUsuariosPreferenciais ;
+		try {
+			lockListaUsuariosPreferenciais.lock();
+			return listaIdsUsuariosPreferenciais ;
+		}
+		finally {
+			lockListaUsuariosPreferenciais.unlock();
+		}
 	}
 
 	/**
@@ -1477,14 +1813,26 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @return lista de ids de usuarios
 	 */
 	public List<Integer> getListaIdsUsuariosPreferenciais() {
-		return this.listaIdsUsuariosPreferenciais;
+		try {
+			lockListaUsuariosPreferenciais.lock();
+			return this.listaIdsUsuariosPreferenciais;
+		}
+		finally {
+			lockListaUsuariosPreferenciais.unlock();
+		}
 	}
 
 	/**
 	 * @return the pilhaDeMensagens
 	 */
 	public List<Mensagem> getListaDeMensagens() {
-		return listaDeMensagens;
+		try {
+			lockListaDeMensagens.lock();
+			return listaDeMensagens;
+		}
+		finally {
+			lockListaDeMensagens.unlock();
+		}
 	}
 
 	/**
@@ -1497,10 +1845,14 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 */
 	public void addMensagem(Mensagem mensagem) throws MessageException {
 		try {
+			lockListaDeMensagens.lock();
 			listaDeMensagens.add(mensagem);
 		}
 		catch(Exception e) {
 			throw new MessageException();
+		}
+		finally {
+			lockListaDeMensagens.unlock();
 		}
 	}
 
@@ -1510,14 +1862,19 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param idMensagem
 	 */
 	public void apagarMensagem(Integer idMensagem) {
-		Iterator<Mensagem> itMensagens = listaDeMensagens.iterator();
-		while(itMensagens.hasNext()) {
-			Mensagem m = itMensagens.next();
-			if(m.getIdMensagem().equals(idMensagem)) {
-				listaDeMensagens.remove(m);
+		try {
+			lockListaDeMensagens.lock();
+			Iterator<Mensagem> itMensagens = listaDeMensagens.iterator();
+			while(itMensagens.hasNext()) {
+				Mensagem m = itMensagens.next();
+				if(m.getIdMensagem().equals(idMensagem)) {
+					listaDeMensagens.remove(m);
+				}
 			}
 		}
-		throw new IllegalArgumentException("Mensagem inexistente");
+		finally {
+			lockListaDeMensagens.unlock();
+		}
 	}
 
 	/**
@@ -1526,13 +1883,18 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * @param idMensagem
 	 */
 	public void marcarMensagemComoLida(Integer idMensagem) {
-		Iterator<Mensagem> itMensagens = listaDeMensagens.iterator();
-		while(itMensagens.hasNext()) {
-			Mensagem m = itMensagens.next();
-			if(m.getIdMensagem().equals(idMensagem)) {
-				m.setLida(EnumLida.LIDA);
+		try {
+			lockListaDeMensagens.lock();
+			Iterator<Mensagem> itMensagens = listaDeMensagens.iterator();
+			while(itMensagens.hasNext()) {
+				Mensagem m = itMensagens.next();
+				if(m.getIdMensagem().equals(idMensagem)) {
+					m.setLida(EnumLida.LIDA);
+				}
 			}
 		}
-		throw new IllegalArgumentException("Mensagem inexistente");
+		finally {
+			lockListaDeMensagens.unlock();
+		}
 	}
 }

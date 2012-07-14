@@ -10,6 +10,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.mail.MessagingException;
 
@@ -52,8 +54,8 @@ public class Carona implements Comparable<Carona>, Serializable {
 	
 	// as solicitacoes sao apagadas apos aceitas pelo dono da carona
 	private Map<Integer, Solicitacao> mapIdSolicitacoes = new TreeMap<Integer, Solicitacao>();
-	private Iterator<Solicitacao> iteratorIdSolicitacoes = this.mapIdSolicitacoes
-			.values().iterator();
+	private Iterator<Solicitacao> iteratorIdSolicitacoes = this.mapIdSolicitacoes.values().iterator();
+	private Lock lockMapIdSolicitacoes = new ReentrantLock();
 
 	// corresponde ao historico do sistema
 	// ------------------------------------------------------------------
@@ -61,15 +63,18 @@ public class Carona implements Comparable<Carona>, Serializable {
 	// contem o mapeamento de cada usuario que compareceu a carona para o review
 	// q ele faz dela.
 	private Map<Integer, EnumCaronaReview> mapIdCaroneiroReviewDono = new TreeMap<Integer, EnumCaronaReview>();
+	private Lock lockMapIdCaroneiroReviewDono = new ReentrantLock();
 
 	// contem o mapeamento de cada usuario presente para o review q o dono da
 	// carona faz dele.
-	private Map<Integer, EnumCaronaReview> mapDonoReviewCaroneiro = new TreeMap<Integer, EnumCaronaReview>();
-	private Map<Integer, Sugestao> mapIdSugestoesPontoDeEncontro = new TreeMap<Integer, Sugestao>();
+	private Map<Integer, EnumCaronaReview> mapIdDonoReviewCaroneiro = new TreeMap<Integer, EnumCaronaReview>();
+	private Lock lockMapIdDonoReviewCaroneiro = new ReentrantLock();
+	
+	private Map<Integer, Sugestao> mapIdSugestaoDePontoDeEncontro = new TreeMap<Integer, Sugestao>();
+	private Iterator<Sugestao> iteratorIdSugestoes;
+	private Lock lockMapIdSugestaoDePontoDeEncontro = new ReentrantLock();
 
 	private Thread threadIntervaloPreferencial;
-
-	private Iterator<Sugestao> iteratorIdSugestoes;
 
 	// ------------------------------------------------------------------------------------------------------
 
@@ -497,12 +502,12 @@ public class Carona implements Comparable<Carona>, Serializable {
 						.hashCode());
 		result = prime
 				* result
-				+ ((mapDonoReviewCaroneiro == null) ? 0
-						: mapDonoReviewCaroneiro.hashCode());
+				+ ((mapIdDonoReviewCaroneiro == null) ? 0
+						: mapIdDonoReviewCaroneiro.hashCode());
 		result = prime
 				* result
-				+ ((mapIdSugestoesPontoDeEncontro == null) ? 0
-						: mapIdSugestoesPontoDeEncontro.hashCode());
+				+ ((mapIdSugestaoDePontoDeEncontro == null) ? 0
+						: mapIdSugestaoDePontoDeEncontro.hashCode());
 		result = prime * result + ((origem == null) ? 0 : origem.hashCode());
 		result = prime * result
 				+ ((pontoEncontro == null) ? 0 : pontoEncontro.hashCode());
@@ -562,17 +567,17 @@ public class Carona implements Comparable<Carona>, Serializable {
 				return false;
 		} else if (!mapIdCaroneiroReviewDono.equals(other.mapIdCaroneiroReviewDono))
 			return false;
-		if (mapDonoReviewCaroneiro == null) {
-			if (other.mapDonoReviewCaroneiro != null)
+		if (mapIdDonoReviewCaroneiro == null) {
+			if (other.mapIdDonoReviewCaroneiro != null)
 				return false;
-		} else if (!mapDonoReviewCaroneiro
-				.equals(other.mapDonoReviewCaroneiro))
+		} else if (!mapIdDonoReviewCaroneiro
+				.equals(other.mapIdDonoReviewCaroneiro))
 			return false;
-		if (mapIdSugestoesPontoDeEncontro == null) {
-			if (other.mapIdSugestoesPontoDeEncontro != null)
+		if (mapIdSugestaoDePontoDeEncontro == null) {
+			if (other.mapIdSugestaoDePontoDeEncontro != null)
 				return false;
-		} else if (!mapIdSugestoesPontoDeEncontro
-				.equals(other.mapIdSugestoesPontoDeEncontro))
+		} else if (!mapIdSugestaoDePontoDeEncontro
+				.equals(other.mapIdSugestaoDePontoDeEncontro))
 			return false;
 		if (origem == null) {
 			if (other.origem != null)
@@ -616,7 +621,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 			throw new IllegalArgumentException("Ponto Inválido");
 		}
 		Sugestao sugestao = new Sugestao(ponto);
-		mapIdSugestoesPontoDeEncontro.put(sugestao.getIdSugestao(), sugestao);
+		mapIdSugestaoDePontoDeEncontro.put(sugestao.getIdSugestao(), sugestao);
 		return sugestao;
 	}
 
@@ -706,7 +711,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 
 		Sugestao sugestao = null;
 		// Iterator Pattern
-		iteratorIdSugestoes = this.mapIdSugestoesPontoDeEncontro.values().iterator();
+		iteratorIdSugestoes = this.mapIdSugestaoDePontoDeEncontro.values().iterator();
 		while (iteratorIdSugestoes.hasNext()) {
 			sugestao = iteratorIdSugestoes.next();
 			if (sugestao.getIdSugestao().equals(idSugestao)) {
@@ -781,7 +786,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @return mapa
 	 */
 	public Map<Integer, EnumCaronaReview> getMapIdDonoReviewCaroneiro() {
-		return this.mapDonoReviewCaroneiro;
+		return this.mapIdDonoReviewCaroneiro;
 	}
 
 	/**
@@ -812,7 +817,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 */
 	public EnumCaronaReview setReviewVagaEmCarona(Integer idCaroneiro, String review) {
 		EnumCaronaReview eReview = getReview(review);
-		this.mapDonoReviewCaroneiro.put(idCaroneiro, eReview);
+		this.mapIdDonoReviewCaroneiro.put(idCaroneiro, eReview);
 		return eReview;
 	}
 
@@ -993,7 +998,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	public List<String> getPontosSugeridos() {
 		List<String> pontosSugeridos = new LinkedList<String>();
 
-		for (Iterator<Sugestao> iterator = getMapSugestoesPontoDeEncontro()
+		for (Iterator<Sugestao> iterator = getMapIdSugestoesPontoDeEncontro()
 				.values().iterator(); iterator.hasNext();) {
 			pontosSugeridos.add(iterator.next().getPontoSugerido());
 		}
@@ -1008,7 +1013,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @return mapa de sugestoes
 	 */
 	public Map<Integer, Sugestao> getSugestoesPontoDeEncontro() {
-		return this.getMapSugestoesPontoDeEncontro();
+		return this.getMapIdSugestoesPontoDeEncontro();
 	}
 	
 	/**
@@ -1032,8 +1037,8 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return mapa de sugestoes
 	 */
-	public Map<Integer, Sugestao> getMapSugestoesPontoDeEncontro() {
-		return mapIdSugestoesPontoDeEncontro;
+	public Map<Integer, Sugestao> getMapIdSugestoesPontoDeEncontro() {
+		return mapIdSugestaoDePontoDeEncontro;
 	}
 	
 	/**
