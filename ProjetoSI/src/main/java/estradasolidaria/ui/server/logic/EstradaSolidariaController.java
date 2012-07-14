@@ -1956,4 +1956,17 @@ public class EstradaSolidariaController implements Serializable {
 				"\n\nAcesse http://estradasolidaria.appspot.com");
 		return true;
 	}
+	
+	/**
+	 * Encerra sessao a partir do id da
+	 * sessao.
+	 * 
+	 * @param idSessao
+	 * @throws SessaoInexistenteException 
+	 */
+	public void encerrarSessao(Integer idSessao) throws SessaoInexistenteException {
+		Sessao s = this.mapIdSessao.remove(idSessao);
+		if(s == null)
+			throw new SessaoInexistenteException();
+	}
 }
