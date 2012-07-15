@@ -29,11 +29,13 @@ public class Mensagem implements Serializable {
 	 * @param texto
 	 */
 	public Mensagem(Usuario destinatario, Usuario remetente, String texto) {
-		setDestinatario(destinatario);
-		setRemetente(remetente);
-		setTexto(texto);
-		setLida(EnumLida.NAO_LIDA);
-		setIdMensagem(hashCode());
+		synchronized (Mensagem.class) {
+			setDestinatario(destinatario);
+			setRemetente(remetente);
+			setTexto(texto);
+			setLida(EnumLida.NAO_LIDA);
+			setIdMensagem(hashCode());
+		}
 	}
 	
 	/**
@@ -47,10 +49,12 @@ public class Mensagem implements Serializable {
 	 * @param msg
 	 */
 	public Mensagem(Usuario destinatario, String msg) {
-		setDestinatario(destinatario);
-		setTexto(msg);
-		setLida(EnumLida.NAO_LIDA);
-		setIdMensagem(hashCode());
+		synchronized (Mensagem.class) {
+			setDestinatario(destinatario);
+			setTexto(msg);
+			setLida(EnumLida.NAO_LIDA);
+			setIdMensagem(hashCode());
+		}
 	}
 
 	/**
@@ -58,12 +62,12 @@ public class Mensagem implements Serializable {
 	 * 
 	 * @param hashCode
 	 */
-	private void setIdMensagem(int hashCode) {
+	private synchronized void setIdMensagem(int hashCode) {
 		this.idMensagem = hashCode;
 	}
 	
 	@Override
-	public int hashCode() {
+	public synchronized int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
@@ -78,7 +82,7 @@ public class Mensagem implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public synchronized boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -116,7 +120,7 @@ public class Mensagem implements Serializable {
 	 * 
 	 * @return id
 	 */
-	public Integer getIdMensagem() {
+	public synchronized Integer getIdMensagem() {
 		return this.idMensagem;
 	}
 
@@ -125,7 +129,7 @@ public class Mensagem implements Serializable {
 	 * 
 	 * @param texto2
 	 */
-	private void setTexto(String texto2) {
+	private synchronized void setTexto(String texto2) {
 		this.texto = texto2;
 	}
 	
@@ -134,7 +138,7 @@ public class Mensagem implements Serializable {
 	 * 
 	 * @param remetente2
 	 */
-	private void setRemetente(Usuario remetente2) {
+	private synchronized void setRemetente(Usuario remetente2) {
 		this.remetente = remetente2;
 	}
 	
@@ -143,42 +147,42 @@ public class Mensagem implements Serializable {
 	 * 
 	 * @param destinatario2
 	 */
-	private void setDestinatario(Usuario destinatario2) {
+	private synchronized void setDestinatario(Usuario destinatario2) {
 		this.destinatario = destinatario2;
 	}
 	
 	/**
 	 * @return the remetente
 	 */
-	public Usuario getRemetente() {
+	public synchronized Usuario getRemetente() {
 		return remetente;
 	}
 
 	/**
 	 * @return the destinatario
 	 */
-	public Usuario getDestinatario() {
+	public synchronized Usuario getDestinatario() {
 		return destinatario;
 	}
 
 	/**
 	 * @return the texto
 	 */
-	public String getTexto() {
+	public synchronized String getTexto() {
 		return texto;
 	}
 
 	/**
 	 * @return the lida
 	 */
-	public boolean isLida() {
+	public synchronized boolean isLida() {
 		return lida.equals(EnumLida.LIDA);
 	}
 
 	/**
 	 * @param lida the lida to set
 	 */
-	public void setLida(EnumLida lida) {
+	public synchronized void setLida(EnumLida lida) {
 		this.lida = lida;
 	}
 
@@ -189,7 +193,7 @@ public class Mensagem implements Serializable {
 	 * 
 	 * @return lida
 	 */
-	public EnumLida getLida() {
+	public synchronized EnumLida getLida() {
 		return this.lida;
 	}
 }

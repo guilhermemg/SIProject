@@ -91,20 +91,6 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		}
 	}
 
-//	@Override
-//	public Map<Integer, String> localizarCarona(Integer idSessao, String origem, String destino) throws GWTException {
-//		try {
-//			Map<Integer, String> mapaIdCaronasToString = new TreeMap<Integer, String>();
-//			List<Carona> listaCaronas = controller.localizarCarona(idSessao, origem, destino);
-//			for(Carona c : listaCaronas){
-//				mapaIdCaronasToString.put(c.getIdCarona(), c.toString());
-//			}
-//			return mapaIdCaronasToString;
-//		} catch(Exception e){
-//			throw new GWTException(e.getMessage());
-//		}
-//	}
-	
 	@Override
 	public List<GWTCarona> localizarCarona(Integer idSessao, String origem, String destino) throws GWTException {
 		try {

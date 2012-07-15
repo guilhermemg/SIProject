@@ -38,16 +38,18 @@ public class Solicitacao implements Serializable {
 	 */
 	public Solicitacao(Integer idCarona, String origem, String destino, Usuario donoDaCarona, 
 			Usuario donoDaSolicitacao, Sugestao sugestao, EnumTipoSolicitacao solicitacaoComPontoEncontro) {
-		setIdCarona(idCarona);
-		setOrigemCaronaSolicitacao(origem); // id da sess�o do usuario requerente
-		setDestinoCaronaSolicitacao(destino);
-		setDonoDaCarona(donoDaCarona);
-		setDonoDaSolicitacao(donoDaSolicitacao);
-		setSugestaoPontoEncontroParaCarona(sugestao);
-		setEstado(new EstadoSolicitacaoPendente());
-		setTipoSolicitacao(solicitacaoComPontoEncontro);
-		
-		setIdSolicitacao(this.hashCode());
+		synchronized (Solicitacao.class) {
+			setIdCarona(idCarona);
+			setOrigemCaronaSolicitacao(origem); // id da sess�o do usuario requerente
+			setDestinoCaronaSolicitacao(destino);
+			setDonoDaCarona(donoDaCarona);
+			setDonoDaSolicitacao(donoDaSolicitacao);
+			setSugestaoPontoEncontroParaCarona(sugestao);
+			setEstado(new EstadoSolicitacaoPendente());
+			setTipoSolicitacao(solicitacaoComPontoEncontro);
+			
+			setIdSolicitacao(this.hashCode());
+		}
 	}
 	
 	// NOTE: pontoEncontroCaronaSolicitacao = null
@@ -63,15 +65,17 @@ public class Solicitacao implements Serializable {
 	 */
 	public Solicitacao(Integer idCarona, String origem2, String destino2, Usuario donoDaCarona2,
 			Usuario donoDaSolicitacao2, EnumTipoSolicitacao solicitacaoSemPontoEncontro) { 
-		setIdCarona(idCarona);
-		setOrigemCaronaSolicitacao(origem2); // id da sessao do usuario requerente
-		setDestinoCaronaSolicitacao(destino2);
-		setDonoDaCarona(donoDaCarona2);
-		setDonoDaSolicitacao(donoDaSolicitacao2);
-		setEstado(new EstadoSolicitacaoPendente());
-		setTipoSolicitacao(solicitacaoSemPontoEncontro);
-		
-		setIdSolicitacao(this.hashCode());
+		synchronized (Solicitacao.class) {
+			setIdCarona(idCarona);
+			setOrigemCaronaSolicitacao(origem2); // id da sessao do usuario requerente
+			setDestinoCaronaSolicitacao(destino2);
+			setDonoDaCarona(donoDaCarona2);
+			setDonoDaSolicitacao(donoDaSolicitacao2);
+			setEstado(new EstadoSolicitacaoPendente());
+			setTipoSolicitacao(solicitacaoSemPontoEncontro);
+			
+			setIdSolicitacao(this.hashCode());
+		}
 	}
 	
 	/**
@@ -89,16 +93,16 @@ public class Solicitacao implements Serializable {
 	 * 
 	 * @return tipo da solicitacao
 	 */
-	public EnumTipoSolicitacao getTipoSolicitacao() {
+	public synchronized EnumTipoSolicitacao getTipoSolicitacao() {
 		return this.tipoSolicitacao;
 	}
 	
-	private void setIdCarona(Integer idCarona2) {
+	private synchronized void setIdCarona(Integer idCarona2) {
 		this.idCarona = idCarona2;
 	}
 
 	@Override
-	public String toString() {
+	public synchronized String toString() {
 		return "Solicitacao [origemCaronaSolicitacao="
 				+ origemCaronaSolicitacao + ", destinoCaronaSolicitacao="
 				+ destinoCaronaSolicitacao
@@ -113,7 +117,7 @@ public class Solicitacao implements Serializable {
 	 * 
 	 * @param idSolicitacao
 	 */
-	private void setIdSolicitacao(Integer idSolicitacao) {
+	private synchronized void setIdSolicitacao(Integer idSolicitacao) {
 		this.idSolicitacao = idSolicitacao;
 	}
 
@@ -122,7 +126,7 @@ public class Solicitacao implements Serializable {
 	 * 
 	 * @param idDonoDaSolicitacao2
 	 */
-	private void setDonoDaSolicitacao(Usuario donoDaSolicitacao2) {
+	private synchronized void setDonoDaSolicitacao(Usuario donoDaSolicitacao2) {
 		this.donoDaSolicitacao = donoDaSolicitacao2;
 	}
 
@@ -131,7 +135,7 @@ public class Solicitacao implements Serializable {
 	 * 
 	 * @param donoDaCarona2
 	 */
-	private void setDonoDaCarona(Usuario donoDaCarona2) {
+	private synchronized void setDonoDaCarona(Usuario donoDaCarona2) {
 		this.donoDaCaronaSolicitacao = donoDaCarona2;
 	}
 	
@@ -140,7 +144,7 @@ public class Solicitacao implements Serializable {
 	 * 
 	 * @return donoDaSolicitacao
 	 */
-	public Usuario getDonoDaSolicitacao() {
+	public synchronized Usuario getDonoDaSolicitacao() {
 		return this.donoDaSolicitacao;
 	}
 	
@@ -149,12 +153,12 @@ public class Solicitacao implements Serializable {
 	 * 
 	 * @return donoDaCaronaSolicitacao
 	 */
-	public Usuario getDonoDaCarona() {
+	public synchronized Usuario getDonoDaCarona() {
 		return this.donoDaCaronaSolicitacao;
 	}
 
 	@Override
-	public int hashCode() {
+	public synchronized int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime
@@ -188,7 +192,7 @@ public class Solicitacao implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public synchronized boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -249,7 +253,7 @@ public class Solicitacao implements Serializable {
 	 * Retorna origem.
 	 * @return origem
 	 */
-	public String getOrigem() {
+	public synchronized String getOrigem() {
 		return origemCaronaSolicitacao;
 	}
 
@@ -257,7 +261,7 @@ public class Solicitacao implements Serializable {
 	 * Configura origem.
 	 * @param origem
 	 */
-	public void setOrigemCaronaSolicitacao(String origem) {
+	public synchronized void setOrigemCaronaSolicitacao(String origem) {
 		this.origemCaronaSolicitacao = origem;
 	}
 
@@ -265,7 +269,7 @@ public class Solicitacao implements Serializable {
 	 * Retorna destino.
 	 * @return destino
 	 */
-	public String getDestino() {
+	public synchronized String getDestino() {
 		return destinoCaronaSolicitacao;
 	}
 
@@ -273,7 +277,7 @@ public class Solicitacao implements Serializable {
 	 * Configura destino.
 	 * @param destino
 	 */
-	public void setDestinoCaronaSolicitacao(String destino) {
+	public synchronized void setDestinoCaronaSolicitacao(String destino) {
 		this.destinoCaronaSolicitacao = destino;
 	}
 
@@ -281,7 +285,7 @@ public class Solicitacao implements Serializable {
 	 * Retorna ponto de encontro.
 	 * @return ponto de encontro
 	 */
-	public String getPontoEncontro() {
+	public synchronized String getPontoEncontro() {
 		return sugestaoDePontoEncontro.getPontoSugerido();
 	}
 
@@ -289,7 +293,7 @@ public class Solicitacao implements Serializable {
 	 * Configura ponto de encontro.
 	 * @param sugestao
 	 */
-	public void setSugestaoPontoEncontroParaCarona(Sugestao sugestao) {
+	public synchronized void setSugestaoPontoEncontroParaCarona(Sugestao sugestao) {
 		this.sugestaoDePontoEncontro = sugestao;
 	}
 	
@@ -299,7 +303,7 @@ public class Solicitacao implements Serializable {
 	 * 
 	 * @return sugestao
 	 */
-	public Sugestao getSugestaoPontoEncontroParaCarona() {
+	public synchronized Sugestao getSugestaoPontoEncontroParaCarona() {
 		return this.sugestaoDePontoEncontro;
 	}
 
@@ -308,7 +312,7 @@ public class Solicitacao implements Serializable {
 	 * 
 	 * @return idSolicitacao
 	 */
-	public Integer getIdSolicitacao() {
+	public synchronized Integer getIdSolicitacao() {
 		return this.idSolicitacao;
 	}
 	
@@ -317,7 +321,7 @@ public class Solicitacao implements Serializable {
 	 * 
 	 * @return estado
 	 */
-	public EstadoSolicitacaoInterface getEstado() {
+	public synchronized EstadoSolicitacaoInterface getEstado() {
 		return estado;
 	}
 
@@ -326,7 +330,7 @@ public class Solicitacao implements Serializable {
 	 * 
 	 * @param estado
 	 */
-	public void setEstado(EstadoSolicitacaoInterface estado) {
+	public synchronized void setEstado(EstadoSolicitacaoInterface estado) {
 		this.estado = estado;
 	}
 	
@@ -338,7 +342,7 @@ public class Solicitacao implements Serializable {
 	 * @throws EstadoSolicitacaoException 
 	 * @throws IllegalArgumentException 
 	 */
-	public void aceitar(Carona c) throws CaronaInexistenteException, IllegalArgumentException, EstadoSolicitacaoException {
+	public synchronized void aceitar(Carona c) throws CaronaInexistenteException, IllegalArgumentException, EstadoSolicitacaoException {
 		estado.aceitar(this, c);
 	}
 	
@@ -349,7 +353,7 @@ public class Solicitacao implements Serializable {
 	 * @throws CaronaInexistenteException 
 	 * @throws EstadoSolicitacaoException 
 	 */
-	public void rejeitar(Carona c) throws CaronaInexistenteException, EstadoSolicitacaoException {
+	public synchronized void rejeitar(Carona c) throws CaronaInexistenteException, EstadoSolicitacaoException {
 		estado.rejeitar(this, c);
 	}
 	
@@ -359,7 +363,7 @@ public class Solicitacao implements Serializable {
 	 * @throws EstadoSolicitacaoException 
 	 * @throws CaronaInexistenteException 
 	 */
-	public void cancelar(Carona carona) throws EstadoSolicitacaoException, CaronaInexistenteException {
+	public synchronized void cancelar(Carona carona) throws EstadoSolicitacaoException, CaronaInexistenteException {
 		estado.cancelar(this, carona);
 	}
 	
@@ -368,7 +372,7 @@ public class Solicitacao implements Serializable {
 	 * 
 	 * @return true se estado eh aceito
 	 */
-	public boolean isAceita() {
+	public synchronized boolean isAceita() {
 		return estado instanceof EstadoSolicitacaoAceita;
 	}
 	
@@ -377,7 +381,7 @@ public class Solicitacao implements Serializable {
 	 * 
 	 * @return true se estado eh pendente
 	 */
-	public boolean isPendente() {
+	public synchronized boolean isPendente() {
 		return estado instanceof EstadoSolicitacaoPendente;
 	}
 	
@@ -387,7 +391,7 @@ public class Solicitacao implements Serializable {
 	 * 
 	 * @return respostaPontoEncontro
 	 */
-	public String getRespostaPontoEncontro() {
+	public synchronized String getRespostaPontoEncontro() {
 		return sugestaoDePontoEncontro.getResposta();
 	}
 	
@@ -397,7 +401,7 @@ public class Solicitacao implements Serializable {
 	 * 
 	 * @param respostaPontoEncontro
 	 */
-	public void setRespostaPontoEncontro(String respostaPontoEncontro) {
+	public synchronized void setRespostaPontoEncontro(String respostaPontoEncontro) {
 		sugestaoDePontoEncontro.setResposta(respostaPontoEncontro);
 	}
 
@@ -407,7 +411,7 @@ public class Solicitacao implements Serializable {
 	 * 
 	 * @return id
 	 */
-	public Integer getIdCarona() {
+	public synchronized Integer getIdCarona() {
 		return idCarona;
 	}
 
@@ -417,7 +421,7 @@ public class Solicitacao implements Serializable {
 	 * 
 	 * @return trajeto
 	 */
-	public String getTrajeto() {
+	public synchronized String getTrajeto() {
 		return getOrigem() + " - " + getDestino();
 	}
 }

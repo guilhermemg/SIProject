@@ -41,12 +41,14 @@ public class Interesse implements Serializable {
 	 */
 	public Interesse(String origem, String destino, String data,
 			String horaInicio, String horaFim) {
-		setOrigem(origem);
-		setDestino(destino);
-		setData(data);
-		setHoraInicio(horaInicio);
-		setHoraFim(horaFim);
-		setIdInteresse(hashCode());
+		synchronized (Interesse.class) {
+			setOrigem(origem);
+			setDestino(destino);
+			setData(data);
+			setHoraInicio(horaInicio);
+			setHoraFim(horaFim);
+			setIdInteresse(hashCode());
+		}
 	}
 
 	/**
@@ -54,14 +56,14 @@ public class Interesse implements Serializable {
 	 * 
 	 * @param id
 	 */
-	private void setIdInteresse(Integer id) {
+	private synchronized void setIdInteresse(Integer id) {
 		this.idInteresse = id;
 	}
 	
 	/**
 	 * Retorna id do interesse.
 	 */
-	public Integer getIdInteresse() {
+	public synchronized Integer getIdInteresse() {
 		return idInteresse;
 	}
 
@@ -70,7 +72,7 @@ public class Interesse implements Serializable {
 	 * 
 	 * @return hora de inicio
 	 */
-	public Calendar getHoraInicio() {
+	public synchronized Calendar getHoraInicio() {
 		return this.horaInicio;
 	}
 
@@ -79,7 +81,7 @@ public class Interesse implements Serializable {
 	 * 
 	 * @return data
 	 */
-	public Calendar getData() {
+	public synchronized Calendar getData() {
 		return this.data;
 	}
 
@@ -88,7 +90,7 @@ public class Interesse implements Serializable {
 	 * 
 	 * @return hora de fim
 	 */
-	public Calendar getHoraFim() {
+	public synchronized Calendar getHoraFim() {
 		return this.horaFim;
 	}
 
@@ -97,7 +99,7 @@ public class Interesse implements Serializable {
 	 * 
 	 * @return destino
 	 */
-	public String getDestino() {
+	public synchronized String getDestino() {
 		return destino;
 	}
 
@@ -115,7 +117,9 @@ public class Interesse implements Serializable {
 				throw new IllegalArgumentException("Destino inválido");
 			}
 		}
-		this.destino = destino;
+		synchronized (Interesse.class) {
+			this.destino = destino;
+		}
 	}
 	
 	/**
@@ -129,14 +133,22 @@ public class Interesse implements Serializable {
 	 */
 	public void setData(String data) {
 		dateUtil = new DateUtil(new GregorianCalendar());
-		if(data == null)
+		if(data == null) {
 			throw new IllegalArgumentException("Data inválida");
-		else if(data.equals(""))
-			this.data = null;
-		else if(dateUtil.validaData(data) && dateUtil.validaDataJaPassou())
-			this.data = dateUtil.getCalendar();
-		else
+		}
+		else if(data.equals("")) {
+			synchronized (Interesse.class) {
+				this.data = null;
+			}
+		}
+		else if(dateUtil.validaData(data) && dateUtil.validaDataJaPassou()) {
+			synchronized (Interesse.class) {
+				this.data = dateUtil.getCalendar();
+			}
+		}
+		else {
 			throw new IllegalArgumentException("Data inválida");
+		}
 	}
 
 	/**
@@ -144,7 +156,7 @@ public class Interesse implements Serializable {
 	 * 
 	 * @return origem
 	 */
-	public String getOrigem() {
+	public synchronized String getOrigem() {
 		return origem;
 	}
 
@@ -162,7 +174,9 @@ public class Interesse implements Serializable {
 				throw new IllegalArgumentException("Origem inválida");
 			}
 		}
-		this.origem = origem;
+		synchronized (Interesse.class) {
+			this.origem = origem;
+		}
 	}
 	
 	/**
@@ -175,14 +189,22 @@ public class Interesse implements Serializable {
 	 */
 	private void setHoraFim(String horaFim) {
 		dateUtil = new DateUtil(new GregorianCalendar());
-		if(horaFim == null)
+		if(horaFim == null) {
 			throw new IllegalArgumentException("Hora inválida");
-		else if(horaFim.equals(""))
-			this.horaFim = null; 
-		else if(dateUtil.validaHora(horaFim))
-			this.horaFim = dateUtil.getCalendar();
-		else
+		}
+		else if(horaFim.equals("")) {
+			synchronized (Interesse.class) {
+				this.horaFim = null; 
+			}
+		}
+		else if(dateUtil.validaHora(horaFim)) {
+			synchronized (Interesse.class) {
+				this.horaFim = dateUtil.getCalendar();
+			}
+		}
+		else {
 			throw new IllegalArgumentException("Hora inválida");
+		}
 	}
 	
 	/**
@@ -198,18 +220,26 @@ public class Interesse implements Serializable {
 	 */
 	private void setHoraInicio(String horaInicio) {
 		dateUtil = new DateUtil(new GregorianCalendar());
-		if(horaInicio == null)
+		if(horaInicio == null) {
 			throw new IllegalArgumentException("Hora inválida");
-		else if(horaInicio.equals(""))
-			this.horaInicio = null;
-		else if(dateUtil.validaHora(horaInicio))
-			this.horaInicio = dateUtil.getCalendar();
-		else
+		}
+		else if(horaInicio.equals("")) {
+			synchronized (Interesse.class) {
+				this.horaInicio = null;
+			}
+		}
+		else if(dateUtil.validaHora(horaInicio)) {
+			synchronized (Interesse.class) {
+				this.horaInicio = dateUtil.getCalendar();
+			}
+		}
+		else {
 			throw new IllegalArgumentException("Hora inválida");
+		}
 	}
 
 	@Override
-	public int hashCode() {
+	public synchronized int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((data == null) ? 0 : data.hashCode());
@@ -226,7 +256,7 @@ public class Interesse implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public synchronized boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -285,7 +315,7 @@ public class Interesse implements Serializable {
 	 * @param c: carona
 	 * @return true se carona corresponde a este interesse
 	 */
-	public boolean verificaCorrespondencia(Carona carona) {
+	public synchronized boolean verificaCorrespondencia(Carona carona) {
 		SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 		
 		if(this.getData() == null) { // retorna todas que ainda vao acontecer e tem origem e destino semelhantes ao do interesse
@@ -330,7 +360,7 @@ public class Interesse implements Serializable {
 	}
 
 	@Override
-	public String toString() {
+	public synchronized String toString() {
 		SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 		SimpleDateFormat hourFormatter = new SimpleDateFormat("HH:mm");
 		if(this.getData() != null && getHoraFim() != null && getHoraInicio() != null) {

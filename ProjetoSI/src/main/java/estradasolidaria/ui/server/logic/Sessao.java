@@ -24,8 +24,10 @@ public class Sessao implements Serializable {
 	 * @param idUsuario
 	 */
 	public Sessao(Integer idUsuario) {
-		setIdUser(idUsuario);
-		setId(this.hashCode());// id da propria sessao
+		synchronized (Sessao.class) {
+			setIdUser(idUsuario);
+			setId(this.hashCode());// id da propria sessao
+		}
 	}
 	
 	/**
@@ -33,7 +35,7 @@ public class Sessao implements Serializable {
 	 * 
 	 * @return idSessao
 	 */
-	public Integer getIdSessao() {
+	public synchronized Integer getIdSessao() {
 		return idSessao;
 	}
 
@@ -42,7 +44,7 @@ public class Sessao implements Serializable {
 	 * 
 	 * @param idSessao
 	 */
-	public void setIdSessao(Integer idSessao) {
+	public synchronized void setIdSessao(Integer idSessao) {
 		this.idSessao = idSessao;
 	}
 	
@@ -51,7 +53,7 @@ public class Sessao implements Serializable {
 	 * 
 	 * @return idUsuario
 	 */
-	public Integer getIdUser() {
+	public synchronized Integer getIdUser() {
 		return idUser;
 	}
 	
@@ -60,7 +62,7 @@ public class Sessao implements Serializable {
 	 * 
 	 * @param hashCode
 	 */
-	private void setId(Integer hashCode) {
+	private synchronized void setId(Integer hashCode) {
 		this.idSessao = hashCode;
 	}
 
@@ -69,12 +71,12 @@ public class Sessao implements Serializable {
 	 * 
 	 * @param idUsuario
 	 */
-	private void setIdUser(Integer idUsuario) {
+	private synchronized void setIdUser(Integer idUsuario) {
 		this.idUser = idUsuario;
 	}
 
 	@Override
-	public int hashCode() {
+	public synchronized int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
@@ -84,7 +86,7 @@ public class Sessao implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public synchronized boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}

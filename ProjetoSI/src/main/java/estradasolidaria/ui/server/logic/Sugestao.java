@@ -26,16 +26,27 @@ public class Sugestao implements Serializable {
 	 * @param donoDaSugestao 
 	 */
 	public Sugestao(String ponto) {
-		this.sugestaoPontoDeEncontro = ponto;
-		this.idSugestao = hashCode();
+		synchronized (Sugestao.class) {
+			setSugestaoPontoEncontro(ponto);
+			setIdSugestao(hashCode());
+		}
 	}
 	
+	/**
+	 * Configura id de sugestao.
+	 * 
+	 * @param hashCode
+	 */
+	private synchronized void setIdSugestao(int hashCode) {
+		this.idSugestao = hashCode;
+	}
+
 	/**
 	 * Retorna a sugestão do ponto de encontro.
 	 * 
 	 * @return sugestaoPontoEncontro
 	 */
-	public String getPontoSugerido() {
+	public synchronized String getPontoSugerido() {
 		return this.sugestaoPontoDeEncontro;
 	}
 
@@ -44,7 +55,7 @@ public class Sugestao implements Serializable {
 	 * 
 	 * @return idSugestao
 	 */
-	public Integer getIdSugestao() {
+	public synchronized Integer getIdSugestao() {
 		return this.idSugestao;
 	}
 
@@ -53,7 +64,7 @@ public class Sugestao implements Serializable {
 	 * 
 	 * @return resposta.
 	 */
-	public String getResposta() {
+	public synchronized String getResposta() {
 		return resposta;
 	}
 
@@ -61,12 +72,12 @@ public class Sugestao implements Serializable {
 	 * Modifica a resposta desta sugestão.
 	 * @param resposta
 	 */
-	public void setResposta(String resposta) {
+	public synchronized void setResposta(String resposta) {
 		this.resposta = resposta;
 	}
 
 	@Override
-	public int hashCode() {
+	public synchronized int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((sugestaoPontoDeEncontro == null) ? 0 : sugestaoPontoDeEncontro.hashCode());
@@ -74,7 +85,7 @@ public class Sugestao implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public synchronized boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -96,7 +107,7 @@ public class Sugestao implements Serializable {
 	 * 
 	 * @param ponto
 	 */
-	public void setSugestaoPontoEncontro(String ponto) {
+	public synchronized void setSugestaoPontoEncontro(String ponto) {
 		this.sugestaoPontoDeEncontro = ponto;
 	}
 }

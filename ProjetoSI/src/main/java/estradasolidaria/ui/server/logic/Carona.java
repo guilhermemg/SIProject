@@ -95,20 +95,22 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 */
 	public Carona(Integer idDonoDaCarona, String origem, String destino,
 			String data, String hora, Integer vagas, Integer ordemParaCaronas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
-
-		setIdDonoDaCarona(idDonoDaCarona);
-		setOrigem(origem);
-		setDestino(destino);
-		setData(data);
-		setHora(hora);
-		setVagas(vagas);
-		setLimiteVagas(vagas);
-		setPosicaoNaInsercaoNoSistema(ordemParaCaronas);
-		setTipoDeCarona(TipoDeCarona.COMUM);
-		setEstadoDaCarona(new EstadoCaronaConfirmada());
-		setIdCarona(this.hashCode());
 		
-		iniciarMonitoramentoDeOcorrenciaDeCarona();
+		synchronized (Carona.class) {
+			setIdDonoDaCarona(idDonoDaCarona);
+			setOrigem(origem);
+			setDestino(destino);
+			setData(data);
+			setHora(hora);
+			setVagas(vagas);
+			setLimiteVagas(vagas);
+			setPosicaoNaInsercaoNoSistema(ordemParaCaronas);
+			setTipoDeCarona(TipoDeCarona.COMUM);
+			setEstadoDaCarona(new EstadoCaronaConfirmada());
+			setIdCarona(this.hashCode());
+			
+			iniciarMonitoramentoDeOcorrenciaDeCarona();
+		}
 	}
 
 
@@ -130,22 +132,23 @@ public class Carona implements Comparable<Carona>, Serializable {
 	public Carona(Integer idDonoDaCarona, String origem2, String destino2,
 			String data2, String hora2, Integer vagas, String cidade,
 			Integer ordemParaCaronas) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
-		setIdDonoDaCarona(idDonoDaCarona);
-		setOrigem(origem2);
-		setDestino(destino2);
-		setData(data2);
-		setHora(hora2);
-		setVagas(vagas);
-		setLimiteVagas(vagas);
-		setPosicaoNaInsercaoNoSistema(ordemParaCaronas);
-		setTipoDeCarona(TipoDeCarona.MUNICIPAL);
-		setEstadoDaCarona(new EstadoCaronaConfirmada());
-		
-		setCidade(cidade);
-		
-		setIdCarona(this.hashCode());
-		
-		iniciarMonitoramentoDeOcorrenciaDeCarona();
+		synchronized (Carona.class) {
+			setIdDonoDaCarona(idDonoDaCarona);
+			setOrigem(origem2);
+			setDestino(destino2);
+			setData(data2);
+			setHora(hora2);
+			setVagas(vagas);
+			setLimiteVagas(vagas);
+			setPosicaoNaInsercaoNoSistema(ordemParaCaronas);
+			setTipoDeCarona(TipoDeCarona.MUNICIPAL);
+			setEstadoDaCarona(new EstadoCaronaConfirmada());
+			setCidade(cidade);
+			
+			setIdCarona(this.hashCode());
+			
+			iniciarMonitoramentoDeOcorrenciaDeCarona();
+		}
 	}
 	
 	/**
@@ -170,38 +173,41 @@ public class Carona implements Comparable<Carona>, Serializable {
 	public Carona(Integer idDonoDaCarona, String origem, String destino, String dataIda,
 			String dataVolta, String hora, Integer vagas, 
 			Integer minimoCaroneiros, Integer posicaoNaInsercaoNoSistema) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
-		setIdDonoDaCarona(idDonoDaCarona);
-		setOrigem(origem);
-		setDestino(destino);
-		setData(dataIda);
-		setDataVolta(dataVolta);
-		setHora(hora);
-		setMinimoCaroneiros(minimoCaroneiros);
-		setVagas(vagas);
-		setLimiteVagas(vagas);
-		setPosicaoNaInsercaoNoSistema(posicaoNaInsercaoNoSistema);
-		setTipoDeCarona(TipoDeCarona.RELAMPAGO);
-		setEstadoDaCarona(new EstadoCaronaConfirmada());
 		
-		setIdCarona(this.hashCode());
-		
-		iniciarMonitoramentoDeOcorrenciaDeCarona();
-		iniciarIntervaloDeTempoAte48hAntesDaCaronaComecar();
+		synchronized (Carona.class) {
+			setIdDonoDaCarona(idDonoDaCarona);
+			setOrigem(origem);
+			setDestino(destino);
+			setData(dataIda);
+			setDataVolta(dataVolta);
+			setHora(hora);
+			setMinimoCaroneiros(minimoCaroneiros);
+			setVagas(vagas);
+			setLimiteVagas(vagas);
+			setPosicaoNaInsercaoNoSistema(posicaoNaInsercaoNoSistema);
+			setTipoDeCarona(TipoDeCarona.RELAMPAGO);
+			setEstadoDaCarona(new EstadoCaronaConfirmada());
+			
+			setIdCarona(this.hashCode());
+			
+			iniciarMonitoramentoDeOcorrenciaDeCarona();
+			iniciarIntervaloDeTempoAte48hAntesDaCaronaComecar();
+		}
 	}
 	
-	private void iniciarMonitoramentoDeOcorrenciaDeCarona() {
+	private synchronized void iniciarMonitoramentoDeOcorrenciaDeCarona() {
 		Thread t =
 				new ThreadMonitoramentoDeOcorrenciaDeCarona("Thread monitoramento de ocorrencia de carona", this);
 		t.start();
 	}
 	
-	private void iniciarIntervaloDeTempoAte48hAntesDaCaronaComecar() {
+	private synchronized void iniciarIntervaloDeTempoAte48hAntesDaCaronaComecar() {
 		Thread t = 
 				new ThreadIntervaloDeTempoParaRegistroEmCaronaRelampago("Thread intervalo de tempo ate 48h antes da carona relampago comecar", this);
 		t.start();
 	}
 
-	private void setDataVolta(String dataVolta) {
+	private synchronized void setDataVolta(String dataVolta) {
 		dateUtil = new DateUtil(new GregorianCalendar());
 		if(dataVolta == null || dataVolta.equals(""))
 			throw new IllegalArgumentException("Data inválida");
@@ -217,7 +223,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return data volta
 	 */
-	public Calendar getDataVolta() {
+	public synchronized Calendar getDataVolta() {
 		return this.dataVolta;
 	}
 	
@@ -226,7 +232,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @param tipo
 	 */
-	private void setTipoDeCarona(TipoDeCarona tipo) {
+	private synchronized void setTipoDeCarona(TipoDeCarona tipo) {
 		if(tipo == null)
 			throw new IllegalArgumentException("Tipo de carona inválido");
 		tipoDeCarona = tipo;
@@ -237,7 +243,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return tipo
 	 */
-	public TipoDeCarona getTipoDeCarona() {
+	public synchronized TipoDeCarona getTipoDeCarona() {
 		return this.tipoDeCarona;
 	}
 	
@@ -246,7 +252,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @param estado
 	 */
-	public void setEstadoDaCarona(EstadoCaronaInterface estado) {
+	public synchronized void setEstadoDaCarona(EstadoCaronaInterface estado) {
 		if(estado == null)
 			throw new IllegalArgumentException("Estado da carona inválido");
 		this.estadoDaCarona = estado;
@@ -257,7 +263,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return estadoDaCarona
 	 */
-	public EstadoCaronaInterface getEstadoDaCarona() {
+	public synchronized EstadoCaronaInterface getEstadoDaCarona() {
 		return this.estadoDaCarona;
 	}
 	
@@ -270,7 +276,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @throws CaronaInvalidaException 
 	 * @throws MessagingException 
 	 */
-	public void setExpired(boolean expired) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
+	public synchronized void setExpired(boolean expired) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
 		expirarCarona();
 	}
 	
@@ -279,7 +285,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return estado da carona
 	 */
-	public boolean getExpired() {
+	public synchronized boolean getExpired() {
 		return this.estadoDaCarona.getNomeEstado().equals(EnumNomeEstadoDaCarona.EXPIRED);
 	}
 
@@ -291,7 +297,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @param minimoCaroneiros
 	 */
-	private void setMinimoCaroneiros(Integer minimoCaroneiros) {
+	private synchronized void setMinimoCaroneiros(Integer minimoCaroneiros) {
 		if(minimoCaroneiros == null || minimoCaroneiros <= 0)
 			throw new IllegalArgumentException("Minimo Caroneiros inválido");
 		this.minimoCaroneiros = minimoCaroneiros;
@@ -302,7 +308,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return minimo de caroneiros.
 	 */
-	public Integer getMinimoCaroneiros() {
+	public synchronized Integer getMinimoCaroneiros() {
 		return this.minimoCaroneiros;
 	}
 
@@ -311,7 +317,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @param limite
 	 */
-	private void setLimiteVagas(Integer limite) {
+	private synchronized void setLimiteVagas(Integer limite) {
 		if (limite >= 0)
 			this.LIMITE_VAGAS = limite;
 	}
@@ -321,7 +327,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return limite de vagas
 	 */
-	public int getLimiteVagas() {
+	public synchronized int getLimiteVagas() {
 		return LIMITE_VAGAS;
 	}
 
@@ -330,7 +336,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return idCarona
 	 */
-	public Integer getIdCarona() {
+	public synchronized Integer getIdCarona() {
 		return idCarona;
 	}
 
@@ -339,7 +345,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @param id
 	 */
-	public void setIdCarona(Integer id) {
+	public synchronized void setIdCarona(Integer id) {
 		this.idCarona = id;
 	}
 
@@ -348,7 +354,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return hora
 	 */
-	public Calendar getHora() {
+	public synchronized Calendar getHora() {
 		return this.hora;
 	}
 	
@@ -357,7 +363,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @param hora
 	 */
-	public void setHora(String hora) {
+	public synchronized void setHora(String hora) {
 		dateUtil = new DateUtil(new GregorianCalendar());
 		if(hora == null || hora.equals(""))
 			throw new IllegalArgumentException("Hora inválida");
@@ -373,7 +379,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @param data
 	 */
-	public void setData(String data) {
+	public synchronized void setData(String data) {
 		dateUtil = new DateUtil(new GregorianCalendar());
 		if(data == null || data.equals(""))
 			throw new IllegalArgumentException("Data inválida");
@@ -388,7 +394,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @param idDonoDaCarona2
 	 */
-	public void setIdDonoDaCarona(Integer idDonoDaCarona2) {
+	public synchronized void setIdDonoDaCarona(Integer idDonoDaCarona2) {
 		if(idDonoDaCarona2 == null)
 			throw new IllegalArgumentException("IdDonoDaCarona inválido");
 		this.idDonoDaCarona = idDonoDaCarona2;
@@ -399,7 +405,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return origem
 	 */
-	public String getOrigem() {
+	public synchronized String getOrigem() {
 		return origem;
 	}
 
@@ -409,7 +415,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @param origem
 	 */
-	public void setOrigem(String origem) {
+	public synchronized void setOrigem(String origem) {
 		if (origem == null || origem.equals(""))
 			throw new IllegalArgumentException("Origem inválida");
 		this.origem = origem;
@@ -420,7 +426,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return destino
 	 */
-	public String getDestino() {
+	public synchronized String getDestino() {
 		return destino;
 	}
 
@@ -430,7 +436,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @param destino
 	 */
-	public void setDestino(String destino) {
+	public synchronized void setDestino(String destino) {
 		if (destino == null || destino.equals(""))
 			throw new IllegalArgumentException("Destino inválido");
 		this.destino = destino;
@@ -441,7 +447,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return data
 	 */
-	public Calendar getData() {
+	public synchronized Calendar getData() {
 		return this.data;
 	}
 
@@ -450,7 +456,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return vagas
 	 */
-	public Integer getVagas() {
+	public synchronized Integer getVagas() {
 		return vagas;
 	}
 
@@ -460,7 +466,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @param vagas
 	 */
-	public void setVagas(Integer vagas) {
+	public synchronized void setVagas(Integer vagas) {
 		if (vagas == null || vagas < 0)
 			throw new IllegalArgumentException("Vaga inválida");
 		this.vagas = vagas;
@@ -471,12 +477,12 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return String[] {origem, destino}
 	 */
-	public String[] getTrajeto() {
+	public synchronized String[] getTrajeto() {
 		return new String[] { this.origem, this.destino };
 	}
 
 	@Override
-	public int hashCode() {
+	public synchronized int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + LIMITE_VAGAS;
@@ -517,7 +523,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public synchronized boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -600,7 +606,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	}
 
 	@Override
-	public String toString() {
+	public synchronized String toString() {
 		SimpleDateFormat formatterData = new SimpleDateFormat("dd/MM/yyyy");
 		SimpleDateFormat formatterHora = new SimpleDateFormat("HH:mm");
 		return this.origem + " para " + this.destino + ", no dia " + formatterData.format(this.data.getTime())
@@ -620,9 +626,14 @@ public class Carona implements Comparable<Carona>, Serializable {
 		if (ponto == null || ponto.equals("")) {
 			throw new IllegalArgumentException("Ponto Inválido");
 		}
-		Sugestao sugestao = new Sugestao(ponto);
-		mapIdSugestaoDePontoDeEncontro.put(sugestao.getIdSugestao(), sugestao);
-		return sugestao;
+		try {
+			lockMapIdSugestaoDePontoDeEncontro.lock();
+			Sugestao sugestao = new Sugestao(ponto);
+			mapIdSugestaoDePontoDeEncontro.put(sugestao.getIdSugestao(), sugestao);
+			return sugestao;
+		} finally {
+			lockMapIdSugestaoDePontoDeEncontro.unlock();
+		}
 	}
 
 	
@@ -632,7 +643,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return pontoEncontro
 	 */
-	public String getPontoEncontro() {
+	public synchronized String getPontoEncontro() {
 		return this.pontoEncontro;
 	}
 
@@ -641,7 +652,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @param ponto
 	 */
-	public void setPontoEncontro(String ponto) {
+	public synchronized void setPontoEncontro(String ponto) {
 		this.pontoEncontro = ponto;
 	}
 
@@ -650,7 +661,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return Carona
 	 */
-	public Carona getCarona() {
+	public synchronized Carona getCarona() {
 		return this;
 	}
 
@@ -659,7 +670,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return idDonoDaCarona
 	 */
-	public Integer getIdDonoDaCarona() {
+	public synchronized Integer getIdDonoDaCarona() {
 		return this.idDonoDaCarona;
 	}
 
@@ -675,16 +686,23 @@ public class Carona implements Comparable<Carona>, Serializable {
 		if (ponto == null || ponto.equals("")
 				|| ponto.equals(this.pontoEncontro))
 			throw new IllegalArgumentException("Ponto Inválido");
-		// Iterator Pattern
-		iteratorIdSolicitacoes = this.mapIdSolicitacoes.values().iterator();
-		while (iteratorIdSolicitacoes.hasNext()) {
-			Solicitacao s = iteratorIdSolicitacoes.next();
-			if (s.getPontoEncontro().equals(ponto)
-					&& s.getDonoDaSolicitacao().equals(donoDaSolicitacao)) {
-				return false; // achou uma solicitacao identica já feita pelo mesmo usuario
+
+		try {
+			lockMapIdSolicitacoes.lock();
+			
+			// Iterator Pattern
+			iteratorIdSolicitacoes = this.mapIdSolicitacoes.values().iterator();
+			while (iteratorIdSolicitacoes.hasNext()) {
+				Solicitacao s = iteratorIdSolicitacoes.next();
+				if (s.getPontoEncontro().equals(ponto)
+						&& s.getDonoDaSolicitacao().equals(donoDaSolicitacao)) {
+					return false; // achou uma solicitacao identica já feita pelo mesmo usuario
+				}
 			}
+			return true;
+		} finally {
+			lockMapIdSolicitacoes.unlock();
 		}
-		return true;
 	}
 
 	/**
@@ -693,7 +711,12 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @return mapIdSolicitacoesPendentes
 	 */
 	public Map<Integer, Solicitacao> getMapIdSolicitacao() {
-		return this.mapIdSolicitacoes;
+		try {
+			lockMapIdSolicitacoes.lock();
+			return this.mapIdSolicitacoes;
+		} finally {
+			lockMapIdSolicitacoes.unlock();
+		}
 	}
 
 	/**
@@ -708,20 +731,25 @@ public class Carona implements Comparable<Carona>, Serializable {
 			throw new IllegalArgumentException("Ponto Inválido");
 		if (ponto.equals(""))
 			throw new IllegalArgumentException("Ponto Inválido");
-
-		Sugestao sugestao = null;
-		// Iterator Pattern
-		iteratorIdSugestoes = this.mapIdSugestaoDePontoDeEncontro.values().iterator();
-		while (iteratorIdSugestoes.hasNext()) {
-			sugestao = iteratorIdSugestoes.next();
-			if (sugestao.getIdSugestao().equals(idSugestao)) {
-				sugestao.setSugestaoPontoEncontro(ponto);
-				break;
+		
+		try {
+			lockMapIdSugestaoDePontoDeEncontro.lock();
+			Sugestao sugestao = null;
+			// Iterator Pattern
+			iteratorIdSugestoes = this.mapIdSugestaoDePontoDeEncontro.values().iterator();
+			while (iteratorIdSugestoes.hasNext()) {
+				sugestao = iteratorIdSugestoes.next();
+				if (sugestao.getIdSugestao().equals(idSugestao)) {
+					sugestao.setSugestaoPontoEncontro(ponto);
+					break;
+				}
 			}
+			if(sugestao == null)
+				throw new IllegalArgumentException("Solicitacao inexistente");
+			return sugestao;
+		} finally {
+			lockMapIdSugestaoDePontoDeEncontro.unlock();
 		}
-		if(sugestao == null)
-			throw new IllegalArgumentException("Solicitacao inexistente");
-		return sugestao;
 	}
 
 	/**
@@ -738,15 +766,23 @@ public class Carona implements Comparable<Carona>, Serializable {
 	public Solicitacao addSolicitacao(String origem, String destino,
 			Usuario donoDaCarona, Usuario donoDaSolicitacao, 
 			List<Integer> listaIdsUsuariosPreferenciais) throws IllegalArgumentException, CadastroEmCaronaPreferencialException {
+		
 		if(this.getTipoDeCarona().equals(TipoDeCarona.PREFERENCIAL)) {
 			if(!listaIdsUsuariosPreferenciais.contains(donoDaSolicitacao.getIdUsuario())) {
 				throw new CadastroEmCaronaPreferencialException();
 			}
 		}
-		Solicitacao s = new Solicitacao(this.getIdCarona(), origem, destino, donoDaCarona,
-				donoDaSolicitacao, EnumTipoSolicitacao.SOLICITACAO_SEM_PONTO_ENCONTRO);
-		this.mapIdSolicitacoes.put(s.getIdSolicitacao(), s);
-		return s;
+		
+		try {
+			lockMapIdSolicitacoes.lock();
+			
+			Solicitacao s = new Solicitacao(this.getIdCarona(), origem, destino, donoDaCarona,
+					donoDaSolicitacao, EnumTipoSolicitacao.SOLICITACAO_SEM_PONTO_ENCONTRO);
+			this.mapIdSolicitacoes.put(s.getIdSolicitacao(), s);
+			return s;
+		} finally {
+			lockMapIdSolicitacoes.unlock();
+		}
 	}
 	
 	/**
@@ -762,20 +798,25 @@ public class Carona implements Comparable<Carona>, Serializable {
 	public Solicitacao addSolicitacao(String origem, String destino,
 			Usuario donoDaCarona, Usuario donoDaSolicitacao, String ponto,
 			List<Integer> listaIdsUsuariosPreferenciais) throws CadastroEmCaronaPreferencialException {
-		if(validaPontoEncontro(donoDaSolicitacao, ponto)) {
-			if(this.isCaronaPreferencial()) {
-				if(!listaIdsUsuariosPreferenciais.contains(donoDaSolicitacao.getIdUsuario())) {
-					throw new CadastroEmCaronaPreferencialException();
+		
+		try {
+			if(validaPontoEncontro(donoDaSolicitacao, ponto)) {
+				if(this.isCaronaPreferencial()) {
+					if(!listaIdsUsuariosPreferenciais.contains(donoDaSolicitacao.getIdUsuario())) {
+						throw new CadastroEmCaronaPreferencialException();
+					}
 				}
+				lockMapIdSolicitacoes.lock();
+				Sugestao sugestao = new Sugestao(ponto);
+				Solicitacao s = new Solicitacao(getIdCarona(), origem, destino, donoDaCarona,
+						donoDaSolicitacao, sugestao, EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
+				this.mapIdSolicitacoes.put(s.getIdSolicitacao(), s);
+				return s;
+			} else {
+				throw new IllegalArgumentException("Ponto Inválido");
 			}
-			Sugestao sugestao = new Sugestao(ponto);
-			Solicitacao s = new Solicitacao(getIdCarona(), origem, destino, donoDaCarona,
-					donoDaSolicitacao, sugestao, EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
-			this.mapIdSolicitacoes.put(s.getIdSolicitacao(), s);
-			return s;
-			
-		} else {
-			throw new IllegalArgumentException("Ponto Inválido");
+		} finally{
+			lockMapIdSolicitacoes.unlock();
 		}
 	}
 
@@ -786,7 +827,12 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @return mapa
 	 */
 	public Map<Integer, EnumCaronaReview> getMapIdDonoReviewCaroneiro() {
-		return this.mapIdDonoReviewCaroneiro;
+		try {
+			lockMapIdDonoReviewCaroneiro.lock();
+			return this.mapIdDonoReviewCaroneiro;
+		} finally {
+			lockMapIdDonoReviewCaroneiro.unlock();
+		}
 	}
 
 	/**
@@ -800,9 +846,14 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 */
 	public EnumCaronaReview setCaroneiroReviewDono(Integer idCaroneiro, String review) {
-		EnumCaronaReview eReview = getReview(review);
-		this.mapIdCaroneiroReviewDono.put(idCaroneiro, eReview);
-		return eReview;
+		try {
+			lockMapIdCaroneiroReviewDono.lock();
+			EnumCaronaReview eReview = getReview(review);
+			this.mapIdCaroneiroReviewDono.put(idCaroneiro, eReview);
+			return eReview;
+		} finally {
+			lockMapIdCaroneiroReviewDono.unlock();
+		}
 	}
 
 	/**
@@ -816,9 +867,14 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 */
 	public EnumCaronaReview setReviewVagaEmCarona(Integer idCaroneiro, String review) {
-		EnumCaronaReview eReview = getReview(review);
-		this.mapIdDonoReviewCaroneiro.put(idCaroneiro, eReview);
-		return eReview;
+		try {
+			lockMapIdDonoReviewCaroneiro.lock();
+			EnumCaronaReview eReview = getReview(review);
+			this.mapIdDonoReviewCaroneiro.put(idCaroneiro, eReview);
+			return eReview;
+		} finally {
+			lockMapIdDonoReviewCaroneiro.unlock();
+		}
 	}
 
 	/**
@@ -849,7 +905,12 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @return mapIdUsuarioReview
 	 */
 	public Map<Integer, EnumCaronaReview> getMapIdCaroneiroReviewDono() {
-		return this.mapIdCaroneiroReviewDono;
+		try {
+			lockMapIdCaroneiroReviewDono.lock();
+			return this.mapIdCaroneiroReviewDono;
+		} finally {
+			lockMapIdCaroneiroReviewDono.unlock();
+		}
 	}
 
 	/**
@@ -857,7 +918,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return true: se for municipal, false: se não for municipal
 	 */
-	public boolean isCaronaMunicipal() {
+	public synchronized boolean isCaronaMunicipal() {
 		return tipoDeCarona.equals(TipoDeCarona.MUNICIPAL);
 	}
 	
@@ -866,7 +927,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return true: se for preferencial, false: se não for preferencial
 	 */
-	public boolean isCaronaPreferencial() {
+	public synchronized boolean isCaronaPreferencial() {
 		return tipoDeCarona.equals(TipoDeCarona.PREFERENCIAL);
 	}
 	
@@ -875,7 +936,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return true: se for comum, false: se não for comum
 	 */
-	public boolean isCaronaComum() {
+	public synchronized boolean isCaronaComum() {
 		return tipoDeCarona.equals(TipoDeCarona.COMUM);
 	}
 	
@@ -884,7 +945,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return true: se for relampago, false: se não for relampago
 	 */
-	public boolean isCaronaRelampago() {
+	public synchronized boolean isCaronaRelampago() {
 		return tipoDeCarona.equals(TipoDeCarona.RELAMPAGO);
 	}
 
@@ -893,7 +954,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return cidade
 	 */
-	public String getCidade() {
+	public synchronized String getCidade() {
 		return cidade;
 	}
 
@@ -904,7 +965,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @param cidade
 	 * 
 	 */
-	public void setCidade(String cidade) {
+	public synchronized void setCidade(String cidade) {
 		if (cidade == null || cidade.equals(""))
 			throw new IllegalArgumentException("Cidade inexistente");
 		this.cidade = cidade;
@@ -915,7 +976,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return comparacao
 	 */
-	public int compareTo(Carona carona) {
+	public synchronized int compareTo(Carona carona) {
 		return this.getPosicaoNaInsercaoNoSistema()
 				- carona.getPosicaoNaInsercaoNoSistema();
 	}
@@ -925,7 +986,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @return posicaoNaInsercaoNoSistema
 	 */
-	public int getPosicaoNaInsercaoNoSistema() {
+	public synchronized int getPosicaoNaInsercaoNoSistema() {
 		return posicaoNaInsercaoNoSistema;
 	}
 
@@ -934,7 +995,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @param posicaoNaInsercaoNoSistema
 	 */
-	public void setPosicaoNaInsercaoNoSistema(int posicaoNaInsercaoNoSistema) {
+	public synchronized void setPosicaoNaInsercaoNoSistema(int posicaoNaInsercaoNoSistema) {
 		this.posicaoNaInsercaoNoSistema = posicaoNaInsercaoNoSistema;
 	}
 
@@ -948,9 +1009,14 @@ public class Carona implements Comparable<Carona>, Serializable {
 	public Solicitacao desistirRequisicao(Integer idSolicitacao) throws EstadoSolicitacaoException, CaronaInexistenteException {
 		if(idSolicitacao == null)
 			throw new IllegalArgumentException("Id solicitacao inválido");
-		Solicitacao solicitacao = this.mapIdSolicitacoes.get(idSolicitacao);
-		solicitacao.cancelar(this);
-		return solicitacao;
+		try {
+			lockMapIdSolicitacoes.lock();
+			Solicitacao solicitacao = this.mapIdSolicitacoes.get(idSolicitacao);
+			solicitacao.cancelar(this);
+			return solicitacao;
+		} finally {
+			lockMapIdSolicitacoes.unlock();
+		}
 	}
 
 	/**
@@ -958,11 +1024,10 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @throws Exception
 	 */
-	public void decrementaNumeroDeVagas() throws IllegalArgumentException {
+	public synchronized void decrementaNumeroDeVagas() throws IllegalArgumentException {
 		if (!((getVagas() - 1) < 0)) {
 			setVagas(getVagas() - 1); // decrementa o numero de vagas;
 		}
-
 	}
 
 	/**
@@ -970,7 +1035,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * 
 	 * @throws Exception
 	 */
-	public void incrementaNumeroDeVagas() throws IllegalArgumentException {
+	public synchronized void incrementaNumeroDeVagas() throws IllegalArgumentException {
 		if (getVagas() < LIMITE_VAGAS) {
 			setVagas(getVagas() + 1);
 		}
@@ -986,7 +1051,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @throws EstadoSolicitacaoException 
 	 * @throws Exception
 	 */
-	public void aceitarSolicitacao(Solicitacao s) throws IllegalArgumentException, CaronaInexistenteException, EstadoSolicitacaoException {
+	public synchronized void aceitarSolicitacao(Solicitacao s) throws IllegalArgumentException, CaronaInexistenteException, EstadoSolicitacaoException {
 		s.aceitar(this);
 	}
 
@@ -996,14 +1061,20 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @return lista de pontos de encontro
 	 */
 	public List<String> getPontosSugeridos() {
-		List<String> pontosSugeridos = new LinkedList<String>();
+		try {
+			lockMapIdSugestaoDePontoDeEncontro.lock();
+			
+			List<String> pontosSugeridos = new LinkedList<String>();
+			
+			for (Iterator<Sugestao> iterator = getMapIdSugestoesPontoDeEncontro()
+					.values().iterator(); iterator.hasNext();) {
+				pontosSugeridos.add(iterator.next().getPontoSugerido());
+			}
 
-		for (Iterator<Sugestao> iterator = getMapIdSugestoesPontoDeEncontro()
-				.values().iterator(); iterator.hasNext();) {
-			pontosSugeridos.add(iterator.next().getPontoSugerido());
+			return pontosSugeridos;
+		} finally {
+			lockMapIdSugestaoDePontoDeEncontro.unlock();
 		}
-
-		return pontosSugeridos;
 	}
 	
 	/**
@@ -1013,7 +1084,12 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @return mapa de sugestoes
 	 */
 	public Map<Integer, Sugestao> getSugestoesPontoDeEncontro() {
-		return this.getMapIdSugestoesPontoDeEncontro();
+		try {
+			lockMapIdSugestaoDePontoDeEncontro.lock();
+			return this.getMapIdSugestoesPontoDeEncontro();
+		} finally{
+			lockMapIdSugestaoDePontoDeEncontro.unlock();
+		}
 	}
 	
 	/**
@@ -1024,11 +1100,17 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @return
 	 */
 	public Solicitacao setRespostaSugestaoPontoEncontro(String idSolicitacao, String resposta) {
-		Solicitacao s = getMapIdSolicitacao().get(idSolicitacao); 
-		if (s != null) {
-			s.setRespostaPontoEncontro(resposta);
+		
+		try {
+			lockMapIdSugestaoDePontoDeEncontro.lock();
+			Solicitacao s = getMapIdSolicitacao().get(idSolicitacao); 
+			if (s != null) {
+				s.setRespostaPontoEncontro(resposta);
+			}
+			return s;
+		} finally {
+			lockMapIdSugestaoDePontoDeEncontro.unlock();
 		}
-		return s;
 	}
 
 	/**
@@ -1038,7 +1120,12 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @return mapa de sugestoes
 	 */
 	public Map<Integer, Sugestao> getMapIdSugestoesPontoDeEncontro() {
-		return mapIdSugestaoDePontoDeEncontro;
+		try {
+			lockMapIdSugestaoDePontoDeEncontro.lock();
+			return mapIdSugestaoDePontoDeEncontro;
+		} finally {
+			lockMapIdSugestaoDePontoDeEncontro.unlock();
+		}
 	}
 	
 	/**
@@ -1050,11 +1137,17 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @return numero correspondente ao review dado
 	 */
 	public Integer getDonoReviewCaroneiro(Integer idCaroneiro) {
-		EnumCaronaReview review = getMapIdDonoReviewCaroneiro().get(idCaroneiro); 
-		if (review == EnumCaronaReview.FALTOU) {
-			return 0;
+		
+		try {
+			lockMapIdDonoReviewCaroneiro.lock();
+			EnumCaronaReview review = getMapIdDonoReviewCaroneiro().get(idCaroneiro); 
+			if (review == EnumCaronaReview.FALTOU) {
+				return 0;
+			}
+			return 1; // review == EnumCaronaReview.NAO_FALTOU
+		} finally {
+			lockMapIdDonoReviewCaroneiro.unlock();
 		}
-		return 1; // review == EnumCaronaReview.NAO_FALTOU
 	}
 	
 	/**
@@ -1066,11 +1159,16 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @return numero correspondente ao review dado
 	 */
 	public Integer getCaroneiroReviewDono(Integer idDonoDaCarona) {
-		EnumCaronaReview review = getMapIdCaroneiroReviewDono().get(idDonoDaCarona); 
-		if (review == EnumCaronaReview.NAO_FUNCIONOU) {
-			return 0;
+		try {
+			lockMapIdCaroneiroReviewDono.lock();
+			EnumCaronaReview review = getMapIdCaroneiroReviewDono().get(idDonoDaCarona); 
+			if (review == EnumCaronaReview.NAO_FUNCIONOU) {
+				return 0;
+			}
+			return 1; // review == EnumCaronaReview.FUNCIONOU
+		} finally {
+			lockMapIdCaroneiroReviewDono.unlock();
 		}
-		return 1; // review == EnumCaronaReview.FUNCIONOU
 	}
 	
 	/**
@@ -1082,27 +1180,32 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @return lista de logins
 	 */
 	public List<String> getEmailTo() {
-		List<String> listaLogins = new SpecialLinkedListBrackets<String>();
-		iteratorIdSolicitacoes = this.mapIdSolicitacoes.values().iterator();
-		while(iteratorIdSolicitacoes.hasNext()) {
-			Solicitacao s = iteratorIdSolicitacoes.next();
-			if(s.getEstado().getEnumNomeDoEstadoDaSolicitacao().equals(EnumNomeDoEstadoDaSolicitacao.ACEITA)) {
-				listaLogins.add(s.getDonoDaSolicitacao().getLogin());
+		try {
+			lockMapIdSolicitacoes.lock();
+			List<String> listaLogins = new SpecialLinkedListBrackets<String>();
+			iteratorIdSolicitacoes = this.mapIdSolicitacoes.values().iterator();
+			while(iteratorIdSolicitacoes.hasNext()) {
+				Solicitacao s = iteratorIdSolicitacoes.next();
+				if(s.getEstado().getEnumNomeDoEstadoDaSolicitacao().equals(EnumNomeDoEstadoDaSolicitacao.ACEITA)) {
+					listaLogins.add(s.getDonoDaSolicitacao().getLogin());
+				}
 			}
+			Collections.sort(listaLogins);
+			return listaLogins;
+		} finally {
+			lockMapIdSolicitacoes.unlock();
 		}
-		Collections.sort(listaLogins);
-		return listaLogins;
 	}
 
 	/**
 	 * Define carona como preferencial. 
 	 */
-	public void definirCaronaComoPreferencial() {
+	public synchronized void definirCaronaComoPreferencial() {
 		setTipoDeCarona(TipoDeCarona.PREFERENCIAL);
 		iniciaIntervaloDeTempoParaCadastroDeUsuariosPreferenciais();
 	}
 	
-	private void iniciaIntervaloDeTempoParaCadastroDeUsuariosPreferenciais() {
+	private synchronized void iniciaIntervaloDeTempoParaCadastroDeUsuariosPreferenciais() {
 		threadIntervaloPreferencial =
 				new ThreadIntervaloDeTempoParaRegistroEmCaronaPreferencial("Intervalo de tempo para carona preferencial", this);
 		threadIntervaloPreferencial.start();
@@ -1110,10 +1213,11 @@ public class Carona implements Comparable<Carona>, Serializable {
 
 	/**
 	 * Encerra esta carona. 
+	 * 
 	 * @throws EstadoCaronaException 
 	 * @throws CaronaInvalidaException 
 	 */
-	public void encerrarCarona() throws CaronaInvalidaException, EstadoCaronaException {
+	public synchronized void encerrarCarona() throws CaronaInvalidaException, EstadoCaronaException {
 		estadoDaCarona.encerrar(this);
 	}
 
@@ -1126,7 +1230,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @throws EstadoCaronaException 
 	 * @throws CaronaInvalidaException 
 	 */
-	public void cancelarCarona() throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
+	public synchronized void cancelarCarona() throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
 		estadoDaCarona.cancelar(this);
 	}
 	
@@ -1137,7 +1241,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @throws CaronaInvalidaException
 	 * @throws EstadoCaronaException
 	 */
-	public void confirmarCarona() throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
+	public synchronized void confirmarCarona() throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
 		estadoDaCarona.confirmar(this);
 	}
 	
@@ -1149,7 +1253,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @throws CaronaInvalidaException
 	 * @throws EstadoCaronaException
 	 */
-	public void expirarCarona() throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
+	public synchronized void expirarCarona() throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
 		estadoDaCarona.expirar(this);
 	}
 	
@@ -1160,7 +1264,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @throws CaronaInvalidaException
 	 * @throws EstadoCaronaException
 	 */
-	public void realizarCarona() throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
+	public synchronized void realizarCarona() throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
 		estadoDaCarona.realizar(this);
 	}
 
@@ -1170,7 +1274,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	 * @throws EstadoCaronaException 
 	 * @throws CaronaInvalidaException 
 	 */
-	public void setCaronaEmEstadoDeEspera() throws CaronaInvalidaException, EstadoCaronaException {
+	public synchronized void setCaronaEmEstadoDeEspera() throws CaronaInvalidaException, EstadoCaronaException {
 		estadoDaCarona.esperar(this);
 	}
 }
