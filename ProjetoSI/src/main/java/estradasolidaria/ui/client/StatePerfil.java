@@ -109,7 +109,9 @@ public class StatePerfil extends Composite {
 		menuBar.addSeparator(separator);
 		
 		MenuItem menuItemSair = new MenuItem("Sair", false, new Command() {
+			@SuppressWarnings("static-access")
 			public void execute() {
+				encerrarSessaoGUI(estrada.getIdSessaoAberta());
 				estrada.rootPanel.remove(panel);
 				Widget newPanel = new StateHomePage(estrada, estradaSolidariaService);
 				newPanel.setSize("600px", "417px");
@@ -265,6 +267,20 @@ public class StatePerfil extends Composite {
 		txtbtnMeusInteresses.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				meusInteressesGUI();
+			}
+		});
+	}
+
+	protected void encerrarSessaoGUI(Integer idSessao) {
+		estradaSolidariaService.encerrarSessao(idSessao, new AsyncCallback<Void>(){
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert(caught.getMessage()); 
+			}
+			
+			@Override
+			public void onSuccess(Void result) {
+				// does nothing
 			}
 		});
 	}

@@ -142,7 +142,7 @@ public class StateInicio extends Composite {
 
 			@Override
 			public void onSuccess(Void result) {
-				Window.alert("mensagem apagada");
+				// does nothing
 			}
 		});
 		
@@ -158,7 +158,7 @@ public class StateInicio extends Composite {
 
 			@Override
 			public void onSuccess(Void result) {
-				Window.alert("mensagem marcada como lida");
+				// does nothing
 			}
 		});
 		
