@@ -1,8 +1,6 @@
 package estradasolidaria.ui.client;
 
 import java.util.List;
-import java.util.Queue;
-import java.util.Stack;
 
 import javax.mail.MessagingException;
 
@@ -434,4 +432,8 @@ public interface EstradaSolidariaService extends RemoteService {
 	public abstract void marcarCaronaComoPreferencial(Integer idSessao, Integer idCaronaEscolhida) throws GWTException;
 
 	public abstract List<GWTMensagem> getListaDeMensagens(Integer idSessao) throws GWTException;
+
+	public abstract void marcarMensagemComoLida(Integer idSessao, Integer idMensagem) throws GWTException;
+
+	public abstract void apagarMensagem(Integer idSessao, Integer idMensagem) throws GWTException;
 }
