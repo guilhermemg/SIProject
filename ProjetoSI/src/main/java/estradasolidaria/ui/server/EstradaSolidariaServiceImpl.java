@@ -718,12 +718,31 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 				}
 				gwt_m.setTexto(m.getTexto());
 				gwt_m.setMensagemLida(m.getLida().getName().equals("Lida"));
+				gwt_m.setIdMensagem(m.getIdMensagem());
 				
 				gwt_mensagens.add(gwt_m);
 			}
 			return gwt_mensagens;
 		}
 		catch(Exception e) {
+			throw new GWTException(e.getMessage());
+		}
+	}
+	
+	@Override
+	public void marcarMensagemComoLida(Integer idSessao, Integer idMensagem) throws GWTException {
+		try{
+			controller.marcarMensagemComoLida(idSessao, idMensagem);
+		} catch(Exception e){
+			throw new GWTException(e.getMessage());
+		}
+	}
+	
+	@Override
+	public void apagarMensagem(Integer idSessao, Integer idMensagem) throws GWTException {
+		try{
+			controller.apagarMensagem(idSessao, idMensagem);
+		} catch (Exception e){
 			throw new GWTException(e.getMessage());
 		}
 	}

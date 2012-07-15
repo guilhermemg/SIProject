@@ -29,7 +29,6 @@ public class StateInicio extends Composite {
 	private SingleSelectionModel<GWTMensagem> selectionModel;
 	private Column<GWTMensagem, Boolean> checkColumn;
 	
-	private List<GWTMensagem> lista;
 	
 	@SuppressWarnings("static-access")
 	public StateInicio(EstradaSolidaria entryPoint, EstradaSolidariaServiceAsync estradaService) {
@@ -96,8 +95,8 @@ public class StateInicio extends Composite {
 		column.setFieldUpdater(new FieldUpdater<GWTMensagem, String>() {
 			@Override
 			public void update(int index, GWTMensagem object, String value) {
-				object.setMensagemLida(true);
-				atualizarGrid();
+				marcarMensagemLidaGUI(object.getIdMensagem());
+				getListaDeMensagemsGUI();
 				DialogBox dialogBox = new DialogBoxVerMensagem(object);
 				dialogBox.center();
 				dialogBox.show();
@@ -113,16 +112,18 @@ public class StateInicio extends Composite {
 		
 		MenuItem mntmMarcarComoLida = new MenuItem("Marcar como lida", false, new Command() {
 			public void execute() {
-				selectionModel.getSelectedObject().setMensagemLida(true);
-				atualizarGrid();
+				Integer idMensagem = selectionModel.getSelectedObject().getIdMensagem();
+				marcarMensagemLidaGUI(idMensagem);
+				getListaDeMensagemsGUI();
 			}
 		});
 		menuBar_1.addItem(mntmMarcarComoLida);
 		
 		MenuItem mntmApagar = new MenuItem("Apagar", false, new Command() {
 			public void execute() {
-				lista.remove(selectionModel.getSelectedObject());
-				atualizarGrid();
+				Integer idMensagem = selectionModel.getSelectedObject().getIdMensagem();
+				apagarMensagemGUI(idMensagem);
+				getListaDeMensagemsGUI();
 			}
 		});
 		menuBar_1.addItem(mntmApagar);
@@ -131,12 +132,39 @@ public class StateInicio extends Composite {
 		getListaDeMensagemsGUI();
 	}
 
-	protected void atualizarGrid() {
-		dataGrid.setRowCount(lista.size(), true);
-		dataGrid.setRowData(lista);
+	protected void apagarMensagemGUI(Integer idMensagem) {
+		estradaSolidariaService.apagarMensagem(idSessao, idMensagem, new AsyncCallback<Void>() { 
+			@Override
+			public void onFailure(Throwable caught) {
+				// Show the RPC error message to the user
+				Window.alert(caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				Window.alert("mensagem apagada");
+			}
+		});
+		
 	}
 
-	private void getListaDeMensagemsGUI() {
+	protected void marcarMensagemLidaGUI(Integer idMensagem) {
+		estradaSolidariaService.marcarMensagemComoLida(idSessao, idMensagem, new AsyncCallback<Void>() { 
+			@Override
+			public void onFailure(Throwable caught) {
+				// Show the RPC error message to the user
+				Window.alert(caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				Window.alert("mensagem marcada como lida");
+			}
+		});
+		
+	}
+
+	protected void getListaDeMensagemsGUI() {
 		estradaSolidariaService.getListaDeMensagens(idSessao, new AsyncCallback<List<GWTMensagem>>() { 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -146,14 +174,10 @@ public class StateInicio extends Composite {
 
 			@Override
 			public void onSuccess(List<GWTMensagem> result) {
-				setListaDeMensagens(result);
 				dataGrid.setRowCount(result.size(), true);
 				dataGrid.setRowData(result);
 			}
 		});
 	}
 	
-	private void setListaDeMensagens(List<GWTMensagem> result) {
-		this.lista = result;
-	}
 }
