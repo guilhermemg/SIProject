@@ -6,6 +6,10 @@ import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
@@ -14,10 +18,15 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.DisclosurePanel;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 public class StateInicio extends Composite {
@@ -28,9 +37,9 @@ public class StateInicio extends Composite {
 	private DataGrid<GWTMensagem> dataGrid;
 	private SingleSelectionModel<GWTMensagem> selectionModel;
 	private Column<GWTMensagem, Boolean> checkColumn;
+	private Label labelEnviarConvite;
 	
-	
-	@SuppressWarnings("static-access")
+	@SuppressWarnings({ "static-access", "deprecation" })
 	public StateInicio(EstradaSolidaria entryPoint, EstradaSolidariaServiceAsync estradaService) {
 		this.estrada = entryPoint;
 		this.estradaSolidariaService = estradaService;
@@ -38,10 +47,10 @@ public class StateInicio extends Composite {
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
-		absolutePanel.setSize("901px", "486px");
+		absolutePanel.setSize("901px", "508px");
 		
 		dataGrid = new DataGrid<GWTMensagem>();
-		absolutePanel.add(dataGrid, 10, 104);
+		absolutePanel.add(dataGrid, 10, 147);
 		dataGrid.setSize("881px", "339px");
 		
 		selectionModel = new SingleSelectionModel<GWTMensagem>();
@@ -105,7 +114,7 @@ public class StateInicio extends Composite {
 		dataGrid.addColumn(column, "");
 		
 		MenuBar menuBar = new MenuBar(false);
-		absolutePanel.add(menuBar, 814, 10);
+		absolutePanel.add(menuBar, 814, 119);
 		MenuBar menuBar_1 = new MenuBar(true);
 		
 		MenuItem mntmOpes = new MenuItem("Opções:", false, menuBar_1);
@@ -128,8 +137,72 @@ public class StateInicio extends Composite {
 		});
 		menuBar_1.addItem(mntmApagar);
 		menuBar.addItem(mntmOpes);
+		
+		DisclosurePanel disclosurePanel = new DisclosurePanel("Convide um amigo!", false);
+		disclosurePanel.setStyleName("gwt-LabelEstradaSolidaria4");
+		absolutePanel.add(disclosurePanel, 10, 22);
+		disclosurePanel.setSize("250px", "66px");
+		
+		FlexTable flexTable = new FlexTable();
+		disclosurePanel.setContent(flexTable);
+		flexTable.setSize("93px", "39px");
+		
+		Label label = new Label("Email:");
+		label.setStyleName("gwt-LabelEstradaSolidaria4");
+		flexTable.setWidget(0, 0, label);
+		
+		final TextBox textBoxEnviarConvite = new TextBox();
+		textBoxEnviarConvite.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				labelEnviarConvite.setVisible(false);
+			}
+		});
+		flexTable.setWidget(0, 1, textBoxEnviarConvite);
+		
+		Button button = new Button("Enviar convite");
+		button.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				if(textBoxEnviarConvite.getText().equals("")){
+					labelEnviarConvite.setText("Email inválido");
+					labelEnviarConvite.setStyleName("gwt-LabelEstradaSolidaria5");
+					labelEnviarConvite.setVisible(true);
+				} else {
+					enviarConviteGUI(textBoxEnviarConvite.getText());
+				}
+			}
+		});
+		flexTable.setWidget(0, 2, button);
+		button.setWidth("102px");
+		
+		labelEnviarConvite = new Label("");
+		labelEnviarConvite.setVisible(false);
+		flexTable.setWidget(1, 2, labelEnviarConvite);
+		
+		Label lblMensagens = new Label("Mensagens:");
+		lblMensagens.setStyleName("gwt-LabelEstradaSolidaria4");
+		absolutePanel.add(lblMensagens, 24, 125);
 
 		getListaDeMensagemsGUI();
+	}
+
+	protected void enviarConviteGUI(String emailDoAmigo) {
+		estradaSolidariaService.convidarAmigo(idSessao, emailDoAmigo, new AsyncCallback<Boolean>(){
+			@Override
+			public void onFailure(Throwable caught) {
+				// Show the RPC error message to the user
+				labelEnviarConvite.setText(caught.getMessage());
+				labelEnviarConvite.setStyleName("gwt-LabelEstradaSolidaria5");
+				labelEnviarConvite.setVisible(true);
+			}
+
+			@Override
+			public void onSuccess(Boolean result) {
+				labelEnviarConvite.setText("Convite enviado!");
+				labelEnviarConvite.setStyleName("gwt-LabelEstradaSolidaria10");
+				labelEnviarConvite.setVisible(true);
+			}
+			
+		});
 	}
 
 	protected void apagarMensagemGUI(Integer idMensagem) {
@@ -137,7 +210,7 @@ public class StateInicio extends Composite {
 			@Override
 			public void onFailure(Throwable caught) {
 				// Show the RPC error message to the user
-				Window.alert(caught.getMessage());
+				Window.alert("Erro ao apagar mensagem: " + caught.getMessage());
 			}
 
 			@Override
@@ -179,5 +252,4 @@ public class StateInicio extends Composite {
 			}
 		});
 	}
-	
 }
