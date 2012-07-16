@@ -1,7 +1,8 @@
 package estradasolidaria.ui.client;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Command;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
@@ -9,8 +10,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.MenuBar;
-import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.widget.client.TextButton;
 
 import estradasolidaria.ui.resources.Resources;
 
@@ -21,6 +21,7 @@ public class StateVisualizarPerfilAlheio extends Composite {
 	private GWTUsuario u;
 	private Integer idDaSessao;
 	
+	@SuppressWarnings("static-access")
 	public StateVisualizarPerfilAlheio(EstradaSolidaria entryPoint, EstradaSolidariaServiceAsync estradaSolidariaService, GWTUsuario usuario) {
 		
 		this.estrada = entryPoint;
@@ -66,27 +67,23 @@ public class StateVisualizarPerfilAlheio extends Composite {
 		absolutePanel.add(imagem, 24, 28);
 		imagem.setSize("143px", "149px");
 		
-		MenuBar menuBar = new MenuBar(false);
-		absolutePanel.add(menuBar, 24, 179);
-		menuBar.setSize("168px", "20px");
-		
-		MenuItem mntmEnviarMensagem = new MenuItem("Enviar mensagem", false, new Command() {
-			public void execute() {
+		TextButton txtbtnEnviarMensagem = new TextButton("Enviar mensagem");
+		txtbtnEnviarMensagem.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
 				DialogBox newDialog = new DialogBoxEnviarMensagem(estradaService, u.getIdUsuario(), idDaSessao);
 				newDialog.center();
 				newDialog.show();
 			}
 		});
-		menuBar.addItem(mntmEnviarMensagem);
+		absolutePanel.add(txtbtnEnviarMensagem, 24, 206);
 		
-		MenuBar menuBar_1 = new MenuBar(false);
-		absolutePanel.add(menuBar_1, 24, 199);
-		
-		MenuItem mntmAdicionarComoAmigo = new MenuItem("Adicionar como amigo", false, new Command() {
-			public void execute() {
+		TextButton txtbtnAdicionarComoAmigo = new TextButton("Adicionar amigo");
+		txtbtnAdicionarComoAmigo.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
 				Window.alert("fazer alguma coisa");
 			}
 		});
-		menuBar_1.addItem(mntmAdicionarComoAmigo);
+		absolutePanel.add(txtbtnAdicionarComoAmigo, 24, 240);
+		txtbtnAdicionarComoAmigo.setSize("128px", "28px");
 	}
 }

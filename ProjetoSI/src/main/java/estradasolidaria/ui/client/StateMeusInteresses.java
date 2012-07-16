@@ -10,7 +10,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -24,6 +23,7 @@ import com.google.gwt.widget.client.TextButton;
 public class StateMeusInteresses extends AbsolutePanel {
 	private List<GWTInteresse> listaDeInteresses;
 
+	@SuppressWarnings("unused")
 	private EstradaSolidaria estrada;
 
 	private EstradaSolidariaServiceAsync estradaSolidariaService;
@@ -145,8 +145,10 @@ public class StateMeusInteresses extends AbsolutePanel {
 		txtbtnDeletar = new TextButton("Deletar");
 		txtbtnDeletar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				if (idInteresseEscolhido == null) {
-					Window.alert("Escolha um interesse a ser removido!");					
+				if (idInteresseEscolhido == null) {	
+					PopupAlerta popup = new PopupAlerta("Escolha um interesse a ser removido!");
+					popup.center();
+					popup.show();
 				} else {
 					deletarInteresse();
 				}
@@ -163,15 +165,18 @@ public class StateMeusInteresses extends AbsolutePanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("Remote Procedure Call - Failure: "
-						+ caught.getMessage());
+				PopupAlerta popup = new PopupAlerta(caught.getMessage());
+				popup.center();
+				popup.show();
 				
 			}
 
 			@Override
 			public void onSuccess(Void result) {
 				colocarInteressesNoGrid();
-				Window.alert("Interesse Removido!");
+				PopupInteresseRemovido popup = new PopupInteresseRemovido();
+				popup.center();
+				popup.show();
 			}
 		});
 		
@@ -183,8 +188,9 @@ public class StateMeusInteresses extends AbsolutePanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("Remote Procedure Call - Failure: "
-						+ caught.getMessage());
+				PopupAlerta popup = new PopupAlerta(caught.getMessage());
+				popup.center();
+				popup.show();
 			}
 
 			@Override
