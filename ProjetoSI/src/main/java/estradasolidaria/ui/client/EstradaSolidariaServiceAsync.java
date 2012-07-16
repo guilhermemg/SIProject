@@ -155,4 +155,8 @@ public interface EstradaSolidariaServiceAsync {
 	void marcarMensagemComoLida(Integer idSessao, Integer idMensagem, AsyncCallback<Void> asyncCallback);
 	
 	void apagarMensagem(Integer idSessao, Integer idMensagem, AsyncCallback<Void> asyncCallback);
+	
+	void encerrarSessao(Integer idSessao, AsyncCallback<Void> asyncCallback);
+	
+	void convidarAmigo(Integer idSessao, String emailDoAmigo, AsyncCallback<Boolean> asyncCallback);
 }

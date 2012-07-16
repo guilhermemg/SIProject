@@ -746,4 +746,22 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 			throw new GWTException(e.getMessage());
 		}
 	}
+	
+	@Override
+	public void encerrarSessao(Integer idSessao) throws GWTException{
+		try{
+			controller.encerrarSessao(idSessao);
+		} catch (Exception e){
+			throw new GWTException(e.getMessage());
+		}
+	}
+	
+	@Override
+	public boolean convidarAmigo(Integer idSessao, String emailDoAmigo) throws GWTException{
+		try{
+			return controller.convidarAmigo(idSessao, emailDoAmigo);
+		} catch (Exception e){
+			throw new GWTException(e.getMessage());
+		}
+	}
 }
