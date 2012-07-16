@@ -2,8 +2,8 @@ package estradasolidaria.ui.server.data;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.util.Collections;
 import java.util.Map;
-import java.util.TreeMap;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -73,8 +73,8 @@ public class GerenciadorDeDados {
 	 */
 	@SuppressWarnings("unchecked")
 	public Map<Integer, Usuario> reiniciarSistema() {
-		Map<Integer, Usuario> mapaUsuarios = (TreeMap<Integer, Usuario>)xstream.fromXML(new File(fname));	
-		return mapaUsuarios;
+		File file = new File(fname);
+		return Collections.synchronizedMap((Map<Integer, Usuario>) xstream.fromXML(file));	
 	}
 	
 	/**

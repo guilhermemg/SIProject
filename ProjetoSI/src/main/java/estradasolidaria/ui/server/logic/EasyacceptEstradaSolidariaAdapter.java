@@ -4,7 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.mail.MessagingException;
+
 import estradasolidaria.ui.server.util.SpecialLinkedListBrackets;
 import estradasolidaria.ui.server.util.SpecialLinkedListKeys;
 

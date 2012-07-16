@@ -33,11 +33,11 @@ public class EstradaSolidariaController implements Serializable {
 
 	private Integer ordemParaCaronas = 0;
 
-	private Map<Integer, Sessao> mapIdSessao = new TreeMap<Integer, Sessao>(); // contem
+	private Map<Integer, Sessao> mapIdSessao = Collections.synchronizedMap(new TreeMap<Integer, Sessao>());
 	private Iterator<Sessao> iteratorIdSessao = this.mapIdSessao.values().iterator();
 	private Lock lockMapIdSessao = new ReentrantLock();
 
-	private Map<Integer, Usuario> mapIdUsuario = new TreeMap<Integer, Usuario>();
+	private Map<Integer, Usuario> mapIdUsuario = Collections.synchronizedMap(new TreeMap<Integer, Usuario>());
 	private Iterator<Usuario> iteratorIdUsuario = this.mapIdUsuario.values().iterator();
 	private Lock lockMapIdUsuario = new ReentrantLock();
 
@@ -1619,7 +1619,7 @@ public class EstradaSolidariaController implements Serializable {
 			
 			Usuario u = this.mapIdUsuario.get(this.mapIdSessao.get(idSessao).getIdUser()); 
 			
-			if( u == null)
+			if( u == null || u.getIdUsuario() == null)
 				throw new UsuarioInexistenteException();
 			
 			return u;
@@ -2466,8 +2466,10 @@ public class EstradaSolidariaController implements Serializable {
 			lockMapIdUsuario.lock();
 			
 			Usuario usuario = getUsuarioAPartirDeIDSessao(idSessao);
-			SenderMail.sendMail(usuario.getEmail(), emailDoAmigo, usuario.getNome() + " lhe convidou para o Estrada Solidária, a sua rede social de caroneiros." +
-					" Junte-se a ele nessa rede por um mundo mais solidário! " +
+			SenderMail.sendMail(usuario.getEmail(), emailDoAmigo, usuario.getNome() + 
+					" lhe convidou para o Estrada Solidária, " +
+					"a sua rede social de caroneiros." +
+					" Junte-se a ele nessa rede por um mundo mais solidário e sustentável! " +
 					"\n\nAcesse http://estradasolidaria.appspot.com");
 			return true;
 		} finally {

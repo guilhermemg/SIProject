@@ -53,7 +53,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 	private Calendar dataVolta;
 	
 	// as solicitacoes sao apagadas apos aceitas pelo dono da carona
-	private Map<Integer, Solicitacao> mapIdSolicitacoes = new TreeMap<Integer, Solicitacao>();
+	private Map<Integer, Solicitacao> mapIdSolicitacoes = Collections.synchronizedMap(new TreeMap<Integer, Solicitacao>());
 	private Iterator<Solicitacao> iteratorIdSolicitacoes = this.mapIdSolicitacoes.values().iterator();
 	private Lock lockMapIdSolicitacoes = new ReentrantLock();
 
@@ -62,15 +62,15 @@ public class Carona implements Comparable<Carona>, Serializable {
 
 	// contem o mapeamento de cada usuario que compareceu a carona para o review
 	// q ele faz dela.
-	private Map<Integer, EnumCaronaReview> mapIdCaroneiroReviewDono = new TreeMap<Integer, EnumCaronaReview>();
+	private Map<Integer, EnumCaronaReview> mapIdCaroneiroReviewDono = Collections.synchronizedMap(new TreeMap<Integer, EnumCaronaReview>());
 	private Lock lockMapIdCaroneiroReviewDono = new ReentrantLock();
 
 	// contem o mapeamento de cada usuario presente para o review q o dono da
 	// carona faz dele.
-	private Map<Integer, EnumCaronaReview> mapIdDonoReviewCaroneiro = new TreeMap<Integer, EnumCaronaReview>();
+	private Map<Integer, EnumCaronaReview> mapIdDonoReviewCaroneiro = Collections.synchronizedMap(new TreeMap<Integer, EnumCaronaReview>());
 	private Lock lockMapIdDonoReviewCaroneiro = new ReentrantLock();
 	
-	private Map<Integer, Sugestao> mapIdSugestaoDePontoDeEncontro = new TreeMap<Integer, Sugestao>();
+	private Map<Integer, Sugestao> mapIdSugestaoDePontoDeEncontro = Collections.synchronizedMap(new TreeMap<Integer, Sugestao>());
 	private Iterator<Sugestao> iteratorIdSugestoes;
 	private Lock lockMapIdSugestaoDePontoDeEncontro = new ReentrantLock();
 

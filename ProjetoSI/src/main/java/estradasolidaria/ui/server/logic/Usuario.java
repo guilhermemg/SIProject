@@ -37,31 +37,31 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	
 	private Integer pontuacao;
 	
-	private List<String> mensagensPerfil = new LinkedList<String>();
+	private List<String> mensagensPerfil = Collections.synchronizedList(new LinkedList<String>());
 	private Lock lockMensagensPerfil = new ReentrantLock();
 	
-	private List<Mensagem> listaDeMensagens = new LinkedList<Mensagem>();
+	private List<Mensagem> listaDeMensagens = Collections.synchronizedList(new LinkedList<Mensagem>());
 	private Lock lockListaDeMensagens = new ReentrantLock();
 	
-	private Map<Integer, Carona> mapIdCaronasOferecidas = new TreeMap<Integer, Carona>();
+	private Map<Integer, Carona> mapIdCaronasOferecidas = Collections.synchronizedMap(new TreeMap<Integer, Carona>());
 	private Iterator<Carona> iteratorIdCaronasOferecidas = this.mapIdCaronasOferecidas.values().iterator();
 	private Lock lockMapIdCaronasOferecidas = new ReentrantLock();
 
 	// contem dados temporarios (at� a carona acontecer de fato)
-	private Map<Integer, Carona> mapIdCaronasPegas = new TreeMap<Integer, Carona>();
+	private Map<Integer, Carona> mapIdCaronasPegas = Collections.synchronizedMap(new TreeMap<Integer, Carona>());
 	private Iterator<Carona> iteratorIdCaronasPegas = this.mapIdCaronasPegas.values().iterator();
 	private Lock lockMapIdCaronasPegas = new ReentrantLock();
 
-	private Map<Integer, Interesse> mapIdInteresse = new TreeMap<Integer, Interesse>();
+	private Map<Integer, Interesse> mapIdInteresse = Collections.synchronizedMap(new TreeMap<Integer, Interesse>());
 	private Lock lockMapIdInteresse = new ReentrantLock();
 	
-	private Map<Integer, Solicitacao> mapIdSolicitacoesFeitas = new TreeMap<Integer, Solicitacao>();
+	private Map<Integer, Solicitacao> mapIdSolicitacoesFeitas = Collections.synchronizedMap(new TreeMap<Integer, Solicitacao>());
 	private Lock lockMapIdSolicitacoesFeitas = new ReentrantLock();
 
-	private Map<Integer, Sugestao> mapIdSugestoesFeitas = new TreeMap<Integer, Sugestao>();
+	private Map<Integer, Sugestao> mapIdSugestoesFeitas = Collections.synchronizedMap(new TreeMap<Integer, Sugestao>());
 	private Lock lockMapIdSugestoesFeitas = new ReentrantLock();
 	
-	private List<Integer> listaIdsUsuariosPreferenciais = new LinkedList<Integer>();
+	private List<Integer> listaIdsUsuariosPreferenciais = Collections.synchronizedList(new LinkedList<Integer>());
 	private Lock lockListaUsuariosPreferenciais = new ReentrantLock();
 	
 	/**
@@ -1828,9 +1828,9 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	public List<Mensagem> getListaDeMensagens() {
 		try {
 			lockListaDeMensagens.lock();
-			
+
 			List<Mensagem> listaDeMensagensInvertida = new LinkedList<Mensagem>();
-			
+
 			for (int i = listaDeMensagens.size() - 1; i >= 0; i--) {
 				listaDeMensagensInvertida.add(listaDeMensagens.get(i));
 			}
@@ -1871,12 +1871,16 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		try {
 			lockListaDeMensagens.lock();
 			Iterator<Mensagem> itMensagens = listaDeMensagens.iterator();
+			Mensagem m = null;
 			while(itMensagens.hasNext()) {
-				Mensagem m = itMensagens.next();
+				m = itMensagens.next();
 				if(m.getIdMensagem().equals(idMensagem)) {
 					listaDeMensagens.remove(m);
+					break;
 				}
 			}
+			if(m == null)
+				throw new IllegalArgumentException("Mensagem inexistente");
 		}
 		finally {
 			lockListaDeMensagens.unlock();
