@@ -764,4 +764,28 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 			throw new GWTException(e.getMessage());
 		}
 	}
+	
+	@Override
+	public List<GWTUsuario> getRankingUsuarios(String ordem) throws GWTException {
+		try{
+			List<Usuario> listaUsuarios = controller.getRankingUsuarios(ordem);
+			List<GWTUsuario> gwt_usuarios = new LinkedList<GWTUsuario>();
+			Iterator<Usuario> itUsuarios = listaUsuarios.iterator();
+			while(itUsuarios.hasNext()){
+				Usuario u = itUsuarios.next();
+				GWTUsuario gwt_u = new GWTUsuario();
+				
+				gwt_u.setEmail(u.getEmail());
+				gwt_u.setEndereco(u.getEndereco());
+				gwt_u.setIdUsuario(u.getIdUsuario().toString());
+				gwt_u.setLogin(u.getLogin());
+				gwt_u.setNome(u.getNome());
+				
+				gwt_usuarios.add(gwt_u);
+			}
+			return gwt_usuarios;
+		} catch (Exception e){
+			throw new GWTException(e.getMessage());
+		}
+	}
 }

@@ -26,8 +26,10 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.gwt.user.client.ui.RadioButton;
 
 public class StateInicio extends Composite {
 	
@@ -38,11 +40,15 @@ public class StateInicio extends Composite {
 	private SingleSelectionModel<GWTMensagem> selectionModel;
 	private Column<GWTMensagem, Boolean> checkColumn;
 	private Label labelEnviarConvite;
+	private AbsolutePanel bodyPanel;
+	private ScrollPanel scrollPanel;
 	
 	@SuppressWarnings({ "static-access", "deprecation" })
-	public StateInicio(EstradaSolidaria entryPoint, EstradaSolidariaServiceAsync estradaService) {
+	public StateInicio(EstradaSolidaria entryPoint, EstradaSolidariaServiceAsync estradaService, AbsolutePanel body, ScrollPanel scroll) {
 		this.estrada = entryPoint;
 		this.estradaSolidariaService = estradaService;
+		bodyPanel = body;
+		scrollPanel = scroll;
 		idSessao = estrada.getIdSessaoAberta();
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
@@ -181,8 +187,55 @@ public class StateInicio extends Composite {
 		Label lblMensagens = new Label("Mensagens:");
 		lblMensagens.setStyleName("gwt-LabelEstradaSolidaria4");
 		absolutePanel.add(lblMensagens, 24, 125);
+		
+		DisclosurePanel disclosurePanel_1 = new DisclosurePanel("Visualizar ranking de usuários", false);
+		disclosurePanel_1.setStyleName("gwt-LabelEstradaSolidaria4");
+		absolutePanel.add(disclosurePanel_1, 378, 22);
+		disclosurePanel_1.setSize("250px", "102px");
+		
+		FlexTable flexTable_1 = new FlexTable();
+		disclosurePanel_1.setContent(flexTable_1);
+		flexTable_1.setSize("5cm", "40px");
+		
+		final RadioButton rdbtnOrdemCrescente = new RadioButton("new name", "Ordem crescente");
+		flexTable_1.setWidget(0, 1, rdbtnOrdemCrescente);
+		
+		final RadioButton rdbtnOrdemDecrescente = new RadioButton("new name", "Ordem decrescente");
+		flexTable_1.setWidget(1, 1, rdbtnOrdemDecrescente);
+		
+		Button btnVer = new Button("Ver");
+		btnVer.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				if(rdbtnOrdemCrescente.getValue()){
+					getRankingusuariosGUI("crescente");
+				} else if (rdbtnOrdemDecrescente.getValue()){
+					getRankingusuariosGUI("decrescente");
+				}
+			}
+		});
+		flexTable_1.setWidget(2, 1, btnVer);
 
 		getListaDeMensagemsGUI();
+	}
+
+	protected void getRankingusuariosGUI(final String ordem) {
+		estradaSolidariaService.getRankingUsuarios(ordem, new AsyncCallback<List<GWTUsuario>>(){
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert(caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(List<GWTUsuario> result) {
+				bodyPanel.clear();
+				scrollPanel.clear();
+				StateVisualizarRanking state = new StateVisualizarRanking(result, ordem);
+				bodyPanel.add(state);
+				bodyPanel.setVisible(true);
+				state.setSize("100%", "100%");
+				
+			}
+		});
 	}
 
 	protected void enviarConviteGUI(String emailDoAmigo) {

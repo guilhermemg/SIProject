@@ -159,4 +159,6 @@ public interface EstradaSolidariaServiceAsync {
 	void encerrarSessao(Integer idSessao, AsyncCallback<Void> asyncCallback);
 	
 	void convidarAmigo(Integer idSessao, String emailDoAmigo, AsyncCallback<Boolean> asyncCallback);
+	
+	void getRankingUsuarios(String ordem, AsyncCallback<List<GWTUsuario>> asyncCallback);
 }

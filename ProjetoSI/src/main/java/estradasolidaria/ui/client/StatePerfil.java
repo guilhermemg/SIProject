@@ -307,7 +307,7 @@ public class StatePerfil extends Composite {
 	protected void inicio() {
 		bodyPanel.clear();
 		scrollPanel.clear();
-		Widget inicio = new StateInicio(estrada, estradaSolidariaService);
+		Widget inicio = new StateInicio(estrada, estradaSolidariaService, bodyPanel, scrollPanel);
 		bodyPanel.add(inicio);
 		bodyPanel.setVisible(true);
 		inicio.setSize("100%", "100%");
