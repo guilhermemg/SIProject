@@ -63,6 +63,9 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	
 	private List<Integer> listaIdsUsuariosPreferenciais = Collections.synchronizedList(new LinkedList<Integer>());
 	private Lock lockListaUsuariosPreferenciais = new ReentrantLock();
+
+	private Lock lockMapIdAmigo = new ReentrantLock();
+	private Map<Integer, Usuario> mapIdAmigo = Collections.synchronizedMap(new TreeMap<Integer, Usuario>());
 	
 	/**
 	 * Construtor da classe Usuario.
@@ -1905,6 +1908,37 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		}
 		finally {
 			lockListaDeMensagens.unlock();
+		}
+	}
+
+	/**
+	 * Adiciona amigo
+	 * 
+	 * @param amigo
+	 */
+	public void adicionarAmigo(Usuario amigo) {
+		try {
+			lockMapIdAmigo.lock();
+			this.mapIdAmigo.put(amigo.getIdUsuario(), amigo);
+		} 
+		finally {
+			lockMapIdAmigo.unlock();
+		}
+	}
+
+	/**
+	 * Retorna lista de amigos do usuario.
+	 * 
+	 * @return lista de amigos
+	 */
+	public List<Usuario> getListaDeAmigos() {
+		try {
+			lockMapIdAmigo.lock();
+			List<Usuario> listaAmigos = new LinkedList<Usuario>();
+			listaAmigos.addAll(this.mapIdAmigo.values());
+			return listaAmigos;
+		} finally {
+			lockMapIdAmigo.unlock();
 		}
 	}
 }

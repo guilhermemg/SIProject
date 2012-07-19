@@ -606,6 +606,8 @@ public class EstradaSolidariaController implements Serializable {
 			this.mapIdUsuario.get(idUsuarioDonoDaSolicitacao)
 					.adicionarIdCaronaPega(idCarona, carona);
 			
+			adicionarAmigo(idSessao, idUsuarioDonoDaSolicitacao);
+			
 			enviarMensagem(solicitacao.getDonoDaSolicitacao(), donoDaCarona,donoDaCarona.getNome() + " aceitou sua solicitação de vaga com sugestão de ponto de encontro para a carona "
 			+ carona.toString() + "com o seguinte ponto encontro: " + carona.getPontoEncontro() + "." );
 		} finally {
@@ -651,6 +653,8 @@ public class EstradaSolidariaController implements Serializable {
 			
 			this.mapIdUsuario.get(idUsuarioDonoDaSolicitacao)
 					.adicionarIdCaronaPega(idCarona, carona);
+			
+			adicionarAmigo(idSessao, solicitacao.getDonoDaSolicitacao().getIdUsuario());
 			
 			enviarMensagem(solicitacao.getDonoDaSolicitacao(), donoDaCarona,
 					donoDaCarona.getNome() + " aceitou sua solicitação de vaga na carona " + carona.toString() + ".");
@@ -2508,5 +2512,56 @@ public class EstradaSolidariaController implements Serializable {
 	private void enviarMensagem(Usuario destinatario, String txt) throws MessageException {
 		Mensagem msg = new Mensagem(destinatario, txt);
 		destinatario.addMensagem(msg);
+	}
+	
+	/**
+	 * Adiciona amigo ao mapa de amigos
+	 * do usuario identificado por idSessao.
+	 * 
+	 * @param idSessao
+	 * @param idUsuario
+	 * @throws MessageException 
+	 */
+	public void adicionarAmigo(Integer idSessao, Integer idUsuario) throws MessageException {
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			Usuario usuario = getUsuarioAPartirDeIDSessao(idSessao);
+			Usuario amigo = getUsuarioAPartirDeIDUsuario(idUsuario);
+			
+			if(usuario == null || amigo == null) {
+				throw new UsuarioInexistenteException();
+			}
+			usuario.adicionarAmigo(amigo);
+			enviarMensagem(amigo, usuario.getNome() + " lhe adicionou como amigo.");
+			
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
+	}
+	
+	/**
+	 * Retorna lista de amigos do usuario
+	 * identificado por idSessao.
+	 * 
+	 * @param idSessao
+	 * @return lista de amigos
+	 */
+	public List<Usuario> getListaDeAmigos(Integer idSessao) {
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			Usuario usuario = getUsuarioAPartirDeIDSessao(idSessao);
+			
+			if(usuario == null)
+				throw new UsuarioInexistenteException();
+			
+			return usuario.getListaDeAmigos();
+			
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
 	}
 }
