@@ -95,8 +95,8 @@ public class EstradaSolidariaController implements Serializable {
 			Usuario user = new Usuario(login, senha, nome, endereco, email);
 			this.mapIdUsuario.put(user.getIdUsuario(), user);
 			
-			Mensagem msg = new Mensagem(user, "Olá, " + user.getNome() + "! Seja bem vindo ao Estrada Solidária, a sua rede social de caroneiros.");
-			user.addMensagem(msg);
+			enviarMensagem(user, "Olá, " + user.getNome() + 
+				"! Seja bem vindo ao Estrada Solidária, a sua rede social de caroneiros.");
 		} finally {
 			lockMapIdUsuario.unlock();
 		}
@@ -410,10 +410,8 @@ public class EstradaSolidariaController implements Serializable {
 			
 			donoDaSugestao.addSugestaoFeita(sugestaoFeita);
 			
-			Mensagem mensagem = new Mensagem(donoDaSugestao, donoDaCarona, donoDaSugestao.getNome() 
+			enviarMensagem(donoDaSugestao, donoDaCarona, donoDaSugestao.getNome() 
 					+ " sugeriu um ponto de encontro para a carona " + carona.toString() + ": " + sugestaoFeita.getPontoSugerido() + ".");
-			donoDaSugestao.addMensagem(mensagem);
-			
 			return sugestaoFeita;
 		} finally {
 			lockMapIdSessao.unlock();
@@ -474,10 +472,9 @@ public class EstradaSolidariaController implements Serializable {
 			Carona carona = donoDaCarona.getCarona(idCarona);
 			Usuario donoDaSugestao = getUsuarioAPartirDeIDSugestao(idSugestao);
 			
-			Mensagem mensagem = new Mensagem(donoDaSugestao, donoDaCarona, donoDaCarona.getNome() + " respondeu a sua sugestão de ponto de encontro para a carona" 
+			enviarMensagem(donoDaSugestao, donoDaCarona, donoDaCarona.getNome() + " respondeu a sua sugestão de ponto de encontro para a carona" 
 					+ carona.toString() + ". O ponto" +
 					"de encontro proposto por ele é: " + sugestaoFeitaPeloDonoDaCarona.getResposta() + ".");
-			donoDaSugestao.addMensagem(mensagem);
 		} finally {
 			lockMapIdSessao.unlock();
 			lockMapIdUsuario.unlock();
@@ -560,11 +557,8 @@ public class EstradaSolidariaController implements Serializable {
 			solicitante.addSolicitacaoFeita(solicitacaoFeita);
 			Carona carona = getCarona(solicitacaoFeita.getIdCarona());
 			
-			Mensagem mensagem = new Mensagem(donoDaCarona, solicitante, solicitante.getNome() + " fez uma solicitação a você na carona " + carona.toString() + 
+			enviarMensagem(donoDaCarona, solicitante, solicitante.getNome() + " fez uma solicitação a você na carona " + carona.toString() + 
 					". E propos o seguinte ponto de encontro para a carona: " + solicitacaoFeita.getPontoEncontro() + ".");
-			
-			donoDaCarona.addMensagem(mensagem);
-			
 			return solicitacaoFeita;
 		} finally {
 			lockMapIdUsuario.unlock();
@@ -612,9 +606,8 @@ public class EstradaSolidariaController implements Serializable {
 			this.mapIdUsuario.get(idUsuarioDonoDaSolicitacao)
 					.adicionarIdCaronaPega(idCarona, carona);
 			
-			Mensagem msg = new Mensagem(solicitacao.getDonoDaSolicitacao(), donoDaCarona,donoDaCarona.getNome() + " aceitou sua solicitação de vaga com sugestão de ponto de encontro para a carona "
+			enviarMensagem(solicitacao.getDonoDaSolicitacao(), donoDaCarona,donoDaCarona.getNome() + " aceitou sua solicitação de vaga com sugestão de ponto de encontro para a carona "
 			+ carona.toString() + "com o seguinte ponto encontro: " + carona.getPontoEncontro() + "." );
-			solicitacao.getDonoDaSolicitacao().addMensagem(msg);
 		} finally {
 			lockMapIdSessao.unlock();
 			lockMapIdUsuario.unlock();
@@ -659,9 +652,8 @@ public class EstradaSolidariaController implements Serializable {
 			this.mapIdUsuario.get(idUsuarioDonoDaSolicitacao)
 					.adicionarIdCaronaPega(idCarona, carona);
 			
-			Mensagem msg = new Mensagem(solicitacao.getDonoDaSolicitacao(), donoDaCarona,
+			enviarMensagem(solicitacao.getDonoDaSolicitacao(), donoDaCarona,
 					donoDaCarona.getNome() + " aceitou sua solicitação de vaga na carona " + carona.toString() + ".");
-			solicitacao.getDonoDaSolicitacao().addMensagem(msg);
 		} finally {
 			lockMapIdSessao.unlock();
 			lockMapIdUsuario.unlock();
@@ -726,9 +718,8 @@ public class EstradaSolidariaController implements Serializable {
 			solicitante.addSolicitacaoFeita(solicitacaoFeita);
 			
 			Carona carona = getCarona(solicitacaoFeita.getIdCarona());
-			Mensagem msg = new Mensagem(donoDaCarona, solicitante, 
+			enviarMensagem(donoDaCarona, solicitante, 
 					solicitante.getNome() + " fez uma solicitação a você na carona " + carona.toString() + ".");
-			donoDaCarona.addMensagem(msg);
 			
 			return solicitacaoFeita;
 		} finally {
@@ -774,9 +765,8 @@ public class EstradaSolidariaController implements Serializable {
 			
 			Carona carona = getCarona(solicitacao.getIdCarona());
 			Usuario donoDaCarona = solicitacao.getDonoDaCarona(), donoDaSolicitacao = solicitacao.getDonoDaSolicitacao();
-			Mensagem msg = new Mensagem(donoDaSolicitacao, donoDaCarona, 
+			enviarMensagem(donoDaSolicitacao, donoDaCarona, 
 					donoDaCarona.getNome() + " rejeitou o seu pedido de vaga na carona " + carona.toString());
-			donoDaSolicitacao.addMensagem(msg);
 		} finally {
 			lockMapIdSessao.unlock();
 			lockMapIdUsuario.unlock();
@@ -815,9 +805,8 @@ public class EstradaSolidariaController implements Serializable {
 			
 			Carona carona = getCarona(solicitacao.getIdCarona());
 			Usuario donoDaCarona = solicitacao.getDonoDaCarona();
-			Mensagem msg = new Mensagem(donoDaCarona, donoDaSolicitacao, 
+			enviarMensagem(donoDaCarona, donoDaSolicitacao, 
 					donoDaSolicitacao.getNome() + " desistiu da vaga na carona " + carona.toString());
-			donoDaCarona.addMensagem(msg);
 		} finally {
 			lockMapIdSessao.unlock();
 			lockMapIdUsuario.unlock();
@@ -1397,8 +1386,7 @@ public class EstradaSolidariaController implements Serializable {
 				for(Interesse i : u.getMapIdInteresse().values()) {
 					if(i.verificaCorrespondencia(novaCarona)) {
 						String msg = u.atualizaPerfilUsuarioInteressado(novaCarona, getEmailDonoDeCarona(novaCarona));
-						Mensagem mensagem = new Mensagem(u, msg);
-						u.addMensagem(mensagem);
+						enviarMensagem(u, msg);
 					}
 				}
 			}
@@ -2494,5 +2482,31 @@ public class EstradaSolidariaController implements Serializable {
 		} finally {
 			lockMapIdSessao.unlock();
 		}
+	}
+	
+	/**
+	 * Envia mensagem de um usuario para
+	 * outro dentro do sistema.
+	 * 
+	 * @param remetente
+	 * @param destinatario
+	 * @param txt
+	 * @throws MessageException 
+	 */
+	public void enviarMensagem(Usuario destinatario, Usuario remetente, String txt) throws MessageException {
+		Mensagem m = new Mensagem(destinatario, remetente, txt);
+		destinatario.addMensagem(m);
+	}
+	
+	/**
+	 * Envia uma mensagem do sistema para o usuario.
+	 * 
+	 * @param destinatario
+	 * @param txt
+	 * @throws MessageException 
+	 */
+	private void enviarMensagem(Usuario destinatario, String txt) throws MessageException {
+		Mensagem msg = new Mensagem(destinatario, txt);
+		destinatario.addMensagem(msg);
 	}
 }
