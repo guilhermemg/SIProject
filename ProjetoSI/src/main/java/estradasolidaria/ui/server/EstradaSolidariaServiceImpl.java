@@ -821,4 +821,13 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		
 		return gwt_s;
 	}
+	
+	@Override
+	public void adicionarAmigo(Integer idSessao, Integer idUsuario) throws GWTException {
+		try{
+			controller.adicionarAmigo(idSessao, idUsuario);
+		} catch(Exception e){
+			throw new GWTException(e.getMessage());
+		}
+	}
 }
