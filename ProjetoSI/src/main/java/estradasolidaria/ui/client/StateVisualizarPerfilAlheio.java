@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -19,7 +20,7 @@ public class StateVisualizarPerfilAlheio extends Composite {
 	private EstradaSolidaria estrada;
 	private EstradaSolidariaServiceAsync estradaService;
 	private GWTUsuario u;
-	private Integer idDaSessao;
+	private Integer idSessao;
 	
 	@SuppressWarnings("static-access")
 	public StateVisualizarPerfilAlheio(EstradaSolidaria entryPoint, EstradaSolidariaServiceAsync estradaSolidariaService, GWTUsuario usuario) {
@@ -27,7 +28,7 @@ public class StateVisualizarPerfilAlheio extends Composite {
 		this.estrada = entryPoint;
 		this.estradaService = estradaSolidariaService;
 		this.u = usuario;
-		idDaSessao = estrada.getIdSessaoAberta();
+		idSessao = estrada.getIdSessaoAberta();
 		
 		Resources resources = GWT.create(Resources.class);
 		Image imagem = new Image(resources.getGenericUserImage());
@@ -70,7 +71,7 @@ public class StateVisualizarPerfilAlheio extends Composite {
 		TextButton txtbtnEnviarMensagem = new TextButton("Enviar mensagem");
 		txtbtnEnviarMensagem.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				DialogBox newDialog = new DialogBoxEnviarMensagem(estradaService, u.getIdUsuario(), idDaSessao);
+				DialogBox newDialog = new DialogBoxEnviarMensagem(estradaService, u.getIdUsuario(), idSessao);
 				newDialog.center();
 				newDialog.show();
 			}
@@ -80,10 +81,25 @@ public class StateVisualizarPerfilAlheio extends Composite {
 		TextButton txtbtnAdicionarComoAmigo = new TextButton("Adicionar amigo");
 		txtbtnAdicionarComoAmigo.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				Window.alert("fazer alguma coisa");
+				adicionaAmigoGUI();
 			}
 		});
 		absolutePanel.add(txtbtnAdicionarComoAmigo, 24, 240);
 		txtbtnAdicionarComoAmigo.setSize("128px", "28px");
+	}
+
+	protected void adicionaAmigoGUI() {
+		Integer idUsuario = Integer.parseInt(u.getIdUsuario());
+		estradaService.adicionarAmigo(idSessao, idUsuario, new AsyncCallback<Void>(){
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert(caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				Window.alert("Amigo adicionado com sucesso");
+			}
+		});
 	}
 }

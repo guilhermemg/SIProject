@@ -17,6 +17,7 @@ import estradasolidaria.ui.client.GWTException;
 import estradasolidaria.ui.client.GWTInteresse;
 import estradasolidaria.ui.client.GWTMensagem;
 import estradasolidaria.ui.client.GWTSolicitacao;
+import estradasolidaria.ui.client.GWTSugestao;
 import estradasolidaria.ui.client.GWTUsuario;
 import estradasolidaria.ui.server.adder.Adder;
 import estradasolidaria.ui.server.logic.Carona;
@@ -28,6 +29,7 @@ import estradasolidaria.ui.server.logic.Interesse;
 import estradasolidaria.ui.server.logic.Mensagem;
 import estradasolidaria.ui.server.logic.MessageException;
 import estradasolidaria.ui.server.logic.Solicitacao;
+import estradasolidaria.ui.server.logic.Sugestao;
 import estradasolidaria.ui.server.logic.Usuario;
 import estradasolidaria.ui.server.logic.UsuarioInexistenteException;
 
@@ -622,7 +624,7 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 				gwt_i.setDestino(i.getDestino());
 				gwt_i.setHoraInicio(hourFormat.format(i.getHoraInicio().getTime()));
 				gwt_i.setHoraFim(hourFormat.format(i.getHoraFim().getTime()));
-				gwt_i.setIdInteresse(i.getIdInteresse().toString());
+				gwt_i.setIdInteresse(i.getIdInteresse());
 				gwt_i.setOrigem(i.getOrigem());
 				
 				result.add(gwt_i);
@@ -797,6 +799,34 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 			}
 			return gwt_usuarios;
 		} catch (Exception e){
+			throw new GWTException(e.getMessage());
+		}
+	}
+
+	@Override
+	public List<GWTSugestao> getSugestoes(Integer idSessao) {
+		List<GWTSugestao> result = new LinkedList<GWTSugestao>();
+		for (Sugestao s : controller.getUsuarioAPartirDeIDSessao(idSessao).getMapIdSugestoesFeitas().values()) {
+			result.add(geraGWTSugestao(s));
+		}
+		return result;
+	}
+
+	private GWTSugestao geraGWTSugestao(Sugestao s) {
+		GWTSugestao gwt_s = new GWTSugestao();
+		
+		gwt_s.setIdSugestao(s.getIdSugestao());
+		gwt_s.setResposta(s.getResposta());
+		gwt_s.setSugestaoPontoDeEncontro(s.getPontoSugerido());
+		
+		return gwt_s;
+	}
+	
+	@Override
+	public void adicionarAmigo(Integer idSessao, Integer idUsuario) throws GWTException {
+		try{
+			controller.adicionarAmigo(idSessao, idUsuario);
+		} catch(Exception e){
 			throw new GWTException(e.getMessage());
 		}
 	}

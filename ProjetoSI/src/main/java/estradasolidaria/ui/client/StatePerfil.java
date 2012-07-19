@@ -265,7 +265,7 @@ public class StatePerfil extends Composite {
 		
 		txtbtnSugestoes.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent arg0) {
-				//TODO fazer Minhas Sugestões
+				minhasSugestoesGUI();
 			}
 		});
 		
@@ -356,5 +356,12 @@ public class StatePerfil extends Composite {
 		StateMeusInteresses mi = new StateMeusInteresses(estrada, estradaSolidariaService);
 		bodyPanel.add(mi);
 		mi.setSize("100%", "100%");
+	}
+	
+	private void minhasSugestoesGUI() {
+		bodyPanel.clear();
+		Widget ms = new StateMinhasSugestoes(estradaSolidariaService);
+		ms.setSize("100%", "100%");
+		bodyPanel.add(ms);
 	}
 }

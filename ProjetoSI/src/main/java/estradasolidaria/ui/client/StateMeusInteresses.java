@@ -12,7 +12,6 @@ import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -92,7 +91,6 @@ public class StateMeusInteresses extends AbsolutePanel {
 			public void update(int index, GWTInteresse interesse, Boolean value) {
 				if (value) {
 					interesseEscolhido = interesse;
-
 				} else {
 					interesseEscolhido = null;
 				}
@@ -156,13 +154,7 @@ public class StateMeusInteresses extends AbsolutePanel {
 				} else {
 					dialogBox = new DialogBoxInteresse();
 					dialogBox.setText("Deseja deletar o interesse?");
-					dialogBox.getLblNewLabel().setText(interesseEscolhido.getOrigem() + " para " +
-												interesseEscolhido.getDestino() + ", " + 
-												interesseEscolhido.getData() +
-												". Horário: " + 
-												interesseEscolhido.getHoraInicio() + 
-												" - " + 
-												interesseEscolhido.getHoraFim());
+					dialogBox.getLblNewLabel().setText(interesseEscolhido.toString());
 					dialogBox.getBtnOk().addClickHandler(new ClickHandler() {
 						@Override
 						public void onClick(ClickEvent event) {
