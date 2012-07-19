@@ -615,28 +615,25 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 			Usuario u = controller.getUsuarioAPartirDeIDSessao(idSessao);
 			
 			for (Interesse i : u.getMapIdInteresse().values()) {
-				result.add(gerarGWTInteresse(i));
+				
+				GWTInteresse gwt_i = new GWTInteresse();
+				
+				Date data = i.getData().getTime();
+				
+				gwt_i.setData(dateFormat.format(data));
+				gwt_i.setDestino(i.getDestino());
+				gwt_i.setHoraInicio(hourFormat.format(i.getHoraInicio().getTime()));
+				gwt_i.setHoraFim(hourFormat.format(i.getHoraFim().getTime()));
+				gwt_i.setIdInteresse(i.getIdInteresse());
+				gwt_i.setOrigem(i.getOrigem());
+				
+				result.add(gwt_i);
 			}
 			return result;
 		}
 		catch(Exception e) {
 			throw new GWTException(e.getMessage());
 		}
-	}
-
-	private GWTInteresse gerarGWTInteresse(Interesse i) {
-		GWTInteresse gwt_i = new GWTInteresse();
-		
-		Date data = i.getData().getTime();
-		
-		gwt_i.setData(dateFormat.format(data));
-		gwt_i.setDestino(i.getDestino());
-		gwt_i.setHoraInicio(hourFormat.format(i.getHoraInicio().getTime()));
-		gwt_i.setHoraFim(hourFormat.format(i.getHoraFim().getTime()));
-		gwt_i.setIdInteresse(i.getIdInteresse());
-		gwt_i.setOrigem(i.getOrigem());
-		
-		return gwt_i;
 	}
 	
 	@Override
