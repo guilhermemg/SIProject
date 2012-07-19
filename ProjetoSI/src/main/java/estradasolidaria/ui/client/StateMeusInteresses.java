@@ -12,6 +12,7 @@ import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -38,7 +39,7 @@ public class StateMeusInteresses extends AbsolutePanel {
 
 	private TextButton txtbtnDeletar;
 
-	protected Integer idInteresseEscolhido;
+	protected GWTInteresse interesseEscolhido;
 
 	private AbsolutePanel absolutePanel_1;
 	
@@ -90,9 +91,10 @@ public class StateMeusInteresses extends AbsolutePanel {
 			@Override
 			public void update(int index, GWTInteresse interesse, Boolean value) {
 				if (value) {
-					idInteresseEscolhido = Integer.parseInt(interesse.getIdInteresse());					
+					interesseEscolhido = interesse;
+					
 				} else {
-					idInteresseEscolhido = null;
+					interesseEscolhido = null;
 				}
 			}
 		});
@@ -144,13 +146,32 @@ public class StateMeusInteresses extends AbsolutePanel {
 		
 		txtbtnDeletar = new TextButton("Deletar");
 		txtbtnDeletar.addClickHandler(new ClickHandler() {
+			private DialogBoxInteresse dialogBox;
+
 			public void onClick(ClickEvent event) {
-				if (idInteresseEscolhido == null) {	
+				if (interesseEscolhido == null) {	
 					PopupAlerta popup = new PopupAlerta("Escolha um interesse a ser removido!");
 					popup.center();
 					popup.show();
 				} else {
-					deletarInteresse();
+					dialogBox = new DialogBoxInteresse();
+					dialogBox.setText("Deseja deletar o interesse?");
+					dialogBox.getLblNewLabel().setText(interesseEscolhido.getOrigem() + " para " +
+												interesseEscolhido.getDestino() + ", " + 
+												interesseEscolhido.getData() +
+												". Horário: " + 
+												interesseEscolhido.getHoraInicio() + 
+												" - " + 
+												interesseEscolhido.getHoraFim());
+					dialogBox.getBtnOk().addClickHandler(new ClickHandler() {
+						@Override
+						public void onClick(ClickEvent event) {
+							deletarInteresse();
+							dialogBox.hide();
+						}
+					});
+					dialogBox.center();
+					dialogBox.show();
 				}
 			}
 		});
@@ -161,7 +182,7 @@ public class StateMeusInteresses extends AbsolutePanel {
 
 	private void deletarInteresse() {
 		Integer idSessao = EstradaSolidaria.getIdSessaoAberta();
-		estradaSolidariaService.deletarInteresse(idSessao, idInteresseEscolhido, new AsyncCallback<Void>() {
+		estradaSolidariaService.deletarInteresse(idSessao, interesseEscolhido.getIdInteresse(), new AsyncCallback<Void>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
