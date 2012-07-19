@@ -91,6 +91,9 @@ public class StateMinhasSugestoes extends AbsolutePanel {
 		
 		colocarSugestoesNaCellTable();
 		
+		//Seleciona a tab com índice 0
+		tabPanel.selectTab(0);
+		
 	}
 
 	private void colocarSugestoesNaCellTable() {
