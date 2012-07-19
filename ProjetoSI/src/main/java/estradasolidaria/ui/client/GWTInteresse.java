@@ -3,14 +3,14 @@ package estradasolidaria.ui.client;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class GWTInteresse implements IsSerializable {
-	private String idInteresse;
+	private Integer idInteresse;
 	private String origem;
 	private String destino;
 	private String data;
 	private String horaInicio;
 	private String horaFim;
 
-	public void setIdInteresse(String idInteresse) {
+	public void setIdInteresse(Integer idInteresse) {
 		this.idInteresse = idInteresse;
 	}
 
@@ -34,7 +34,7 @@ public class GWTInteresse implements IsSerializable {
 		this.horaFim = horaFim;
 	}
 
-	public String getIdInteresse() {
+	public Integer getIdInteresse() {
 		return idInteresse;
 	}
 
@@ -56,5 +56,11 @@ public class GWTInteresse implements IsSerializable {
 
 	public String getHoraFim() {
 		return horaFim;
+	}
+	
+	public String toString() {
+		return this.getOrigem() + " para " + this.getDestino() 
+		+ ", " + this.getData() + ". Horário: " + this.getHoraInicio() + 
+			                        " - " + this.getHoraFim();
 	}
 }

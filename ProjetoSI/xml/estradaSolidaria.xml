@@ -1,0 +1,8 @@
+<java.util.Collections_-SynchronizedMap serialization="custom">
+  <java.util.Collections_-SynchronizedMap>
+    <default>
+      <m class="tree-map"/>
+      <mutex class="java.util.Collections$SynchronizedMap" reference="../../.."/>
+    </default>
+  </java.util.Collections_-SynchronizedMap>
+</java.util.Collections_-SynchronizedMap>

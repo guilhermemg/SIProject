@@ -12,6 +12,7 @@ import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -38,21 +39,21 @@ public class StateMeusInteresses extends AbsolutePanel {
 
 	private TextButton txtbtnDeletar;
 
-	protected Integer idInteresseEscolhido;
+	protected GWTInteresse interesseEscolhido;
 
 	private AbsolutePanel absolutePanel_1;
-	
+
 	public StateMeusInteresses(final EstradaSolidaria estrada, final EstradaSolidariaServiceAsync estradaSolidariaService) {
 		referenciaThis = this;
 		this.estrada = estrada;
 		this.estradaSolidariaService = estradaSolidariaService;
 		setTitle("Interresses");
 		listaDeInteresses = new LinkedList<GWTInteresse>();
-		
+
 		absolutePanel_1 = new AbsolutePanel();
 		add(absolutePanel_1);
 		absolutePanel_1.setSize("100%", "");
-		
+
 		btnAdicionar = new TextButton("Adicionar");
 		btnAdicionar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -61,11 +62,11 @@ public class StateMeusInteresses extends AbsolutePanel {
 				p.show();
 			}
 		});
-		
+
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		add(absolutePanel);
 		absolutePanel.setSize("100%", "95%");
-		
+
 		dataGrid = new DataGrid<GWTInteresse>();
 		absolutePanel.add(dataGrid, 0, 0);
 		dataGrid.setSize("100%", "100%");
@@ -78,7 +79,7 @@ public class StateMeusInteresses extends AbsolutePanel {
 				});
 
 		dataGrid.setSelectionModel(selectionModel);
-		
+
 		checkBoxcolumn = new Column<GWTInteresse, Boolean>(new CheckboxCell()) {
 			@Override
 			public Boolean getValue(GWTInteresse interesse) {
@@ -86,20 +87,21 @@ public class StateMeusInteresses extends AbsolutePanel {
 			}
 		};
 		checkBoxcolumn.setFieldUpdater(new FieldUpdater<GWTInteresse, Boolean>() {
-			
+
 			@Override
 			public void update(int index, GWTInteresse interesse, Boolean value) {
 				if (value) {
-					idInteresseEscolhido = Integer.parseInt(interesse.getIdInteresse());					
+					interesseEscolhido = interesse;
+
 				} else {
-					idInteresseEscolhido = null;
+					interesseEscolhido = null;
 				}
 			}
 		});
 		checkBoxcolumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
 		dataGrid.addColumn(checkBoxcolumn);
 		dataGrid.setColumnWidth(checkBoxcolumn, "40px");
-		
+
 		TextColumn<GWTInteresse> columnOrigem = new TextColumn<GWTInteresse>() {
 			@Override
 			public String getValue(GWTInteresse interesse) {
@@ -107,7 +109,7 @@ public class StateMeusInteresses extends AbsolutePanel {
 			}
 		};
 		dataGrid.addColumn(columnOrigem, "Origem");
-		
+
 		TextColumn<GWTInteresse> columnDestino = new TextColumn<GWTInteresse>() {
 			@Override
 			public String getValue(GWTInteresse interesse) {
@@ -116,7 +118,7 @@ public class StateMeusInteresses extends AbsolutePanel {
 		};
 		columnDestino.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		dataGrid.addColumn(columnDestino, "Destino");
-		
+
 		TextColumn<GWTInteresse> columnData = new TextColumn<GWTInteresse>() {
 			@Override
 			public String getValue(GWTInteresse interesse) {
@@ -124,7 +126,7 @@ public class StateMeusInteresses extends AbsolutePanel {
 			}
 		};
 		dataGrid.addColumn(columnData, "Data");
-		
+
 		TextColumn<GWTInteresse> columnHoraInicio = new TextColumn<GWTInteresse>() {
 			@Override
 			public String getValue(GWTInteresse interesse) {
@@ -132,7 +134,7 @@ public class StateMeusInteresses extends AbsolutePanel {
 			}
 		};
 		dataGrid.addColumn(columnHoraInicio, "Hora-Início");
-		
+
 		TextColumn<GWTInteresse> columnHoraFim = new TextColumn<GWTInteresse>() {
 			@Override
 			public String getValue(GWTInteresse interesse) {
@@ -141,34 +143,53 @@ public class StateMeusInteresses extends AbsolutePanel {
 		};
 		dataGrid.addColumn(columnHoraFim, "Hora-Fim");
 		absolutePanel_1.add(btnAdicionar);
-		
+
 		txtbtnDeletar = new TextButton("Deletar");
 		txtbtnDeletar.addClickHandler(new ClickHandler() {
+			private DialogBoxInteresse dialogBox;
+
 			public void onClick(ClickEvent event) {
-				if (idInteresseEscolhido == null) {	
+				if (interesseEscolhido == null) {	
 					PopupAlerta popup = new PopupAlerta("Escolha um interesse a ser removido!");
 					popup.center();
 					popup.show();
 				} else {
-					deletarInteresse();
+					dialogBox = new DialogBoxInteresse();
+					dialogBox.setText("Deseja deletar o interesse?");
+					dialogBox.getLblNewLabel().setText(interesseEscolhido.getOrigem() + " para " +
+												interesseEscolhido.getDestino() + ", " + 
+												interesseEscolhido.getData() +
+												". Horário: " + 
+												interesseEscolhido.getHoraInicio() + 
+												" - " + 
+												interesseEscolhido.getHoraFim());
+					dialogBox.getBtnOk().addClickHandler(new ClickHandler() {
+						@Override
+						public void onClick(ClickEvent event) {
+							deletarInteresse();
+							dialogBox.hide();
+						}
+					});
+					dialogBox.center();
+					dialogBox.show();
 				}
 			}
 		});
 		absolutePanel_1.add(txtbtnDeletar, 88, 0);
-		
+
 		colocarInteressesNoGrid();
 	}
 
 	private void deletarInteresse() {
 		Integer idSessao = EstradaSolidaria.getIdSessaoAberta();
-		estradaSolidariaService.deletarInteresse(idSessao, idInteresseEscolhido, new AsyncCallback<Void>() {
+		estradaSolidariaService.deletarInteresse(idSessao, interesseEscolhido.getIdInteresse(), new AsyncCallback<Void>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
 				PopupAlerta popup = new PopupAlerta(caught.getMessage());
 				popup.center();
 				popup.show();
-				
+
 			}
 
 			@Override
@@ -179,7 +200,7 @@ public class StateMeusInteresses extends AbsolutePanel {
 				popup.show();
 			}
 		});
-		
+
 	}
 
 	protected void colocarInteressesNoGrid() {
@@ -198,9 +219,9 @@ public class StateMeusInteresses extends AbsolutePanel {
 				listaDeInteresses = result;
 				dataGrid.setRowCount(listaDeInteresses.size(), true);
 				dataGrid.setRowData(listaDeInteresses);
-				
+
 			}
 		});
-		
+
 	}
 }

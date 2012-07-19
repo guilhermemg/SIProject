@@ -82,6 +82,16 @@ public class EstradaSolidariaService_TypeSerializer extends com.google.gwt.user.
         @estradasolidaria.ui.client.GWTInteresse_Array_Rank_1_FieldSerializer::deserialize(Lcom/google/gwt/user/client/rpc/SerializationStreamReader;[Lestradasolidaria/ui/client/GWTInteresse;),
       ];
     
+    result["estradasolidaria.ui.client.GWTMensagem/2061212932"] = [
+        @estradasolidaria.ui.client.GWTMensagem_FieldSerializer::instantiate(Lcom/google/gwt/user/client/rpc/SerializationStreamReader;),
+        @estradasolidaria.ui.client.GWTMensagem_FieldSerializer::deserialize(Lcom/google/gwt/user/client/rpc/SerializationStreamReader;Lestradasolidaria/ui/client/GWTMensagem;),
+      ];
+    
+    result["[Lestradasolidaria.ui.client.GWTMensagem;/3580836806"] = [
+        @estradasolidaria.ui.client.GWTMensagem_Array_Rank_1_FieldSerializer::instantiate(Lcom/google/gwt/user/client/rpc/SerializationStreamReader;),
+        @estradasolidaria.ui.client.GWTMensagem_Array_Rank_1_FieldSerializer::deserialize(Lcom/google/gwt/user/client/rpc/SerializationStreamReader;[Lestradasolidaria/ui/client/GWTMensagem;),
+      ];
+    
     result["estradasolidaria.ui.client.GWTUsuario/720947346"] = [
         @estradasolidaria.ui.client.GWTUsuario_FieldSerializer::instantiate(Lcom/google/gwt/user/client/rpc/SerializationStreamReader;),
         @estradasolidaria.ui.client.GWTUsuario_FieldSerializer::deserialize(Lcom/google/gwt/user/client/rpc/SerializationStreamReader;Lestradasolidaria/ui/client/GWTUsuario;),
@@ -90,26 +100,6 @@ public class EstradaSolidariaService_TypeSerializer extends com.google.gwt.user.
     result["[Lestradasolidaria.ui.client.GWTUsuario;/3891211554"] = [
         @estradasolidaria.ui.client.GWTUsuario_Array_Rank_1_FieldSerializer::instantiate(Lcom/google/gwt/user/client/rpc/SerializationStreamReader;),
         @estradasolidaria.ui.client.GWTUsuario_Array_Rank_1_FieldSerializer::deserialize(Lcom/google/gwt/user/client/rpc/SerializationStreamReader;[Lestradasolidaria/ui/client/GWTUsuario;),
-      ];
-    
-    result["estradasolidaria.ui.server.util.SpecialLinkedListBrackets/3279400505"] = [
-        @estradasolidaria.ui.server.util.SpecialLinkedListBrackets_FieldSerializer::instantiate(Lcom/google/gwt/user/client/rpc/SerializationStreamReader;),
-        @estradasolidaria.ui.server.util.SpecialLinkedListBrackets_FieldSerializer::deserialize(Lcom/google/gwt/user/client/rpc/SerializationStreamReader;Lestradasolidaria/ui/server/util/SpecialLinkedListBrackets;),
-      ];
-    
-    result["[Lestradasolidaria.ui.server.util.SpecialLinkedListBrackets;/1594103371"] = [
-        @estradasolidaria.ui.server.util.SpecialLinkedListBrackets_Array_Rank_1_FieldSerializer::instantiate(Lcom/google/gwt/user/client/rpc/SerializationStreamReader;),
-        @estradasolidaria.ui.server.util.SpecialLinkedListBrackets_Array_Rank_1_FieldSerializer::deserialize(Lcom/google/gwt/user/client/rpc/SerializationStreamReader;[Lestradasolidaria/ui/server/util/SpecialLinkedListBrackets;),
-      ];
-    
-    result["estradasolidaria.ui.server.util.SpecialLinkedListKeys/3718709711"] = [
-        @estradasolidaria.ui.server.util.SpecialLinkedListKeys_FieldSerializer::instantiate(Lcom/google/gwt/user/client/rpc/SerializationStreamReader;),
-        @estradasolidaria.ui.server.util.SpecialLinkedListKeys_FieldSerializer::deserialize(Lcom/google/gwt/user/client/rpc/SerializationStreamReader;Lestradasolidaria/ui/server/util/SpecialLinkedListKeys;),
-      ];
-    
-    result["[Lestradasolidaria.ui.server.util.SpecialLinkedListKeys;/242543737"] = [
-        @estradasolidaria.ui.server.util.SpecialLinkedListKeys_Array_Rank_1_FieldSerializer::instantiate(Lcom/google/gwt/user/client/rpc/SerializationStreamReader;),
-        @estradasolidaria.ui.server.util.SpecialLinkedListKeys_Array_Rank_1_FieldSerializer::deserialize(Lcom/google/gwt/user/client/rpc/SerializationStreamReader;[Lestradasolidaria/ui/server/util/SpecialLinkedListKeys;),
       ];
     
     result["java.lang.Integer/3438268394"] = [
@@ -223,12 +213,10 @@ public class EstradaSolidariaService_TypeSerializer extends com.google.gwt.user.
     result[@com.google.gwt.core.client.impl.Impl::getHashCode(Ljava/lang/Object;)(@estradasolidaria.ui.client.GWTException::class)] = "estradasolidaria.ui.client.GWTException/3283569547";
     result[@com.google.gwt.core.client.impl.Impl::getHashCode(Ljava/lang/Object;)(@estradasolidaria.ui.client.GWTInteresse::class)] = "estradasolidaria.ui.client.GWTInteresse/3099122787";
     result[@com.google.gwt.core.client.impl.Impl::getHashCode(Ljava/lang/Object;)(@estradasolidaria.ui.client.GWTInteresse[]::class)] = "[Lestradasolidaria.ui.client.GWTInteresse;/614952438";
+    result[@com.google.gwt.core.client.impl.Impl::getHashCode(Ljava/lang/Object;)(@estradasolidaria.ui.client.GWTMensagem::class)] = "estradasolidaria.ui.client.GWTMensagem/2061212932";
+    result[@com.google.gwt.core.client.impl.Impl::getHashCode(Ljava/lang/Object;)(@estradasolidaria.ui.client.GWTMensagem[]::class)] = "[Lestradasolidaria.ui.client.GWTMensagem;/3580836806";
     result[@com.google.gwt.core.client.impl.Impl::getHashCode(Ljava/lang/Object;)(@estradasolidaria.ui.client.GWTUsuario::class)] = "estradasolidaria.ui.client.GWTUsuario/720947346";
     result[@com.google.gwt.core.client.impl.Impl::getHashCode(Ljava/lang/Object;)(@estradasolidaria.ui.client.GWTUsuario[]::class)] = "[Lestradasolidaria.ui.client.GWTUsuario;/3891211554";
-    result[@com.google.gwt.core.client.impl.Impl::getHashCode(Ljava/lang/Object;)(@estradasolidaria.ui.server.util.SpecialLinkedListBrackets::class)] = "estradasolidaria.ui.server.util.SpecialLinkedListBrackets/3279400505";
-    result[@com.google.gwt.core.client.impl.Impl::getHashCode(Ljava/lang/Object;)(@estradasolidaria.ui.server.util.SpecialLinkedListBrackets[]::class)] = "[Lestradasolidaria.ui.server.util.SpecialLinkedListBrackets;/1594103371";
-    result[@com.google.gwt.core.client.impl.Impl::getHashCode(Ljava/lang/Object;)(@estradasolidaria.ui.server.util.SpecialLinkedListKeys::class)] = "estradasolidaria.ui.server.util.SpecialLinkedListKeys/3718709711";
-    result[@com.google.gwt.core.client.impl.Impl::getHashCode(Ljava/lang/Object;)(@estradasolidaria.ui.server.util.SpecialLinkedListKeys[]::class)] = "[Lestradasolidaria.ui.server.util.SpecialLinkedListKeys;/242543737";
     result[@com.google.gwt.core.client.impl.Impl::getHashCode(Ljava/lang/Object;)(@java.lang.Integer::class)] = "java.lang.Integer/3438268394";
     result[@com.google.gwt.core.client.impl.Impl::getHashCode(Ljava/lang/Object;)(@java.lang.String::class)] = "java.lang.String/2004016611";
     result[@com.google.gwt.core.client.impl.Impl::getHashCode(Ljava/lang/Object;)(@java.lang.String[]::class)] = "[Ljava.lang.String;/2600011424";
