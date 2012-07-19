@@ -16,6 +16,7 @@ import estradasolidaria.ui.client.GWTCarona;
 import estradasolidaria.ui.client.GWTException;
 import estradasolidaria.ui.client.GWTInteresse;
 import estradasolidaria.ui.client.GWTMensagem;
+import estradasolidaria.ui.client.GWTSolicitacao;
 import estradasolidaria.ui.client.GWTUsuario;
 import estradasolidaria.ui.server.adder.Adder;
 import estradasolidaria.ui.server.logic.Carona;
@@ -349,35 +350,46 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public List<List<String>> getSolicitacoesFeitasConfirmadas(Integer idSessao) throws GWTException {
+	public List<GWTSolicitacao> getSolicitacoesFeitasConfirmadas(Integer idSessao) throws GWTException {
 		try {
-			List<List<String>> result = new LinkedList<List<String>>();
+			List<GWTSolicitacao> listaSolicitacoesFeitas = new LinkedList<GWTSolicitacao>();
 			for (Solicitacao s : controller.getMapaSolicitacoesFeitas(idSessao).values()) {
 				if (s.isAceita()) {
-					List<String> solicitacaoList = new LinkedList<String>();
+					GWTUsuario gwt_u = new GWTUsuario();
+					GWTCarona gwt_c = new GWTCarona();
+					GWTSolicitacao gwt_s = new GWTSolicitacao();
 					
-					Usuario donoDaCarona = s.getDonoDaCarona();
-					Carona c = donoDaCarona.getMapIdCaronasOferecidas().get(s.getIdCarona());
+					gwt_u.setNome(s.getDonoDaCarona().getNome());
+					gwt_u.setLogin(s.getDonoDaCarona().getLogin());
+					gwt_u.setIdUsuario(s.getDonoDaCarona().getIdUsuario().toString());
+					gwt_u.setEndereco(s.getDonoDaCarona().getEndereco());
+					gwt_u.setEmail(s.getDonoDaCarona().getEmail());
+
+					Carona c = s.getDonoDaCarona().getMapIdCaronasOferecidas().get(s.getIdCarona());
 					
-					solicitacaoList.add(c.getIdDonoDaCarona().toString());
-					solicitacaoList.add(c.getOrigem());
-					solicitacaoList.add(c.getDestino());
-					solicitacaoList.add(dateFormat.format(c.getData().getTime()));
-					solicitacaoList.add(hourFormat.format(c.getHora().getTime()));
-					solicitacaoList.add(c.getVagas().toString());
+					gwt_c.setNomeDono(s.getDonoDaCarona().getNome());
+					gwt_c.setIdDono(s.getDonoDaCarona().getIdUsuario().toString());
+					gwt_c.setData(dateFormat.format(c.getData().getTime()));
+					gwt_c.setOrigem(c.getOrigem());
+					gwt_c.setDestino(c.getDestino());
+					gwt_c.setHora(hourFormat.format(c.getHora().getTime()));
+					gwt_c.setVagas(c.getVagas().toString());
 					if (c.getPontoEncontro() != null) {
-						solicitacaoList.add(c.getPontoEncontro());
+						gwt_c.setPontoEncontro(c.getPontoEncontro());
 					}else {
-						solicitacaoList.add(new String(""));
+						gwt_c.setPontoEncontro("");
 					}
-					solicitacaoList.add(donoDaCarona.getNome());
-					solicitacaoList.add(c.getIdCarona().toString());
+					gwt_c.setIdCarona(c.getIdCarona().toString());
+					gwt_c.setEstado(c.getEstadoDaCarona().toString());
+					gwt_c.setReview("");
 					
-					result.add(solicitacaoList);
+					gwt_s.setDonoDaCarona(gwt_u);
+					gwt_s.setCarona(gwt_c);
+					
+					listaSolicitacoesFeitas.add(gwt_s);
 				}
 			}
-			return result;
-			
+			return listaSolicitacoesFeitas;
 		} catch (Exception e) {
 			throw new GWTException(e.getMessage());
 		}

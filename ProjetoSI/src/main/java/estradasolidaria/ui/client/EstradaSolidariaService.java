@@ -310,14 +310,14 @@ public interface EstradaSolidariaService extends RemoteService {
 	List<GWTCarona> getTodasCaronasUsuario(Integer idSessao) throws GWTException;
 
 	/**
-	 * Retorna lista de ids de solicitacoes confirmadas para a carona (idCarona)
+	 * Retorna lista de solicitacoes confirmadas para a carona (idCarona)
 	 * oferecida pelo usuario identificado por idSessao.
 	 * 
 	 * @param idSessao
 	 * @param idCarona
-	 * @return lista de ids de solicitacoes confirmadas como string
+	 * @return lista solicitacoes confirmadas 
 	 */
-	public abstract List<List<String>> getSolicitacoesFeitasConfirmadas(Integer idSessao) throws GWTException;
+	public abstract List<GWTSolicitacao> getSolicitacoesFeitasConfirmadas(Integer idSessao) throws GWTException;
 
 	/**
 	 * Retorna lista de solicitacoes pendentes de serem respondidas pelo usuario

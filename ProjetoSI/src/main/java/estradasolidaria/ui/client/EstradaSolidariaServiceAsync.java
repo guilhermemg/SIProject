@@ -53,7 +53,7 @@ public interface EstradaSolidariaServiceAsync {
 	void getPontosSugeridos(Integer idSessao, Integer idCarona,
 			AsyncCallback<String> callback);
 
-	void getSolicitacoesFeitasConfirmadas(Integer idSessao, AsyncCallback<List<List<String>>> callback);
+	void getSolicitacoesFeitasConfirmadas(Integer idSessao, AsyncCallback<List<GWTSolicitacao>> callback);
 
 	void getSolicitacoesFeitasPendentes(Integer idSessao,
 			AsyncCallback<List<List<String>>> callback);

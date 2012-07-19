@@ -169,6 +169,11 @@ public class StatePerfil extends Composite {
 		txtbtnSugestoes.setSize("122px", "63px");
 		
 		TextButton txtbtnSolicitaesFeitasPara = new TextButton("Solicitações");
+		txtbtnSolicitaesFeitasPara.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				solicitacoesGUI();
+			}
+		});
 		leftSideBarPanel.add(txtbtnSolicitaesFeitasPara, 11, 419);
 		txtbtnSolicitaesFeitasPara.setSize("121px", "56px");
 		
@@ -269,6 +274,15 @@ public class StatePerfil extends Composite {
 				meusInteressesGUI();
 			}
 		});
+	}
+
+	protected void solicitacoesGUI() {
+		bodyPanel.clear();
+		scrollPanel.clear();
+		Widget solicitacoes = new StateSolicitacoes(estrada, estradaSolidariaService);
+		bodyPanel.add(solicitacoes);
+		bodyPanel.setVisible(true);
+		solicitacoes.setSize("100%", "100%");
 	}
 
 	protected void encerrarSessaoGUI(Integer idSessao) {
