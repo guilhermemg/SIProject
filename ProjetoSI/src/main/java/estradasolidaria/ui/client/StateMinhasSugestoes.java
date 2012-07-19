@@ -1,6 +1,5 @@
 package estradasolidaria.ui.client;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import com.google.gwt.user.cellview.client.CellTable;
@@ -8,14 +7,12 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.TabPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 public class StateMinhasSugestoes extends AbsolutePanel {
 	final Widget panel = this;
 	private EstradaSolidariaServiceAsync estradaSolidariaService;
-	private CellTable<GWTSugestao> sugestoesCellTable;
-	private LinkedList<GWTSugestao> sugestoesGWT; // Lista de Sugestoes transformadas para a classe GWTSugestoes
 	private PopupInfo popupInfo;
 	private CellTable<GWTSugestao> cellTableSugestoes;
 												
