@@ -328,6 +328,7 @@ public class StatePerfil extends Composite {
 	}
 
 	protected void cadastrarCaronaGUI() {
+		scrollPanel.clear();
 		scrollPanel.setVisible(false);
 		bodyPanel.clear();
 		Widget cadastrarCarona = new StateCadastroCaronas(estrada, estradaSolidariaService);
@@ -338,6 +339,8 @@ public class StatePerfil extends Composite {
 
 	protected void pesquisarCaronaGUI() {
 		bodyPanel.clear();
+		scrollPanel.clear();
+		scrollPanel.setVisible(false);
 		Widget pesquisarCarona = new StatePesquisaCarona(estrada, estradaSolidariaService, bodyPanel);
 		bodyPanel.add(pesquisarCarona);
 		bodyPanel.setVisible(true);
@@ -345,6 +348,8 @@ public class StatePerfil extends Composite {
 	}
 	
 	protected void minhasCaronasGUI() {
+		scrollPanel.clear();
+		scrollPanel.setVisible(false);
 		bodyPanel.clear();
 		Widget minhasCarona= new StateMinhasCaronas(estrada, estradaSolidariaService);
 		bodyPanel.add(minhasCarona);
@@ -352,6 +357,8 @@ public class StatePerfil extends Composite {
 	}
 	
 	protected void meusInteressesGUI() {
+		scrollPanel.clear();
+		scrollPanel.setVisible(false);
 		bodyPanel.clear();
 		StateMeusInteresses mi = new StateMeusInteresses(estrada, estradaSolidariaService);
 		bodyPanel.add(mi);
@@ -359,6 +366,8 @@ public class StatePerfil extends Composite {
 	}
 	
 	private void minhasSugestoesGUI() {
+		scrollPanel.clear();
+		scrollPanel.setVisible(false);
 		bodyPanel.clear();
 		Widget ms = new StateMinhasSugestoes(estradaSolidariaService);
 		ms.setSize("100%", "100%");
