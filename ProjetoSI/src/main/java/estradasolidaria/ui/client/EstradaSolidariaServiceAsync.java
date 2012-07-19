@@ -164,4 +164,6 @@ public interface EstradaSolidariaServiceAsync {
 
 	void getSugestoes(Integer idSessao,
 			AsyncCallback<List<GWTSugestao>> asyncCallback);
+	
+	void adicionarAmigo(Integer idSessao, Integer idUsuario, AsyncCallback<Void> asyncCallback);
 }
