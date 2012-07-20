@@ -32,15 +32,6 @@ public class StateMinhasSugestoes extends AbsolutePanel {
 		scrollPanel.setWidget(cellTableSugestoes);
 		cellTableSugestoes.setSize("465px", "100%");
 		
-		TextColumn<GWTSugestao> textColumnDonoDaCarona = new TextColumn<GWTSugestao>() {
-			@Override
-			public String getValue(GWTSugestao sugestao) {
-				return sugestao.getDonoDaCarona();
-			}
-		};
-		cellTableSugestoes.addColumn(textColumnDonoDaCarona, "Dono da Carona");
-		cellTableSugestoes.setColumnWidth(textColumnDonoDaCarona, "100%");
-		
 		TextColumn<GWTSugestao> textColumnOrigem = new TextColumn<GWTSugestao>() {
 			@Override
 			public String getValue(GWTSugestao sugestao) {
@@ -59,23 +50,14 @@ public class StateMinhasSugestoes extends AbsolutePanel {
 		cellTableSugestoes.addColumn(textColumnDestino, "Destino");
 		cellTableSugestoes.setColumnWidth(textColumnDestino, "100%");
 		
-		TextColumn<GWTSugestao> textColumnData = new TextColumn<GWTSugestao>() {
+		TextColumn<GWTSugestao> textColumnSugestao = new TextColumn<GWTSugestao>() {
 			@Override
 			public String getValue(GWTSugestao sugestao) {
-				return sugestao.getData();
+				return sugestao.getSugestaoPontoDeEncontro();
 			}
 		};
-		cellTableSugestoes.addColumn(textColumnData, "Data");
-		cellTableSugestoes.setColumnWidth(textColumnData, "100%");
-		
-		TextColumn<GWTSugestao> textColumnHora = new TextColumn<GWTSugestao>() {
-			@Override
-			public String getValue(GWTSugestao sugestao) {
-				return sugestao.getHora();
-			}
-		};
-		cellTableSugestoes.addColumn(textColumnHora, "Hora");
-		cellTableSugestoes.setColumnWidth(textColumnHora, "100%");
+		cellTableSugestoes.addColumn(textColumnSugestao, "Sugestão");
+		cellTableSugestoes.setColumnWidth(textColumnSugestao, "100%");
 		
 		TextColumn<GWTSugestao> textColumnResposta = new TextColumn<GWTSugestao>() {
 			@Override

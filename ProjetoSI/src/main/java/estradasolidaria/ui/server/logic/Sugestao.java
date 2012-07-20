@@ -18,7 +18,10 @@ public class Sugestao implements Serializable {
 	private String sugestaoPontoDeEncontro;
 	private Integer idSugestao;
 	private String resposta;
-	private Carona carona;
+
+	private final String origem;
+
+	private final String destino;
 
 	/**
 	 * Cria uma nova sugestão.
@@ -26,11 +29,13 @@ public class Sugestao implements Serializable {
 	 * @param ponto
 	 * @param donoDaSugestao 
 	 */
-	public Sugestao(String ponto, Carona carona) {
+	public Sugestao(String ponto, String origem, String destino) {
 		synchronized (Sugestao.class) {
 			setSugestaoPontoEncontro(ponto);
 			setIdSugestao(hashCode());
-			this.carona = carona;
+			this.origem = origem;
+			this.destino = destino;
+			
 		}
 	}
 	
@@ -113,7 +118,11 @@ public class Sugestao implements Serializable {
 		this.sugestaoPontoDeEncontro = ponto;
 	}
 
-	public Carona getCarona() {
-		return carona;
+	public String getOrigem() {
+		return origem;
+	}
+
+	public String getDestino() {
+		return destino;
 	}
 }

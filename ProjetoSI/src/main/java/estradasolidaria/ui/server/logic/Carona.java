@@ -628,7 +628,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 		}
 		try {
 			lockMapIdSugestaoDePontoDeEncontro.lock();
-			Sugestao sugestao = new Sugestao(ponto, this);
+			Sugestao sugestao = new Sugestao(ponto, getOrigem(), getDestino());
 			mapIdSugestaoDePontoDeEncontro.put(sugestao.getIdSugestao(), sugestao);
 			return sugestao;
 		} finally {
@@ -807,7 +807,7 @@ public class Carona implements Comparable<Carona>, Serializable {
 						throw new CadastroEmCaronaPreferencialException();
 					}
 				}
-				Sugestao sugestao = new Sugestao(ponto, this);
+				Sugestao sugestao = new Sugestao(ponto, getOrigem(), getDestino());
 				Solicitacao s = new Solicitacao(getIdCarona(), origem, destino, donoDaCarona,
 						donoDaSolicitacao, sugestao, EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
 				this.mapIdSolicitacoes.put(s.getIdSolicitacao(), s);
