@@ -308,7 +308,7 @@ public class StateMinhasCaronas extends AbsolutePanel {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						Window.alert("Remote Procedure Call - Failure: "
+						exibirPopupInfo("Remote Procedure Call - Failure: "
 								+ caught.getMessage());
 					}
 
@@ -328,7 +328,7 @@ public class StateMinhasCaronas extends AbsolutePanel {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						Window.alert("Remote Procedure Call - Failure: "
+						exibirPopupInfo("Remote Procedure Call - Failure: "
 								+ caught.getMessage());
 					}
 
