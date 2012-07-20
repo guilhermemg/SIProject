@@ -18,6 +18,7 @@ public class Sugestao implements Serializable {
 	private String sugestaoPontoDeEncontro;
 	private Integer idSugestao;
 	private String resposta;
+	private Carona carona;
 
 	/**
 	 * Cria uma nova sugestão.
@@ -25,10 +26,11 @@ public class Sugestao implements Serializable {
 	 * @param ponto
 	 * @param donoDaSugestao 
 	 */
-	public Sugestao(String ponto) {
+	public Sugestao(String ponto, Carona carona) {
 		synchronized (Sugestao.class) {
 			setSugestaoPontoEncontro(ponto);
 			setIdSugestao(hashCode());
+			this.carona = carona;
 		}
 	}
 	
@@ -109,5 +111,9 @@ public class Sugestao implements Serializable {
 	 */
 	public synchronized void setSugestaoPontoEncontro(String ponto) {
 		this.sugestaoPontoDeEncontro = ponto;
+	}
+
+	public Carona getCarona() {
+		return carona;
 	}
 }

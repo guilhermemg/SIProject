@@ -27,12 +27,12 @@ public class SolicitacaoTest {
 	@Test
 	public void origemTest() throws Exception {
 		try{
-			solicitacaoTeste = new Solicitacao(carona.getIdCarona(), "", "Joao Pessoa", donoDaCarona, solicitante, new Sugestao("Pub 10"), EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
+			solicitacaoTeste = new Solicitacao(carona.getIdCarona(), "", "Joao Pessoa", donoDaCarona, solicitante, new Sugestao("Pub 10", carona), EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Origem invalida");
 		}
 		try{
-			solicitacaoTeste = new Solicitacao(carona.getIdCarona(), null, "Joao Pessoa", donoDaCarona, solicitante, new Sugestao("Pub 10"), EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
+			solicitacaoTeste = new Solicitacao(carona.getIdCarona(), null, "Joao Pessoa", donoDaCarona, solicitante, new Sugestao("Pub 10", carona), EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Origem invalida");
 		}
@@ -41,12 +41,12 @@ public class SolicitacaoTest {
 	@Test
 	public void destinoTest() throws Exception {
 		try{
-			solicitacaoTeste = new Solicitacao(carona.getIdCarona(), "Campina Grande", "", donoDaCarona, solicitante, new Sugestao("Pub 10"), EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
+			solicitacaoTeste = new Solicitacao(carona.getIdCarona(), "Campina Grande", "", donoDaCarona, solicitante, new Sugestao("Pub 10", carona), EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Destino invalido");
 		}
 		try{
-			solicitacaoTeste = new Solicitacao(carona.getIdCarona(), "Campina Grande", null, donoDaCarona, solicitante, new Sugestao("Pub 10"), EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
+			solicitacaoTeste = new Solicitacao(carona.getIdCarona(), "Campina Grande", null, donoDaCarona, solicitante, new Sugestao("Pub 10", carona), EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Destino invalido");
 		}
@@ -55,12 +55,12 @@ public class SolicitacaoTest {
 	@Test
 	public void idCaroneiroTest() throws Exception {	
 		try{
-			solicitacaoTeste = new Solicitacao(carona.getIdCarona(), "Campina Grande", "Joao Pessoa", null, solicitante, new Sugestao("Pub 10"), EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
+			solicitacaoTeste = new Solicitacao(carona.getIdCarona(), "Campina Grande", "Joao Pessoa", null, solicitante, new Sugestao("Pub 10", carona), EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "idUsuario invalido");
 		}
 		try{
-			solicitacaoTeste = new Solicitacao(carona.getIdCarona(), "Campina Grande", "Joao Pessoa", null, solicitante, new Sugestao("Pub 10"), EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
+			solicitacaoTeste = new Solicitacao(carona.getIdCarona(), "Campina Grande", "Joao Pessoa", null, solicitante, new Sugestao("Pub 10", carona), EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "idUsuario invalido");
 		}
@@ -69,12 +69,12 @@ public class SolicitacaoTest {
 	@Test
 	public void idSolicitanteTest() throws Exception {
 		try{
-			solicitacaoTeste = new Solicitacao(carona.getIdCarona(), "Campina Grande", "Joao Pessoa", donoDaCarona, null, new Sugestao("Pub 10"), EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
+			solicitacaoTeste = new Solicitacao(carona.getIdCarona(), "Campina Grande", "Joao Pessoa", donoDaCarona, null, new Sugestao("Pub 10", carona), EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "idUsuario invalido");
 		}
 		try{
-			solicitacaoTeste = new Solicitacao(carona.getIdCarona(), "Campina Grande", "Joao Pessoa", donoDaCarona, null, new Sugestao("Pub 10"), EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
+			solicitacaoTeste = new Solicitacao(carona.getIdCarona(), "Campina Grande", "Joao Pessoa", donoDaCarona, null, new Sugestao("Pub 10", carona), EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "idUsuario invalido");
 		}
@@ -83,7 +83,7 @@ public class SolicitacaoTest {
 	@Test
 	public void pontoDeEncontroTest() throws Exception {	
 		try{
-			solicitacaoTeste = new Solicitacao(carona.getIdCarona(), "Campina Grande", "Joao Pessoa", donoDaCarona, solicitante, new Sugestao(""), EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
+			solicitacaoTeste = new Solicitacao(carona.getIdCarona(), "Campina Grande", "Joao Pessoa", donoDaCarona, solicitante, new Sugestao("", carona), EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
 		} catch (Exception e){
 			assertEquals(e.getMessage(), "Ponto de encontro invalido");
 		}	
@@ -96,7 +96,7 @@ public class SolicitacaoTest {
 	
 	@Test
 	public void getAtributoTest() throws Exception{		
-		solicitacaoTeste = new Solicitacao(carona.getIdCarona(), "Campina Grande", "Joao Pessoa", donoDaCarona, solicitante, new Sugestao("Pub 10"), EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
+		solicitacaoTeste = new Solicitacao(carona.getIdCarona(), "Campina Grande", "Joao Pessoa", donoDaCarona, solicitante, new Sugestao("Pub 10", carona), EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);
 		assertEquals("Campina Grande", solicitacaoTeste.getOrigem());
 		assertEquals("Joao Pessoa", solicitacaoTeste.getDestino());
 		assertEquals(donoDaCarona, solicitacaoTeste.getDonoDaCarona());

@@ -833,10 +833,15 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	private GWTSugestao geraGWTSugestao(Sugestao s) {
 		GWTSugestao gwt_s = new GWTSugestao();
 		
+		gwt_s.setData(dateFormat.format(s.getCarona().getData().getTime()));
+		gwt_s.setDestino(s.getCarona().getDestino());
+		gwt_s.setOrigem(s.getCarona().getOrigem());
+		gwt_s.setDonoDaCarona(controller.getUsuarioAPartirDeIDUsuario(s.getCarona().getIdDonoDaCarona()).getNome());
+		gwt_s.setHora(hourFormat.format(s.getCarona().getHora().getTime()));
 		gwt_s.setIdSugestao(s.getIdSugestao());
 		gwt_s.setResposta(s.getResposta());
 		gwt_s.setSugestaoPontoDeEncontro(s.getPontoSugerido());
-		
+
 		return gwt_s;
 	}
 	

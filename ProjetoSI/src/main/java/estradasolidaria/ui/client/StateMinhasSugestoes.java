@@ -34,8 +34,8 @@ public class StateMinhasSugestoes extends AbsolutePanel {
 		
 		TextColumn<GWTSugestao> textColumnDonoDaCarona = new TextColumn<GWTSugestao>() {
 			@Override
-			public String getValue(GWTSugestao object) {
-				return object.toString();
+			public String getValue(GWTSugestao sugestao) {
+				return sugestao.getDonoDaCarona();
 			}
 		};
 		cellTableSugestoes.addColumn(textColumnDonoDaCarona, "Dono da Carona");
@@ -43,8 +43,8 @@ public class StateMinhasSugestoes extends AbsolutePanel {
 		
 		TextColumn<GWTSugestao> textColumnOrigem = new TextColumn<GWTSugestao>() {
 			@Override
-			public String getValue(GWTSugestao object) {
-				return object.toString();
+			public String getValue(GWTSugestao sugestao) {
+				return sugestao.getOrigem();
 			}
 		};
 		cellTableSugestoes.addColumn(textColumnOrigem, "Origem");
@@ -52,8 +52,8 @@ public class StateMinhasSugestoes extends AbsolutePanel {
 		
 		TextColumn<GWTSugestao> textColumnDestino = new TextColumn<GWTSugestao>() {
 			@Override
-			public String getValue(GWTSugestao object) {
-				return object.toString();
+			public String getValue(GWTSugestao sugestao) {
+				return sugestao.getDestino();
 			}
 		};
 		cellTableSugestoes.addColumn(textColumnDestino, "Destino");
@@ -61,8 +61,8 @@ public class StateMinhasSugestoes extends AbsolutePanel {
 		
 		TextColumn<GWTSugestao> textColumnData = new TextColumn<GWTSugestao>() {
 			@Override
-			public String getValue(GWTSugestao object) {
-				return object.toString();
+			public String getValue(GWTSugestao sugestao) {
+				return sugestao.getData();
 			}
 		};
 		cellTableSugestoes.addColumn(textColumnData, "Data");
@@ -70,8 +70,8 @@ public class StateMinhasSugestoes extends AbsolutePanel {
 		
 		TextColumn<GWTSugestao> textColumnHora = new TextColumn<GWTSugestao>() {
 			@Override
-			public String getValue(GWTSugestao object) {
-				return object.toString();
+			public String getValue(GWTSugestao sugestao) {
+				return sugestao.getHora();
 			}
 		};
 		cellTableSugestoes.addColumn(textColumnHora, "Hora");
@@ -79,8 +79,8 @@ public class StateMinhasSugestoes extends AbsolutePanel {
 		
 		TextColumn<GWTSugestao> textColumnResposta = new TextColumn<GWTSugestao>() {
 			@Override
-			public String getValue(GWTSugestao object) {
-				return object.toString();
+			public String getValue(GWTSugestao sugestao) {
+				return sugestao.getResposta();
 			}
 		};
 		cellTableSugestoes.addColumn(textColumnResposta, "Resposta");
