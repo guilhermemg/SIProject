@@ -2533,6 +2533,7 @@ public class EstradaSolidariaController implements Serializable {
 				throw new UsuarioInexistenteException();
 			}
 			usuario.adicionarAmigo(amigo);
+			amigo.adicionarAmigo(usuario);
 			enviarMensagem(amigo, usuario.getNome() + " lhe adicionou como amigo.");
 			
 		} finally {
