@@ -23,6 +23,7 @@ import estradasolidaria.ui.server.adder.Adder;
 import estradasolidaria.ui.server.logic.Carona;
 import estradasolidaria.ui.server.logic.CaronaInexistenteException;
 import estradasolidaria.ui.server.logic.CaronaInvalidaException;
+import estradasolidaria.ui.server.logic.EnumNomeEstadoDaCarona;
 import estradasolidaria.ui.server.logic.EstadoCaronaException;
 import estradasolidaria.ui.server.logic.EstradaSolidariaController;
 import estradasolidaria.ui.server.logic.Interesse;
@@ -328,8 +329,9 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	 * 
 	 * @param carona
 	 * @return gwtCarona
+	 * @throws GWTException 
 	 */
-	private GWTCarona criaGWTCaronaDTO(Carona carona) {
+	private GWTCarona criaGWTCaronaDTO(Carona carona) throws GWTException {
 		GWTCarona gwt_c = new GWTCarona();
 		
 		Usuario donoDaCarona = controller.getMapIdUsuario().get(carona.getIdDonoDaCarona());
@@ -347,6 +349,22 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		}
 		gwt_c.setNomeDono(donoDaCarona.getNome());
 		gwt_c.setIdCarona(carona.getIdCarona().toString());
+		EnumNomeEstadoDaCarona estado = carona.getEstadoDaCarona().getNomeEstado();
+		if (estado.equals(EnumNomeEstadoDaCarona.CANCELADA)) {
+			gwt_c.setEstado("Cancelada");
+		} else if (estado.equals(EnumNomeEstadoDaCarona.CONFIRMADA)) {
+			gwt_c.setEstado("Confirmada");
+		} else if (estado.equals(EnumNomeEstadoDaCarona.ENCERRADA)) {
+			gwt_c.setEstado("Encerrada");
+		} else if (estado.equals(EnumNomeEstadoDaCarona.ESPERANDO)) {
+			gwt_c.setEstado("Esperando");
+		} else if (estado.equals(EnumNomeEstadoDaCarona.EXPIRED)) {
+			gwt_c.setEstado("Expirada");
+		} else if (estado.equals(EnumNomeEstadoDaCarona.OCORRENDO)) {
+			gwt_c.setEstado("Ocorrendo");
+		} else {
+			throw new GWTException("Estado da carona inválido!");
+		}
 		
 		return gwt_c;
 	}
