@@ -14,6 +14,20 @@ import estradasolidaria.ui.server.logic.EstradaSolidariaController;
 import estradasolidaria.ui.server.logic.MessageException;
 import estradasolidaria.ui.server.logic.Solicitacao;
 
+/**
+ * Classe responsavel por popular
+ * o sistema, baseado em uma serie de casos
+ * de testes previamente estudados.
+ * 
+ * @author Guilherme Monteiro
+ * @author Leonardo Santos
+ * @author Hema Vidal
+ * @author Italo Silva
+ *
+ * obs.: lembre-se aqui que o index da carona equivale a
+ * sua ordem de insercao (que começa com 0) somada com 1.
+ *
+ */
 public class Adder {
 	private EstradaSolidariaController sistema;
 	Integer idSessao1; 
@@ -41,10 +55,17 @@ public class Adder {
 		idSessao4 = sistema.abrirSessao("l4", "s4").getIdSessao();
 		idSessao5 = sistema.abrirSessao("l5", "s5").getIdSessao();
 		
-		cadastraCaronas();
 		try {
-			solicitacaoDeVagas();
-			aceitacaoDeVagas();
+			cadastraInteresses();
+			cadastraCaronas();
+			cadastraCaronasDeTiposVariados();
+			try {
+				solicitacaoDeVagas();
+				aceitacaoDeVagas();
+			} catch (Exception e) {
+			}
+			adicionaSugestoes();
+			encerrarSessoes();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -54,7 +75,44 @@ public class Adder {
 		} catch (MessageException e) {
 			e.printStackTrace();
 		}
-		encerrarSessoes();
+	}
+
+	private void cadastraCaronasDeTiposVariados() throws MessagingException, CaronaInvalidaException, EstadoCaronaException, MessageException {
+		sistema.cadastrarCarona(idSessao2, "a", "b", "12/12/2012", "12:12", 1);
+		sistema.definirCaronaPreferencial(sistema.getCaronaUsuario(idSessao2, 2).getIdCarona());
+		
+		sistema.cadastrarCaronaMunicipal(idSessao2, "b", "a", "c2", "12/12/2012", "12:12", 2);
+		
+		sistema.cadastrarCaronaRelampago(idSessao3, "c", "d", "12/12/2012", "13/12/2012", "12:12", 3, 1);
+		
+		sistema.cadastrarCaronaMunicipal(idSessao4, "d", "c", "c4", "15/03/2015", "09:23", 4);
+		sistema.cadastrarCaronaMunicipal(idSessao4, "d", "c", "c6", "12/12/2012", "12:12", 2);
+		sistema.definirCaronaPreferencial(sistema.getCaronaUsuario(idSessao4, 3).getIdCarona());
+		
+		sistema.cadastrarCaronaRelampago(idSessao5, "e", "f", "15/08/2015", "18/08/2015", "14:13", 1, 1);
+		sistema.definirCaronaPreferencial(sistema.getCaronaUsuario(idSessao5, 2).getIdCarona());
+	}
+
+	private void adicionaSugestoes() throws MessageException {
+		sistema.sugerirPontoEncontro(idSessao2, sistema.getCaronaUsuario(idSessao1, 1).getIdCarona(), "ponto3");
+		sistema.sugerirPontoEncontro(idSessao1, sistema.getCaronaUsuario(idSessao2, 1).getIdCarona(), "ponto4");
+		sistema.sugerirPontoEncontro(idSessao3, sistema.getCaronaUsuario(idSessao4, 1).getIdCarona(), "ponto5");
+		sistema.sugerirPontoEncontro(idSessao4, sistema.getCaronaUsuario(idSessao3, 1).getIdCarona(), "ponto6");
+		sistema.sugerirPontoEncontro(idSessao5, sistema.getCaronaUsuario(idSessao1, 1).getIdCarona(), "ponto7");
+	}
+
+	private void cadastraInteresses() throws CaronaInvalidaException {
+		sistema.cadastrarInteresse(idSessao1, "a", "b", "12/12/2012", "12:00", "");
+		sistema.cadastrarInteresse(idSessao1, "c", "d", "12/12/2012", "12:00", "");
+		
+		sistema.cadastrarInteresse(idSessao2, "a", "b", "", "11:00", "18:00");
+		sistema.cadastrarInteresse(idSessao2, "c", "d", "", "11:00", "18:00");
+		
+		sistema.cadastrarInteresse(idSessao3, "b", "a", "12/12/2012", "", "18:00");
+		sistema.cadastrarInteresse(idSessao3, "b", "a", "", "", "");
+		
+		sistema.cadastrarInteresse(idSessao4, "e", "f", "", "", "18:00");
+		sistema.cadastrarInteresse(idSessao4, "c", "d", "", "", "18:00");
 	}
 
 	private void encerrarSessoes() {
@@ -105,3 +163,4 @@ public class Adder {
 		}
 	}
 }
+

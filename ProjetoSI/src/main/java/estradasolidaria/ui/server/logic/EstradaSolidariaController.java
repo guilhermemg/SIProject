@@ -378,15 +378,15 @@ public class EstradaSolidariaController implements Serializable {
 	public Sugestao sugerirPontoEncontro(Integer idSessao, Integer idCarona,
 			String pontos) throws MessageException {
 		if (idSessao == null)
-			throw new IllegalArgumentException("Ponto Inválido"); // "Ponto Inválido"
+			throw new IllegalArgumentException("Ponto Inválido");
 		if (idCarona == null)
 			throw new IllegalArgumentException("IdCarona inválido");
 		
 		try {
 			lockMapIdSessao.lock();
 			lockMapIdUsuario.lock();
-			Usuario donoDaSugestao = getMapIdUsuario().get(
-					getMapIdSessao().get(idSessao).getIdUser());
+			Usuario donoDaSugestao = getUsuarioAPartirDeIDSessao(idSessao);
+			
 			if (donoDaSugestao == null)
 				throw new IllegalArgumentException("Sessão inválida");
 			
@@ -410,9 +410,11 @@ public class EstradaSolidariaController implements Serializable {
 			
 			donoDaSugestao.addSugestaoFeita(sugestaoFeita);
 			
-			enviarMensagem(donoDaSugestao, donoDaCarona, donoDaSugestao.getNome() 
+			enviarMensagem(donoDaCarona, donoDaSugestao, donoDaSugestao.getNome() 
 					+ " sugeriu um ponto de encontro para a carona " + carona.toString() + ": " + sugestaoFeita.getPontoSugerido() + ".");
+			
 			return sugestaoFeita;
+			
 		} finally {
 			lockMapIdSessao.unlock();
 			lockMapIdUsuario.unlock();
@@ -1644,13 +1646,13 @@ public class EstradaSolidariaController implements Serializable {
 	 * @param idSessao
 	 * @return mapa de sugestoes
 	 */
-	public Map<Integer, Sugestao> getMapSugestoesFeitas(Integer idSessao) {
+	public List<Sugestao> getListaDeSugestoesFeitas(Integer idSessao) {
 		try {
 			lockMapIdSessao.lock();
 			lockMapIdUsuario.lock();
 			
 			Usuario u = this.mapIdUsuario.get(this.mapIdSessao.get(idSessao).getIdUser());
-			return u.getMapIdSugestoesFeitas();
+			return u.getListaDeSugestoesFeitas();
 		} finally {
 			lockMapIdSessao.unlock();
 			lockMapIdUsuario.unlock();
@@ -1764,7 +1766,7 @@ public class EstradaSolidariaController implements Serializable {
 			Usuario donoDaCarona = getUsuarioAPartirDeIDSessao(idSessao);
 				
 			return donoDaCarona.cadastrarCaronaRelampago(donoDaCarona.getIdUsuario(), 
-					origem, destino, dataIda, dataVolta, hora, vagas,minimoCaroneiros, ordemParaCaronas++).getIdCarona();
+					origem, destino, dataIda, dataVolta, hora, vagas, minimoCaroneiros, ordemParaCaronas++).getIdCarona();
 		} finally {
 			lockMapIdSessao.unlock();
 			lockMapIdUsuario.unlock();

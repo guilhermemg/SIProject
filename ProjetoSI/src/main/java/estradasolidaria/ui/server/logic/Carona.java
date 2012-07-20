@@ -800,13 +800,13 @@ public class Carona implements Comparable<Carona>, Serializable {
 			List<Integer> listaIdsUsuariosPreferenciais) throws CadastroEmCaronaPreferencialException {
 		
 		try {
+			lockMapIdSolicitacoes.lock();
 			if(validaPontoEncontro(donoDaSolicitacao, ponto)) {
 				if(this.isCaronaPreferencial()) {
 					if(!listaIdsUsuariosPreferenciais.contains(donoDaSolicitacao.getIdUsuario())) {
 						throw new CadastroEmCaronaPreferencialException();
 					}
 				}
-				lockMapIdSolicitacoes.lock();
 				Sugestao sugestao = new Sugestao(ponto);
 				Solicitacao s = new Solicitacao(getIdCarona(), origem, destino, donoDaCarona,
 						donoDaSolicitacao, sugestao, EnumTipoSolicitacao.SOLICITACAO_COM_PONTO_ENCONTRO);

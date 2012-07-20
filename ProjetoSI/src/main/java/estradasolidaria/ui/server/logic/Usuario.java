@@ -1367,14 +1367,16 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	}
 	
 	/**
-	 * Retorna mapa de sugestoes feitas por este
+	 * Retorna lista de sugestoes feitas por este
 	 * usuario.
 	 * 
 	 * @return mapa de sugestoes feitas
 	 */
-	public Map<Integer, Sugestao> getMapIdSugestoesFeitas() {
+	public List<Sugestao> getListaDeSugestoesFeitas() {
 		synchronized (lockMapIdSugestoesFeitas) {
-			return this.mapIdSugestoesFeitas;
+			List<Sugestao> listaSugestoes = new LinkedList<Sugestao>();
+			listaSugestoes.addAll(this.mapIdSugestoesFeitas.values());
+			return listaSugestoes;
 		}
 	}
 
@@ -1939,6 +1941,18 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 			return listaAmigos;
 		} finally {
 			lockMapIdAmigo.unlock();
+		}
+	}
+
+	/**
+	 * Retorna mapa de sugestoes feitas por
+	 * este usuario.
+	 * 
+	 * @return mapa de sugestoes
+	 */
+	public Map<Integer, Sugestao> getMapIdSugestoesFeitas() {
+		synchronized (lockMapIdSugestoesFeitas) {
+			return this.mapIdSugestoesFeitas;
 		}
 	}
 }
