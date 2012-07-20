@@ -1752,10 +1752,11 @@ public class EstradaSolidariaController implements Serializable {
 	 * @throws EstadoCaronaException 
 	 * @throws CaronaInvalidaException 
 	 * @throws MessagingException 
+	 * @throws MessageException 
 	 */
 	public Integer cadastrarCaronaRelampago(Integer idSessao, String origem, 
 			String destino, String dataIda, String dataVolta, 
-			String hora, Integer vagas, Integer minimoCaroneiros) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
+			String hora, Integer vagas, Integer minimoCaroneiros) throws MessagingException, CaronaInvalidaException, EstadoCaronaException, MessageException {
 		if(idSessao == null)
 			throw new IllegalArgumentException("Sessão inválida");
 		
@@ -1765,8 +1766,16 @@ public class EstradaSolidariaController implements Serializable {
 			
 			Usuario donoDaCarona = getUsuarioAPartirDeIDSessao(idSessao);
 				
-			return donoDaCarona.cadastrarCaronaRelampago(donoDaCarona.getIdUsuario(), 
-					origem, destino, dataIda, dataVolta, hora, vagas, minimoCaroneiros, ordemParaCaronas++).getIdCarona();
+			Carona caronaRelampago = donoDaCarona.cadastrarCaronaRelampago(donoDaCarona.getIdUsuario(), 
+					origem, destino, dataIda, dataVolta, hora, vagas, minimoCaroneiros, ordemParaCaronas++);
+			
+			if (caronaRelampago != null) {
+				atualizaMensagensEmPerfis(caronaRelampago);
+				return caronaRelampago.getIdCarona();
+			} 
+			else
+				throw new IllegalArgumentException("Carona Inválida");
+			
 		} finally {
 			lockMapIdSessao.unlock();
 			lockMapIdUsuario.unlock();

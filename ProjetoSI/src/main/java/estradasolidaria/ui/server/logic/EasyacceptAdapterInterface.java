@@ -557,10 +557,11 @@ public interface EasyacceptAdapterInterface {
 	 * @throws EstadoCaronaException 
 	 * @throws CaronaInvalidaException 
 	 * @throws MessagingException 
+	 * @throws MessageException 
 	 */
 	public Integer cadastrarCaronaRelampago(String idSessao, String origem,
 			String destino, String dataIda, String dataVolta,
-			String hora, String minimoCaroneiros) throws MessagingException, CaronaInvalidaException, EstadoCaronaException;
+			String hora, String minimoCaroneiros) throws MessagingException, CaronaInvalidaException, EstadoCaronaException, MessageException;
 	
 	/**
 	 * Retorna lista de usuarios ranqueados segundo avaliacoes feitas por outros

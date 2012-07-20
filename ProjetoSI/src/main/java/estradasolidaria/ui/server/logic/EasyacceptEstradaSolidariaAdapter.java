@@ -1040,7 +1040,7 @@ public class EasyacceptEstradaSolidariaAdapter implements EasyacceptAdapterInter
 	 */
 	@Override
 	public Integer cadastrarCaronaRelampago(String idSessao, String origem, String destino,
-			String dataIda, String dataVolta, String hora, String minimoCaroneiros) throws MessagingException, CaronaInvalidaException, EstadoCaronaException {
+			String dataIda, String dataVolta, String hora, String minimoCaroneiros) throws MessagingException, CaronaInvalidaException, EstadoCaronaException, MessageException {
 		if(idSessao == null || idSessao.equals(""))
 			throw new IllegalArgumentException("Sessão inválida");
 		if(minimoCaroneiros == null || minimoCaroneiros.equals(""))
