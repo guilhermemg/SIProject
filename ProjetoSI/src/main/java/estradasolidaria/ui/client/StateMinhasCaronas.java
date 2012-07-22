@@ -75,9 +75,10 @@ public class StateMinhasCaronas extends AbsolutePanel {
 	private MenuBar subMenuAcoesDaCarona;
 	private ScrollPanel scrollPanelCaronas;
 	private Column<GWTCarona, Boolean> checkBoxColumn;
-	protected Integer idCaronaEscolhida;
+	protected GWTCarona caronaEscolhida;
 	private PopupInfo popupInfo;
 	private TextColumn<GWTCarona> estadoColumn;
+	private MenuItem mntmVizualizarPonto;
 
 	public StateMinhasCaronas(EstradaSolidaria estrada,
 			EstradaSolidariaServiceAsync estradaSolidariaService) {
@@ -194,6 +195,13 @@ public class StateMinhasCaronas extends AbsolutePanel {
 
 		mntmPontoDeEncontro = new MenuItem("Ponto de Encontro", false,
 				subMenuPontoDeEncontro);
+		
+		mntmVizualizarPonto = new MenuItem("Vizualizar Ponto de Encontro", false, new Command() {
+			public void execute() {
+				vizualizarPontoDeEncontro();
+			}
+		});
+		subMenuPontoDeEncontro.addItem(mntmVizualizarPonto);
 
 		mntmSugerirPontoDe = new MenuItem("Sugerir", false, new Command() {
 			public void execute() {
@@ -208,9 +216,20 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		menuBar.addItem(mntmPontoDeEncontro);
 	}
 
+	private void vizualizarPontoDeEncontro() {
+		if (caronaEscolhida != null) {
+			PopupPanel popup = new PopupVizualizarPonto(caronaEscolhida.getPontoEncontro());
+			popup.center();
+			popup.show();
+		} else {
+			exibirPopupInfo("Escolha uma carona!");
+		}
+		
+	}
+
 	private void sugerirPontoDeEncontro() {
-		if (idCaronaEscolhida != null) {
-			PopupSugerirPonto p = new PopupSugerirPonto(estradaSolidariaService, idCaronaEscolhida);
+		if (caronaEscolhida != null) {
+			PopupSugerirPonto p = new PopupSugerirPonto(estradaSolidariaService, Integer.parseInt(caronaEscolhida.getIdCarona()));
 			p.center();
 			p.show();
 			
@@ -222,8 +241,8 @@ public class StateMinhasCaronas extends AbsolutePanel {
 
 	private void marcarCaronaComoPreferencial() {
 		Integer idSessao = EstradaSolidaria.getIdSessaoAberta();
-		if (idCaronaEscolhida != null) {
-			estradaSolidariaService.marcarCaronaComoPreferencial(idSessao, idCaronaEscolhida, new AsyncCallback<Void>() {
+		if (caronaEscolhida != null) {
+			estradaSolidariaService.marcarCaronaComoPreferencial(idSessao, Integer.parseInt(caronaEscolhida.getIdCarona()), new AsyncCallback<Void>() {
 
 				@Override
 				public void onFailure(Throwable caught) {
@@ -245,8 +264,8 @@ public class StateMinhasCaronas extends AbsolutePanel {
 
 	private void cancelarCarona() {
 		
-		if (idCaronaEscolhida != null) {
-			estradaSolidariaService.cancelarCarona(idSessao, idCaronaEscolhida, new AsyncCallback<Void>() {
+		if (caronaEscolhida != null) {
+			estradaSolidariaService.cancelarCarona(idSessao, Integer.parseInt(caronaEscolhida.getIdCarona()), new AsyncCallback<Void>() {
 
 				@Override
 				public void onFailure(Throwable caught) {
@@ -268,8 +287,8 @@ public class StateMinhasCaronas extends AbsolutePanel {
 
 	private void encerrarCarona() {
 		Integer idSessao = EstradaSolidaria.getIdSessaoAberta();
-		if (idCaronaEscolhida != null) {
-			estradaSolidariaService.encerrarCarona(idSessao, idCaronaEscolhida, new AsyncCallback<Void>() {
+		if (caronaEscolhida != null) {
+			estradaSolidariaService.encerrarCarona(idSessao, Integer.parseInt(caronaEscolhida.getIdCarona()), new AsyncCallback<Void>() {
 
 				@Override
 				public void onFailure(Throwable caught) {
@@ -374,9 +393,9 @@ public class StateMinhasCaronas extends AbsolutePanel {
 			public void update(int index, GWTCarona carona, Boolean value) {
 				try {
 					if (value) {
-						idCaronaEscolhida = Integer.parseInt(carona.getIdCarona());
+						caronaEscolhida = carona;
 					} else {
-						idCaronaEscolhida = null;
+						caronaEscolhida = null;
 					}
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
