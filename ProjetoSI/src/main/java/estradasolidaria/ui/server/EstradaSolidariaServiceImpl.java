@@ -441,32 +441,7 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 					listaSolicitacoesPendentes.add(gwt_s);
 				}
 			}
-//			List<List<String>> result = new LinkedList<List<String>>();
-//			for (Solicitacao s : controller.getMapaSolicitacoesFeitas(idSessao).values()) {
-//				if (s.isPendente()) {
-//					List<String> solicitacaoList = new LinkedList<String>();
-//					
-//					Usuario donoDaCarona = s.getDonoDaCarona();
-//					Carona c = donoDaCarona.getMapIdCaronasOferecidas().get(s.getIdCarona());
-//					
-//					solicitacaoList.add(c.getIdDonoDaCarona().toString());
-//					solicitacaoList.add(c.getOrigem());
-//					solicitacaoList.add(c.getDestino());
-//					solicitacaoList.add(dateFormat.format(c.getData().getTime()));
-//					solicitacaoList.add(hourFormat.format(c.getHora().getTime()));
-//					solicitacaoList.add(c.getVagas().toString());
-//					if (c.getPontoEncontro() != null) {
-//						solicitacaoList.add(c.getPontoEncontro());
-//					}else {
-//						solicitacaoList.add(new String(""));
-//					}
-//					solicitacaoList.add(donoDaCarona.getNome());
-//					solicitacaoList.add(c.getIdCarona().toString());
-//					
-//					result.add(solicitacaoList);
-//				}
-//			}
-//			return result;
+			
 			return listaSolicitacoesPendentes;
 		} catch (Exception e) {
 			throw new GWTException(e.getMessage());

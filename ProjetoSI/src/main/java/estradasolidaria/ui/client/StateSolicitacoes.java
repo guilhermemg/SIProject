@@ -43,7 +43,6 @@ public class StateSolicitacoes extends Composite {
 			}
 		};
 		dataGrid.addColumn(columnDonoDaCarona, "Dono da carona");
-		dataGrid_1.addColumn(columnDonoDaCarona, "Dono da carona");
 		
 		TextColumn<GWTSolicitacao> columnCarona = new TextColumn<GWTSolicitacao>() {
 			@Override
@@ -54,7 +53,24 @@ public class StateSolicitacoes extends Composite {
 			}
 		};
 		dataGrid.addColumn(columnCarona, "Carona");
-		dataGrid_1.addColumn(columnCarona, "Carona");
+		
+		TextColumn<GWTSolicitacao> columnDonoDaCarona_1 = new TextColumn<GWTSolicitacao>() {
+			@Override
+			public String getValue(GWTSolicitacao solicitacao) {
+				return solicitacao.getNomeDono();
+			}
+		};
+		dataGrid_1.addColumn(columnDonoDaCarona_1, "Dono da carona");
+		
+		TextColumn<GWTSolicitacao> columnCarona_1 = new TextColumn<GWTSolicitacao>() {
+			@Override
+			public String getValue(GWTSolicitacao solicitacao) {
+				return "De " + solicitacao.getOrigemCarona() + " para " + solicitacao.getDestinoCarona() +
+						" no dia " + solicitacao.getDataCarona() + " as " + solicitacao.getHoraCarona() +
+						".";
+			}
+		};
+		dataGrid_1.addColumn(columnCarona_1, "Carona");
 		
 		getSolicitacoesConfirmadas();
 		getSolicitacoesPendentes();
