@@ -375,36 +375,29 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 			List<GWTSolicitacao> listaSolicitacoesFeitas = new LinkedList<GWTSolicitacao>();
 			for (Solicitacao s : controller.getMapaSolicitacoesFeitas(idSessao).values()) {
 				if (s.isAceita()) {
-					GWTUsuario gwt_u = new GWTUsuario();
-					GWTCarona gwt_c = new GWTCarona();
 					GWTSolicitacao gwt_s = new GWTSolicitacao();
 					
-					gwt_u.setNome(s.getDonoDaCarona().getNome());
-					gwt_u.setLogin(s.getDonoDaCarona().getLogin());
-					gwt_u.setIdUsuario(s.getDonoDaCarona().getIdUsuario().toString());
-					gwt_u.setEndereco(s.getDonoDaCarona().getEndereco());
-					gwt_u.setEmail(s.getDonoDaCarona().getEmail());
+					gwt_s.setNomeDono(s.getDonoDaCarona().getNome());
+					gwt_s.setIdDono(s.getDonoDaCarona().getIdUsuario().toString());
+					gwt_s.setLoginDono(s.getDonoDaCarona().getLogin());
+					gwt_s.setEnderecoDono(s.getDonoDaCarona().getEndereco());
+					gwt_s.setEmailDono(s.getDonoDaCarona().getEmail());
 
 					Carona c = s.getDonoDaCarona().getMapIdCaronasOferecidas().get(s.getIdCarona());
-					
-					gwt_c.setNomeDono(s.getDonoDaCarona().getNome());
-					gwt_c.setIdDono(s.getDonoDaCarona().getIdUsuario().toString());
-					gwt_c.setData(dateFormat.format(c.getData().getTime()));
-					gwt_c.setOrigem(c.getOrigem());
-					gwt_c.setDestino(c.getDestino());
-					gwt_c.setHora(hourFormat.format(c.getHora().getTime()));
-					gwt_c.setVagas(c.getVagas().toString());
+
+					gwt_s.setDataCarona(dateFormat.format(c.getData().getTime()));
+					gwt_s.setOrigemCarona(c.getOrigem());
+					gwt_s.setDestinoCarona(c.getDestino());
+					gwt_s.setHoraCarona(hourFormat.format(c.getHora().getTime()));
+					gwt_s.setVagasCarona(c.getVagas().toString());
 					if (c.getPontoEncontro() != null) {
-						gwt_c.setPontoEncontro(c.getPontoEncontro());
+						gwt_s.setPontoEncontroCarona(c.getPontoEncontro());
 					}else {
-						gwt_c.setPontoEncontro("");
+						gwt_s.setPontoEncontroCarona("");
 					}
-					gwt_c.setIdCarona(c.getIdCarona().toString());
-					gwt_c.setEstado(c.getEstadoDaCarona().toString());
-					gwt_c.setReview("");
-					
-					gwt_s.setDonoDaCarona(gwt_u);
-					gwt_s.setCarona(gwt_c);
+					gwt_s.setIdCarona(c.getIdCarona().toString());
+					gwt_s.setEstadoCarona(c.getEstadoDaCarona().toString());
+					gwt_s.setReviewCarona("");
 					
 					listaSolicitacoesFeitas.add(gwt_s);
 				}
@@ -416,35 +409,65 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public List<List<String>> getSolicitacoesFeitasPendentes(Integer idSessao) throws GWTException {
+	public List<GWTSolicitacao> getSolicitacoesFeitasPendentes(Integer idSessao) throws GWTException {
 		try {
-			List<List<String>> result = new LinkedList<List<String>>();
+			List<GWTSolicitacao> listaSolicitacoesPendentes = new LinkedList<GWTSolicitacao>();
 			for (Solicitacao s : controller.getMapaSolicitacoesFeitas(idSessao).values()) {
-				if (s.isPendente()) {
-					List<String> solicitacaoList = new LinkedList<String>();
+				if (!s.isAceita()) {
+					GWTSolicitacao gwt_s = new GWTSolicitacao();
 					
-					Usuario donoDaCarona = s.getDonoDaCarona();
-					Carona c = donoDaCarona.getMapIdCaronasOferecidas().get(s.getIdCarona());
-					
-					solicitacaoList.add(c.getIdDonoDaCarona().toString());
-					solicitacaoList.add(c.getOrigem());
-					solicitacaoList.add(c.getDestino());
-					solicitacaoList.add(dateFormat.format(c.getData().getTime()));
-					solicitacaoList.add(hourFormat.format(c.getHora().getTime()));
-					solicitacaoList.add(c.getVagas().toString());
+					gwt_s.setNomeDono(s.getDonoDaCarona().getNome());
+					gwt_s.setIdDono(s.getDonoDaCarona().getIdUsuario().toString());
+					gwt_s.setLoginDono(s.getDonoDaCarona().getLogin());
+					gwt_s.setEnderecoDono(s.getDonoDaCarona().getEndereco());
+					gwt_s.setEmailDono(s.getDonoDaCarona().getEmail());
+
+					Carona c = s.getDonoDaCarona().getMapIdCaronasOferecidas().get(s.getIdCarona());
+
+					gwt_s.setDataCarona(dateFormat.format(c.getData().getTime()));
+					gwt_s.setOrigemCarona(c.getOrigem());
+					gwt_s.setDestinoCarona(c.getDestino());
+					gwt_s.setHoraCarona(hourFormat.format(c.getHora().getTime()));
+					gwt_s.setVagasCarona(c.getVagas().toString());
 					if (c.getPontoEncontro() != null) {
-						solicitacaoList.add(c.getPontoEncontro());
+						gwt_s.setPontoEncontroCarona(c.getPontoEncontro());
 					}else {
-						solicitacaoList.add(new String(""));
+						gwt_s.setPontoEncontroCarona("");
 					}
-					solicitacaoList.add(donoDaCarona.getNome());
-					solicitacaoList.add(c.getIdCarona().toString());
+					gwt_s.setIdCarona(c.getIdCarona().toString());
+					gwt_s.setEstadoCarona(c.getEstadoDaCarona().toString());
+					gwt_s.setReviewCarona("");
 					
-					result.add(solicitacaoList);
+					listaSolicitacoesPendentes.add(gwt_s);
 				}
 			}
-			return result;
-			
+//			List<List<String>> result = new LinkedList<List<String>>();
+//			for (Solicitacao s : controller.getMapaSolicitacoesFeitas(idSessao).values()) {
+//				if (s.isPendente()) {
+//					List<String> solicitacaoList = new LinkedList<String>();
+//					
+//					Usuario donoDaCarona = s.getDonoDaCarona();
+//					Carona c = donoDaCarona.getMapIdCaronasOferecidas().get(s.getIdCarona());
+//					
+//					solicitacaoList.add(c.getIdDonoDaCarona().toString());
+//					solicitacaoList.add(c.getOrigem());
+//					solicitacaoList.add(c.getDestino());
+//					solicitacaoList.add(dateFormat.format(c.getData().getTime()));
+//					solicitacaoList.add(hourFormat.format(c.getHora().getTime()));
+//					solicitacaoList.add(c.getVagas().toString());
+//					if (c.getPontoEncontro() != null) {
+//						solicitacaoList.add(c.getPontoEncontro());
+//					}else {
+//						solicitacaoList.add(new String(""));
+//					}
+//					solicitacaoList.add(donoDaCarona.getNome());
+//					solicitacaoList.add(c.getIdCarona().toString());
+//					
+//					result.add(solicitacaoList);
+//				}
+//			}
+//			return result;
+			return listaSolicitacoesPendentes;
 		} catch (Exception e) {
 			throw new GWTException(e.getMessage());
 		}

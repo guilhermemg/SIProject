@@ -328,7 +328,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 * @return lista de ids de solicitacoes
 	 * @throws CaronaInvalidaException
 	 */
-	public abstract List<List<String>> getSolicitacoesFeitasPendentes(Integer idSessao) throws GWTException;
+	public abstract List<GWTSolicitacao> getSolicitacoesFeitasPendentes(Integer idSessao) throws GWTException;
 
 	/**
 	 * Retorna string com o ponto sugerido para idCarona. O usuario identificado
