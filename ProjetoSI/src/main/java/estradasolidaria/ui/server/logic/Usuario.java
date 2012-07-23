@@ -1047,7 +1047,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	 * 
 	 */
 	public Carona getCaronaUsuario(int indexCarona) {
-		if (indexCarona < 0) {
+		if (indexCarona <= 0) {
 			throw new IllegalArgumentException("Indice de carona inválido");
 		}
 		List<Carona> listaCaronas = new LinkedList<Carona>();

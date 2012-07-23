@@ -18,10 +18,8 @@ public class Sugestao implements Serializable {
 	private String sugestaoPontoDeEncontro;
 	private Integer idSugestao;
 	private String resposta;
-
-	private final String origem;
-
-	private final String destino;
+	private String origem;
+	private String destino;
 
 	/**
 	 * Cria uma nova sugestão.
@@ -32,13 +30,30 @@ public class Sugestao implements Serializable {
 	public Sugestao(String ponto, String origem, String destino) {
 		synchronized (Sugestao.class) {
 			setSugestaoPontoEncontro(ponto);
+			setOrigem(origem);
+			setDestino(destino);
 			setIdSugestao(hashCode());
-			this.origem = origem;
-			this.destino = destino;
-			
 		}
 	}
 	
+	/**
+	 * Configura destino da sugestao.
+	 * 
+	 * @param destino2
+	 */
+	private synchronized void setDestino(String destino2) {
+		this.destino = destino2;
+	}
+
+	/**
+	 * Configura origem da sugestao.
+	 * 
+	 * @param origem2
+	 */
+	private synchronized void setOrigem(String origem2) {
+		this.origem = origem2;
+	}
+
 	/**
 	 * Configura id de sugestao.
 	 * 
@@ -84,15 +99,24 @@ public class Sugestao implements Serializable {
 	}
 
 	@Override
-	public synchronized int hashCode() {
+	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((sugestaoPontoDeEncontro == null) ? 0 : sugestaoPontoDeEncontro.hashCode());
+		result = prime * result + ((destino == null) ? 0 : destino.hashCode());
+		result = prime * result
+				+ ((idSugestao == null) ? 0 : idSugestao.hashCode());
+		result = prime * result + ((origem == null) ? 0 : origem.hashCode());
+		result = prime * result
+				+ ((resposta == null) ? 0 : resposta.hashCode());
+		result = prime
+				* result
+				+ ((sugestaoPontoDeEncontro == null) ? 0
+						: sugestaoPontoDeEncontro.hashCode());
 		return result;
 	}
 
 	@Override
-	public synchronized boolean equals(Object obj) {
+	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -100,10 +124,31 @@ public class Sugestao implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Sugestao other = (Sugestao) obj;
+		if (destino == null) {
+			if (other.destino != null)
+				return false;
+		} else if (!destino.equals(other.destino))
+			return false;
+		if (idSugestao == null) {
+			if (other.idSugestao != null)
+				return false;
+		} else if (!idSugestao.equals(other.idSugestao))
+			return false;
+		if (origem == null) {
+			if (other.origem != null)
+				return false;
+		} else if (!origem.equals(other.origem))
+			return false;
+		if (resposta == null) {
+			if (other.resposta != null)
+				return false;
+		} else if (!resposta.equals(other.resposta))
+			return false;
 		if (sugestaoPontoDeEncontro == null) {
 			if (other.sugestaoPontoDeEncontro != null)
 				return false;
-		} else if (!sugestaoPontoDeEncontro.equals(other.sugestaoPontoDeEncontro))
+		} else if (!sugestaoPontoDeEncontro
+				.equals(other.sugestaoPontoDeEncontro))
 			return false;
 		return true;
 	}
@@ -118,11 +163,21 @@ public class Sugestao implements Serializable {
 		this.sugestaoPontoDeEncontro = ponto;
 	}
 
-	public String getOrigem() {
+	/**
+	 * Retorna origem de sugestao.
+	 * 
+	 * @return origem
+	 */
+	public synchronized String getOrigem() {
 		return origem;
 	}
 
-	public String getDestino() {
+	/**
+	 * Retorna destino de sugestao.
+	 * 
+	 * @return destino
+	 */
+	public synchronized String getDestino() {
 		return destino;
 	}
 }

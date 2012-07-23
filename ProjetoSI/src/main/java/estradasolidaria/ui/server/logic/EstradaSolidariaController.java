@@ -411,7 +411,8 @@ public class EstradaSolidariaController implements Serializable {
 			donoDaSugestao.addSugestaoFeita(sugestaoFeita);
 			
 			enviarMensagem(donoDaCarona, donoDaSugestao, donoDaSugestao.getNome() 
-					+ " sugeriu um ponto de encontro para a carona " + carona.toString() + ": " + sugestaoFeita.getPontoSugerido() + ".");
+					+ " sugeriu um ponto de encontro para a carona " + carona.toString() + 
+					": " + sugestaoFeita.getPontoSugerido() + ".");
 			
 			return sugestaoFeita;
 			
@@ -474,7 +475,8 @@ public class EstradaSolidariaController implements Serializable {
 			Carona carona = donoDaCarona.getCarona(idCarona);
 			Usuario donoDaSugestao = getUsuarioAPartirDeIDSugestao(idSugestao);
 			
-			enviarMensagem(donoDaSugestao, donoDaCarona, donoDaCarona.getNome() + " respondeu a sua sugestão de ponto de encontro para a carona" 
+			enviarMensagem(donoDaSugestao, donoDaCarona, donoDaCarona.getNome() + 
+					" respondeu a sua sugestão de ponto de encontro para a carona " 
 					+ carona.toString() + ". O ponto" +
 					"de encontro proposto por ele é: " + sugestaoFeitaPeloDonoDaCarona.getResposta() + ".");
 		} finally {

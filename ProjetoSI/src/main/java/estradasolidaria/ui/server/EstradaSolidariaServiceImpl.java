@@ -356,22 +356,7 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		gwt_c.setNomeDono(donoDaCarona.getNome());
 		gwt_c.setIdCarona(carona.getIdCarona().toString());
 		EnumNomeEstadoDaCarona estado = carona.getEstadoDaCarona().getNomeEstado();
-		if (estado.equals(EnumNomeEstadoDaCarona.CANCELADA)) {
-			gwt_c.setEstado("Cancelada");
-		} else if (estado.equals(EnumNomeEstadoDaCarona.CONFIRMADA)) {
-			gwt_c.setEstado("Confirmada");
-		} else if (estado.equals(EnumNomeEstadoDaCarona.ENCERRADA)) {
-			gwt_c.setEstado("Encerrada");
-		} else if (estado.equals(EnumNomeEstadoDaCarona.ESPERANDO)) {
-			gwt_c.setEstado("Esperando");
-		} else if (estado.equals(EnumNomeEstadoDaCarona.EXPIRED)) {
-			gwt_c.setEstado("Expirada");
-		} else if (estado.equals(EnumNomeEstadoDaCarona.OCORRENDO)) {
-			gwt_c.setEstado("Ocorrendo");
-		} else {
-			throw new GWTException("Estado da carona inválido!");
-		}
-		
+		gwt_c.setEstado(estado.getNome());	
 		return gwt_c;
 	}
 
