@@ -1,14 +1,13 @@
 package estradasolidaria.ui.client;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.widget.client.TextButton;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
 
 public class PopupInfo extends PopupPanel{
 
@@ -22,6 +21,7 @@ public class PopupInfo extends PopupPanel{
 		absPanel.setSize("100%", "100%");
 		
 		Label lblNewLabel = new Label(mensagem);
+		lblNewLabel.setStyleName("gwt-LabelEstradaSolidaria10");
 		lblNewLabel.setSize("100%", "20px");
 		lblNewLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		absPanel.add(lblNewLabel);

@@ -10,13 +10,13 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DecoratedStackPanel;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.widget.client.TextButton;
@@ -181,6 +181,7 @@ public class StateCaronasEncontradas extends Composite {
 					} else {
 						Integer idCarona = Integer.parseInt(selectionModel.getSelectedObject().getIdCarona());
 						sugerirPontoDeEncontroGUI(textBoxSolicitar.getText(), idCarona);
+						textBoxSolicitar.setText("");
 					}
 				}
 			}
@@ -200,8 +201,11 @@ public class StateCaronasEncontradas extends Composite {
 					newDialog.hide();
 					if(textBox.getText().length() == 0){
 						solicitarVagaGUI(idSessao, idCarona);
+						lblMensagemdeerro.setVisible(false);
 					} else {
 						solicitarVagaComPontoDeEncontroGUI(idSessao, idCarona, textBox.getText());
+						textBox.setText("");
+						lblMensagemdeerro.setVisible(false);
 					}
 				}
 			}
@@ -220,7 +224,9 @@ public class StateCaronasEncontradas extends Composite {
 
 			@Override
 			public void onSuccess(Void result) {
-				Window.alert("Foi!");
+				PopupPanel newDialog = new PopupInfo("Ponto de encontro sugerido enviado!");
+				newDialog.center();
+				newDialog.show();
 			}
 		  });	
 		
