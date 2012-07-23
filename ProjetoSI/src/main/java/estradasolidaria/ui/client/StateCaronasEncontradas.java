@@ -18,8 +18,7 @@ import com.google.gwt.user.client.ui.DecoratedStackPanel;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.view.client.MultiSelectionModel;
-import com.google.gwt.view.client.SelectionModel;
+import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.widget.client.TextButton;
 
 public class StateCaronasEncontradas extends Composite {
@@ -34,7 +33,7 @@ public class StateCaronasEncontradas extends Composite {
 	private Label lblMensagemDeErroSugerir;
 	
 	private DataGrid<GWTCarona> dataGrid_1;
-	private SelectionModel<GWTCarona> selectionModel;
+	private SingleSelectionModel<GWTCarona> selectionModel;
 	private Column<GWTCarona, Boolean> checkColumn;
 
 	@SuppressWarnings("static-access")
@@ -57,7 +56,7 @@ public class StateCaronasEncontradas extends Composite {
 		absolutePanel.add(dataGrid_1, 78, 61);
 		dataGrid_1.setSize("797px", "187px");
 		
-		selectionModel = new MultiSelectionModel<GWTCarona>();
+		selectionModel = new SingleSelectionModel<GWTCarona>();
 		dataGrid_1.setSelectionModel(selectionModel);
 			
 	    checkColumn =
@@ -127,6 +126,11 @@ public class StateCaronasEncontradas extends Composite {
 		absolutePanel_1.add(lblNewLabel, 10, 20);
 		
 		textBox = new TextBox();
+		textBox.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				lblMensagemdeerro.setVisible(false);
+			}
+		});
 		absolutePanel_1.add(textBox, 43, 42);
 		textBox.setSize("325px", "16px");
 		
@@ -151,6 +155,11 @@ public class StateCaronasEncontradas extends Composite {
 		absolutePanel_2.add(lblLocal, 10, 20);
 		
 		textBoxSolicitar = new TextBox();
+		textBoxSolicitar.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				lblMensagemDeErroSugerir.setVisible(false);
+			}
+		});
 		absolutePanel_2.add(textBoxSolicitar, 32, 43);
 		textBoxSolicitar.setSize("312px", "16px");
 		
@@ -162,18 +171,17 @@ public class StateCaronasEncontradas extends Composite {
 		TextButton txtbtnEnviar = new TextButton("Enviar");
 		txtbtnEnviar.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				GWTCarona selecionada = null;
-				for(GWTCarona c : listaDeCaronas){
-					if(checkColumn.getValue(c)){
-						selecionada = c;
-					}
-				}
-				Integer idCarona = Integer.parseInt(selecionada.getIdCarona());
-				if(textBoxSolicitar.getText().length() == 0){
-					lblMensagemDeErroSugerir.setText("Ponto inválido");
+				if(selectionModel.getSelectedObject() == null){
+					lblMensagemDeErroSugerir.setText("Selecione uma carona na tabela");
 					lblMensagemDeErroSugerir.setVisible(true);
 				} else {
-					sugerirPontoDeEncontroGUI(textBoxSolicitar.getText(), idCarona);
+					if(textBoxSolicitar.getText().length() == 0){
+						lblMensagemDeErroSugerir.setText("Ponto inválido");
+						lblMensagemDeErroSugerir.setVisible(true);
+					} else {
+						Integer idCarona = Integer.parseInt(selectionModel.getSelectedObject().getIdCarona());
+						sugerirPontoDeEncontroGUI(textBoxSolicitar.getText(), idCarona);
+					}
 				}
 			}
 		});
@@ -182,20 +190,19 @@ public class StateCaronasEncontradas extends Composite {
 		
 		txtbtnRequisitarVaga.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent arg0) {
-				GWTCarona selecionada = null;
-				for(GWTCarona c : listaDeCaronas){
-					if(checkColumn.getValue(c)){
-						selecionada = c;
-					}
-				}
-				Integer idCarona = Integer.parseInt(selecionada.getIdCarona());
-				newDialog = new DialogBoxNovaSolicitacao(estradaSolidariaService, idCarona, idSessao);
-				newDialog.center();
-				newDialog.hide();
-				if(textBox.getText().length() == 0){
-					solicitarVagaGUI(idSessao, idCarona);
+				if(selectionModel.getSelectedObject() == null){
+					lblMensagemdeerro.setText("Selecione uma carona na tabela");
+					lblMensagemdeerro.setVisible(true);
 				} else {
-					solicitarVagaComPontoDeEncontroGUI(idSessao, idCarona, textBox.getText());
+					Integer idCarona = Integer.parseInt(selectionModel.getSelectedObject().getIdCarona());
+					newDialog = new DialogBoxNovaSolicitacao(estradaSolidariaService, idCarona, idSessao);
+					newDialog.center();
+					newDialog.hide();
+					if(textBox.getText().length() == 0){
+						solicitarVagaGUI(idSessao, idCarona);
+					} else {
+						solicitarVagaComPontoDeEncontroGUI(idSessao, idCarona, textBox.getText());
+					}
 				}
 			}
 
