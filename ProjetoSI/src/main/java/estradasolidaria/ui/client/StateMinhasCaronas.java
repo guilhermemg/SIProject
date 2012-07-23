@@ -65,7 +65,7 @@ public class StateMinhasCaronas extends AbsolutePanel {
 	private AbsolutePanel absolutePanelAcoes;
 	private MenuItem mntmPontoDeEncontro;
 	private MenuItem mntmSugerirPontoDe;
-	private MenuItem mntmVisualizarSugestes;
+	private MenuItem mntmVisualizarSugestoes;
 	private MenuBar menuBar;
 	private MenuItem mntmCarona;
 	private MenuItem mntmEncerrar;
@@ -210,10 +210,25 @@ public class StateMinhasCaronas extends AbsolutePanel {
 		});
 		subMenuPontoDeEncontro.addItem(mntmSugerirPontoDe);
 
-		mntmVisualizarSugestes = new MenuItem("Visualizar Sugestões", false,
-				(Command) null);
-		subMenuPontoDeEncontro.addItem(mntmVisualizarSugestes);
+		mntmVisualizarSugestoes = new MenuItem("Visualizar Sugestões", false,
+				new Command() {
+			public void execute() {
+				vizualizarSugestoes();
+			}
+		});
+		subMenuPontoDeEncontro.addItem(mntmVisualizarSugestoes);
 		menuBar.addItem(mntmPontoDeEncontro);
+	}
+
+	private void vizualizarSugestoes() {
+		if (caronaEscolhida != null) {
+			PopupPanel popup = new PopupVizualizarSugestoes(estradaSolidariaService, caronaEscolhida);
+			popup.center();
+			popup.show();
+		} else {
+			exibirPopupInfo("Escolha uma carona!");
+		}
+		
 	}
 
 	private void vizualizarPontoDeEncontro() {

@@ -77,7 +77,7 @@ public interface EstradaSolidariaServiceAsync {
 	void reiniciarSistema(AsyncCallback<Void> callback);
 
 	void responderSugestaoPontoEncontro(Integer idSessao, Integer idCarona,
-			String idSugestao, String pontos, AsyncCallback<Void> callback);
+			Integer idSugestao, String pontos, AsyncCallback<Void> callback);
 
 	void reviewCarona(Integer idSessao, Integer idCarona, String review,
 			AsyncCallback<Void> callback);
@@ -166,4 +166,7 @@ public interface EstradaSolidariaServiceAsync {
 			AsyncCallback<List<GWTSugestao>> asyncCallback);
 	
 	void adicionarAmigo(Integer idSessao, Integer idUsuario, AsyncCallback<Void> asyncCallback);
+
+	void getSugestoesDaCarona(Integer idSessao, Integer idCarona,
+			AsyncCallback<List<GWTSugestao>> asyncCallback);
 }

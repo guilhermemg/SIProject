@@ -197,8 +197,14 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public void responderSugestaoPontoEncontro(Integer idSessao,
-			Integer idCarona, String idSugestao, String pontos) throws GWTException {
-		// TODO Auto-generated method stub
+			Integer idCarona, Integer idSugestao, String resposta) throws GWTException {
+		try {
+			controller.responderSugestaoPontoEncontro(idSessao, idCarona, idSugestao, resposta);
+		} catch (CaronaInexistenteException e) {
+			new GWTException(e.getMessage());
+		} catch (MessageException e) {
+			new GWTException(e.getMessage());
+		}
 		
 	}
 
@@ -848,5 +854,27 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 		} catch(Exception e){
 			throw new GWTException(e.getMessage());
 		}
+	}
+
+	@Override
+	public List<GWTSugestao> getSugestoesDaCarona(Integer idSessao,
+			Integer idCarona) {
+		List<GWTSugestao> result = new LinkedList<GWTSugestao>();
+		for (Sugestao s : controller.getCarona(idCarona).getMapIdSugestoesPontoDeEncontro().values()) {
+			result.add(criaGWTSugestao(s));
+		}
+		return result;
+	}
+
+	private GWTSugestao criaGWTSugestao(Sugestao s) {
+		GWTSugestao gwt_s = new GWTSugestao();
+		
+		gwt_s.setDestino(s.getDestino());
+		gwt_s.setIdSugestao(s.getIdSugestao());
+		gwt_s.setOrigem(s.getOrigem());
+		gwt_s.setResposta(s.getResposta());
+		gwt_s.setSugestaoPontoDeEncontro(s.getPontoSugerido());
+		
+		return gwt_s;
 	}
 }

@@ -135,7 +135,7 @@ public interface EstradaSolidariaService extends RemoteService {
 	 *            : ponto de encontro escolhido ate o momento para a carona
 	 */
 	public abstract void responderSugestaoPontoEncontro(Integer idSessao,
-			Integer idCarona, String idSugestao, String pontos) throws GWTException;
+			Integer idCarona, Integer idSugestao, String pontos) throws GWTException;
 
 	/**
 	 * Solicita vaga e sugere um ponto de encontro para a carona.
@@ -446,4 +446,6 @@ public interface EstradaSolidariaService extends RemoteService {
 	public abstract List<GWTSugestao> getSugestoes(Integer idSessao);
 
 	public abstract void adicionarAmigo(Integer idSessao, Integer idUsuario) throws GWTException;
+
+	public abstract List<GWTSugestao> getSugestoesDaCarona(Integer idSessao, Integer idCarona);
 }
