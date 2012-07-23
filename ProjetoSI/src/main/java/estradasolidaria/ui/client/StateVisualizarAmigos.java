@@ -21,25 +21,25 @@ import com.google.gwt.widget.client.TextButton;
 
 import estradasolidaria.ui.resources.Resources;
 
-public class StateUsuariosEncontrados extends Composite {
-	
+public class StateVisualizarAmigos extends Composite {
 	private EstradaSolidaria estrada;
 	private EstradaSolidariaServiceAsync estradaService;
 	private List<GWTUsuario> listaUsuarios;
 	private AbsolutePanel bodyPanel;
 	private GWTUsuario u;
 	private Label lblSelecioneUmItem;
-
-	public StateUsuariosEncontrados(EstradaSolidaria entryPoint, EstradaSolidariaServiceAsync estradaSolidariaService, List<GWTUsuario> result, AbsolutePanel panel) {
+	
+	public StateVisualizarAmigos(EstradaSolidaria entryPoint, EstradaSolidariaServiceAsync estradaSolidariaService, List<GWTUsuario> result, AbsolutePanel panel) {
+		
 		this.estrada = entryPoint;
 		this.estradaService = estradaSolidariaService;
 		this.listaUsuarios = result;
 		this.bodyPanel = panel;
-
+		
 		Resources resources = GWT.create(Resources.class);
 		ImageResource images = resources.getGenericLittleUserImage();
 		final String imageHtml = AbstractImagePrototype.create(images).getHTML();
-
+		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
 		absolutePanel.setSize("590px", "390px");
@@ -48,19 +48,19 @@ public class StateUsuariosEncontrados extends Composite {
 	    absolutePanel.add(scrollPanel, 38, 120);
 	    scrollPanel.setSize("362px", "246px");
 	    
-		Label lblUsuariosEncontrados = new Label("Usuários Encontrados:");
+		Label lblUsuariosEncontrados = new Label("Meus amigos:");
 		lblUsuariosEncontrados.setStyleName("gwt-LabelEstradaSolidaria2");
 		absolutePanel.add(lblUsuariosEncontrados, 10, 10);
 		
-	    Label label = new Label("Mostrando " + listaUsuarios.size() + " usuários encontrados.");
+	    Label label = new Label("Mostrando " + listaUsuarios.size() + " amigos.");
 	    label.setStyleName("gwt-LabelEstradaSolidaria8");
 	    absolutePanel.add(label, 38, 85);
-
+	    
 	    lblSelecioneUmItem = new Label("Selecione um item na lista.");
 	    absolutePanel.add(lblSelecioneUmItem, 427, 154);
 	    lblSelecioneUmItem.setStyleName("gwt-LabelEstradaSolidaria5");
 	    lblSelecioneUmItem.setVisible(false);
-	    
+
 	    CellList<GWTUsuario> cellList = new CellList<GWTUsuario>(new AbstractCell<GWTUsuario>(){
 	    	@Override
 	    	public void render(Context context, GWTUsuario value, SafeHtmlBuilder sb) {
@@ -116,6 +116,6 @@ public class StateUsuariosEncontrados extends Composite {
 	    	}
 	    });
 	    absolutePanel.add(txtbtnNewButton, 427, 120);
-	    
 	}
+
 }

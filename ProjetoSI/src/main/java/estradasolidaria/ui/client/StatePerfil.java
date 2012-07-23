@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.MenuItemSeparator;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -40,12 +41,15 @@ public class StatePerfil extends Composite {
 	private AbsolutePanel bodyPanel;
 	private AbsolutePanel mainPanel;
 	private String[] dadosUsuario;
+	private Integer idSessao;
 	
+	@SuppressWarnings("static-access")
 	public StatePerfil(EstradaSolidaria estradaSolidaria, final EstradaSolidariaServiceAsync estradaSolidariaService, String[] result) {
 		Resources resources = GWT.create(Resources.class);
 		estrada = estradaSolidaria;
 		this.estradaSolidariaService = estradaSolidariaService;
 		this.dadosUsuario = result;
+		idSessao = estrada.getIdSessaoAberta();
 		
 		//Atualiza o tamanho do dockPanel para o tamanho redimensionado	
 		Window.addResizeHandler(new ResizeHandler() {
@@ -109,7 +113,6 @@ public class StatePerfil extends Composite {
 		menuBar.addSeparator(separator);
 		
 		MenuItem menuItemSair = new MenuItem("Sair", false, new Command() {
-			@SuppressWarnings("static-access")
 			public void execute() {
 				encerrarSessaoGUI(estrada.getIdSessaoAberta());
 				estrada.rootPanel.remove(panel);
@@ -196,8 +199,17 @@ public class StatePerfil extends Composite {
 		
 		Label lblAmigos = new Label("Amigos:");
 		lblAmigos.setStyleName("gwt-LabelEstradaSolidaria8");
-		rightSidebarPanel.add(lblAmigos, 78, 0);
+		rightSidebarPanel.add(lblAmigos, 25, 0);
 		lblAmigos.setSize("57px", "15px");
+		
+		PushButton txtbtnVerAmigos = new PushButton("Ver todos");
+		txtbtnVerAmigos.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				visualizarAmigosGUI();
+			}
+		});
+		rightSidebarPanel.add(txtbtnVerAmigos, 125, 0);
+		txtbtnVerAmigos.setSize("60px", "15px");
 		
 		DatePicker datePicker = new DatePicker();
 		rightSidebarPanel.add(datePicker, 23, 320);
@@ -208,27 +220,27 @@ public class StatePerfil extends Composite {
 		rightSidebarPanel.add(lblProximasCaronas, 35, 297);
 		
 		Image image = new Image(resources.getGenericLittleUserImage());
-		rightSidebarPanel.add(image, 25, 21);
+		rightSidebarPanel.add(image, 25, 26);
 		image.setSize("76px", "74px");
 		
 		Image image_1 = new Image(resources.getGenericLittleUserImage());
-		rightSidebarPanel.add(image_1, 125, 21);
+		rightSidebarPanel.add(image_1, 125, 26);
 		image_1.setSize("76px", "74px");
 		
 		Image image_2 = new Image(resources.getGenericLittleUserImage());
-		rightSidebarPanel.add(image_2, 25, 115);
+		rightSidebarPanel.add(image_2, 25, 120);
 		image_2.setSize("76px", "74px");
 		
 		Image image_3 = new Image(resources.getGenericLittleUserImage());
-		rightSidebarPanel.add(image_3, 125, 115);
+		rightSidebarPanel.add(image_3, 125, 120);
 		image_3.setSize("76px", "74px");
 		
 		Image image_4 = new Image(resources.getGenericLittleUserImage());
-		rightSidebarPanel.add(image_4, 25, 212);
+		rightSidebarPanel.add(image_4, 25, 217);
 		image_4.setSize("76px", "74px");
 		
 		Image image_5 = new Image(resources.getGenericLittleUserImage());
-		rightSidebarPanel.add(image_5, 125, 212);
+		rightSidebarPanel.add(image_5, 125, 217);
 		image_5.setSize("76px", "74px");
 		
 		inicio();
@@ -272,6 +284,26 @@ public class StatePerfil extends Composite {
 		txtbtnMeusInteresses.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				meusInteressesGUI();
+			}
+		});
+	}
+
+	protected void visualizarAmigosGUI() {
+		estradaSolidariaService.getListaDeAmigos(idSessao, new AsyncCallback<List<GWTUsuario>>(){
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert(caught.getMessage()); 
+			}
+
+			@Override
+			public void onSuccess(List<GWTUsuario> result) {
+				bodyPanel.clear();
+				scrollPanel.clear();
+				Widget solicitacoes = new StateVisualizarAmigos(estrada, estradaSolidariaService, result, bodyPanel);
+				bodyPanel.add(solicitacoes);
+				bodyPanel.setVisible(true);
+				solicitacoes.setSize("100%", "100%");
+				
 			}
 		});
 	}

@@ -448,4 +448,6 @@ public interface EstradaSolidariaService extends RemoteService {
 	public abstract void adicionarAmigo(Integer idSessao, Integer idUsuario) throws GWTException;
 
 	public abstract List<GWTSugestao> getSugestoesDaCarona(Integer idSessao, Integer idCarona);
+
+	public abstract List<GWTUsuario> getListaDeAmigos(Integer idSessao) throws GWTException;
 }

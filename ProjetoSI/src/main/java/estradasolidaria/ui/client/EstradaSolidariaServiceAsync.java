@@ -169,4 +169,6 @@ public interface EstradaSolidariaServiceAsync {
 
 	void getSugestoesDaCarona(Integer idSessao, Integer idCarona,
 			AsyncCallback<List<GWTSugestao>> asyncCallback);
+	
+	void getListaDeAmigos(Integer idSessao, AsyncCallback<List<GWTUsuario>> asyncCallback);
 }
