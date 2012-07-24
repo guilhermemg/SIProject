@@ -424,4 +424,24 @@ public class Solicitacao implements Serializable {
 	public synchronized String getTrajeto() {
 		return getOrigem() + " - " + getDestino();
 	}
+
+	/**
+	 * Retorna se esta solicitacao estah no
+	 * estado de cancelada.
+	 * 
+	 * @return true se estado eh cancelada
+	 */
+	public synchronized boolean isCancelada() {
+		return this.getEstado().equals(new EstadoSolicitacaoCancelada());
+	}
+
+	public boolean isConfirmada() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean isRejeitada() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

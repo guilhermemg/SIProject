@@ -2578,4 +2578,100 @@ public class EstradaSolidariaController implements Serializable {
 			lockMapIdUsuario.unlock();
 		}
 	}
+	
+	/**
+	 * Retorna lista de solicitacoes canceladas do
+	 * usuario identificado por idSessao.
+	 * 
+	 * @param idSessao
+	 * @return lista de solicitacoes
+	 */
+	public List<Solicitacao> getSolicitacoesCanceladas(Integer idSessao) {
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			Usuario usuario = getUsuarioAPartirDeIDSessao(idSessao);
+			
+			if(usuario == null)
+				throw new UsuarioInexistenteException();
+			
+			return usuario.getSolicitacoesCanceladas();
+			
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
+	}
+	
+	/**
+	 * Retorna lista de solicitacoes rejeitadas feitas
+	 * pelo usuario identificado a partir de idSessao 
+	 * 
+	 * @param idSessao
+	 * @return lista de solicitacoes
+	 */
+	public List<Solicitacao> getSolicitacoesRejeitadas(Integer idSessao) {
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			Usuario usuario = getUsuarioAPartirDeIDSessao(idSessao);
+			
+			if(usuario == null)
+				throw new UsuarioInexistenteException();
+			
+			return usuario.getSolicitacoesRejeitadas();
+			
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
+	}
+
+	/**
+	 * Retorna lista de solicitacoes pendentes feitas
+	 * pelo usuario identificado a partir de idSessao. 
+	 * 
+	 * @param idSessao
+	 * @return lista de solicitacoes
+	 */
+	public List<Solicitacao> getSolicitacoesPendentes(Integer idSessao) {
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			Usuario usuario = getUsuarioAPartirDeIDSessao(idSessao);
+			
+			if(usuario == null)
+				throw new UsuarioInexistenteException();
+			
+			return usuario.getSolicitacoesPendentes();
+			
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
+	}
+
+	/**
+	 * Retorna lista de solicitacoes confirmadas feitas
+	 * pelo usuario identificado a partir de idSessao. 
+	 * 
+	 * @param idSessao
+	 * @return lista de solicitacoes
+	 */
+	public List<Solicitacao> getSolicitacoesConfirmadas(Integer idSessao) {
+		try {
+			lockMapIdSessao.lock();
+			lockMapIdUsuario.lock();
+			Usuario usuario = getUsuarioAPartirDeIDSessao(idSessao);
+			
+			if(usuario == null)
+				throw new UsuarioInexistenteException();
+			
+			return usuario.getSolicitacoesConfirmadas();
+			
+		} finally {
+			lockMapIdSessao.unlock();
+			lockMapIdUsuario.unlock();
+		}
+	}
 }

@@ -363,37 +363,35 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public List<GWTSolicitacao> getSolicitacoesFeitasConfirmadas(Integer idSessao) throws GWTException {
 		try {
-			List<GWTSolicitacao> listaSolicitacoesFeitas = new LinkedList<GWTSolicitacao>();
-			for (Solicitacao s : controller.getMapaSolicitacoesFeitas(idSessao).values()) {
-				if (s.isAceita()) {
-					GWTSolicitacao gwt_s = new GWTSolicitacao();
-					
-					gwt_s.setNomeDono(s.getDonoDaCarona().getNome());
-					gwt_s.setIdDono(s.getDonoDaCarona().getIdUsuario().toString());
-					gwt_s.setLoginDono(s.getDonoDaCarona().getLogin());
-					gwt_s.setEnderecoDono(s.getDonoDaCarona().getEndereco());
-					gwt_s.setEmailDono(s.getDonoDaCarona().getEmail());
+			List<GWTSolicitacao> listaSolicitacoes = new LinkedList<GWTSolicitacao>();
+			for (Solicitacao s : controller.getSolicitacoesConfirmadas(idSessao)) {
+				GWTSolicitacao gwt_s = new GWTSolicitacao();
+				
+				gwt_s.setNomeDono(s.getDonoDaCarona().getNome());
+				gwt_s.setIdDono(s.getDonoDaCarona().getIdUsuario().toString());
+				gwt_s.setLoginDono(s.getDonoDaCarona().getLogin());
+				gwt_s.setEnderecoDono(s.getDonoDaCarona().getEndereco());
+				gwt_s.setEmailDono(s.getDonoDaCarona().getEmail());
 
-					Carona c = s.getDonoDaCarona().getMapIdCaronasOferecidas().get(s.getIdCarona());
+				Carona c = s.getDonoDaCarona().getMapIdCaronasOferecidas().get(s.getIdCarona());
 
-					gwt_s.setDataCarona(dateFormat.format(c.getData().getTime()));
-					gwt_s.setOrigemCarona(c.getOrigem());
-					gwt_s.setDestinoCarona(c.getDestino());
-					gwt_s.setHoraCarona(hourFormat.format(c.getHora().getTime()));
-					gwt_s.setVagasCarona(c.getVagas().toString());
-					if (c.getPontoEncontro() != null) {
-						gwt_s.setPontoEncontroCarona(c.getPontoEncontro());
-					}else {
-						gwt_s.setPontoEncontroCarona("");
-					}
-					gwt_s.setIdCarona(c.getIdCarona().toString());
-					gwt_s.setEstadoCarona(c.getEstadoDaCarona().toString());
-					gwt_s.setReviewCarona("");
-					
-					listaSolicitacoesFeitas.add(gwt_s);
+				gwt_s.setDataCarona(dateFormat.format(c.getData().getTime()));
+				gwt_s.setOrigemCarona(c.getOrigem());
+				gwt_s.setDestinoCarona(c.getDestino());
+				gwt_s.setHoraCarona(hourFormat.format(c.getHora().getTime()));
+				gwt_s.setVagasCarona(c.getVagas().toString());
+				if (c.getPontoEncontro() != null) {
+					gwt_s.setPontoEncontroCarona(c.getPontoEncontro());
+				}else {
+					gwt_s.setPontoEncontroCarona("");
 				}
+				gwt_s.setIdCarona(c.getIdCarona().toString());
+				gwt_s.setEstadoCarona(c.getEstadoDaCarona().toString());
+				gwt_s.setReviewCarona("");
+				
+				listaSolicitacoes.add(gwt_s);
 			}
-			return listaSolicitacoesFeitas;
+			return listaSolicitacoes;
 		} catch (Exception e) {
 			throw new GWTException(e.getMessage());
 		}
@@ -403,36 +401,33 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	public List<GWTSolicitacao> getSolicitacoesFeitasPendentes(Integer idSessao) throws GWTException {
 		try {
 			List<GWTSolicitacao> listaSolicitacoesPendentes = new LinkedList<GWTSolicitacao>();
-			for (Solicitacao s : controller.getMapaSolicitacoesFeitas(idSessao).values()) {
-				if (!s.isAceita()) {
-					GWTSolicitacao gwt_s = new GWTSolicitacao();
+			for (Solicitacao s : controller.getSolicitacoesPendentes(idSessao)) {
+				GWTSolicitacao gwt_s = new GWTSolicitacao();
 					
-					gwt_s.setNomeDono(s.getDonoDaCarona().getNome());
-					gwt_s.setIdDono(s.getDonoDaCarona().getIdUsuario().toString());
-					gwt_s.setLoginDono(s.getDonoDaCarona().getLogin());
-					gwt_s.setEnderecoDono(s.getDonoDaCarona().getEndereco());
-					gwt_s.setEmailDono(s.getDonoDaCarona().getEmail());
+				gwt_s.setNomeDono(s.getDonoDaCarona().getNome());
+				gwt_s.setIdDono(s.getDonoDaCarona().getIdUsuario().toString());
+				gwt_s.setLoginDono(s.getDonoDaCarona().getLogin());
+				gwt_s.setEnderecoDono(s.getDonoDaCarona().getEndereco());
+				gwt_s.setEmailDono(s.getDonoDaCarona().getEmail());
 
-					Carona c = s.getDonoDaCarona().getMapIdCaronasOferecidas().get(s.getIdCarona());
+				Carona c = s.getDonoDaCarona().getMapIdCaronasOferecidas().get(s.getIdCarona());
 
-					gwt_s.setDataCarona(dateFormat.format(c.getData().getTime()));
-					gwt_s.setOrigemCarona(c.getOrigem());
-					gwt_s.setDestinoCarona(c.getDestino());
-					gwt_s.setHoraCarona(hourFormat.format(c.getHora().getTime()));
-					gwt_s.setVagasCarona(c.getVagas().toString());
-					if (c.getPontoEncontro() != null) {
-						gwt_s.setPontoEncontroCarona(c.getPontoEncontro());
-					}else {
-						gwt_s.setPontoEncontroCarona("");
-					}
-					gwt_s.setIdCarona(c.getIdCarona().toString());
-					gwt_s.setEstadoCarona(c.getEstadoDaCarona().toString());
-					gwt_s.setReviewCarona("");
-					
-					listaSolicitacoesPendentes.add(gwt_s);
+				gwt_s.setDataCarona(dateFormat.format(c.getData().getTime()));
+				gwt_s.setOrigemCarona(c.getOrigem());
+				gwt_s.setDestinoCarona(c.getDestino());
+				gwt_s.setHoraCarona(hourFormat.format(c.getHora().getTime()));
+				gwt_s.setVagasCarona(c.getVagas().toString());
+				if (c.getPontoEncontro() != null) {
+					gwt_s.setPontoEncontroCarona(c.getPontoEncontro());
+				}else {
+					gwt_s.setPontoEncontroCarona("");
 				}
+				gwt_s.setIdCarona(c.getIdCarona().toString());
+				gwt_s.setEstadoCarona(c.getEstadoDaCarona().toString());
+				gwt_s.setReviewCarona("");
+				
+				listaSolicitacoesPendentes.add(gwt_s);
 			}
-			
 			return listaSolicitacoesPendentes;
 		} catch (Exception e) {
 			throw new GWTException(e.getMessage());

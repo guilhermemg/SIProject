@@ -56,6 +56,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	private Lock lockMapIdInteresse = new ReentrantLock();
 	
 	private Map<Integer, Solicitacao> mapIdSolicitacoesFeitas = Collections.synchronizedMap(new TreeMap<Integer, Solicitacao>());
+	private Iterator<Solicitacao> iteratorSolicitacoesFeitas;
 	private Lock lockMapIdSolicitacoesFeitas = new ReentrantLock();
 
 	private Map<Integer, Sugestao> mapIdSugestoesFeitas = Collections.synchronizedMap(new TreeMap<Integer, Sugestao>());
@@ -1953,6 +1954,95 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	public Map<Integer, Sugestao> getMapIdSugestoesFeitas() {
 		synchronized (lockMapIdSugestoesFeitas) {
 			return this.mapIdSugestoesFeitas;
+		}
+	}
+
+	/**
+	 * Retorna lista de solicitacoes canceladas
+	 * desse usuario.
+	 * 
+	 * @return lista de solicitacoes
+	 */
+	public List<Solicitacao> getSolicitacoesCanceladas() {
+		try {
+			lockMapIdSolicitacoesFeitas.lock();
+			List<Solicitacao> listaSolicitacoesCanceladas = new LinkedList<Solicitacao>();
+			iteratorSolicitacoesFeitas = mapIdSolicitacoesFeitas.values().iterator();
+			while(iteratorSolicitacoesFeitas.hasNext()) {
+				Solicitacao s = iteratorSolicitacoesFeitas.next();
+				if(s.isCancelada()) {
+					listaSolicitacoesCanceladas.add(s);
+				}
+			}
+			return listaSolicitacoesCanceladas;
+		} finally {
+			lockMapIdSolicitacoesFeitas.unlock();
+		}
+	}
+
+	/**
+	 * Retorna lista de solicitacoes rejeitadas.
+	 * 
+	 * @return lista de solicitacoes rejeitadas
+	 */
+	public List<Solicitacao> getSolicitacoesRejeitadas() {
+		try {
+			lockMapIdSolicitacoesFeitas.lock();
+			List<Solicitacao> listaSolicitacoesRejeitadas = new LinkedList<Solicitacao>();
+			iteratorSolicitacoesFeitas = mapIdSolicitacoesFeitas.values().iterator();
+			while(iteratorSolicitacoesFeitas.hasNext()) {
+				Solicitacao s = iteratorSolicitacoesFeitas.next();
+				if(s.isRejeitada()) {
+					listaSolicitacoesRejeitadas.add(s);
+				}
+			}
+			return listaSolicitacoesRejeitadas;
+		} finally {
+			lockMapIdSolicitacoesFeitas.unlock();
+		}
+	}
+
+	/**
+	 * Retorna lista de solicitacoes pendentes.
+	 * 
+	 * @return lista de solicitacoes pendentes
+	 */
+	public List<Solicitacao> getSolicitacoesPendentes() {
+		try {
+			lockMapIdSolicitacoesFeitas.lock();
+			List<Solicitacao> listaSolicitacoesPendentes = new LinkedList<Solicitacao>();
+			iteratorSolicitacoesFeitas = mapIdSolicitacoesFeitas.values().iterator();
+			while(iteratorSolicitacoesFeitas.hasNext()) {
+				Solicitacao s = iteratorSolicitacoesFeitas.next();
+				if(s.isPendente()) {
+					listaSolicitacoesPendentes.add(s);
+				}
+			}
+			return listaSolicitacoesPendentes;
+		} finally {
+			lockMapIdSolicitacoesFeitas.unlock();
+		}
+	}
+
+	/**
+	 * Retorna lista de solicitacoes confirmadas.
+	 * 
+	 * @return lista de solicitacoes confirmadas
+	 */
+	public List<Solicitacao> getSolicitacoesConfirmadas() {
+		try {
+			lockMapIdSolicitacoesFeitas.lock();
+			List<Solicitacao> listaSolicitacoesConfirmadas = new LinkedList<Solicitacao>();
+			iteratorSolicitacoesFeitas = mapIdSolicitacoesFeitas.values().iterator();
+			while(iteratorSolicitacoesFeitas.hasNext()) {
+				Solicitacao s = iteratorSolicitacoesFeitas.next();
+				if(s.isConfirmada()) {
+					listaSolicitacoesConfirmadas.add(s);
+				}
+			}
+			return listaSolicitacoesConfirmadas;
+		} finally {
+			lockMapIdSolicitacoesFeitas.unlock();
 		}
 	}
 }
