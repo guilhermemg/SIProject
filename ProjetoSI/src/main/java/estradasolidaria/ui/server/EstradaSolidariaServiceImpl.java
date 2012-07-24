@@ -814,22 +814,9 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 	public List<GWTSugestao> getSugestoes(Integer idSessao) {
 		List<GWTSugestao> result = new LinkedList<GWTSugestao>();
 		for (Sugestao s : controller.getUsuarioAPartirDeIDSessao(idSessao).getMapIdSugestoesFeitas().values()) {
-			result.add(geraGWTSugestao(s));
+			result.add(criaGWTSugestao(s));
 		}
 		return result;
-	}
-
-	private GWTSugestao geraGWTSugestao(Sugestao s) {
-		GWTSugestao gwt_s = new GWTSugestao();
-		
-		gwt_s.setDestino(s.getDestino());
-		gwt_s.setOrigem(s.getOrigem());
-		
-		gwt_s.setIdSugestao(s.getIdSugestao());
-		gwt_s.setResposta(s.getResposta());
-		gwt_s.setSugestaoPontoDeEncontro(s.getPontoSugerido());
-
-		return gwt_s;
 	}
 	
 	@Override
