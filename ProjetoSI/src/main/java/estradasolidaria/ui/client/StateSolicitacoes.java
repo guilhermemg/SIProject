@@ -6,8 +6,9 @@ import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.StackPanel;
+import com.google.gwt.user.client.ui.DecoratedStackPanel;
 
 public class StateSolicitacoes extends Composite {
 	
@@ -22,19 +23,19 @@ public class StateSolicitacoes extends Composite {
 		this.estrada = entryPoint;
 		this.estradaSolidariaService = estradaSolidaria;
 		
-		idSessao = EstradaSolidaria.getIdSessaoAberta();
+		AbsolutePanel absolutePanel = new AbsolutePanel();
+		initWidget(absolutePanel);
+		absolutePanel.setSize("977px", "463px");
 		
-		StackPanel stackPanel = new StackPanel();
-		initWidget(stackPanel);
-		stackPanel.setSize("697px", "342px");
+		DecoratedStackPanel decoratedStackPanel = new DecoratedStackPanel();
+		absolutePanel.add(decoratedStackPanel, 10, 10);
+		decoratedStackPanel.setSize("943px", "212px");
 		
-		dataGrid = new DataGrid<GWTSolicitacao>();
-		stackPanel.add(dataGrid, "Solicitações Confirmadas", false);
+		DataGrid<GWTSolicitacao> dataGrid = new DataGrid<GWTSolicitacao>();
+		decoratedStackPanel.add(dataGrid, "Solicitações Confirmadas", false);
 		dataGrid.setSize("100%", "100%");
 		
-		dataGrid_1 = new DataGrid<GWTSolicitacao>();
-		stackPanel.add(dataGrid_1, "Solicitações Pendentes", false);
-		dataGrid_1.setSize("100%", "100%");
+		idSessao = EstradaSolidaria.getIdSessaoAberta();
 		
 		TextColumn<GWTSolicitacao> columnDonoDaCarona = new TextColumn<GWTSolicitacao>() {
 			@Override
@@ -53,6 +54,14 @@ public class StateSolicitacoes extends Composite {
 			}
 		};
 		dataGrid.addColumn(columnCarona, "Carona");
+		
+		DecoratedStackPanel decoratedStackPanel_1 = new DecoratedStackPanel();
+		absolutePanel.add(decoratedStackPanel_1, 10, 229);
+		decoratedStackPanel_1.setSize("943px", "212px");
+		
+		dataGrid_1 = new DataGrid<GWTSolicitacao>();
+		decoratedStackPanel_1.add(dataGrid_1, "Solicitações Pendentes", false);
+		dataGrid_1.setSize("100%", "100%");
 		
 		TextColumn<GWTSolicitacao> columnDonoDaCarona_1 = new TextColumn<GWTSolicitacao>() {
 			@Override
