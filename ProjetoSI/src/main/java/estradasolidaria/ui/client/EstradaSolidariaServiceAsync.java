@@ -57,6 +57,10 @@ public interface EstradaSolidariaServiceAsync {
 
 	void getSolicitacoesFeitasPendentes(Integer idSessao,
 			AsyncCallback<List<GWTSolicitacao>> callback);
+	
+	void getSolicitacoesFeitasRejeitadas(Integer idSessao, AsyncCallback<List<GWTSolicitacao>> callback);
+	
+	void getSolicitacoesFeitasCanceladas(Integer idSessao, AsyncCallback<List<GWTSolicitacao>> callback);
 
 	void getTodasCaronasUsuario(Integer idSessao, AsyncCallback<List<GWTCarona>> asyncCallback);
 

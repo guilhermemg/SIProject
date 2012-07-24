@@ -15,8 +15,10 @@ public class StateSolicitacoes extends Composite {
 	private EstradaSolidaria estrada;
 	private EstradaSolidariaServiceAsync estradaSolidariaService;
 	private Integer idSessao;
-	private DataGrid<GWTSolicitacao> dataGrid;
-	private DataGrid<GWTSolicitacao> dataGrid_1;
+	private DataGrid<GWTSolicitacao> dataGridConfirmadas;
+	private DataGrid<GWTSolicitacao> dataGridPendentes;
+	private DataGrid<GWTSolicitacao> dataGridRejeitadas;
+	private DataGrid<GWTSolicitacao> dataGridCanceladas;
 												
 	public StateSolicitacoes(EstradaSolidaria entryPoint,
 			EstradaSolidariaServiceAsync estradaSolidaria) {
@@ -25,17 +27,17 @@ public class StateSolicitacoes extends Composite {
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		initWidget(absolutePanel);
-		absolutePanel.setSize("977px", "463px");
+		absolutePanel.setSize("977px", "571px");
+		
+		idSessao = EstradaSolidaria.getIdSessaoAberta();
 		
 		DecoratedStackPanel decoratedStackPanel = new DecoratedStackPanel();
 		absolutePanel.add(decoratedStackPanel, 10, 10);
-		decoratedStackPanel.setSize("943px", "212px");
+		decoratedStackPanel.setSize("441px", "248px");
 		
-		dataGrid = new DataGrid<GWTSolicitacao>();
-		decoratedStackPanel.add(dataGrid, "Solicitações Confirmadas", false);
-		dataGrid.setSize("100%", "100%");
-		
-		idSessao = EstradaSolidaria.getIdSessaoAberta();
+		dataGridConfirmadas = new DataGrid<GWTSolicitacao>();
+		decoratedStackPanel.add(dataGridConfirmadas, "Solicitações Confirmadas", false);
+		dataGridConfirmadas.setSize("100%", "100%");
 		
 		TextColumn<GWTSolicitacao> columnDonoDaCarona = new TextColumn<GWTSolicitacao>() {
 			@Override
@@ -43,7 +45,7 @@ public class StateSolicitacoes extends Composite {
 				return solicitacao.getNomeDono();
 			}
 		};
-		dataGrid.addColumn(columnDonoDaCarona, "Dono da carona");
+		dataGridConfirmadas.addColumn(columnDonoDaCarona, "Dono da carona");
 		
 		TextColumn<GWTSolicitacao> columnCarona = new TextColumn<GWTSolicitacao>() {
 			@Override
@@ -53,15 +55,15 @@ public class StateSolicitacoes extends Composite {
 						".";
 			}
 		};
-		dataGrid.addColumn(columnCarona, "Carona");
+		dataGridConfirmadas.addColumn(columnCarona, "Carona");
 		
 		DecoratedStackPanel decoratedStackPanel_1 = new DecoratedStackPanel();
-		absolutePanel.add(decoratedStackPanel_1, 10, 229);
-		decoratedStackPanel_1.setSize("943px", "212px");
+		absolutePanel.add(decoratedStackPanel_1, 468, 10);
+		decoratedStackPanel_1.setSize("441px", "248px");
 		
-		dataGrid_1 = new DataGrid<GWTSolicitacao>();
-		decoratedStackPanel_1.add(dataGrid_1, "Solicitações Pendentes", false);
-		dataGrid_1.setSize("100%", "100%");
+		dataGridPendentes = new DataGrid<GWTSolicitacao>();
+		decoratedStackPanel_1.add(dataGridPendentes, "Solicitações Pendentes", false);
+		dataGridPendentes.setSize("100%", "100%");
 		
 		TextColumn<GWTSolicitacao> columnDonoDaCarona_1 = new TextColumn<GWTSolicitacao>() {
 			@Override
@@ -69,7 +71,7 @@ public class StateSolicitacoes extends Composite {
 				return solicitacao.getNomeDono();
 			}
 		};
-		dataGrid_1.addColumn(columnDonoDaCarona_1, "Dono da carona");
+		dataGridPendentes.addColumn(columnDonoDaCarona_1, "Dono da carona");
 		
 		TextColumn<GWTSolicitacao> columnCarona_1 = new TextColumn<GWTSolicitacao>() {
 			@Override
@@ -79,10 +81,96 @@ public class StateSolicitacoes extends Composite {
 						".";
 			}
 		};
-		dataGrid_1.addColumn(columnCarona_1, "Carona");
+		dataGridPendentes.addColumn(columnCarona_1, "Carona");
+		
+		DecoratedStackPanel decoratedStackPanel_2 = new DecoratedStackPanel();
+		absolutePanel.add(decoratedStackPanel_2, 10, 264);
+		decoratedStackPanel_2.setSize("441px", "248px");
+		
+		dataGridRejeitadas = new DataGrid<GWTSolicitacao>();
+		decoratedStackPanel_2.add(dataGridRejeitadas, "Solicitações Rejeitadas", false);
+		dataGridRejeitadas.setSize("100%", "100%");
+		
+		TextColumn<GWTSolicitacao> columnDonoDaCarona_2 = new TextColumn<GWTSolicitacao>() {
+			@Override
+			public String getValue(GWTSolicitacao solicitacao) {
+				return solicitacao.getNomeDono();
+			}
+		};
+		dataGridRejeitadas.addColumn(columnDonoDaCarona_2, "Dono da carona");
+		
+		TextColumn<GWTSolicitacao> columnCarona_2 = new TextColumn<GWTSolicitacao>() {
+			@Override
+			public String getValue(GWTSolicitacao solicitacao) {
+				return "De " + solicitacao.getOrigemCarona() + " para " + solicitacao.getDestinoCarona() +
+						" no dia " + solicitacao.getDataCarona() + " as " + solicitacao.getHoraCarona() +
+						".";
+			}
+		};
+		dataGridRejeitadas.addColumn(columnCarona_2, "Carona");
+		
+		DecoratedStackPanel decoratedStackPanel_3 = new DecoratedStackPanel();
+		absolutePanel.add(decoratedStackPanel_3, 468, 264);
+		decoratedStackPanel_3.setSize("441px", "248px");
+		
+		dataGridCanceladas = new DataGrid<GWTSolicitacao>();
+		decoratedStackPanel_3.add(dataGridCanceladas, "Solicitações Canceladas", false);
+		dataGridCanceladas.setSize("100%", "100%");
+		
+		TextColumn<GWTSolicitacao> columnDonoDaCarona_3 = new TextColumn<GWTSolicitacao>() {
+			@Override
+			public String getValue(GWTSolicitacao solicitacao) {
+				return solicitacao.getNomeDono();
+			}
+		};
+		dataGridCanceladas.addColumn(columnDonoDaCarona_3, "Dono da carona");
+		
+		TextColumn<GWTSolicitacao> columnCarona_3 = new TextColumn<GWTSolicitacao>() {
+			@Override
+			public String getValue(GWTSolicitacao solicitacao) {
+				return "De " + solicitacao.getOrigemCarona() + " para " + solicitacao.getDestinoCarona() +
+						" no dia " + solicitacao.getDataCarona() + " as " + solicitacao.getHoraCarona() +
+						".";
+			}
+		};
+		dataGridCanceladas.addColumn(columnCarona_3, "Carona");
 		
 		getSolicitacoesConfirmadas();
 		getSolicitacoesPendentes();
+		getSolicitacoesRejeitadas();
+		getSolicitacoesCanceladas();
+	}
+
+	private void getSolicitacoesCanceladas() {
+		estradaSolidariaService.getSolicitacoesFeitasCanceladas(idSessao, new AsyncCallback<List<GWTSolicitacao>>(){
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert(caught.getMessage());
+				
+			}
+			@Override
+			public void onSuccess(List<GWTSolicitacao> result) {
+				dataGridCanceladas.setRowCount(result.size(), true);
+				dataGridCanceladas.setRowData(result);
+			}
+		});
+		
+	}
+
+	private void getSolicitacoesRejeitadas() {
+		estradaSolidariaService.getSolicitacoesFeitasRejeitadas(idSessao, new AsyncCallback<List<GWTSolicitacao>>(){
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert(caught.getMessage());
+				
+			}
+			@Override
+			public void onSuccess(List<GWTSolicitacao> result) {
+				dataGridRejeitadas.setRowCount(result.size(), true);
+				dataGridRejeitadas.setRowData(result);
+			}
+		});
+		
 	}
 
 	private void getSolicitacoesPendentes() {
@@ -94,8 +182,8 @@ public class StateSolicitacoes extends Composite {
 			}
 			@Override
 			public void onSuccess(List<GWTSolicitacao> result) {
-				dataGrid_1.setRowCount(result.size(), true);
-				dataGrid_1.setRowData(result);
+				dataGridPendentes.setRowCount(result.size(), true);
+				dataGridPendentes.setRowData(result);
 			}
 		});
 		
@@ -110,8 +198,8 @@ public class StateSolicitacoes extends Composite {
 			}
 			@Override
 			public void onSuccess(List<GWTSolicitacao> result) {
-				dataGrid.setRowCount(result.size(), true);
-				dataGrid.setRowData(result);
+				dataGridConfirmadas.setRowCount(result.size(), true);
+				dataGridConfirmadas.setRowData(result);
 			}
 		});
 	}

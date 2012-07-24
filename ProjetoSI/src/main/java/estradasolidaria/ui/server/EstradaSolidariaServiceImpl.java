@@ -433,6 +433,80 @@ public class EstradaSolidariaServiceImpl extends RemoteServiceServlet implements
 			throw new GWTException(e.getMessage());
 		}
 	}
+	
+	@Override
+	public List<GWTSolicitacao> getSolicitacoesFeitasRejeitadas(Integer idSessao) throws GWTException {
+		try {
+			List<GWTSolicitacao> listaSolicitacoesRejeitadas = new LinkedList<GWTSolicitacao>();
+			for (Solicitacao s : controller.getSolicitacoesRejeitadas(idSessao)) {
+				GWTSolicitacao gwt_s = new GWTSolicitacao();
+					
+				gwt_s.setNomeDono(s.getDonoDaCarona().getNome());
+				gwt_s.setIdDono(s.getDonoDaCarona().getIdUsuario().toString());
+				gwt_s.setLoginDono(s.getDonoDaCarona().getLogin());
+				gwt_s.setEnderecoDono(s.getDonoDaCarona().getEndereco());
+				gwt_s.setEmailDono(s.getDonoDaCarona().getEmail());
+
+				Carona c = s.getDonoDaCarona().getMapIdCaronasOferecidas().get(s.getIdCarona());
+
+				gwt_s.setDataCarona(dateFormat.format(c.getData().getTime()));
+				gwt_s.setOrigemCarona(c.getOrigem());
+				gwt_s.setDestinoCarona(c.getDestino());
+				gwt_s.setHoraCarona(hourFormat.format(c.getHora().getTime()));
+				gwt_s.setVagasCarona(c.getVagas().toString());
+				if (c.getPontoEncontro() != null) {
+					gwt_s.setPontoEncontroCarona(c.getPontoEncontro());
+				}else {
+					gwt_s.setPontoEncontroCarona("");
+				}
+				gwt_s.setIdCarona(c.getIdCarona().toString());
+				gwt_s.setEstadoCarona(c.getEstadoDaCarona().toString());
+				gwt_s.setReviewCarona("");
+				
+				listaSolicitacoesRejeitadas.add(gwt_s);
+			}
+			return listaSolicitacoesRejeitadas;
+		} catch (Exception e) {
+			throw new GWTException(e.getMessage());
+		}
+	}
+	
+	@Override
+	public List<GWTSolicitacao> getSolicitacoesFeitasCanceladas(Integer idSessao) throws GWTException {
+		try {
+			List<GWTSolicitacao> listaSolicitacoesCanceladas = new LinkedList<GWTSolicitacao>();
+			for (Solicitacao s : controller.getSolicitacoesCanceladas(idSessao)) {
+				GWTSolicitacao gwt_s = new GWTSolicitacao();
+					
+				gwt_s.setNomeDono(s.getDonoDaCarona().getNome());
+				gwt_s.setIdDono(s.getDonoDaCarona().getIdUsuario().toString());
+				gwt_s.setLoginDono(s.getDonoDaCarona().getLogin());
+				gwt_s.setEnderecoDono(s.getDonoDaCarona().getEndereco());
+				gwt_s.setEmailDono(s.getDonoDaCarona().getEmail());
+
+				Carona c = s.getDonoDaCarona().getMapIdCaronasOferecidas().get(s.getIdCarona());
+
+				gwt_s.setDataCarona(dateFormat.format(c.getData().getTime()));
+				gwt_s.setOrigemCarona(c.getOrigem());
+				gwt_s.setDestinoCarona(c.getDestino());
+				gwt_s.setHoraCarona(hourFormat.format(c.getHora().getTime()));
+				gwt_s.setVagasCarona(c.getVagas().toString());
+				if (c.getPontoEncontro() != null) {
+					gwt_s.setPontoEncontroCarona(c.getPontoEncontro());
+				}else {
+					gwt_s.setPontoEncontroCarona("");
+				}
+				gwt_s.setIdCarona(c.getIdCarona().toString());
+				gwt_s.setEstadoCarona(c.getEstadoDaCarona().toString());
+				gwt_s.setReviewCarona("");
+				
+				listaSolicitacoesCanceladas.add(gwt_s);
+			}
+			return listaSolicitacoesCanceladas;
+		} catch (Exception e) {
+			throw new GWTException(e.getMessage());
+		}
+	}
 
 	@Override
 	public String getPontosSugeridos(Integer idSessao, Integer idCarona)
