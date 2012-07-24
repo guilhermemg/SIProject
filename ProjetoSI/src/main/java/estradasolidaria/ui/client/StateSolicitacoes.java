@@ -31,7 +31,7 @@ public class StateSolicitacoes extends Composite {
 		absolutePanel.add(decoratedStackPanel, 10, 10);
 		decoratedStackPanel.setSize("943px", "212px");
 		
-		DataGrid<GWTSolicitacao> dataGrid = new DataGrid<GWTSolicitacao>();
+		dataGrid = new DataGrid<GWTSolicitacao>();
 		decoratedStackPanel.add(dataGrid, "Solicitações Confirmadas", false);
 		dataGrid.setSize("100%", "100%");
 		
